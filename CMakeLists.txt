@@ -22,7 +22,6 @@ add_executable(${PROJECT_NAME} main.cpp
         Renderer/Renderer.cpp
         Level/LevelScene.cpp
         Entities/Player.cpp
-        Events/PlayerInput.cpp
         Entities/GameObject.cpp
 ) # Create an executable with main.cpp as the source
 

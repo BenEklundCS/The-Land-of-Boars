@@ -15,14 +15,13 @@ private:
     std::vector<GameObject*> gameObjects_;
 
 public:
-    explicit LevelScene();
+    LevelScene();
 
     void Update();
 
     void Draw(Renderer &renderer);
 
     void AddObject(GameObject* obj);
-
 };
 
 

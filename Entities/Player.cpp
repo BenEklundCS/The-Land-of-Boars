@@ -18,16 +18,8 @@ void Player::Draw() {
 
 void Player::Update() {
     // Handle Player Input
-    HandlePlayerInput(&position_);
-
-    // Gravity
-    if (position_.y < (float)(GetScreenHeight() - PLAYER_LENGTH * 2)) {
-        position_.y += 10;
-    }
-}
-
-void Player::SetPosition(Vector2 position) {
-    this->position_ = position;
+    HandlePlayerInput();
+    MovePlayer();
 }
 
 Vector2 Player::GetPosition() {
@@ -40,4 +32,49 @@ Vector2 Player::GetDimensions() {
 
 Color Player::GetColor() {
     return this->color_;
+}
+
+void Player::MovePlayer() {
+    // X axis movement
+    position_.x += velocity_.x;
+    if (velocity_.x > 0) {
+        velocity_.x -= 3; // friction
+    }
+    else if (velocity_.x < 0) {
+        velocity_.x += 3; // friction
+    }
+    else {
+        velocity_.x = 0;
+    }
+
+    // Gravity
+    float deltaTime = GetFrameTime();
+    velocity_.y += GRAVITY * deltaTime;
+
+    // Apply vertical velocity
+    position_.y += velocity_.y;
+
+    // Stop the player from falling through the floor
+    if (position_.y > (float)(GetScreenHeight() - PLAYER_LENGTH * 2)) {
+        position_.y = (float)(GetScreenHeight() - PLAYER_LENGTH * 2);
+        velocity_.y = 0;
+    }
+}
+
+void Player::HandlePlayerInput() {
+    float maxXVelocity = 25;
+
+    if (IsKeyDown(KEY_A)) { // move left
+        if (velocity_.x >= -maxXVelocity) {
+            velocity_.x -= 15;
+        }
+    }
+    if (IsKeyDown(KEY_D)) { // move right
+        if (velocity_.x <= maxXVelocity) {
+            velocity_.x += 15;
+        }
+    }
+    if ((IsKeyPressed(KEY_SPACE) && velocity_.y == 0)) { // jump
+        velocity_.y -= 30;
+    }
 }

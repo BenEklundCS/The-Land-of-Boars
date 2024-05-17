@@ -13,6 +13,4 @@ public:
     virtual ~GameObject();
 };
 
-
-
 #endif //PLATFORMER_GAMEOBJECT_H
