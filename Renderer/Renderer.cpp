@@ -9,7 +9,7 @@
 #include "raylib.h"
 
 
-Renderer::Renderer() : window(Window::GetInstance()) {};
+Renderer::Renderer() = default;
 
 void Renderer::Draw(const std::vector<GameObject*>& objects) {
 
@@ -24,4 +24,5 @@ void Renderer::Draw(const std::vector<GameObject*>& objects) {
     DrawRectangle(0, GetScreenHeight() - 100, GetScreenWidth(), 100, DARKBROWN);
 
     EndDrawing();
+
 }

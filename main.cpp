@@ -1,13 +1,14 @@
+#include "Renderer/Window.h"
 #include "Renderer/Renderer.h"
 #include "Level/LevelScene.h"
 #include "Entities/Player.h"
 
-
 int main() {
+    Window::GetInstance(); // init the window with GetInstance
     Renderer renderer;
     LevelScene scene;
 
-    Player* player = new Player(Vector2{100, 100}, Vector2{100, 100}, RED);
+    auto player = new Player();
     scene.AddObject(player);
 
     while (!WindowShouldClose()) {

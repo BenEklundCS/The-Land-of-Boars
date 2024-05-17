@@ -5,15 +5,15 @@
 #ifndef PLATFORMER_WINDOW_H
 #define PLATFORMER_WINDOW_H
 
-#define WINDOW_WIDTH 2560
-#define WINDOW_HEIGHT 1440
+#define DEFAULT_WINDOW_WIDTH 2560
+#define DEFAULT_WINDOW_HEIGHT 1440
 #define WINDOW_NAME "Platformer"
 
 class Window {
 
 private:
-    int window_width_ = WINDOW_WIDTH;
-    int window_height_ = WINDOW_HEIGHT;
+    int window_width_ = DEFAULT_WINDOW_WIDTH;
+    int window_height_ = DEFAULT_WINDOW_HEIGHT;
     static Window* instance;
     Window();
 public:

@@ -5,13 +5,13 @@
 #include "PlayerInput.h"
 
 void HandlePlayerInput(Vector2 *position) {
-    if (IsKeyDown(KEY_A)) {
+    if (IsKeyDown(KEY_A)) { // move left
         position->x -= 25;
     }
-    if (IsKeyDown(KEY_D)) {
+    if (IsKeyDown(KEY_D)) { // move right
         position->x += 25;
     }
-    if (IsKeyPressed(KEY_SPACE)) {
+    if (IsKeyPressed(KEY_SPACE)) { // jump
         position->y -= 450;
     }
 }

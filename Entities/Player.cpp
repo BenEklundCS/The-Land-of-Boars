@@ -4,10 +4,10 @@
 
 #include "Player.h"
 
-Player::Player(Vector2 position, Vector2 dimensions, Color color) {
-    this->position_ = position;
-    this->dimensions_ = dimensions;
-    this->color_ = color;
+Player::Player() {
+    this->position_ = {100, 100};
+    this->dimensions_ = {100, 100};
+    this->color_ = RED;
 }
 
 void Player::Draw() {
@@ -21,7 +21,7 @@ void Player::Update() {
     HandlePlayerInput(&position_);
 
     // Gravity
-    if (position_.y < GetScreenHeight() - PLAYER_LENGTH * 2) {
+    if (position_.y < (float)(GetScreenHeight() - PLAYER_LENGTH * 2)) {
         position_.y += 10;
     }
 }

@@ -19,7 +19,7 @@ private:
     Vector2 dimensions_{};
     Color color_{};
 public:
-    Player(Vector2 position, Vector2 dimensions, Color color);
+    Player();
     void Update() override;
     void Draw() override;
     void SetPosition(Vector2 position);

@@ -11,8 +11,6 @@
 
 
 class Renderer {
-private:
-    Window* window;
 public:
     Renderer();
     void Draw(const std::vector<GameObject*>& objects);

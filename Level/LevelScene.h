@@ -12,7 +12,7 @@
 class LevelScene {
 
 private:
-    std::vector<GameObject*> gameObjects;
+    std::vector<GameObject*> gameObjects_;
 
 public:
     explicit LevelScene();
