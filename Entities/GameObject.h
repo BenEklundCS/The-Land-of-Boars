@@ -17,6 +17,9 @@ public:
     virtual ~GameObject();
     Vector2 GetDimensions();
     Vector2 GetPosition();
+    [[maybe_unused]] void SetDimensions(Vector2 dimensions);
+    [[maybe_unused]] void SetPosition(Vector2 position);
+    Rectangle GetRect();
 };
 
 #endif //PLATFORMER_GAMEOBJECT_H

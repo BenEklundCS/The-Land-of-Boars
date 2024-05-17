@@ -21,8 +21,6 @@ void Renderer::Draw(const std::vector<GameObject*>& objects) {
         obj->Draw(); // Assume GameObject has a virtual Draw method
     }
 
-    DrawRectangle(0, GetScreenHeight() - 100, GetScreenWidth(), 100, DARKBROWN);
-
     EndDrawing();
 
 }

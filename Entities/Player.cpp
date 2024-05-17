@@ -70,3 +70,11 @@ void Player::HandlePlayerInput() {
         velocity_.y -= 30;
     }
 }
+
+Vector2 Player::GetVelocity() {
+    return velocity_;
+}
+
+void Player::SetVelocity(Vector2 velocity) {
+    this->velocity_ = velocity;
+}

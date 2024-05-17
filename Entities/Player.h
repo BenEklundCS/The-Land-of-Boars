@@ -10,7 +10,6 @@
 
 #include "raylib.h"
 #include "GameObject.h"
-#include "../Level/LevelScene.h"
 
 class Player : public GameObject {
 private:
@@ -23,6 +22,8 @@ public:
     void Draw() override;
     Color GetColor();
     void HandlePlayerInput();
+    Vector2 GetVelocity();
+    void SetVelocity(Vector2 velocity);
 };
 
 #endif //PLATFORMER_PLAYER_H
