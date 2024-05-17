@@ -7,7 +7,7 @@
 Player::Player() {
     this->position_ = {100, 100};
     this->dimensions_ = {100, 100};
-    this->color_ = RED;
+    this->color_ = BLUE;
 }
 
 void Player::Draw() {
