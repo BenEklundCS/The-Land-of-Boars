@@ -1,28 +1,20 @@
-#include "raylib.h"
-#include "Window.h"
+#include "Renderer/Renderer.h"
+#include "Level/LevelScene.h"
+#include "Entities/Player.h"
+
 
 int main() {
-    // Initialization
-    Window window = Window(WINDOW_WIDTH, WINDOW_HEIGHT);
+    Renderer renderer;
+    LevelScene scene;
 
-    SetTargetFPS(60); // Set the desired frames per second
+    Player* player = new Player(Vector2{100, 100}, Vector2{100, 100}, RED);
+    scene.AddObject(player);
 
-    // Main game loop
-    while (!WindowShouldClose()) { // Detect window close button or ESC key
-        // Update (Not necessary for this simple example)
-
-        // Draw
-        BeginDrawing();
-
-        ClearBackground(RAYWHITE); // Set the background color
-
-        DrawText("Hello from raylib in C++!", 190, 200, 20, LIGHTGRAY); // Draw some text
-
-        EndDrawing();
+    while (!WindowShouldClose()) {
+        scene.Update();
+        scene.Draw(renderer);
     }
 
-    // De-initialization
-    CloseWindow(); // Close window and OpenGL context
-
+    delete player;
     return 0;
 }

@@ -18,7 +18,12 @@ set(CMAKE_CXX_STANDARD 17) # Set C++ standard to C++17
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(${PROJECT_NAME} main.cpp
-        Window.cpp
+        Renderer/Window.cpp
+        Renderer/Renderer.cpp
+        Level/LevelScene.cpp
+        Entities/Player.cpp
+        Events/PlayerInput.cpp
+        Entities/GameObject.cpp
 ) # Create an executable with main.cpp as the source
 
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib) # Link raylib to your project
