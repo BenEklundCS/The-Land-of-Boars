@@ -5,3 +5,11 @@
 #include "GameObject.h"
 
 GameObject::~GameObject() = default;
+
+Vector2 GameObject::GetPosition() {
+    return position_;
+}
+
+Vector2 GameObject::GetDimensions() {
+    return dimensions_;
+}

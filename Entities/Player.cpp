@@ -22,14 +22,6 @@ void Player::Update() {
     MovePlayer();
 }
 
-Vector2 Player::GetPosition() {
-    return position_;
-}
-
-Vector2 Player::GetDimensions() {
-    return dimensions_;
-}
-
 Color Player::GetColor() {
     return this->color_;
 }
