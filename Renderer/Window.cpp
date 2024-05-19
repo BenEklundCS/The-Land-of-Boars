@@ -30,6 +30,7 @@ Window* Window::GetInstance() {
 }
 
 Window::~Window() {
+    delete instance;
     CloseWindow();
 }
 

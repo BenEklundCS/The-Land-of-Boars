@@ -3,17 +3,17 @@
 //
 
 #include "Player.h"
+#include "../Renderer/TextureManager.h"
 
 Player::Player() {
     this->position_ = {100, 100};
-    this->dimensions_ = {100, 100};
+    this->dimensions_ = {PLAYER_LENGTH, PLAYER_LENGTH};
     this->color_ = BLUE;
 }
 
 void Player::Draw() {
-    DrawRectangle((int)GetPosition().x, (int)GetPosition().y,
-                  (int)GetDimensions().x, (int)GetDimensions().y,
-                  GetColor());
+    DrawTexturePro(TextureManager::GetTexture("playerTexture"), TextureManager::GetRect("playerRect"), GetRect(), Vector2{0, 0}, 0, WHITE);
+    // RLAPI void DrawTexturePro(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint);           // Draw a part of a texture defined by a rectangle with 'pro' parameters
 }
 
 void Player::Update() {
@@ -27,47 +27,57 @@ Color Player::GetColor() {
 }
 
 void Player::MovePlayer() {
+    float deltaTime = GetFrameTime();
     // X axis movement
     position_.x += velocity_.x;
-    if (velocity_.x > 0) {
-        velocity_.x -= 3; // friction
+    if (velocity_.x > MIN_VELOCITY) {
+        velocity_.x -= FRICTION * deltaTime; // friction
     }
-    else if (velocity_.x < 0) {
-        velocity_.x += 3; // friction
+    else if (velocity_.x < -MIN_VELOCITY) {
+        velocity_.x += FRICTION * deltaTime; // friction
     }
     else {
         velocity_.x = 0;
     }
 
     // Gravity
-    float deltaTime = GetFrameTime();
+
     velocity_.y += GRAVITY * deltaTime;
 
     // Apply vertical velocity
     position_.y += velocity_.y;
 
     // Stop the player from falling through the floor
-    if (position_.y > (float)(GetScreenHeight() - PLAYER_LENGTH * 2)) {
-        position_.y = (float)(GetScreenHeight() - PLAYER_LENGTH * 2);
+    if (position_.y > (float)(GetScreenHeight())) {
+        position_.y = (float)(GetScreenHeight());
         velocity_.y = 0;
     }
 }
 
 void Player::HandlePlayerInput() {
+
+    float deltaTime = GetFrameTime();
+
     float maxXVelocity = 25;
 
     if (IsKeyDown(KEY_A)) { // move left
+        if (playerTextureRect.width > 0) {
+            playerTextureRect.width *= -1;
+        }
         if (velocity_.x >= -maxXVelocity) {
-            velocity_.x -= 15;
+            velocity_.x -= PLAYER_SPEED * deltaTime;
         }
     }
     if (IsKeyDown(KEY_D)) { // move right
+        if (playerTextureRect.width < 0) {
+            playerTextureRect.width *= -1;
+        }
         if (velocity_.x <= maxXVelocity) {
-            velocity_.x += 15;
+            velocity_.x += PLAYER_SPEED * deltaTime;
         }
     }
     if ((IsKeyPressed(KEY_SPACE) && velocity_.y == 0)) { // jump
-        velocity_.y -= 30;
+        velocity_.y -= PLAYER_SPEED * JUMP_POWER * deltaTime;
     }
 }
 
@@ -78,3 +88,4 @@ Vector2 Player::GetVelocity() {
 void Player::SetVelocity(Vector2 velocity) {
     this->velocity_ = velocity;
 }
+

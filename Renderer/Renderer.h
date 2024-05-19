@@ -9,7 +9,6 @@
 #ifndef PLATFORMER_RENDERER_H
 #define PLATFORMER_RENDERER_H
 
-
 class Renderer {
 public:
     Renderer();
