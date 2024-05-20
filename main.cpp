@@ -3,10 +3,10 @@
 #include "Level/LevelScene.h"
 #include "Entities/Player.h"
 #include "Entities/Platform.h"
-#include "Renderer/TextureManager.h"
+#include "Sprites/TextureManager.h"
 
 int main() {
-    Window::GetInstance(); // init the window with GetInstance
+    Window* window = Window::GetInstance(); // init the window with GetInstance
     TextureManager::LoadTextures();
 
     Renderer renderer;
@@ -30,6 +30,12 @@ int main() {
         scene.Draw(renderer);
     }
 
+    // Delete objects
     delete player;
+    delete window;
+    delete rectangle1;
+    delete rectangle2;
+    delete rectangle3;
+
     return 0;
 }

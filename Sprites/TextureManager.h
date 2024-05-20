@@ -5,8 +5,8 @@
 #ifndef PLATFORMER_TEXTUREMANAGER_H
 #define PLATFORMER_TEXTUREMANAGER_H
 
-#include "map"
-#include "string"
+#include <map>
+#include <string>
 #include "raylib.h"
 
 #define PLAYER_TEXTURE_IDLE_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Character/Idle/Idle-Sheet.png"

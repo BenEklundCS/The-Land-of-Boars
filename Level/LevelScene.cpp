@@ -30,10 +30,7 @@ void LevelScene::HandlePlayerCollisions() {
     for (auto& obj : gameObjects_) {
         if (obj != player_) {
             if (CheckCollisionRecs(player_->GetRect(), obj->GetRect())) {
-                // Stop the player's downward movement
-                player_->SetVelocity(Vector2{player_->GetVelocity().x, 0});
-                // Set the player's position to be just above the object
-                player_->SetPosition(Vector2{player_->GetPosition().x, obj->GetPosition().y - player_->GetDimensions().y});
+                player_->PlatformCollision(obj);
             }
         }
     }

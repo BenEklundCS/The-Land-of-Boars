@@ -7,7 +7,7 @@
 #include "Window.h"
 #include "../Level/LevelScene.h"
 #include "raylib.h"
-#include "TextureManager.h"
+#include "../Sprites/TextureManager.h"
 
 
 Renderer::Renderer() {

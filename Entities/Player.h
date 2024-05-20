@@ -5,10 +5,9 @@
 #ifndef PLATFORMER_PLAYER_H
 #define PLATFORMER_PLAYER_H
 
-#define PLAYER_LENGTH 200
-#define PLAYER_SPEED 250
-#define JUMP_POWER 7
-#define MIN_VELOCITY 1
+#define PLAYER_LENGTH 150
+#define PLAYER_SPEED 200
+
 #define GRAVITY 45
 
 #define FRICTION 85
@@ -21,14 +20,18 @@ private:
     Vector2 velocity_{0, 15};
     Color color_{};
     void MovePlayer();
+    Texture2D playerTexture_{};
 public:
     Player();
     void Update() override;
     void Draw() override;
-    Color GetColor();
     void HandlePlayerInput();
-    Vector2 GetVelocity();
-    void SetVelocity(Vector2 velocity);
+    void PlatformCollision(GameObject* obj);
+};
+
+enum PLAYER_STATE {
+    RUNNING,
+    IDLE,
 };
 
 #endif //PLATFORMER_PLAYER_H
