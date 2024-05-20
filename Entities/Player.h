@@ -27,8 +27,9 @@ private:
     Color color_{};
     void MovePlayer();
     Animation playerAnimation_;
-    PLAYER_STATE state;
-    PLAYER_STATE last_state;
+    PLAYER_STATE state_;
+    PLAYER_STATE last_state_;
+    bool movingRight_;
 public:
     Player();
     void Update() override;
