@@ -4,10 +4,8 @@
 
 #include <vector>
 #include "Renderer.h"
-#include "Window.h"
 #include "../Level/LevelScene.h"
 #include "raylib.h"
-#include "../Sprites/TextureManager.h"
 
 
 Renderer::Renderer() = default;

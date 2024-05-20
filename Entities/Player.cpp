@@ -3,21 +3,21 @@
 //
 
 #include "Player.h"
-#include "../Sprites/TextureManager.h"
 
 Player::Player() : playerAnimation_(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE), PLAYER_IDLE_FRAMES, 0.2f) {
     this->position_ = {100, 100};
     this->dimensions_ = {PLAYER_LENGTH, PLAYER_LENGTH};
     this->color_ = BLUE;
-    state_ = IDLE;
-    last_state_ = IDLE;
+    this->state_ = IDLE;
+    this->last_state_ = IDLE;
+    this->movingRight_ = false;
 }
 
 void Player::Draw() {
     // Get the playerTexture sheet and currentRect from the Animation object
     Texture2D playerTexture = playerAnimation_.GetTexture();
     Rectangle currentRect = playerAnimation_.GetCurrentRect();
-    playerAnimation_.FlipX(movingRight_);
+    playerAnimation_.FlipX(movingRight_); // flip x axis based on the movingRight_ flag
     // Draw the player utilizing the currently loaded playerTexture, and rect position
     DrawTexturePro(playerTexture, currentRect, GetRect(), Vector2{0, 0}, 0, WHITE);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
 }

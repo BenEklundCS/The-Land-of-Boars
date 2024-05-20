@@ -4,3 +4,10 @@
 
 #include "Monster.h"
 
+void Monster::Update() {
+
+}
+
+void Monster::Draw() {
+
+}

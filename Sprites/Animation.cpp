@@ -12,11 +12,11 @@ Animation::Animation(GameTexture gameTexture, int frameCount, float frameDuratio
     this->frameTime_ = 0.0f;
 }
 
-Texture2D Animation::GetTexture() {
+Texture2D Animation::GetTexture() const {
     return gameTexture_.texture;
 }
 
-Rectangle Animation::GetCurrentRect() {
+Rectangle Animation::GetCurrentRect() const {
     Rectangle sourceRec = gameTexture_.rect;
     sourceRec.x = (float)currentFrame_ * sourceRec.width;
     return sourceRec;

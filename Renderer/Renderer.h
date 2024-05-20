@@ -12,7 +12,7 @@
 class Renderer {
 public:
     Renderer();
-    void Draw(const std::vector<GameObject*>& objects);
+    static void Draw(const std::vector<GameObject*>& objects);
 };
 
 
