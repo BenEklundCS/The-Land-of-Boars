@@ -27,6 +27,8 @@ add_executable(${PROJECT_NAME} main.cpp
         Entities/Monster.h
         Entities/Monster.cpp
         Sprites/TextureManager.cpp
+        Sprites/Animation.h
+        Sprites/Animation.cpp
 ) # Create an executable with main.cpp as the source
 
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib) # Link raylib to your project
