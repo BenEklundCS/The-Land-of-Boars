@@ -34,11 +34,13 @@ struct GameTexture {
 
 class TextureManager {
 private:
-    static std::map<std::string, GameTexture> Textures;
+    static TextureManager* instance;
+    std::map<std::string, GameTexture> Textures;
 public:
     TextureManager();
-    static void LoadTextures();
-    static GameTexture GetTexture(const std::string& texture);
+    static TextureManager* GetInstance();
+    void LoadTextures();
+    GameTexture GetTexture(const std::string& texture);
     ~TextureManager();
 };
 

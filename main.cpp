@@ -7,7 +7,6 @@
 
 int main() {
     Window* window = Window::GetInstance(); // init the window with GetInstance
-    TextureManager::LoadTextures();
 
     Renderer renderer;
 

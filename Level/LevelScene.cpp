@@ -12,7 +12,7 @@ LevelScene::LevelScene(Player* player) {
 void LevelScene::Update() {
     // Update game logic, like moving the player or checking collisions
     for (auto& obj : gameObjects_) {
-        obj->Update(); // Assume GameObject has an Update method
+        obj->Update(); // GameObjects must implement an Update() method, call it here
     }
     HandlePlayerCollisions();
 }

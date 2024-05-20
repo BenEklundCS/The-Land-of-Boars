@@ -4,9 +4,17 @@
 
 #include "TextureManager.h"
 
-std::map<std::string, GameTexture> TextureManager::Textures; // Define Textures
+TextureManager* TextureManager::instance = nullptr;
 
 TextureManager::TextureManager() = default;
+
+TextureManager *TextureManager::GetInstance() {
+    if (instance == nullptr) {
+        instance = new TextureManager();
+        instance->LoadTextures();
+    }
+    return instance;
+}
 
 void TextureManager::LoadTextures() {
     // Player IDLE texture sheet
@@ -45,7 +53,7 @@ GameTexture TextureManager::GetTexture(const std::string& texture) {
 }
 
 TextureManager::~TextureManager() {
-    for (auto gameTexture : Textures) {
+    for (const auto& gameTexture : Textures) {
         UnloadTexture(gameTexture.second.texture);
     }
 }

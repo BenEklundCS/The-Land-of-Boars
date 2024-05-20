@@ -17,9 +17,6 @@ public:
     virtual ~GameObject();
     Vector2 GetDimensions();
     Vector2 GetPosition();
-    // Commented out to avoid external modification
-    //void SetDimensions(Vector2 dimensions);
-    //void SetPosition(Vector2 position);
     Rectangle GetRect();
 };
 

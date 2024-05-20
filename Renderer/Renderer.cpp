@@ -10,22 +10,20 @@
 #include "../Sprites/TextureManager.h"
 
 
-Renderer::Renderer() {
-
-}
+Renderer::Renderer() = default;
 
 void Renderer::Draw(const std::vector<GameObject*>& objects) {
 
     BeginDrawing();
 
-    GameTexture background = TextureManager::GetTexture(BACKGROUND_TEXTURE);
+    GameTexture background = TextureManager::GetInstance()->GetTexture(BACKGROUND_TEXTURE);
 
     DrawTexturePro(background.texture, background.rect,
                    Rectangle{0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()},
                    Vector2{0, 0}, 0, WHITE);
 
     for (const auto& obj : objects) {
-        obj->Draw(); // Assume GameObject has a virtual Draw method
+        obj->Draw(); // <-- All GameObjects implement a Draw call
     }
 
     EndDrawing();
