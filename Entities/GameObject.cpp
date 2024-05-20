@@ -17,7 +17,7 @@ Vector2 GameObject::GetDimensions() {
 Rectangle GameObject::GetRect() {
     return Rectangle{position_.x, position_.y, dimensions_.x, dimensions_.y};
 }
-
+/*
 void GameObject::SetPosition(Vector2 position) {
     this->position_ = position;
 }
@@ -25,3 +25,4 @@ void GameObject::SetPosition(Vector2 position) {
 void GameObject::SetDimensions(Vector2 dimensions) {
     this->dimensions_ = dimensions;
 }
+*/
