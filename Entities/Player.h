@@ -14,13 +14,14 @@
 
 #include "raylib.h"
 #include "GameObject.h"
+#include "../Sprites/TextureManager.h"
 
 class Player : public GameObject {
 private:
     Vector2 velocity_{0, 15};
     Color color_{};
     void MovePlayer();
-    Texture2D playerTexture_{};
+    GameTexture playerTexture_{};
 public:
     Player();
     void Update() override;

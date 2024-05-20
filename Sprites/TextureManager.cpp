@@ -4,24 +4,20 @@
 
 #include "TextureManager.h"
 
-std::map<std::string, Texture2D> TextureManager::Textures; // Define Textures
-std::map<std::string, Rectangle> TextureManager::Rects; // Define Textures
+std::map<std::string, GameTexture> TextureManager::Textures; // Define Textures
 
-TextureManager::TextureManager() {
-
-}
+TextureManager::TextureManager() = default;
 
 void TextureManager::LoadTextures() {
-    Textures.insert(std::pair<std::string, Texture2D>("playerTexture", LoadTexture(PLAYER_TEXTURE_IDLE_PATH)));
-    Rects.insert(std::pair<std::string, Rectangle>("playerRect", Rectangle{0, 0, 64, 64}));
-    Textures.insert(std::pair<std::string, Texture2D>("backgroundTexture", LoadTexture(BACKGROUND_TEXTURE_PATH)));
-    Rects.insert(std::pair<std::string, Rectangle>("backgroundRect", Rectangle{0, 0, 480, 270}));
+    Texture2D playerTexture = LoadTexture(PLAYER_TEXTURE_IDLE_PATH);
+    GameTexture player = {playerTexture, Rectangle{0, -16, (float)playerTexture.width/4, (float)playerTexture.height}};
+    Textures.insert(std::pair<std::string, GameTexture>("playerTexture", player));
+
+    Texture2D backgroundTexture = LoadTexture(BACKGROUND_TEXTURE_PATH);
+    GameTexture background = {backgroundTexture, Rectangle{0, 0, (float)backgroundTexture.width, (float)backgroundTexture.height}};
+    Textures.insert(std::pair<std::string, GameTexture>("backgroundTexture", background));
 }
 
-Texture2D TextureManager::GetTexture(const std::string& texture) {
+GameTexture TextureManager::GetTexture(const std::string& texture) {
     return Textures.at(texture);
-}
-
-Rectangle TextureManager::GetRect(const std::string &rect) {
-    return Rects.at(rect);
 }

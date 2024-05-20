@@ -13,7 +13,7 @@ Player::Player() {
 }
 
 void Player::Draw() {
-    DrawTexturePro(playerTexture_, TextureManager::GetRect("playerRect"), GetRect(), Vector2{0, 0}, 0, WHITE);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
+    DrawTexturePro(playerTexture_.texture, playerTexture_.rect, GetRect(), Vector2{0, 0}, 0, WHITE);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
 }
 
 void Player::Update() {
@@ -64,16 +64,16 @@ void Player::HandlePlayerInput() {
     const float jumpPower = 7;
 
     if (IsKeyDown(KEY_A)) { // move left
-        if (playerTexture_.width > 0) {
-            playerTexture_.width *= -1;
+        if (playerTexture_.texture.width > 0) {
+            playerTexture_.texture.width *= -1;
         }
         if (velocity_.x >= -maxXVelocity) {
             velocity_.x -= PLAYER_SPEED * deltaTime;
         }
     }
     if (IsKeyDown(KEY_D)) { // move right
-        if (playerTexture_.width < 0) {
-            playerTexture_.width *= -1;
+        if (playerTexture_.texture.width < 0) {
+            playerTexture_.texture.width *= -1;
         }
         if (velocity_.x <= maxXVelocity) {
             velocity_.x += PLAYER_SPEED * deltaTime;
