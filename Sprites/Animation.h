@@ -7,9 +7,6 @@
 
 #include "TextureManager.h"
 
-#define PLAYER_IDLE_FRAMES 4
-#define PLAYER_RUNNING_FRAMES 8
-
 class Animation {
     // Animation
 private:

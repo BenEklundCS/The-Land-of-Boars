@@ -17,14 +17,14 @@ void Player::Draw() {
     Rectangle currentRect = playerAnimation_.GetCurrentRect();
     DrawTexturePro(playerTexture, currentRect, GetRect(), Vector2{0, 0}, 0, WHITE);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
     last_state = state;
+    if (velocity_.x == 0 && velocity_.y == 0) {
+        state = IDLE;
+    }
 }
 
 void Player::Update() {
     // Handle Player Input
     HandlePlayerInput();
-    if (velocity_.x == 0 && state != JUMPING) {  // Check if the player is not moving and not in the air
-        state = IDLE;
-    }
     MovePlayer();
     AnimatePlayer();
     playerAnimation_.Animate();
@@ -64,14 +64,18 @@ void Player::HandlePlayerInput() {
     const float jumpPower = 7;
 
     if (IsKeyDown(KEY_A)) { // move left
-        state = RUNNING;
+        if (velocity_.y == 0) {
+            state = RUNNING;
+        }
         playerAnimation_.FlipX(false); // flip x, not moving right
         if (velocity_.x >= -maxXVelocity) {
             velocity_.x -= PLAYER_SPEED * deltaTime;
         }
     }
     if (IsKeyDown(KEY_D)) { // move right
-        state = RUNNING;
+        if (velocity_.y == 0) {
+            state = RUNNING;
+        }
         playerAnimation_.FlipX(true); // flip x, moving right
         if (velocity_.x <= maxXVelocity) {
             velocity_.x += PLAYER_SPEED * deltaTime;
@@ -99,6 +103,8 @@ void Player::AnimatePlayer() {
         TraceLog(LOG_INFO, "RUNNING");
         playerAnimation_ = Animation(TextureManager::GetTexture(PLAYER_RUNNING_TEXTURE), PLAYER_RUNNING_FRAMES, 0.2f);
     }
-
+    else if (state == JUMPING && last_state != JUMPING) {
+        playerAnimation_ = Animation(TextureManager::GetTexture(PLAYER_JUMPING_TEXTURE), PLAYER_JUMPING_FRAMES, 0.075f);
+    }
 }
 

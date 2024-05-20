@@ -17,13 +17,13 @@ int main() {
 
     scene.AddObject(player);
 
-    auto rectangle1 = new Platform(0, (float)GetScreenHeight() - 100, (float)GetScreenWidth(), 100, DARKBROWN);
-    auto rectangle2 = new Platform(550, (float)GetScreenHeight() - 450, 500, 50, BLACK);
-    auto rectangle3 = new Platform(1110, (float)GetScreenHeight() - 900, 500, 50, BLACK);
+    auto platform1 = new Platform(0, (float)GetScreenHeight() - 100, (float)GetScreenWidth(), 100, DARKBROWN);
+    auto platform2 = new Platform(550, (float)GetScreenHeight() - 450, 500, 50, BLACK);
+    auto platform3 = new Platform(1110, (float)GetScreenHeight() - 900, 500, 50, BLACK);
 
-    scene.AddObject(rectangle1);
-    scene.AddObject(rectangle2);
-    scene.AddObject(rectangle3);
+    scene.AddObject(platform1);
+    scene.AddObject(platform2);
+    scene.AddObject(platform3);
 
     while (!WindowShouldClose()) {
         scene.Update();
@@ -33,9 +33,9 @@ int main() {
     // Delete objects
     delete player;
     delete window;
-    delete rectangle1;
-    delete rectangle2;
-    delete rectangle3;
+    delete platform1;
+    delete platform2;
+    delete platform3;
 
     return 0;
 }
