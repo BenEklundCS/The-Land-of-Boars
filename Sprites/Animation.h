@@ -7,10 +7,13 @@
 
 #include "TextureManager.h"
 
+#define PLAYER_IDLE_FRAMES 4
+#define PLAYER_RUNNING_FRAMES 8
+
 class Animation {
     // Animation
 private:
-    GameTexture gameTexture_;
+    GameTexture gameTexture_{};
     int currentFrame_;
     float frameTime_;
     int frameCount_;

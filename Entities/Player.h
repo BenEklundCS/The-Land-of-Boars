@@ -28,6 +28,7 @@ private:
     void MovePlayer();
     Animation playerAnimation_;
     PLAYER_STATE state;
+    PLAYER_STATE last_state;
 public:
     Player();
     void Update() override;

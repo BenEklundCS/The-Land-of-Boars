@@ -18,7 +18,7 @@ void Renderer::Draw(const std::vector<GameObject*>& objects) {
 
     BeginDrawing();
 
-    GameTexture background = TextureManager::GetTexture("backgroundTexture");
+    GameTexture background = TextureManager::GetTexture(BACKGROUND_TEXTURE);
 
     DrawTexturePro(background.texture, background.rect,
                    Rectangle{0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()},

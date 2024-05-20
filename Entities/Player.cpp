@@ -5,22 +5,28 @@
 #include "Player.h"
 #include "../Sprites/TextureManager.h"
 
-Player::Player() : playerAnimation_(TextureManager::GetTexture("playerTexture"), 4, 0.2f) {
+Player::Player() : playerAnimation_(TextureManager::GetTexture("playerIdleTexture"), PLAYER_IDLE_FRAMES, 0.2f) {
     this->position_ = {100, 100};
     this->dimensions_ = {PLAYER_LENGTH, PLAYER_LENGTH};
     this->color_ = BLUE;
+    last_state = IDLE;
 }
 
 void Player::Draw() {
     Texture2D playerTexture = playerAnimation_.GetTexture();
     Rectangle currentRect = playerAnimation_.GetCurrentRect();
     DrawTexturePro(playerTexture, currentRect, GetRect(), Vector2{0, 0}, 0, WHITE);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
+    last_state = state;
 }
 
 void Player::Update() {
     // Handle Player Input
     HandlePlayerInput();
+    if (velocity_.x == 0 && state != JUMPING) {  // Check if the player is not moving and not in the air
+        state = IDLE;
+    }
     MovePlayer();
+    AnimatePlayer();
     playerAnimation_.Animate();
 }
 
@@ -82,12 +88,17 @@ void Player::PlatformCollision(GameObject* obj) {
     velocity_ = Vector2{velocity_.x, 0};
     // Set the player's position to be just above the object
     position_ = Vector2{position_.x, obj->GetPosition().y - dimensions_.y};
-    if (velocity_.x == 0 && velocity_.y == 0) {
-        state = IDLE;
-    }
 }
 
 void Player::AnimatePlayer() {
+    if (state == IDLE && last_state != IDLE) {
+        TraceLog(LOG_INFO, "IDLE");
+        playerAnimation_ = Animation(TextureManager::GetTexture(PLAYER_IDLE_TEXTURE), PLAYER_IDLE_FRAMES, 0.2f);
+    }
+    else if (state == RUNNING && last_state != RUNNING) {
+        TraceLog(LOG_INFO, "RUNNING");
+        playerAnimation_ = Animation(TextureManager::GetTexture(PLAYER_RUNNING_TEXTURE), PLAYER_RUNNING_FRAMES, 0.2f);
+    }
 
 }
 

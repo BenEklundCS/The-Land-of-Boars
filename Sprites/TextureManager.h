@@ -10,7 +10,13 @@
 #include "raylib.h"
 
 #define PLAYER_TEXTURE_IDLE_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Character/Idle/Idle-Sheet.png"
+#define PLAYER_TEXTURE_RUNNING_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Character/Run/Run-Sheet.png"
 #define BACKGROUND_TEXTURE_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Background/Background.png"
+
+#define PLAYER_IDLE_TEXTURE "playerIdleTexture"
+#define PLAYER_RUNNING_TEXTURE "playerRunningTexture"
+
+#define BACKGROUND_TEXTURE "backgroundTexture"
 
 struct GameTexture {
     Texture2D texture;
