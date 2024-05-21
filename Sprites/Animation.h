@@ -15,8 +15,9 @@ private:
     float frameTime_;
     int frameCount_;
     float frameDuration_;
+    bool replay_;
 public:
-    Animation(GameTexture gameTexture, int frameCount, float frameDuration);
+    Animation(GameTexture gameTexture, int frameCount, float frameDuration, bool replay);
     [[nodiscard]] Texture2D GetTexture() const;
     [[nodiscard]] Rectangle GetCurrentRect() const;
     void Animate();

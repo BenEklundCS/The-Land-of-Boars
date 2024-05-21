@@ -4,7 +4,7 @@
 
 #include "Player.h"
 
-Player::Player() : playerAnimation_(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE), PLAYER_IDLE_FRAMES, 0.2f) {
+Player::Player() : playerAnimation_(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE), PLAYER_IDLE_FRAMES, 0.2f, true) {
     this->position_ = {100, 100};
     this->dimensions_ = {PLAYER_LENGTH, PLAYER_LENGTH};
     this->color_ = BLUE;
@@ -113,16 +113,16 @@ void Player::PlatformCollision(GameObject* obj) {
 void Player::AnimatePlayer() {
     // Check to see if we need to load the IDLE animation
     TextureManager* textureManager = TextureManager::GetInstance();
-    if (state_ == IDLE && last_state_ != IDLE) {
-        playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_IDLE_TEXTURE), PLAYER_IDLE_FRAMES, 0.2f);
+    if (state_ == IDLE && last_state_ != IDLE) { // replay the idle animation (replay == true)
+        playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_IDLE_TEXTURE), PLAYER_IDLE_FRAMES, 0.2f, true);
     }
     // Check to see if we need to load the RUNNING animation
-    else if (state_ == RUNNING && last_state_ != RUNNING) {
-        playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_RUNNING_TEXTURE), PLAYER_RUNNING_FRAMES, 0.2f);
+    else if (state_ == RUNNING && last_state_ != RUNNING) { // replay the running animation (replay == true)
+        playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_RUNNING_TEXTURE), PLAYER_RUNNING_FRAMES, 0.2f, true);
     }
-        // Check to see if we need to load the JUMPING animation
-    else if (state_ == JUMPING && last_state_ != JUMPING) {
-        playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_JUMPING_TEXTURE), PLAYER_JUMPING_FRAMES, 0.075f);
+    // Check to see if we need to load the JUMPING animation
+    else if (state_ == JUMPING && last_state_ != JUMPING) { // do not replay the jump animation (replay == false)
+        playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_JUMPING_TEXTURE), PLAYER_JUMPING_FRAMES, 0.075f, false);
     }
 }
 
