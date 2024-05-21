@@ -17,8 +17,8 @@ private:
     float frameDuration_;
 public:
     Animation(GameTexture gameTexture, int frameCount, float frameDuration);
-    Texture2D GetTexture() const;
-    Rectangle GetCurrentRect() const;
+    [[nodiscard]] Texture2D GetTexture() const;
+    [[nodiscard]] Rectangle GetCurrentRect() const;
     void Animate();
     void Reset();
     void FlipX(bool movingRight);

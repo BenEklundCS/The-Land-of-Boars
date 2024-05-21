@@ -4,6 +4,10 @@
 
 #include "LevelOne.h"
 
+void LevelOne::Init() {
+    player = std::make_unique<Player>();
+}
+
 void LevelOne::Run() {
     LevelScene scene(player.get());
 

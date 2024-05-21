@@ -10,6 +10,7 @@
 
 class LevelOne : public Level {
 public:
+    void Init() override;
     void Run() override;
 };
 

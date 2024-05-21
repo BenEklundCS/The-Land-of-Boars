@@ -9,7 +9,6 @@ int main() {
 
     levelOne.Init();
     levelOne.Run();
-    levelOne.Cleanup();
 
     return EXIT_SUCCESS;
 

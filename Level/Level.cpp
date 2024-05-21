@@ -5,13 +5,9 @@
 #include "Level.h"
 
 void Level::Init() {
-    player = std::make_unique<Player>();
+
 }
 
 void Level::Run() {
-
-}
-
-void Level::Cleanup() {
 
 }
