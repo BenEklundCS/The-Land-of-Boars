@@ -72,7 +72,7 @@ void Player::HandlePlayerInput() {
 
     const float jumpPower = 7;
 
-    if (IsKeyDown(KEY_A)) { // move left
+    if (IsKeyDown(KEY_LEFT)) { // move left
         // If the player is not also jumping, we'll display the RUNNING animation
         if (velocity_.y == 0) {
             state_ = RUNNING;
@@ -84,7 +84,7 @@ void Player::HandlePlayerInput() {
             velocity_.x -= PLAYER_SPEED * deltaTime;
         }
     }
-    if (IsKeyDown(KEY_D)) { // move right
+    if (IsKeyDown(KEY_RIGHT)) { // move right
         // If the player is not also jumping, we'll display the RUNNING animation
         if (velocity_.y == 0) {
             state_ = RUNNING;
@@ -97,7 +97,7 @@ void Player::HandlePlayerInput() {
         }
     }
     // Handle jumping and jump animation state management
-    if ((IsKeyPressed(KEY_SPACE) && velocity_.y == 0)) { // jump
+    if (((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)) && velocity_.y == 0)) { // jump
         state_ = JUMPING;
         velocity_.y -= PLAYER_SPEED * jumpPower * deltaTime;
     }

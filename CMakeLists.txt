@@ -29,6 +29,10 @@ add_executable(${PROJECT_NAME} main.cpp
         Sprites/TextureManager.cpp
         Sprites/Animation.h
         Sprites/Animation.cpp
+        Level/Level.h
+        Level/LevelOne.cpp
+        Level/LevelOne.h
+        Level/Level.cpp
 ) # Create an executable with main.cpp as the source
 
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib) # Link raylib to your project

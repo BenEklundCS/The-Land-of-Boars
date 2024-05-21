@@ -9,6 +9,8 @@
 
 
 class Monster : public GameObject {
+private:
+
 public:
     void Draw() override;
     void Update() override;

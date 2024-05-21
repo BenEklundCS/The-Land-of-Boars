@@ -18,7 +18,7 @@ void LevelScene::Update() {
 }
 
 void LevelScene::Draw(Renderer& renderer) {
-    renderer.Draw(gameObjects_); // Pass all game objects to the renderer for drawing
+    Renderer::Draw(gameObjects_); // Pass all game objects to the renderer for drawing
 }
 
 // Example of adding objects to the scene
