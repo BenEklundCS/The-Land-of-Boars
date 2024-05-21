@@ -4,16 +4,16 @@
 
 #include "TextureManager.h"
 
-TextureManager* TextureManager::instance = nullptr;
+std::unique_ptr<TextureManager> TextureManager::instance = nullptr;
 
 TextureManager::TextureManager() = default;
 
-TextureManager *TextureManager::GetInstance() {
+TextureManager* TextureManager::GetInstance() {
     if (instance == nullptr) {
-        instance = new TextureManager();
+        instance = std::make_unique<TextureManager>();
         instance->LoadTextures();
     }
-    return instance;
+    return instance.get();
 }
 
 void TextureManager::LoadTextures() {

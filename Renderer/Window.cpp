@@ -5,7 +5,7 @@
 #include "Window.h"
 #include "raylib.h"
 
-Window* Window::instance = nullptr;
+std::unique_ptr<Window> Window::instance = nullptr;
 
 Window::Window() {
     InitWindow(this->window_width_, this->window_height_, WINDOW_NAME);
@@ -24,14 +24,12 @@ void Window::Resize(int window_width, int window_height) {
 Window* Window::GetInstance() {
     TraceLog(LOG_INFO, "Window::GetInstance() Invoked.");
     if (instance == nullptr) {
-        instance = new Window();
+        instance = std::make_unique<Window>();
     }
-    return instance;
+    return instance.get();
 }
 
-Window::~Window() {
-    delete instance;
-}
+Window::~Window() = default;
 
 
 

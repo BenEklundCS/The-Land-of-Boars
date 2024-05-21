@@ -9,17 +9,20 @@
 #define DEFAULT_WINDOW_HEIGHT 1440
 #define WINDOW_NAME "Platformer"
 
+#include <memory>
+
 class Window {
 
 private:
     int window_width_ = DEFAULT_WINDOW_WIDTH;
     int window_height_ = DEFAULT_WINDOW_HEIGHT;
-    static Window* instance;
-    Window();
+    static std::unique_ptr<Window> instance;
 public:
     void Resize(int window_width, int window_height);
     static Window* GetInstance();
     ~Window();
+
+    Window();
 };
 
 #endif //PLATFORMER_WINDOW_H

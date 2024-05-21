@@ -10,6 +10,7 @@
 #define GRAVITY 45
 #define FRICTION 85
 
+#include <memory>
 #include "raylib.h"
 #include "GameObject.h"
 #include "../Sprites/TextureManager.h"

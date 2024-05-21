@@ -5,6 +5,7 @@
 #ifndef PLATFORMER_LEVEL_H
 #define PLATFORMER_LEVEL_H
 
+#include <memory>
 #include "../Renderer/Window.h"
 #include "../Renderer/Renderer.h"
 #include "../Entities/Player.h"
@@ -12,10 +13,8 @@
 
 
 class Level {
-private:
-    Window* window = Window::GetInstance(); // init the window with GetInstance
 protected:
-    Player* player;
+    std::unique_ptr<Player> player;
     Renderer renderer;
 public:
 public:

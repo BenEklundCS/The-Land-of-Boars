@@ -5,7 +5,7 @@
 #include "Level.h"
 
 void Level::Init() {
-    player = new Player();
+    player = std::make_unique<Player>();
 }
 
 void Level::Run() {
@@ -13,5 +13,5 @@ void Level::Run() {
 }
 
 void Level::Cleanup() {
-    delete player;
+
 }

@@ -5,6 +5,7 @@
 #ifndef PLATFORMER_TEXTUREMANAGER_H
 #define PLATFORMER_TEXTUREMANAGER_H
 
+#include <memory>
 #include <map>
 #include <string>
 #include "raylib.h"
@@ -34,7 +35,7 @@ struct GameTexture {
 
 class TextureManager {
 private:
-    static TextureManager* instance;
+    static std::unique_ptr<TextureManager> instance;
     std::map<std::string, GameTexture> Textures;
 public:
     TextureManager();
