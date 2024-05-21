@@ -11,7 +11,6 @@ int main() {
     levelOne.Run();
     levelOne.Cleanup();
 
-    CloseWindow();
-
     return EXIT_SUCCESS;
+
 }

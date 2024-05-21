@@ -29,7 +29,9 @@ Window* Window::GetInstance() {
     return instance.get();
 }
 
-Window::~Window() = default;
+Window::~Window() {
+    CloseWindow();
+}
 
 
 

@@ -18,11 +18,10 @@ private:
     int window_height_ = DEFAULT_WINDOW_HEIGHT;
     static std::unique_ptr<Window> instance;
 public:
+    Window();
     void Resize(int window_width, int window_height);
     static Window* GetInstance();
     ~Window();
-
-    Window();
 };
 
 #endif //PLATFORMER_WINDOW_H
