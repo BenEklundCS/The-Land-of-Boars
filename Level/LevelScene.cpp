@@ -29,9 +29,7 @@ void LevelScene::AddObject(GameObject* obj) {
 void LevelScene::HandlePlayerCollisions() {
     for (auto& obj : gameObjects_) {
         if (obj != player_) {
-            if (CheckCollisionRecs(player_->GetRect(), obj->GetRect())) {
-                player_->PlatformCollision(obj);
-            }
+            obj->CollideWithPlayer(player_);
         }
     }
 }

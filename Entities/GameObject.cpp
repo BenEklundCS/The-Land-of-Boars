@@ -20,6 +20,7 @@ Rectangle GameObject::GetRect() {
     return Rectangle{position_.x, position_.y, dimensions_.x, dimensions_.y};
 }
 
-ObjectType GameObject::GetType() {
-    return type_;
+// Each object has its own player collision logic
+void GameObject::CollideWithPlayer(Player *player) {
+
 }

@@ -6,6 +6,7 @@
 #define PLATFORMER_RECTANGLE_H
 
 #include "GameObject.h"
+#include "Player.h"
 
 
 class Platform : public GameObject {
@@ -15,6 +16,7 @@ public:
     Platform(float pos_x, float pos_y, float dim_x, float dim_y, Color color);
     void Update() override;
     void Draw() override;
+    void CollideWithPlayer(Player* player) override;
 };
 
 

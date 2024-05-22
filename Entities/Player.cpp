@@ -12,7 +12,6 @@ Player::Player() : playerAnimation_(TextureManager::GetInstance()->GetTexture(PL
     this->state_ = IDLE;
     this->last_state_ = IDLE;
     this->movingRight_ = false;
-    this->type_ = ObjectType::PLAYER;
 }
 
 void Player::Draw() {

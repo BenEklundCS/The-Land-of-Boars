@@ -7,6 +7,7 @@
 
 #include "Level.h"
 #include "../Entities/Platform.h"
+#include "../Entities/Monster.h"
 
 class LevelOne : public Level {
 public:
