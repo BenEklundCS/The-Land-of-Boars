@@ -14,14 +14,16 @@
 class Window {
 
 private:
-    int window_width_ = DEFAULT_WINDOW_WIDTH;
-    int window_height_ = DEFAULT_WINDOW_HEIGHT;
+    // windowWidth and windowHeight are set by DEFAULT macros
+    int windowWidth_ = DEFAULT_WINDOW_WIDTH;
+    int windowHeight_ = DEFAULT_WINDOW_HEIGHT;
+    // std::unique_ptr for memory management
     static std::unique_ptr<Window> instance;
 public:
-    Window();
-    void Resize(int window_width, int window_height);
-    static Window* GetInstance();
-    ~Window();
+    Window(); // constructor
+    void Resize(int window_width, int window_height); // resize the window
+    static Window* GetInstance(); // get the window instance (singleton)
+    ~Window(); // destructor
 };
 
 #endif //PLATFORMER_WINDOW_H

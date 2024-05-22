@@ -10,9 +10,12 @@
 #define PLATFORMER_RENDERER_H
 
 class Renderer {
+private:
+    static void RenderBackground();
 public:
-    Renderer();
-    static void Draw(const std::vector<GameObject*>& objects);
+    Renderer(); // constructor
+    static void Draw(const std::vector<GameObject*>& objects); // draw call
+    ~Renderer(); // destructor
 };
 
 

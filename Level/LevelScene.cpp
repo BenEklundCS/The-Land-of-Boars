@@ -27,9 +27,12 @@ void LevelScene::AddObject(GameObject* obj) {
 }
 
 void LevelScene::HandlePlayerCollisions() {
+    // For each object in GameObjects, call their CollideWithPlayer method
     for (auto& obj : gameObjects_) {
         if (obj != player_) {
             obj->CollideWithPlayer(player_);
         }
     }
 }
+
+LevelScene::~LevelScene() = default;

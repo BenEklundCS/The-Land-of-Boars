@@ -18,7 +18,9 @@ protected:
     Renderer renderer;
 public:
 public:
+    Level();
     virtual void StartLevel();
+    ~Level();
 };
 
 
