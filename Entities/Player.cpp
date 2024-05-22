@@ -4,13 +4,15 @@
 
 #include "Player.h"
 
-Player::Player() : playerAnimation_(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE), PLAYER_IDLE_FRAMES, 0.2f, true) {
+Player::Player() : playerAnimation_(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE),
+                                                   PLAYER_IDLE_FRAMES, 0.2f, true) {
     this->position_ = {100, 100};
     this->dimensions_ = {PLAYER_LENGTH, PLAYER_LENGTH};
     this->color_ = BLUE;
     this->state_ = IDLE;
     this->last_state_ = IDLE;
     this->movingRight_ = false;
+    this->type_ = ObjectType::PLAYER;
 }
 
 void Player::Draw() {
