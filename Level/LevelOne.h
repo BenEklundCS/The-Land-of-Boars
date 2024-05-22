@@ -10,8 +10,7 @@
 
 class LevelOne : public Level {
 public:
-    void Init() override;
-    void Run() override;
+    void StartLevel() override;
 };
 
 #endif //PLATFORMER_LEVELONE_H

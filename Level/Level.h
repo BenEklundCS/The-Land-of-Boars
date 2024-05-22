@@ -18,8 +18,7 @@ protected:
     Renderer renderer;
 public:
 public:
-    virtual void Init();
-    virtual void Run();
+    virtual void StartLevel();
 };
 
 

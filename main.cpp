@@ -7,8 +7,7 @@ int main() {
 
     LevelOne levelOne = LevelOne();
 
-    levelOne.Init();
-    levelOne.Run();
+    levelOne.StartLevel();
 
     return EXIT_SUCCESS;
 

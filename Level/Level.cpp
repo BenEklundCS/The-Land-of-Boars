@@ -4,10 +4,6 @@
 
 #include "Level.h"
 
-void Level::Init() {
-
-}
-
-void Level::Run() {
+void Level::StartLevel() {
 
 }
