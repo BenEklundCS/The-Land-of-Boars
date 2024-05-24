@@ -19,7 +19,6 @@ public:
     void Update();
     void Draw(Renderer &renderer);
     void AddObject(GameObject* obj);
-    void HandlePlayerCollisions();
     ~LevelScene();
 };
 
