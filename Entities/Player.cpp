@@ -8,7 +8,6 @@ Player::Player() : playerAnimation_(TextureManager::GetInstance()->GetTexture(PL
                                                    PLAYER_IDLE_FRAMES, 0.2f, true) {
     this->position_ = {100, 100};
     this->dimensions_ = {PLAYER_LENGTH, PLAYER_LENGTH};
-    this->color_ = BLUE;
     this->state_ = IDLE;
     this->last_state_ = IDLE;
     this->movingRight_ = false;
@@ -25,105 +24,164 @@ void Player::Draw() {
 
 // ORDER MATTERS IN THIS METHOD, BEWARE
 void Player::Update() {
+    float deltaTime = GetFrameTime();
     // Update state information FIRST
     last_state_ = state_;
     if (velocity_.x == 0 && velocity_.y == 0) {
         state_ = IDLE;
     }
+    // Reset Jumps
+    ResetJumps();
     // Handle Player Input
-    HandlePlayerInput();
+    HandlePlayerInput(deltaTime);
+    // Stop crazy acceleration
+    VelocityBound();
     // Move the player based on their velocity and position
-    MovePlayer();
+    MovePlayer(deltaTime);
     // Check to see if we need to update the displayed animation
     AnimatePlayer();
     // Call Animate to get the next rect
     playerAnimation_.Animate();
 }
 
-void Player::MovePlayer() {
+void Player::VelocityBound() {
+    if (velocity_.x > MAX_VELOCITY) velocity_.x = MAX_VELOCITY;
+    if (velocity_.y > MAX_VELOCITY) velocity_.y = MAX_VELOCITY;
+}
 
-    float deltaTime = GetFrameTime();
-    const int minVelocity = 1;
-
-    // X axis movement
-    position_.x += velocity_.x; // Update the X position based on the X-axis velocity
-
-    // Handle friction / velocity reduction over time
-    if (velocity_.x > minVelocity) {
-        velocity_.x -= FRICTION * deltaTime; // friction
+void Player::ResetJumps() {
+    if (velocity_.y == 0) {
+        jumps_ = 0;
     }
-    else if (velocity_.x < -minVelocity) {
-        velocity_.x += FRICTION * deltaTime; // friction
-    }
-    else {
-        velocity_.x = 0;
-    }
+}
 
-    // Gravity
-    velocity_.y += GRAVITY * deltaTime;
-    // Apply vertical velocity
+void Player::MovePlayer(float deltaTime) {
+    ApplyFriction(deltaTime);
+    ApplyGravity(deltaTime);
+    UpdatePosition();
+}
+
+void Player::UpdatePosition() {
+    position_.x += velocity_.x;
     position_.y += velocity_.y;
 }
 
-void Player::HandlePlayerInput() {
+void Player::ApplyFriction(float deltaTime) {
+    const int minVelocity = 1;
+    if (velocity_.x > minVelocity) {
+        velocity_.x -= FRICTION * deltaTime;
+    } else if (velocity_.x < -minVelocity) {
+        velocity_.x += FRICTION * deltaTime;
+    } else {
+        velocity_.x = 0;
+    }
+}
 
-    float deltaTime = GetFrameTime();
+void Player::ApplyGravity(float deltaTime) {
+    velocity_.y += GRAVITY * deltaTime;
+}
 
+void Player::MoveLeft(float deltaTime) {
     float maxXVelocity = 25;
+    // If the player is not also jumping, we'll display the RUNNING animation
+    if (velocity_.y == 0) {
+        state_ = RUNNING;
+    }
+    // Flip the animation across the X axis - feed the "moving right" boolean value
+    movingRight_ = false;
+    // Set the player's X velocity
+    if (velocity_.x >= -maxXVelocity) {
+        velocity_.x -= PLAYER_SPEED * deltaTime;
+    }
+}
 
-    const float jumpPower = 7;
+void Player::MoveRight(float deltaTime) {
+    float maxXVelocity = 25;
+    // If the player is not also jumping, we'll display the RUNNING animation
+    if (velocity_.y == 0) {
+        state_ = RUNNING;
+    }
+    // Flip the animation across the X axis - feed the "moving right" boolean value
+    movingRight_ = true;
+    // Set the player's X velocity
+    if (velocity_.x <= maxXVelocity) {
+        velocity_.x += PLAYER_SPEED * deltaTime;
+    }
+}
 
+void Player::Jump(float deltaTime) {
+    const float jumpPower = 6.5f;
+    state_ = JUMPING;
+    velocity_.y -= PLAYER_SPEED * jumpPower * deltaTime;
+}
+
+void Player::HandlePlayerInput(float deltaTime) {
     if (IsKeyDown(KEY_LEFT)) { // move left
-        // If the player is not also jumping, we'll display the RUNNING animation
-        if (velocity_.y == 0) {
-            state_ = RUNNING;
-        }
-        // Flip the animation across the X axis - feed the "moving right" boolean value
-        movingRight_ = false;
-        // Set the player's X velocity
-        if (velocity_.x >= -maxXVelocity) {
-            velocity_.x -= PLAYER_SPEED * deltaTime;
-        }
+        MoveLeft(deltaTime);
     }
     if (IsKeyDown(KEY_RIGHT)) { // move right
-        // If the player is not also jumping, we'll display the RUNNING animation
-        if (velocity_.y == 0) {
-            state_ = RUNNING;
-        }
-        // Flip the animation across the X axis - feed the "moving right" boolean value
-        movingRight_ = true;
-        // Set the player's X velocity
-        if (velocity_.x <= maxXVelocity) {
-            velocity_.x += PLAYER_SPEED * deltaTime;
-        }
+        MoveRight(deltaTime);
     }
     // Handle jumping and jump animation state management
-    if (((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)) && velocity_.y == 0)) { // jump
-        state_ = JUMPING;
-        velocity_.y -= PLAYER_SPEED * jumpPower * deltaTime;
+    if ((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)) && jumps_ <= MAX_JUMPS) { // jump
+        jumps_++;
+        Jump(deltaTime);
     }
 }
 
 void Player::PlatformCollision(GameObject* obj) {
-    // Stop the player's downward movement
-    velocity_ = Vector2{velocity_.x, 0};
-    // Set the player's position to be just above the object
-    position_ = Vector2{position_.x, obj->GetPosition().y - dimensions_.y};
+    Rectangle playerRect = GetRect();
+
+    Rectangle platformRect = obj->GetRect();
+
+    float deltaX = (playerRect.x + playerRect.width / 2) - (platformRect.x + platformRect.width / 2);
+    float deltaY = (playerRect.y + playerRect.height / 2) - (platformRect.y + platformRect.height / 2);
+
+    float combinedHalfWidths = (playerRect.width + platformRect.width) / 2;
+    float combinedHalfHeights = (playerRect.height + platformRect.height) / 2;
+
+    // Determine the overlap on both axes
+    float overlapX = combinedHalfWidths - std::abs(deltaX);
+    float overlapY = combinedHalfHeights - std::abs(deltaY);
+
+    if (overlapX >= overlapY) {
+        if (deltaY > 0) { // Collision from above
+            position_.y = platformRect.y + platformRect.height;
+            velocity_.y = 0;
+            // Reset jumps on collision from above
+        } else { // Collision from below
+            position_.y = platformRect.y - playerRect.height;
+            velocity_.y = 0;
+        }
+    } else {
+        if (deltaX > 0) { // Collision from the left
+            position_.x = platformRect.x + platformRect.width;
+            velocity_.x = 0;
+        } else { // Collision from the right
+            position_.x = platformRect.x - playerRect.width;
+            velocity_.x = 0;
+        }
+    }
 }
+
+
 
 void Player::AnimatePlayer() {
     // Check to see if we need to load the IDLE animation
     TextureManager* textureManager = TextureManager::GetInstance();
+    float idleAnimationSpeed = 0.2f;
+    float runningAnimationSpeed = 0.2f;
+    float jumpingAnimationSpeed = 0.075f;
     if (state_ == IDLE && last_state_ != IDLE) { // replay the idle animation (replay == true)
-        playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_IDLE_TEXTURE), PLAYER_IDLE_FRAMES, 0.2f, true);
+        playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_IDLE_TEXTURE), PLAYER_IDLE_FRAMES, idleAnimationSpeed, true);
     }
     // Check to see if we need to load the RUNNING animation
     else if (state_ == RUNNING && last_state_ != RUNNING) { // replay the running animation (replay == true)
-        playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_RUNNING_TEXTURE), PLAYER_RUNNING_FRAMES, 0.2f, true);
+        playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_RUNNING_TEXTURE), PLAYER_RUNNING_FRAMES, runningAnimationSpeed, true);
     }
     // Check to see if we need to load the JUMPING animation
     else if (state_ == JUMPING && last_state_ != JUMPING) { // do not replay the jump animation (replay == false)
-        playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_JUMPING_TEXTURE), PLAYER_JUMPING_FRAMES, 0.075f, false);
+        playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_JUMPING_TEXTURE), PLAYER_JUMPING_FRAMES, jumpingAnimationSpeed, false);
     }
 }
 

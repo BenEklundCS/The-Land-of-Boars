@@ -13,6 +13,7 @@
 
 enum MonsterState {
     PACING,
+    DEFAULT
 };
 
 class Monster : public GameObject {

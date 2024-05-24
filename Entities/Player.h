@@ -7,8 +7,10 @@
 
 #define PLAYER_LENGTH 150
 #define PLAYER_SPEED 200
+#define MAX_VELOCITY 50
 #define GRAVITY 45
 #define FRICTION 85
+#define MAX_JUMPS 1
 
 #include <memory>
 #include "raylib.h"
@@ -16,7 +18,7 @@
 #include "../Sprites/TextureManager.h"
 #include "../Sprites/Animation.h"
 
-enum PLAYER_STATE {
+enum PlayerState {
     IDLE,
     RUNNING,
     JUMPING
@@ -25,17 +27,26 @@ enum PLAYER_STATE {
 class Player : public GameObject {
 private:
     Vector2 velocity_{0, 15};
-    Color color_{};
-    void MovePlayer();
+    void MovePlayer(float deltaTime);
+    void UpdatePosition();
+    void ApplyFriction(float deltaTime);
+    void ApplyGravity(float deltaTime);
+    void HandlePlayerInput(float deltaTime);
+    void MoveLeft(float deltaTime);
+    void MoveRight(float deltaTime);
+    void Jump(float deltaTime);
+    void ResetJumps();
+    void VelocityBound();
     Animation playerAnimation_;
-    PLAYER_STATE state_;
-    PLAYER_STATE last_state_;
+    PlayerState state_;
+    PlayerState last_state_;
     bool movingRight_;
+    int jumps_ = 0;
+    float timeSinceCollision = 0.0f;
 public:
     Player();
     void Update() override;
     void Draw() override;
-    void HandlePlayerInput();
     void PlatformCollision(GameObject* obj);
     void AnimatePlayer();
 };
