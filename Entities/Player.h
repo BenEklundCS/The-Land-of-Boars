@@ -11,6 +11,7 @@
 #define GRAVITY 45
 #define FRICTION 85
 #define MAX_JUMPS 1
+#define PLAYER_MAX_HP 3
 
 #include <memory>
 #include "raylib.h"
@@ -26,7 +27,7 @@ enum PlayerState {
 
 class Player : public GameObject {
 private:
-    Vector2 velocity_{0, 15};
+    // Methods
     void MovePlayer(float deltaTime);
     void UpdatePosition();
     void ApplyFriction(float deltaTime);
@@ -37,18 +38,22 @@ private:
     void Jump(float deltaTime);
     void ResetJumps();
     void VelocityBound();
+    [[nodiscard]] bool CheckPlayerDeath() const;
+    // Attributes
+    Vector2 velocity_{0, 15};
     Animation playerAnimation_;
     PlayerState state_;
     PlayerState last_state_;
     bool movingRight_;
     int jumps_ = 0;
-    float timeSinceCollision = 0.0f;
+    int hp = PLAYER_MAX_HP;
 public:
     Player();
     void Update() override;
     void Draw() override;
     void PlatformCollision(GameObject* obj);
     void AnimatePlayer();
+    void HitPlayer();
 };
 
 #endif //PLATFORMER_PLAYER_H

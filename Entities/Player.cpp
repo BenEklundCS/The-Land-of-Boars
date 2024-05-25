@@ -164,7 +164,13 @@ void Player::PlatformCollision(GameObject* obj) {
     }
 }
 
+void Player::HitPlayer() {
+    hp--;
+}
 
+bool Player::CheckPlayerDeath() const {
+    return hp <= 0;
+}
 
 void Player::AnimatePlayer() {
     // Check to see if we need to load the IDLE animation
