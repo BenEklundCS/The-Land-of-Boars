@@ -15,6 +15,7 @@ private:
 public:
     Boar(float posX, float posY, float dimX, float dimY, MonsterState state);
     void Draw() override;
+    void Update() override;
 };
 
 

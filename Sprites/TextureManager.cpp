@@ -50,7 +50,7 @@ void TextureManager::LoadTextures() {
     // Boar texture
     Texture2D boarTexture = LoadTexture(BOAR_TEXTURE_RUNNING_PATH_WHITE);
     GameTexture boar = {boarTexture, Rectangle{0, 0,
-                                               (float)boarTexture.width,
+                                               (float)boarTexture.width/BOAR_RUNNING_FRAMES,
                                                (float)boarTexture.height}};
     Textures.emplace(std::pair<std::string, GameTexture>(BOAR_RUNNING_TEXTURE_WHITE, boar));
 }
