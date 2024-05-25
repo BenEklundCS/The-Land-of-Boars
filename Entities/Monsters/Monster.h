@@ -5,8 +5,8 @@
 #ifndef PLATFORMER_MONSTER_H
 #define PLATFORMER_MONSTER_H
 
-#include "GameObject.h"
-#include "Player.h"
+#include "../GameObject.h"
+#include "../Player/Player.h"
 
 #define PACING_WINDOW 800
 #define MONSTER_SPEED 3
@@ -20,6 +20,7 @@ class Monster : public GameObject {
 private:
     MonsterState state_;
     Vector2 initialPosition_{};
+protected:
     bool movingRight_;
 public:
     Monster(float pos_x, float pos_y, float dim_x, float dim_y, MonsterState state);

@@ -15,9 +15,9 @@
 
 #include <memory>
 #include "raylib.h"
-#include "GameObject.h"
-#include "../Sprites/TextureManager.h"
-#include "../Sprites/Animation.h"
+#include "../GameObject.h"
+#include "../../Sprites/TextureManager.h"
+#include "../../Sprites/Animation.h"
 
 enum PlayerState {
     IDLE,

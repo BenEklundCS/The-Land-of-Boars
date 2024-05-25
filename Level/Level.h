@@ -8,7 +8,7 @@
 #include <memory>
 #include "../Renderer/Window.h"
 #include "../Renderer/Renderer.h"
-#include "../Entities/Player.h"
+#include "../Entities/Player/Player.h"
 #include "LevelScene.h"
 
 

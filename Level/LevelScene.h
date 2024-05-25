@@ -6,7 +6,7 @@
 #define PLATFORMER_LEVELSCENE_H
 
 #include <vector>
-#include "../Entities/Player.h"
+#include "../Entities/Player/Player.h"
 #include "../Renderer/Renderer.h"
 
 class LevelScene {

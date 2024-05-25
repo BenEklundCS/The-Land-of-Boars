@@ -23,7 +23,7 @@ void TextureManager::LoadTextures() {
                                                            PLAYER_IDLESHEET_OFFSET,
                                                            (float)playerIdleTexture.width/PLAYER_IDLE_FRAMES,
                                                            (float)playerIdleTexture.height}};
-    Textures.insert(std::pair<std::string, GameTexture>(PLAYER_IDLE_TEXTURE, playerIdle));
+    Textures.emplace(std::pair<std::string, GameTexture>(PLAYER_IDLE_TEXTURE, playerIdle));
 
     // Player RUNNING texture sheet
     Texture2D playerRunningTexture = LoadTexture(PLAYER_TEXTURE_RUNNING_PATH);
@@ -31,25 +31,37 @@ void TextureManager::LoadTextures() {
                                                                  PLAYER_RUNSHEET_OFFSET,
                                                                  (float)playerRunningTexture.width/PLAYER_RUNNING_FRAMES,
                                                                  (float)playerRunningTexture.height}};
-    Textures.insert(std::pair<std::string, GameTexture>(PLAYER_RUNNING_TEXTURE, playerRunning));
+    Textures.emplace(std::pair<std::string, GameTexture>(PLAYER_RUNNING_TEXTURE, playerRunning));
 
     Texture2D playerJumpingTexture = LoadTexture(PLAYER_TEXTURE_JUMPING_PATH);
     GameTexture playerJumping = {playerJumpingTexture, Rectangle{0,
                                                                  0,
                                                                  (float)playerJumpingTexture.width/PLAYER_JUMPING_FRAMES,
                                                                  (float)playerJumpingTexture.height}};
-    Textures.insert(std::pair<std::string, GameTexture>(PLAYER_JUMPING_TEXTURE, playerJumping));
+    Textures.emplace(std::pair<std::string, GameTexture>(PLAYER_JUMPING_TEXTURE, playerJumping));
 
     // Background Texture
     Texture2D backgroundTexture = LoadTexture(BACKGROUND_TEXTURE_PATH);
     GameTexture background = {backgroundTexture, Rectangle{0, 0,
                                                            (float)backgroundTexture.width,
                                                            (float)backgroundTexture.height}};
-    Textures.insert(std::pair<std::string, GameTexture>(BACKGROUND_TEXTURE, background));
+    Textures.emplace(std::pair<std::string, GameTexture>(BACKGROUND_TEXTURE, background));
+
+    // Boar texture
+    Texture2D boarTexture = LoadTexture(BOAR_TEXTURE_RUNNING_PATH_WHITE);
+    GameTexture boar = {boarTexture, Rectangle{0, 0,
+                                               (float)boarTexture.width,
+                                               (float)boarTexture.height}};
+    Textures.emplace(std::pair<std::string, GameTexture>(BOAR_RUNNING_TEXTURE_WHITE, boar));
 }
 
 GameTexture TextureManager::GetTexture(const std::string& texture) {
-    return Textures.at(texture);
+    if (Textures.find(texture) != Textures.end()) {
+        return Textures.at(texture);
+    }
+    else {
+        TraceLog(LOG_ERROR, "Failed to load texture %s", texture.c_str());
+    }
 }
 
 TextureManager::~TextureManager() {

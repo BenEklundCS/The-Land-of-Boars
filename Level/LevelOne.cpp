@@ -21,8 +21,8 @@ void LevelOne::StartLevel() {
     scene.AddObject(platform3.get());
     scene.AddObject(platform4.get());
 
-    auto monster = std::make_unique<Monster>(1000, 200, 100, 100, MonsterState::PACING);
-    auto monster2 = std::make_unique<Monster>(2000, GetScreenHeight()-200, 100, 100, MonsterState::DEFAULT);
+    auto monster = std::make_unique<Boar>(1000, 200, 100, 100, MonsterState::PACING);
+    auto monster2 = std::make_unique<Boar>(2000, GetScreenHeight()-200, 100, 100, MonsterState::DEFAULT);
 
     scene.AddObject(monster.get());
     scene.AddObject(monster2.get());

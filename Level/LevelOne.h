@@ -6,8 +6,8 @@
 #define PLATFORMER_LEVELONE_H
 
 #include "Level.h"
-#include "../Entities/Platform.h"
-#include "../Entities/Monster.h"
+#include "../Entities/Objects/Platform.h"
+#include "../Entities/Monsters/Boar.h"
 
 class LevelOne : public Level {
 public:

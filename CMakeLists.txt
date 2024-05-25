@@ -23,11 +23,11 @@ add_executable(
         Renderer/Window.cpp
         Renderer/Renderer.cpp
         Level/LevelScene.cpp
-        Entities/Player.cpp
+        Entities/Player/Player.cpp
         Entities/GameObject.cpp
-        Entities/Platform.cpp
-        Entities/Monster.h
-        Entities/Monster.cpp
+        Entities/Objects/Platform.cpp
+        Entities/Monsters/Monster.h
+        Entities/Monsters/Monster.cpp
         Sprites/TextureManager.cpp
         Sprites/Animation.h
         Sprites/Animation.cpp
@@ -35,6 +35,8 @@ add_executable(
         Level/LevelOne.cpp
         Level/LevelOne.h
         Level/Level.cpp
+        Entities/Monsters/Boar.h
+        Entities/Monsters/Boar.cpp
 ) # Create an executable with main.cpp as the source
 
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib) # Link raylib to your project
