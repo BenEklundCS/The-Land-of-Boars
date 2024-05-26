@@ -4,8 +4,6 @@
 
 #include "GameObject.h"
 
-GameObject::GameObject() = default;
-
 GameObject::~GameObject() = default;
 
 Vector2 GameObject::GetPosition() {
@@ -23,4 +21,8 @@ Rectangle GameObject::GetRect() {
 // Each object has its own player collision logic
 void GameObject::CollideWithPlayer(Player *player) {
 
+}
+
+GameObject::GameObject(GameObjectType type) {
+    type_ = type;
 }

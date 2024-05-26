@@ -4,7 +4,7 @@
 
 #include "Platform.h"
 
-Platform::Platform(float pos_x, float pos_y, float dim_x, float dim_y, Color color) {
+Platform::Platform(float pos_x, float pos_y, float dim_x, float dim_y, Color color) : GameObject(PLATFORM) {
     this->position_ = Vector2{pos_x, pos_y};
     this->dimensions_ = Vector2{dim_x, dim_y};
     this->color_ = color;

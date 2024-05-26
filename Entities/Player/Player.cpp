@@ -5,7 +5,7 @@
 #include "Player.h"
 
 Player::Player() : playerAnimation_(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE),
-                                                   PLAYER_IDLE_FRAMES, 0.2f, true) {
+                                                   PLAYER_IDLE_FRAMES, 0.2f, true), GameObject(PLAYER) {
     this->position_ = {100, 100};
     this->dimensions_ = {PLAYER_LENGTH, PLAYER_LENGTH};
     this->state_ = IDLE;
@@ -130,36 +130,37 @@ void Player::HandlePlayerInput(float deltaTime) {
 }
 
 void Player::PlatformCollision(GameObject* obj) {
-    Rectangle playerRect = GetRect();
+    if (CheckCollisionRecs(GetRect(), obj->GetRect())) {
+        Rectangle playerRect = GetRect();
+        Rectangle platformRect = obj->GetRect();
 
-    Rectangle platformRect = obj->GetRect();
+        float deltaX = (playerRect.x + playerRect.width / 2) - (platformRect.x + platformRect.width / 2);
+        float deltaY = (playerRect.y + playerRect.height / 2) - (platformRect.y + platformRect.height / 2);
 
-    float deltaX = (playerRect.x + playerRect.width / 2) - (platformRect.x + platformRect.width / 2);
-    float deltaY = (playerRect.y + playerRect.height / 2) - (platformRect.y + platformRect.height / 2);
+        float combinedHalfWidths = (playerRect.width + platformRect.width) / 2;
+        float combinedHalfHeights = (playerRect.height + platformRect.height) / 2;
 
-    float combinedHalfWidths = (playerRect.width + platformRect.width) / 2;
-    float combinedHalfHeights = (playerRect.height + platformRect.height) / 2;
+        // Determine the overlap on both axes
+        float overlapX = combinedHalfWidths - std::abs(deltaX);
+        float overlapY = combinedHalfHeights - std::abs(deltaY);
 
-    // Determine the overlap on both axes
-    float overlapX = combinedHalfWidths - std::abs(deltaX);
-    float overlapY = combinedHalfHeights - std::abs(deltaY);
-
-    if (overlapX >= overlapY) {
-        if (deltaY > 0) { // Collision from above
-            position_.y = platformRect.y + platformRect.height;
-            velocity_.y = 0;
-            // Reset jumps on collision from above
-        } else { // Collision from below
-            position_.y = platformRect.y - playerRect.height;
-            velocity_.y = 0;
-        }
-    } else {
-        if (deltaX > 0) { // Collision from the left
-            position_.x = platformRect.x + platformRect.width;
-            velocity_.x = 0;
-        } else { // Collision from the right
-            position_.x = platformRect.x - playerRect.width;
-            velocity_.x = 0;
+        if (overlapX >= overlapY) {
+            if (deltaY > 0) { // Collision from above
+                position_.y = platformRect.y + platformRect.height;
+                velocity_.y = 0;
+                // Reset jumps on collision from above
+            } else { // Collision from below
+                position_.y = platformRect.y - playerRect.height;
+                velocity_.y = 0;
+            }
+        } else {
+            if (deltaX > 0) { // Collision from the left
+                position_.x = platformRect.x + platformRect.width;
+                velocity_.x = 0;
+            } else { // Collision from the right
+                position_.x = platformRect.x - playerRect.width;
+                velocity_.x = 0;
+            }
         }
     }
 }

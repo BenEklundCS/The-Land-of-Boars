@@ -13,6 +13,7 @@ class Platform : public GameObject {
 private:
     Color color_{};
 public:
+    GameObjectType type_;
     Platform(float pos_x, float pos_y, float dim_x, float dim_y, Color color);
     void Update() override;
     void Draw() override;

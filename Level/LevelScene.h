@@ -2,6 +2,8 @@
 // Created by ben on 5/16/24.
 //
 
+#pragma once
+
 #ifndef PLATFORMER_LEVELSCENE_H
 #define PLATFORMER_LEVELSCENE_H
 
@@ -15,9 +17,12 @@ class LevelScene {
 
 private:
     std::vector<GameObject*> gameObjects_;
-    Player* player_;
+    std::vector<Monster*> monsters_;
+    std::vector<Platform*> platforms_;
+    std::vector<Player*> players_;
+    std::vector<GameObject*> otherObjects_;
 public:
-    explicit LevelScene(Player *player);
+    LevelScene();
     void Update();
     void Draw(Renderer &renderer);
     void AddObject(GameObject* obj);

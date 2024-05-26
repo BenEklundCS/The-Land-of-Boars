@@ -21,13 +21,17 @@ class Monster : public GameObject {
 private:
     MonsterState state_;
     Vector2 initialPosition_{};
-    Vector2 velocity;
+    Vector2 velocity_{};
 protected:
     bool movingRight_;
 public:
+    GameObjectType type_;
     Monster(float pos_x, float pos_y, float dim_x, float dim_y, MonsterState state);
     void Draw() override;
     void Update() override;
+    void ApplyGravity(float deltaTime);
+    void MoveMonster();
+    void PlatformCollision(GameObject* obj);
     void CollideWithPlayer(Player* player) override;
 };
 

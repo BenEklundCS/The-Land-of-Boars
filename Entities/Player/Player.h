@@ -47,6 +47,7 @@ private:
     int jumps_ = 0;
     int hp = PLAYER_MAX_HP;
 public:
+    GameObjectType type_;
     Player();
     void Update() override;
     void Draw() override;
