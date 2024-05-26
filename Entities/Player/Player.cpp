@@ -10,7 +10,7 @@ Player::Player() : playerAnimation_(TextureManager::GetInstance()->GetTexture(PL
     this->dimensions_ = {PLAYER_LENGTH, PLAYER_LENGTH};
     this->state_ = IDLE;
     this->last_state_ = IDLE;
-    this->movingRight_ = false;
+    this->movingRight_ = true;
 }
 
 void Player::Draw() {

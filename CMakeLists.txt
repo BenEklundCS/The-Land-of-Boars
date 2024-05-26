@@ -37,6 +37,7 @@ add_executable(
         Level/Level.cpp
         Entities/Monsters/Boar.h
         Entities/Monsters/Boar.cpp
+        Entities/PhysicsConstants.h
 ) # Create an executable with main.cpp as the source
 
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib) # Link raylib to your project

@@ -7,6 +7,7 @@
 
 #include "../GameObject.h"
 #include "../Player/Player.h"
+#include "../PhysicsConstants.h"
 
 #define PACING_WINDOW 800
 #define MONSTER_SPEED 3
@@ -20,6 +21,7 @@ class Monster : public GameObject {
 private:
     MonsterState state_;
     Vector2 initialPosition_{};
+    Vector2 velocity;
 protected:
     bool movingRight_;
 public:

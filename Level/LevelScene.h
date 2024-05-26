@@ -8,6 +8,8 @@
 #include <vector>
 #include "../Entities/Player/Player.h"
 #include "../Renderer/Renderer.h"
+#include "../Entities/Monsters/Monster.h"
+#include "../Entities/Objects/Platform.h"
 
 class LevelScene {
 
