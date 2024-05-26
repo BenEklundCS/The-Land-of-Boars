@@ -17,10 +17,6 @@ class LevelScene {
 
 private:
     std::vector<GameObject*> gameObjects_;
-    std::vector<Monster*> monsters_;
-    std::vector<Platform*> platforms_;
-    std::vector<Player*> players_;
-    std::vector<GameObject*> otherObjects_;
 public:
     LevelScene();
     void Update();
