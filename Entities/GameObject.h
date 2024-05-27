@@ -22,12 +22,10 @@ protected:
     Vector2 dimensions_{};
 public:
     GameObjectType type_;
-    GameObject(GameObjectType type = OTHER);
+    explicit GameObject(GameObjectType type = OTHER);
     virtual void Update() = 0;
     virtual void Draw() = 0;
     virtual void CollideWithPlayer(Player* player);
-    Vector2 GetDimensions();
-    Vector2 GetPosition();
     Rectangle GetRect();
     virtual ~GameObject();
 };

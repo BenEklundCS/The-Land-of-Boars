@@ -5,6 +5,8 @@
 #include <vector>
 #include "Window.h"
 #include "../Entities/GameObject.h"
+#include "../Entities/Monsters/Monster.h"
+#include "../Entities/Objects/Platform.h"
 
 #ifndef PLATFORMER_RENDERER_H
 #define PLATFORMER_RENDERER_H
@@ -14,7 +16,8 @@ private:
     static void RenderBackground();
 public:
     Renderer(); // constructor
-    static void Draw(const std::vector<GameObject*>& objects); // draw call
+    static void Draw(const std::vector<GameObject*>& otherObjects, const std::vector<Player*>& players,
+                     const std::vector<Monster*>& monsters, std::vector<Platform*>& platforms ); // draw call
     ~Renderer(); // destructor
 };
 
