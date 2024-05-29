@@ -17,42 +17,16 @@ TextureManager* TextureManager::GetInstance() {
 }
 
 void TextureManager::LoadTextures() {
-    // Player IDLE texture sheet
-    Texture2D playerIdleTexture = LoadTexture(PLAYER_TEXTURE_IDLE_PATH);
-    GameTexture playerIdle = {playerIdleTexture, Rectangle{0,
-                                                           PLAYER_IDLESHEET_OFFSET,
-                                                           (float)playerIdleTexture.width/PLAYER_IDLE_FRAMES,
-                                                           (float)playerIdleTexture.height}};
-    Textures.emplace(std::pair<std::string, GameTexture>(PLAYER_IDLE_TEXTURE, playerIdle));
+    // Load the textures
+    // Player
+    TextureManager::LoadAnimatedTexture(PLAYER_TEXTURE_IDLE_PATH, PLAYER_IDLESHEET_OFFSET, PLAYER_IDLE_FRAMES, PLAYER_IDLE_TEXTURE);
+    TextureManager::LoadAnimatedTexture(PLAYER_TEXTURE_RUNNING_PATH, PLAYER_RUNSHEET_OFFSET, PLAYER_RUNNING_FRAMES, PLAYER_RUNNING_TEXTURE);
+    TextureManager::LoadAnimatedTexture(PLAYER_TEXTURE_JUMPING_PATH, 0, PLAYER_JUMPING_FRAMES, PLAYER_JUMPING_TEXTURE);
+    // Background
+    TextureManager::LoadStaticTexture(BACKGROUND_TEXTURE_PATH, BACKGROUND_TEXTURE);
+    // Boars
+    TextureManager::LoadAnimatedTexture(BOAR_TEXTURE_RUNNING_PATH_WHITE, 0, BOAR_RUNNING_FRAMES, BOAR_RUNNING_TEXTURE_WHITE);
 
-    // Player RUNNING texture sheet
-    Texture2D playerRunningTexture = LoadTexture(PLAYER_TEXTURE_RUNNING_PATH);
-    GameTexture playerRunning = {playerRunningTexture, Rectangle{0,
-                                                                 PLAYER_RUNSHEET_OFFSET,
-                                                                 (float)playerRunningTexture.width/PLAYER_RUNNING_FRAMES,
-                                                                 (float)playerRunningTexture.height}};
-    Textures.emplace(std::pair<std::string, GameTexture>(PLAYER_RUNNING_TEXTURE, playerRunning));
-
-    Texture2D playerJumpingTexture = LoadTexture(PLAYER_TEXTURE_JUMPING_PATH);
-    GameTexture playerJumping = {playerJumpingTexture, Rectangle{0,
-                                                                 0,
-                                                                 (float)playerJumpingTexture.width/PLAYER_JUMPING_FRAMES,
-                                                                 (float)playerJumpingTexture.height}};
-    Textures.emplace(std::pair<std::string, GameTexture>(PLAYER_JUMPING_TEXTURE, playerJumping));
-
-    // Background Texture
-    Texture2D backgroundTexture = LoadTexture(BACKGROUND_TEXTURE_PATH);
-    GameTexture background = {backgroundTexture, Rectangle{0, 0,
-                                                           (float)backgroundTexture.width,
-                                                           (float)backgroundTexture.height}};
-    Textures.emplace(std::pair<std::string, GameTexture>(BACKGROUND_TEXTURE, background));
-
-    // Boar texture
-    Texture2D boarTexture = LoadTexture(BOAR_TEXTURE_RUNNING_PATH_WHITE);
-    GameTexture boar = {boarTexture, Rectangle{0, 0,
-                                               (float)boarTexture.width/BOAR_RUNNING_FRAMES,
-                                               (float)boarTexture.height}};
-    Textures.emplace(std::pair<std::string, GameTexture>(BOAR_RUNNING_TEXTURE_WHITE, boar));
 }
 
 GameTexture TextureManager::GetTexture(const std::string& texture) {
@@ -68,4 +42,22 @@ TextureManager::~TextureManager() {
     for (const auto& gameTexture : Textures) {
         UnloadTexture(gameTexture.second.texture);
     }
+}
+
+void TextureManager::LoadStaticTexture(const char *filePath, const std::string& textureName) {
+    Texture2D texture = ::LoadTexture(filePath);
+    GameTexture gameTexture = {texture, Rectangle{0,
+                                                  0,
+                                                  (float)texture.width,
+                                                  (float)texture.height}};
+    Textures.emplace(std::pair<std::string, GameTexture>(textureName, gameTexture));
+}
+
+void TextureManager::LoadAnimatedTexture(const char * filePath, int offset, int frames, const std::string& textureName) {
+    Texture2D texture = ::LoadTexture(filePath);
+    GameTexture gameTexture = {texture, Rectangle{0,
+                                                 (float)offset,
+                                                 (float)texture.width/frames,
+                                                 (float)texture.height}};
+    Textures.emplace(std::pair<std::string, GameTexture>(textureName, gameTexture));
 }

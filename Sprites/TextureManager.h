@@ -50,6 +50,8 @@ class TextureManager {
 private:
     static std::unique_ptr<TextureManager> instance;
     std::map<std::string, GameTexture> Textures;
+    void LoadAnimatedTexture(const char * filePath, int offset, int frames, const std::string& textureName);
+    void LoadStaticTexture(const char * filePath, const std::string& textureName);
 public:
     TextureManager();
     static TextureManager* GetInstance();
