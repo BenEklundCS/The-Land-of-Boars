@@ -14,10 +14,15 @@
 class Renderer {
 private:
     static void RenderBackground();
+    std::vector<Player*> players_;
+    std::vector<Monster*> monsters_;
+    std::vector<Platform*> platforms_;
+    std::vector<GameObject*> otherObjects_;
 public:
-    Renderer(); // constructor
-    static void Draw(const std::vector<GameObject*>& otherObjects, const std::vector<Player*>& players,
-                     const std::vector<Monster*>& monsters, std::vector<Platform*>& platforms ); // draw call
+    Renderer();
+    Renderer(std::vector<Player *> &players, std::vector<Monster *> &monsters,
+             std::vector<Platform *> &platforms, std::vector<GameObject *> &other); // constructor
+    void Draw(Camera2D sceneCamera); // draw call
     ~Renderer(); // destructor
 };
 

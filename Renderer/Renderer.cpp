@@ -21,29 +21,35 @@ void Renderer::RenderBackground() {
 }
 
 // Draw all game objects
-void Renderer::Draw(const std::vector<GameObject *> &otherObjects, const std::vector<Player *> &players,
-                    const std::vector<Monster *> &monsters, std::vector<Platform *> &platforms) {
+void Renderer::Draw(Camera2D sceneCamera) {
     BeginDrawing(); // Setup canvas (framebuffer) to start drawing
-
+    ClearBackground(RAYWHITE);
+    BeginMode2D(sceneCamera);
     // Render the background
     RenderBackground();
     DrawFPS(100, 100);
 
     // For each object in each std::vector of GameObjects, call Draw on the object
-    for (const auto& player : players) {
+    for (const auto& player : players_) {
         player->Draw(); // <-- All GameObjects implement a Draw call
     }
-    for (const auto& monster : monsters) {
+    for (const auto& monster : monsters_) {
         monster->Draw(); //
     }
-    for (const auto& platform : platforms) {
+    for (const auto& platform : platforms_) {
         platform->Draw(); //
     }
-    for (const auto& obj : otherObjects) {
+    for (const auto& obj : otherObjects_) {
         obj->Draw(); //
     }
+    EndMode2D();
     EndDrawing(); // End canvas drawing and swap buffers (double buffering)
 
 }
+
+Renderer::Renderer(std::vector<Player *> &players, std::vector<Monster *> &monsters,
+                   std::vector<Platform *> &platforms, std::vector<GameObject *> &other)
+                   : players_(players), monsters_(monsters), platforms_(platforms), otherObjects_(other) {}
+
 
 Renderer::~Renderer() = default;

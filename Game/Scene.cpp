@@ -5,6 +5,8 @@
 #include "Scene.h"
 #include "../Renderer/Renderer.h"
 
+Scene::Scene() = default;
+
 bool Scene::levelOver = false;
 
 // Update all game objects and handle collisions
@@ -29,7 +31,7 @@ void Scene::Update() {
 
 // Draw all game objects using the Renderer
 void Scene::Draw() {
-    Renderer::Draw(otherObjects_, players_, monsters_, platforms_); // Pass all game objects to the renderer for drawing
+    renderer.Draw(camera);
 }
 
 
@@ -51,13 +53,31 @@ void Scene::AddObject(GameObject* obj) {
 
 // Start the scene, and the scene loop until the level is over, or window should close
 void Scene::StartScene() {
+    InitCamera();
+    this->renderer = Renderer(players_, monsters_, platforms_, otherObjects_);
     while (!WindowShouldClose() && !levelOver) {
         Update();
+        UpdateCamera();
         if (IsLevelOver()) {
             break;
         }
         Draw();
     }
+}
+
+// Init the camera
+void Scene::InitCamera() {
+    Player* player1 = players_.at(0);
+    camera.target = (Vector2){ player1->GetPosition().x + 20.0f, player1->GetPosition().y + 20.0f };
+    camera.offset = (Vector2){ (float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f };
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
+}
+
+// Update the camera
+void Scene::UpdateCamera() {
+    Player* player1 = players_.at(0);
+    camera.target = (Vector2){ player1->GetPosition().x + 20, player1->GetPosition().y + 20 };
 }
 
 bool Scene::IsLevelOver() {
@@ -67,7 +87,5 @@ bool Scene::IsLevelOver() {
 void Scene::SetLevelOver() {
     levelOver = true;
 }
-
-Scene::Scene() = default;
 
 Scene::~Scene() = default;

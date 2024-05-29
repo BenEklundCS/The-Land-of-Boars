@@ -15,7 +15,6 @@
 class Level {
 protected:
     std::unique_ptr<Player> player;
-    Renderer renderer;
 public:
 public:
     Level();

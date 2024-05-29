@@ -16,6 +16,7 @@
 class Scene {
 
 private:
+    Renderer renderer;
     static bool levelOver;
     void Update();
     void Draw();
@@ -24,6 +25,10 @@ private:
     std::vector<Monster*> monsters_;
     std::vector<Platform*> platforms_;
     std::vector<GameObject*> otherObjects_;
+    // CAMERA/SCENE ONLY SUPPORT ONE PLAYER CURRENTLY, BEWARE
+    Camera2D camera;
+    void UpdateCamera();
+    void InitCamera();
 public:
     Scene();
     void StartScene();
@@ -31,6 +36,5 @@ public:
     void AddObject(GameObject* obj);
     ~Scene();
 };
-
 
 #endif //PLATFORMER_SCENE_H
