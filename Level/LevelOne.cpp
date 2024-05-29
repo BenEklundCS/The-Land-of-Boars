@@ -7,7 +7,7 @@
 void LevelOne::StartLevel() {
     player = std::make_unique<Player>();
 
-    LevelScene scene;
+    Scene scene;
 
     scene.AddObject(player.get());
 

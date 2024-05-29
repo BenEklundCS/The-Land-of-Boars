@@ -25,7 +25,7 @@ add_executable(
         Game/main.cpp
         Renderer/Window.cpp
         Renderer/Renderer.cpp
-        Game/LevelScene.cpp
+        Game/Scene.cpp
         Entities/Player/Player.cpp
         Entities/GameObject.cpp
         Entities/Objects/Platform.cpp

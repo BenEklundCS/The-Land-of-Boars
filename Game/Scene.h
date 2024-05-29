@@ -4,8 +4,8 @@
 
 #pragma once
 
-#ifndef PLATFORMER_LEVELSCENE_H
-#define PLATFORMER_LEVELSCENE_H
+#ifndef PLATFORMER_SCENE_H
+#define PLATFORMER_SCENE_H
 
 #include <vector>
 #include "../Entities/Player/Player.h"
@@ -13,7 +13,7 @@
 #include "../Entities/Monsters/Monster.h"
 #include "../Entities/Objects/Platform.h"
 
-class LevelScene {
+class Scene {
 
 private:
     static bool levelOver;
@@ -25,12 +25,12 @@ private:
     std::vector<Platform*> platforms_;
     std::vector<GameObject*> otherObjects_;
 public:
-    LevelScene();
+    Scene();
     void StartScene();
     static void SetLevelOver();
     void AddObject(GameObject* obj);
-    ~LevelScene();
+    ~Scene();
 };
 
 
-#endif //PLATFORMER_LEVELSCENE_H
+#endif //PLATFORMER_SCENE_H

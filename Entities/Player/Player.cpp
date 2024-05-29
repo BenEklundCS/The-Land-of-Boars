@@ -129,7 +129,7 @@ void Player::HandlePlayerInput(float deltaTime) {
         Jump(deltaTime);
     }
     if (IsKeyPressed(KEY_N)) {
-        LevelScene::SetLevelOver();
+        Scene::SetLevelOver();
     }
 }
 

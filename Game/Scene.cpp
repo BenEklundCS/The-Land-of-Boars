@@ -2,12 +2,12 @@
 // Created by ben on 5/16/24.
 //
 
-#include "LevelScene.h"
+#include "Scene.h"
 #include "../Renderer/Renderer.h"
 
-bool LevelScene::levelOver = false;
+bool Scene::levelOver = false;
 
-void LevelScene::Update() {
+void Scene::Update() {
     // Update all game objects and handle collisions
     for (auto& player : players_) {
         player->Update();
@@ -26,12 +26,12 @@ void LevelScene::Update() {
     }
 }
 
-void LevelScene::Draw() {
+void Scene::Draw() {
     Renderer::Draw(otherObjects_, players_, monsters_, platforms_); // Pass all game objects to the renderer for drawing
 }
 
 // Example of adding objects to the scene
-void LevelScene::AddObject(GameObject* obj) {
+void Scene::AddObject(GameObject* obj) {
     if (obj->type_ == PLAYER) {
         players_.push_back(dynamic_cast<Player*>(obj));
     }
@@ -46,7 +46,7 @@ void LevelScene::AddObject(GameObject* obj) {
     }
 }
 
-void LevelScene::StartScene() {
+void Scene::StartScene() {
     while (!WindowShouldClose() && !levelOver) {
         Update();
         if (IsLevelOver()) {
@@ -56,16 +56,16 @@ void LevelScene::StartScene() {
     }
 }
 
-bool LevelScene::IsLevelOver() {
+bool Scene::IsLevelOver() {
     return levelOver;
 }
 
-void LevelScene::SetLevelOver() {
+void Scene::SetLevelOver() {
     levelOver = true;
 }
 
-LevelScene::LevelScene() {
+Scene::Scene() {
 
 }
 
-LevelScene::~LevelScene() = default;
+Scene::~Scene() = default;
