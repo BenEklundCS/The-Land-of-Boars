@@ -9,6 +9,7 @@
 
 Renderer::Renderer() = default;
 
+// Render the game background
 void Renderer::RenderBackground() {
     // Get the TextureManager instance and retrieve the BACKGROUND_TEXTURE from it
     GameTexture background = TextureManager::GetInstance()->GetTexture(BACKGROUND_TEXTURE);
@@ -19,6 +20,7 @@ void Renderer::RenderBackground() {
                    Vector2{0, 0}, 0, WHITE);
 }
 
+// Draw all game objects
 void Renderer::Draw(const std::vector<GameObject *> &otherObjects, const std::vector<Player *> &players,
                     const std::vector<Monster *> &monsters, std::vector<Platform *> &platforms) {
     BeginDrawing(); // Setup canvas (framebuffer) to start drawing
@@ -28,17 +30,17 @@ void Renderer::Draw(const std::vector<GameObject *> &otherObjects, const std::ve
     DrawFPS(100, 100);
 
     // For each object in each std::vector of GameObjects, call Draw on the object
-    for (const auto& p : players) {
-        p->Draw(); // <-- All GameObjects implement a Draw call
+    for (const auto& player : players) {
+        player->Draw(); // <-- All GameObjects implement a Draw call
     }
-    for (const auto& m : monsters) {
-        m->Draw(); //
+    for (const auto& monster : monsters) {
+        monster->Draw(); //
     }
-    for (const auto& p : platforms) {
-        p->Draw(); //
+    for (const auto& platform : platforms) {
+        platform->Draw(); //
     }
-    for (const auto& o : otherObjects) {
-        o->Draw(); //
+    for (const auto& obj : otherObjects) {
+        obj->Draw(); //
     }
     EndDrawing(); // End canvas drawing and swap buffers (double buffering)
 

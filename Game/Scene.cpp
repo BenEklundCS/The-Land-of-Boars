@@ -7,6 +7,7 @@
 
 bool Scene::levelOver = false;
 
+// Update all game objects and handle collisions
 void Scene::Update() {
     // Update all game objects and handle collisions
     for (auto& player : players_) {
@@ -26,11 +27,13 @@ void Scene::Update() {
     }
 }
 
+// Draw all game objects using the Renderer
 void Scene::Draw() {
     Renderer::Draw(otherObjects_, players_, monsters_, platforms_); // Pass all game objects to the renderer for drawing
 }
 
-// Example of adding objects to the scene
+
+// Add a game object to the scene
 void Scene::AddObject(GameObject* obj) {
     if (obj->type_ == PLAYER) {
         players_.push_back(dynamic_cast<Player*>(obj));
@@ -46,6 +49,7 @@ void Scene::AddObject(GameObject* obj) {
     }
 }
 
+// Start the scene, and the scene loop until the level is over, or window should close
 void Scene::StartScene() {
     while (!WindowShouldClose() && !levelOver) {
         Update();
@@ -64,8 +68,6 @@ void Scene::SetLevelOver() {
     levelOver = true;
 }
 
-Scene::Scene() {
-
-}
+Scene::Scene() = default;
 
 Scene::~Scene() = default;

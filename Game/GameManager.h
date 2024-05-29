@@ -10,6 +10,7 @@
 #include "../Level/Level.h"
 #include "../Level/LevelOne.h"
 
+// GameManager is responsible for managing game levels, and starting the game.
 class GameManager {
 private:
     std::vector<std::unique_ptr<Level>> levels;
