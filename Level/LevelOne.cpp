@@ -5,7 +5,6 @@
 #include "LevelOne.h"
 
 void LevelOne::StartLevel() {
-    gameOver_ = false;
     player = std::make_unique<Player>();
 
     LevelScene scene;
@@ -28,12 +27,5 @@ void LevelOne::StartLevel() {
     scene.AddObject(monster1.get());
     scene.AddObject(monster2.get());
 
-    while (!WindowShouldClose() && !gameOver_) {
-        scene.Update();
-        scene.Draw();
-    }
-}
-
-void LevelOne::GameOver() {
-    gameOver_ = true;
+    scene.StartScene();
 }

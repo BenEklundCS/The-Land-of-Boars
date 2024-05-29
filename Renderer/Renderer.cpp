@@ -4,7 +4,7 @@
 
 #include <vector>
 #include "Renderer.h"
-#include "../Level/LevelScene.h"
+#include "../Game/LevelScene.h"
 #include "raylib.h"
 
 Renderer::Renderer() = default;

@@ -52,6 +52,7 @@ private:
     std::map<std::string, GameTexture> Textures;
     void LoadAnimatedTexture(const char * filePath, int offset, int frames, const std::string& textureName);
     void LoadStaticTexture(const char * filePath, const std::string& textureName);
+    void Emplace(const std::string& textureName, GameTexture gameTexture);
 public:
     TextureManager();
     static TextureManager* GetInstance();

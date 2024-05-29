@@ -5,6 +5,10 @@
 #include "LevelScene.h"
 #include "../Renderer/Renderer.h"
 
+LevelScene::LevelScene() : grid_(GetScreenWidth(), GetScreenHeight(), 10, 10) {}
+
+bool LevelScene::levelOver = false;
+
 void LevelScene::Update() {
     // Update all game objects and handle collisions
     for (auto& player : players_) {
@@ -44,6 +48,22 @@ void LevelScene::AddObject(GameObject* obj) {
     }
 }
 
-LevelScene::LevelScene() = default;
+void LevelScene::StartScene() {
+    while (!WindowShouldClose() && !levelOver) {
+        Update();
+        if (IsLevelOver()) {
+            break;
+        }
+        Draw();
+    }
+}
+
+bool LevelScene::IsLevelOver() {
+    return levelOver;
+}
+
+void LevelScene::SetLevelOver() {
+    levelOver = true;
+}
 
 LevelScene::~LevelScene() = default;

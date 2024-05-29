@@ -22,10 +22,10 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
 
 add_executable(
         ${PROJECT_NAME}
-        main.cpp
+        Game/main.cpp
         Renderer/Window.cpp
         Renderer/Renderer.cpp
-        Level/LevelScene.cpp
+        Game/LevelScene.cpp
         Entities/Player/Player.cpp
         Entities/GameObject.cpp
         Entities/Objects/Platform.cpp
@@ -41,6 +41,8 @@ add_executable(
         Entities/Monsters/Boar.h
         Entities/Monsters/Boar.cpp
         Entities/PhysicsConstants.h
+        Game/GameManager.cpp
+        Game/Grid.cpp
 ) # Create an executable with main.cpp as the source
 
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib) # Link raylib to your project

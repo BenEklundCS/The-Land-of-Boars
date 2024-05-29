@@ -3,6 +3,7 @@
 //
 
 #include "Player.h"
+#include "../../Level/Level.h"
 
 Player::Player() : playerAnimation_(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE),
                                                    PLAYER_IDLE_FRAMES, 0.2f, true), GameObject(PLAYER) {
@@ -126,6 +127,9 @@ void Player::HandlePlayerInput(float deltaTime) {
     if ((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)) && jumps_ <= MAX_JUMPS) { // jump
         jumps_++;
         Jump(deltaTime);
+    }
+    if (IsKeyPressed(KEY_N)) {
+        LevelScene::SetLevelOver();
     }
 }
 

@@ -10,11 +10,8 @@
 #include "../Entities/Monsters/Boar.h"
 
 class LevelOne : public Level {
-private:
-    bool gameOver_;
 public:
     void StartLevel() override;
-    void GameOver();
 };
 
 #endif //PLATFORMER_LEVELONE_H

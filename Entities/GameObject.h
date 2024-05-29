@@ -23,6 +23,7 @@ protected:
 public:
     GameObjectType type_;
     explicit GameObject(GameObjectType type = OTHER);
+    Vector2 GetPosition();
     virtual void Update() = 0;
     virtual void Draw() = 0;
     virtual void CollideWithPlayer(Player* player);

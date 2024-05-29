@@ -4,6 +4,10 @@
 
 #include "GameObject.h"
 
+GameObject::GameObject(GameObjectType type)
+        : type_(type), position_{0.0f, 0.0f}, dimensions_{0.0f, 0.0f} {
+}
+
 GameObject::~GameObject() = default;
 
 Rectangle GameObject::GetRect() {
@@ -15,6 +19,8 @@ void GameObject::CollideWithPlayer(Player *player) {
 
 }
 
-GameObject::GameObject(GameObjectType type) {
-    type_ = type;
+Vector2 GameObject::GetPosition() {
+    return position_;
 }
+
+

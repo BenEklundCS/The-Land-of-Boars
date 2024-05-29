@@ -50,7 +50,7 @@ void TextureManager::LoadStaticTexture(const char *filePath, const std::string& 
                                                   0,
                                                   (float)texture.width,
                                                   (float)texture.height}};
-    Textures.emplace(std::pair<std::string, GameTexture>(textureName, gameTexture));
+    Emplace(textureName, gameTexture);
 }
 
 void TextureManager::LoadAnimatedTexture(const char * filePath, int offset, int frames, const std::string& textureName) {
@@ -59,5 +59,10 @@ void TextureManager::LoadAnimatedTexture(const char * filePath, int offset, int 
                                                  (float)offset,
                                                  (float)texture.width/frames,
                                                  (float)texture.height}};
+    Emplace(textureName, gameTexture);
+}
+
+void TextureManager::Emplace(const std::string &textureName, GameTexture gameTexture) {
     Textures.emplace(std::pair<std::string, GameTexture>(textureName, gameTexture));
 }
+
