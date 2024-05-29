@@ -5,8 +5,6 @@
 #include "LevelScene.h"
 #include "../Renderer/Renderer.h"
 
-LevelScene::LevelScene() : grid_(GetScreenWidth(), GetScreenHeight(), 10, 10) {}
-
 bool LevelScene::levelOver = false;
 
 void LevelScene::Update() {
@@ -64,6 +62,10 @@ bool LevelScene::IsLevelOver() {
 
 void LevelScene::SetLevelOver() {
     levelOver = true;
+}
+
+LevelScene::LevelScene() {
+
 }
 
 LevelScene::~LevelScene() = default;

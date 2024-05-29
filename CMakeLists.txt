@@ -42,7 +42,6 @@ add_executable(
         Entities/Monsters/Boar.cpp
         Entities/PhysicsConstants.h
         Game/GameManager.cpp
-        Game/Grid.cpp
 ) # Create an executable with main.cpp as the source
 
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib) # Link raylib to your project
