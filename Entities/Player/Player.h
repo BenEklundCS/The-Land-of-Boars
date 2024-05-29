@@ -7,7 +7,6 @@
 
 #define PLAYER_LENGTH 150
 #define PLAYER_SPEED 200
-#define MAX_VELOCITY 50
 #define MAX_JUMPS 1
 #define PLAYER_MAX_HP 3
 

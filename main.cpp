@@ -9,6 +9,6 @@ int main() {
 
     levelOne.StartLevel();
 
-    return EXIT_SUCCESS;
+    exit(EXIT_SUCCESS);
 
 }

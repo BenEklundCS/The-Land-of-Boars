@@ -3,6 +3,7 @@
 //
 
 #include "Monster.h"
+#include "../../Level/LevelOne.h"
 
 Monster::Monster(float pos_x, float pos_y, float dim_x, float dim_y, MonsterState state) : GameObject(MONSTER) {
     this->position_.x = pos_x;
@@ -94,5 +95,7 @@ void Monster::MoveMonster() {
 }
 
 void Monster::ApplyGravity(float deltaTime) {
-    velocity_.y += GRAVITY * deltaTime;
+    if (velocity_.y <= MAX_VELOCITY) {
+        velocity_.y += GRAVITY * deltaTime;
+    }
 }

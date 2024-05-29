@@ -28,17 +28,17 @@ void Renderer::Draw(const std::vector<GameObject *> &otherObjects, const std::ve
     DrawFPS(100, 100);
 
     // For each object in each std::vector of GameObjects, call Draw on the object
-    for (const auto& obj : players) {
-        obj->Draw(); // <-- All GameObjects implement a Draw call
+    for (const auto& p : players) {
+        p->Draw(); // <-- All GameObjects implement a Draw call
     }
-    for (const auto& obj : monsters) {
-        obj->Draw(); //
+    for (const auto& m : monsters) {
+        m->Draw(); //
     }
-    for (const auto& obj : platforms) {
-        obj->Draw(); //
+    for (const auto& p : platforms) {
+        p->Draw(); //
     }
-    for (const auto& obj : otherObjects) {
-        obj->Draw(); //
+    for (const auto& o : otherObjects) {
+        o->Draw(); //
     }
     EndDrawing(); // End canvas drawing and swap buffers (double buffering)
 

@@ -5,6 +5,7 @@
 #include "LevelOne.h"
 
 void LevelOne::StartLevel() {
+    gameOver_ = false;
     player = std::make_unique<Player>();
 
     LevelScene scene;
@@ -24,16 +25,15 @@ void LevelOne::StartLevel() {
     auto monster1 = std::make_unique<Boar>(1000, 200, 100, 100, MonsterState::PACING);
     auto monster2 = std::make_unique<Boar>(2000, GetScreenHeight()-200, 100, 100, MonsterState::DEFAULT);
 
-    for (int i = 0; i < 10000; i++) {
-        auto monster = new Boar(1000 + i * 50, 200 + i * 50, 100 , 100, MonsterState::PACING);
-        scene.AddObject(monster);
-    }
-
     scene.AddObject(monster1.get());
     scene.AddObject(monster2.get());
 
-    while (!WindowShouldClose()) {
+    while (!WindowShouldClose() && !gameOver_) {
         scene.Update();
         scene.Draw();
     }
+}
+
+void LevelOne::GameOver() {
+    gameOver_ = true;
 }

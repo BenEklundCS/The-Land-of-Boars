@@ -7,5 +7,6 @@
 
 #define GRAVITY 45
 #define FRICTION 85
+#define MAX_VELOCITY 50
 
 #endif //PLATFORMER_PHYSICSCONSTANTS_H

@@ -17,9 +17,3 @@ void Platform::Draw() {
 void Platform::Update() {
 
 }
-
-void Platform::CollideWithPlayer(Player* player) {
-    if (CheckCollisionRecs(player->GetRect(), GetRect())) {
-        player->PlatformCollision(this);
-    }
-}

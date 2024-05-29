@@ -7,11 +7,10 @@
 
 void LevelScene::Update() {
     // Update all game objects and handle collisions
-
     for (auto& player : players_) {
         player->Update();
         for (auto& platform : platforms_) {
-            platform->CollideWithPlayer(player);
+            player->PlatformCollision(platform);
         }
     }
     for (auto& monster : monsters_) {
