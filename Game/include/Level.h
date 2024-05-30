@@ -7,7 +7,7 @@
 
 #include <memory>
 #include "../src/Entities/Player/Player.h"
-
+#include "Scene.h"
 
 
 class Level {
@@ -16,7 +16,7 @@ protected:
 public:
 public:
     Level();
-    virtual void StartLevel();
+    virtual Scene GetScene();
     ~Level();
 };
 

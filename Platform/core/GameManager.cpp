@@ -23,7 +23,19 @@ void GameManager::StartGame() {
     LoadLevels();
     // Start each level
     for (auto& level : levels) {
-        level->StartLevel();
+        Scene scene = level->GetScene();
+        scene.InitCamera();
+        RenderLevelScene(scene);
+    }
+}
+
+void GameManager::RenderLevelScene(Scene scene) {
+    renderer = Renderer();
+    while (!WindowShouldClose() && !scene.IsLevelOver()) {
+        scene.UpdateCamera();
+        scene.Update();
+        Camera2D camera = scene.GetCamera();
+        renderer.Draw(scene);
     }
 }
 

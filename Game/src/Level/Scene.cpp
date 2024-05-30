@@ -2,8 +2,8 @@
 // Created by ben on 5/16/24.
 //
 
-#include "../include/Scene.h"
-#include "../include/Renderer.h"
+#include "../../include/Scene.h"
+#include "../../../Platform/include/Renderer.h"
 
 Scene::Scene() = default;
 
@@ -42,12 +42,6 @@ void Scene::UpdateMonsters() {
     }
 }
 
-// Draw all game objects using the Renderer
-void Scene::Draw() {
-    renderer.Draw(camera);
-}
-
-
 // Add a game object to the scene
 void Scene::AddObject(GameObject* obj) {
     if (obj->type_ == PLAYER) {
@@ -61,20 +55,6 @@ void Scene::AddObject(GameObject* obj) {
     }
     else {
         otherObjects_.push_back(obj);
-    }
-}
-
-// Start the scene, and the scene loop until the level is over, or window should close
-void Scene::StartScene() {
-    InitCamera();
-    this->renderer = Renderer(players_, monsters_, platforms_, otherObjects_);
-    while (!WindowShouldClose() && !levelOver) {
-        Update();
-        UpdateCamera();
-        if (IsLevelOver()) {
-            break;
-        }
-        Draw();
     }
 }
 
@@ -99,6 +79,10 @@ bool Scene::IsLevelOver() {
 
 void Scene::SetLevelOver() {
     levelOver = true;
+}
+
+Camera2D Scene::GetCamera() {
+    return camera;
 }
 
 Scene::~Scene() = default;

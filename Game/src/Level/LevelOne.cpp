@@ -6,9 +6,9 @@
 #include "../../include/Platform.h"
 #include "../../include/Tile.h"
 #include "../../include/Boar.h"
-#include "../../../Platform/include/Scene.h"
+#include "../../include/Scene.h"
 
-void LevelOne::StartLevel() {
+Scene LevelOne::GetScene() {
     player = std::make_unique<Player>();
 
     Scene scene;
@@ -34,5 +34,5 @@ void LevelOne::StartLevel() {
     scene.AddObject(monster1.get());
     scene.AddObject(monster2.get());
 
-    scene.StartScene();
+    return scene;
 }

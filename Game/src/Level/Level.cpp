@@ -6,7 +6,7 @@
 
 Level::Level() = default;
 
-void Level::StartLevel() {
+Scene Level::GetScene() {
 
 }
 

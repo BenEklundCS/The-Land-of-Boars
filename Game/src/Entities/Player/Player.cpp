@@ -3,7 +3,7 @@
 //
 
 #include "Player.h"
-#include "../../../../Platform/include/Scene.h"
+#include "../../../include/Scene.h"
 
 Player::Player() : playerAnimation_(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE),
                                                    PLAYER_IDLE_FRAMES, 0.2f, true), GameObject(PLAYER) {

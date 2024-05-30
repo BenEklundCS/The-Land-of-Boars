@@ -7,6 +7,7 @@
 #include "../../Game/include/GameObject.h"
 #include "../../Game/include/Platform.h"
 #include "../../Game/include/Monster.h"
+#include "../../Game/include/Scene.h"
 
 
 #ifndef PLATFORMER_RENDERER_H
@@ -15,15 +16,9 @@
 class Renderer {
 private:
     static void RenderBackground();
-    std::vector<Player*> players_;
-    std::vector<Monster*> monsters_;
-    std::vector<Platform*> platforms_;
-    std::vector<GameObject*> otherObjects_;
 public:
-    Renderer();
-    Renderer(std::vector<Player *> &players, std::vector<Monster *> &monsters,
-             std::vector<Platform *> &platforms, std::vector<GameObject *> &other); // constructor
-    void Draw(Camera2D sceneCamera); // draw call
+    Renderer(); // constructor
+    static void Draw(Scene scene); // draw call
     ~Renderer(); // destructor
 };
 

@@ -4,7 +4,7 @@
 
 #include <vector>
 #include "../include/Renderer.h"
-#include "../include/Scene.h"
+#include "../../Game/include/Scene.h"
 #include "raylib.h"
 #include "../../Game/include/TextureManager.h"
 
@@ -22,35 +22,31 @@ void Renderer::RenderBackground() {
 }
 
 // Draw all game objects
-void Renderer::Draw(Camera2D sceneCamera) {
+void Renderer::Draw(Scene scene) {
     BeginDrawing(); // Setup canvas (framebuffer) to start drawing
     ClearBackground(RAYWHITE);
-    BeginMode2D(sceneCamera);
+    BeginMode2D(scene.GetCamera());
     // Render the background
     RenderBackground();
     DrawFPS(100, 100);
 
     // For each object in each std::vector of GameObjects, call Draw on the object
-    for (const auto& player : players_) {
-        player->Draw(); // <-- All GameObjects implement a Draw call
+    for (const auto& object : scene.players_) {
+        object->Draw(); // <-- All GameObjects implement a Draw call
     }
-    for (const auto& monster : monsters_) {
-        monster->Draw(); //
+    for (const auto& object : scene.monsters_) {
+        object->Draw(); // <-- All GameObjects implement a Draw call
     }
-    for (const auto& platform : platforms_) {
-        platform->Draw(); //
+    for (const auto& object : scene.platforms_) {
+        object->Draw(); // <-- All GameObjects implement a Draw call
     }
-    for (const auto& obj : otherObjects_) {
-        obj->Draw(); //
+    for (const auto& object : scene.otherObjects_) {
+        object->Draw(); // <-- All GameObjects implement a Draw call
     }
+
     EndMode2D();
     EndDrawing(); // End canvas drawing and swap buffers (double buffering)
 
 }
-
-Renderer::Renderer(std::vector<Player *> &players, std::vector<Monster *> &monsters,
-                   std::vector<Platform *> &platforms, std::vector<GameObject *> &other)
-                   : players_(players), monsters_(monsters), platforms_(platforms), otherObjects_(other) {}
-
 
 Renderer::~Renderer() = default;

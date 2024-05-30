@@ -9,7 +9,7 @@
 
 class LevelOne : public Level {
 public:
-    void StartLevel() override;
+    Scene GetScene() override;
 };
 
 #endif //PLATFORMER_LEVELONE_H
