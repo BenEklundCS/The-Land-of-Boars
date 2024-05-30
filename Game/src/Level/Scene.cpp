@@ -11,17 +11,22 @@ bool Scene::levelOver = false;
 
 // Update all game objects and handle collisions
 void Scene::Update() {
+    // Update the camera
+    UpdateCamera();
     // Update all game objects and handle collisions
     UpdatePlayers();
     UpdateMonsters();
 }
 
+// Update all players in the scene by iterating over the players, calling update, and then checking for collisions
 void Scene::UpdatePlayers() {
     for (auto& player : players_) {
         player->Update();
+        // Iterate over the platforms to check for collisions
         for (auto& platform : platforms_) {
             player->PlatformCollision(platform);
         }
+        // Iterate over any other objects to check for collisions (especially TILEs)
         for (auto& other : otherObjects_) {
             if (other->type_ == TILE) {
                 player->PlatformCollision(other);
@@ -30,6 +35,7 @@ void Scene::UpdatePlayers() {
     }
 }
 
+// Update all players in the scene by iterating over the monsters, calling update, and then checking for collisions
 void Scene::UpdateMonsters() {
     for (auto& monster : monsters_) {
         monster->Update();

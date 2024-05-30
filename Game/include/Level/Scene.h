@@ -19,10 +19,10 @@ private:
     void UpdatePlayers();
     void UpdateMonsters();
     // CAMERA/SCENE ONLY SUPPORT ONE PLAYER CURRENTLY, BEWARE
+    void UpdateCamera();
     Camera2D camera;
 public:
     Scene();
-    void UpdateCamera();
     void InitCamera();
     void Update();
     Camera2D GetCamera();

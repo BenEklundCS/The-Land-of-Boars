@@ -29,13 +29,14 @@ void GameManager::StartGame() {
     }
 }
 
+// Take a Scene* as a parameter, initialize a renderer, and then render the scene
 void GameManager::RenderLevelScene(Scene* scene) {
     renderer = Renderer();
     while (!WindowShouldClose() && !scene->IsLevelOver()) {
-        scene->UpdateCamera();
-        scene->Update();
-        renderer.Draw(scene);
+        scene->Update();        // Update the scene in every frame
+        renderer.Draw(scene);   // Draw the scene using the renderer
     }
+    delete scene;
 }
 
 
