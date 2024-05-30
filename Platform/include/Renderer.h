@@ -18,7 +18,7 @@ private:
     static void RenderBackground();
 public:
     Renderer(); // constructor
-    void Draw(Scene* scene); // draw call
+    static void Draw(Scene* scene); // draw call
     ~Renderer(); // destructor
 };
 
