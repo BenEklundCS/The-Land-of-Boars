@@ -22,28 +22,28 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
 
 add_executable(
         ${PROJECT_NAME}
-        Game/main.cpp
-        Renderer/Window.cpp
-        Renderer/Renderer.cpp
-        Renderer/Scene.cpp
-        Entities/Player/Player.cpp
-        Entities/GameObject.cpp
-        Entities/Objects/Platform.cpp
-        Entities/Monsters/Monster.h
-        Entities/Monsters/Monster.cpp
-        Sprites/TextureManager.cpp
-        Sprites/Animation.h
-        Sprites/Animation.cpp
-        Level/Level.h
-        Level/LevelOne.cpp
-        Level/LevelOne.h
-        Level/Level.cpp
-        Entities/Monsters/Boar.h
-        Entities/Monsters/Boar.cpp
-        Entities/PhysicsConstants.h
-        Game/GameManager.cpp
-        Entities/Objects/Tile.h
-        Entities/Objects/Tile.cpp
+        Platform/core/main.cpp
+        Platform/core/Window.cpp
+        Platform/core/Renderer.cpp
+        Platform/core/Scene.cpp
+        Game/src/Entities/Player/Player.cpp
+        Game/src/Entities/GameObject.cpp
+        Game/src/Entities/Objects/Platform.cpp
+        Game/include/Monster.h
+        Game/src/Entities/Monsters/Monster.cpp
+        Game/src/Sprites/TextureManager.cpp
+        Game/include/Animation.h
+        Game/src/Sprites/Animation.cpp
+        Game/include/Level.h
+        Game/src/Level/LevelOne.cpp
+        Game/include/LevelOne.h
+        Game/src/Level/Level.cpp
+        Game/include/Boar.h
+        Game/src/Entities/Monsters/Boar.cpp
+        Game/include/PhysicsConstants.h
+        Platform/core/GameManager.cpp
+        Game/include/Tile.h
+        Game/src/Entities/Objects/Tile.cpp
 ) # Create an executable with main.cpp as the source
 
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib) # Link raylib to your project
