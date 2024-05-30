@@ -16,6 +16,9 @@ void LevelOne::StartLevel() {
     auto platform3 = std::make_unique<Platform>(1300, (float)GetScreenHeight() - 700, 500, 50, BLACK);
     auto platform4 = std::make_unique<Platform>(550, 300, 500, 50, BLACK);
 
+    auto tile = std::make_unique<Tile>(100, 100);
+    scene.AddObject(tile.get());
+
     scene.AddObject(platform1.get());
     scene.AddObject(platform2.get());
     scene.AddObject(platform3.get());

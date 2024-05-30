@@ -13,6 +13,7 @@ enum GameObjectType {
     PLAYER,
     PLATFORM,
     MONSTER,
+    TILE,
     OTHER
 };
 

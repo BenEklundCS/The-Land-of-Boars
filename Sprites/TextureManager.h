@@ -41,6 +41,11 @@
 #define BOAR_TEXTURE_RUNNING_PATH_WHITE "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Mob/Boar/Run/Run-Sheet-White.png"
 #define BOAR_RUNNING_TEXTURE_WHITE "boarTextureWhite"
 
+// Tiles
+#define TILE_LENGTH 16
+#define TILE_TEXTURE_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Assets/Tiles.png"
+#define TILE_TEXTURE "tileTexture"
+
 struct GameTexture {
     Texture2D texture;
     Rectangle rect;
@@ -51,8 +56,12 @@ private:
     static std::unique_ptr<TextureManager> instance;
     std::map<std::string, GameTexture> Textures;
     void LoadAnimatedTexture(const char * filePath, int offset, int frames, const std::string& textureName);
-    void LoadStaticTexture(const char * filePath, const std::string& textureName);
+    void LoadTexture(Texture2D texture, const std::string& textureName, Rectangle rect);
     void Emplace(const std::string& textureName, GameTexture gameTexture);
+    void LoadPlayerTextures();
+    void LoadTileTextures();
+    void LoadMonsterTextures();
+    void LoadOtherTextures();
 public:
     TextureManager();
     static TextureManager* GetInstance();

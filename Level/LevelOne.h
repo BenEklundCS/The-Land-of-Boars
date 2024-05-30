@@ -8,6 +8,7 @@
 #include "Level.h"
 #include "../Entities/Objects/Platform.h"
 #include "../Entities/Monsters/Boar.h"
+#include "../Entities/Objects/Tile.h"
 
 class LevelOne : public Level {
 public:

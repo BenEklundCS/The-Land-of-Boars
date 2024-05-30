@@ -7,6 +7,9 @@
 // Load all the levels for the game
 void GameManager::LoadLevels() {
     auto levelOne = std::make_unique<LevelOne>();
+    // auto levelTwo =
+    // auto LevelThree =
+    // ...
     levels.push_back(std::move(levelOne));
 }
 

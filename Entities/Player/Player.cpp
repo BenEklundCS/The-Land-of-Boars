@@ -168,11 +168,11 @@ void Player::PlatformCollision(GameObject* obj) {
 }
 
 void Player::HitPlayer() {
-    hp--;
+    hp_--;
 }
 
 bool Player::CheckPlayerDeath() const {
-    return hp <= 0;
+    return hp_ <= 0;
 }
 
 void Player::AnimatePlayer() {
@@ -182,19 +182,19 @@ void Player::AnimatePlayer() {
     if (state_ != last_state_) {
         // Changing state, so get the TextureManager
         TextureManager* textureManager = TextureManager::GetInstance();
-        float idleAnimationSpeed = 0.2f;
-        float runningAnimationSpeed = 0.2f;
-        float jumpingAnimationSpeed = 0.075f;
         // Check to see if we need to load the PLAYER animation
         if (state_ == IDLE && last_state_ != IDLE) { // replay the idle animation (replay == true)
+            float idleAnimationSpeed = 0.2f;
             playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_IDLE_TEXTURE), PLAYER_IDLE_FRAMES, idleAnimationSpeed, true);
         }
             // Check to see if we need to load the RUNNING animation
         else if (state_ == RUNNING && last_state_ != RUNNING) { // replay the running animation (replay == true)
+            float runningAnimationSpeed = 0.2f;
             playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_RUNNING_TEXTURE), PLAYER_RUNNING_FRAMES, runningAnimationSpeed, true);
         }
             // Check to see if we need to load the JUMPING animation
         else if (state_ == JUMPING && last_state_ != JUMPING) { // do not replay the jump animation (replay == false)
+            float jumpingAnimationSpeed = 0.075f;
             playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_JUMPING_TEXTURE), PLAYER_JUMPING_FRAMES, jumpingAnimationSpeed, false);
         }
     }

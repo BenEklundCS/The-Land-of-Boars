@@ -44,7 +44,7 @@ private:
     PlayerState last_state_;
     bool movingRight_;
     int jumps_ = 0;
-    int hp = PLAYER_MAX_HP;
+    int hp_ = PLAYER_MAX_HP;
 public:
     GameObjectType type_;
     Player();

@@ -18,15 +18,33 @@ TextureManager* TextureManager::GetInstance() {
 
 void TextureManager::LoadTextures() {
     // Load the textures
+    LoadPlayerTextures();
+    LoadTileTextures();
+    LoadOtherTextures();
+    LoadMonsterTextures();
+}
+
+void TextureManager::LoadPlayerTextures() {
     // Player
     TextureManager::LoadAnimatedTexture(PLAYER_TEXTURE_IDLE_PATH, PLAYER_IDLESHEET_OFFSET, PLAYER_IDLE_FRAMES, PLAYER_IDLE_TEXTURE);
     TextureManager::LoadAnimatedTexture(PLAYER_TEXTURE_RUNNING_PATH, PLAYER_RUNSHEET_OFFSET, PLAYER_RUNNING_FRAMES, PLAYER_RUNNING_TEXTURE);
     TextureManager::LoadAnimatedTexture(PLAYER_TEXTURE_JUMPING_PATH, 0, PLAYER_JUMPING_FRAMES, PLAYER_JUMPING_TEXTURE);
+}
+
+void TextureManager::LoadTileTextures() {
+    Texture2D grassTexture = ::LoadTexture(TILE_TEXTURE_PATH);
+    TextureManager::LoadTexture(grassTexture, TILE_TEXTURE, Rectangle{0, 0, (float)grassTexture.width/8, (float)grassTexture.height/8});
+}
+
+void TextureManager::LoadOtherTextures() {
     // Background
-    TextureManager::LoadStaticTexture(BACKGROUND_TEXTURE_PATH, BACKGROUND_TEXTURE);
+    Texture2D backgroundTexture = ::LoadTexture(BACKGROUND_TEXTURE_PATH);
+    TextureManager::LoadTexture(backgroundTexture, BACKGROUND_TEXTURE, Rectangle{0, 0, (float)backgroundTexture.width, (float)backgroundTexture.height});
+}
+
+void TextureManager::LoadMonsterTextures() {
     // Boars
     TextureManager::LoadAnimatedTexture(BOAR_TEXTURE_RUNNING_PATH_WHITE, 0, BOAR_RUNNING_FRAMES, BOAR_RUNNING_TEXTURE_WHITE);
-
 }
 
 GameTexture TextureManager::GetTexture(const std::string& texture) {
@@ -44,12 +62,8 @@ TextureManager::~TextureManager() {
     }
 }
 
-void TextureManager::LoadStaticTexture(const char *filePath, const std::string& textureName) {
-    Texture2D texture = ::LoadTexture(filePath);
-    GameTexture gameTexture = {texture, Rectangle{0,
-                                                  0,
-                                                  (float)texture.width,
-                                                  (float)texture.height}};
+void TextureManager::LoadTexture(Texture2D texture, const std::string& textureName, Rectangle rect) {
+    GameTexture gameTexture = {texture, rect};
     Emplace(textureName, gameTexture);
 }
 
