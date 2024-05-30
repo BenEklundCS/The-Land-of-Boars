@@ -29,7 +29,7 @@ add_executable(
         Game/src/Entities/Player/Player.cpp
         Game/src/Entities/GameObject.cpp
         Game/src/Entities/Objects/Platform.cpp
-        Game/include/Monsters/Monster.h
+        Game/include/Entities/Monsters/Monster.h
         Game/src/Entities/Monsters/Monster.cpp
         Game/src/Sprites/TextureManager.cpp
         Game/include/Sprites/Animation.h
@@ -38,11 +38,11 @@ add_executable(
         Game/src/Level/LevelOne.cpp
         Game/include/Level/LevelOne.h
         Game/src/Level/Level.cpp
-        Game/include/Monsters/Boar.h
+        Game/include/Entities/Monsters/Boar.h
         Game/src/Entities/Monsters/Boar.cpp
         Game/include/PhysicsConstants.h
         Platform/core/GameManager.cpp
-        Game/include/Objects/Tile.h
+        Game/include/Entities/Objects/Tile.h
         Game/src/Entities/Objects/Tile.cpp
 ) # Create an executable with main.cpp as the source
 

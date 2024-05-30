@@ -2,7 +2,7 @@
 // Created by ben on 5/29/24.
 //
 
-#include "../../../include/Objects/Tile.h"
+#include "../../../include/Entities/Objects/Tile.h"
 
 Tile::Tile(float x, float y) : texture_(TextureManager::GetInstance()->GetTexture(TILE_TEXTURE)){
     dimensions_ = Vector2{128, 128};

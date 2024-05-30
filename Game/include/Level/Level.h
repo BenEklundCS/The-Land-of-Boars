@@ -6,7 +6,7 @@
 #define PLATFORMER_LEVEL_H
 
 #include <memory>
-#include "../Player/Player.h"
+#include "../Entities/Player/Player.h"
 #include "Scene.h"
 
 

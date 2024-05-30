@@ -5,7 +5,7 @@
 #ifndef PLATFORMER_BOAR_H
 #define PLATFORMER_BOAR_H
 
-#include "../Sprites/Animation.h"
+#include "../../Sprites/Animation.h"
 #include "Monster.h"
 
 

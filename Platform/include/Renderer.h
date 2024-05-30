@@ -4,9 +4,9 @@
 
 #include <vector>
 #include "Window.h"
-#include "../../Game/include/GameObject.h"
-#include "../../Game/include/Objects/Platform.h"
-#include "../../Game/include/Monsters/Monster.h"
+#include "../../Game/include/Entities/GameObject.h"
+#include "../../Game/include/Entities/Objects/Platform.h"
+#include "../../Game/include/Entities/Monsters/Monster.h"
 #include "../../Game/include/Level/Scene.h"
 
 

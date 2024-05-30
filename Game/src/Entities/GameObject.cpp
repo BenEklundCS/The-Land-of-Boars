@@ -2,7 +2,7 @@
 // Created by ben on 5/17/24.
 //
 
-#include "../../include/GameObject.h"
+#include "../../include/Entities/GameObject.h"
 
 GameObject::GameObject(GameObjectType type)
         : type_(type), position_{0.0f, 0.0f}, dimensions_{0.0f, 0.0f} {

@@ -8,9 +8,9 @@
 #define PLATFORMER_SCENE_H
 
 #include <vector>
-#include "../Player/Player.h"
-#include "../Monsters/Monster.h"
-#include "../Objects/Platform.h"
+#include "../Entities/Player/Player.h"
+#include "../Entities/Monsters/Monster.h"
+#include "../Entities/Objects/Platform.h"
 
 class Scene {
 

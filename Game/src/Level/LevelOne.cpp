@@ -3,8 +3,8 @@
 //
 
 #include "../../include/Level/LevelOne.h"
-#include "../../include/Objects/Tile.h"
-#include "../../include/Monsters/Boar.h"
+#include "../../include/Entities/Objects/Tile.h"
+#include "../../include/Entities/Monsters/Boar.h"
 
 Scene* LevelOne::GetScene() {
     Player* player = new Player();

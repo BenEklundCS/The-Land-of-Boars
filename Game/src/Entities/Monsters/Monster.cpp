@@ -2,7 +2,7 @@
 // Created by ben on 5/17/24.
 //
 
-#include "../../../include/Monsters/Monster.h"
+#include "../../../include/Entities/Monsters/Monster.h"
 
 Monster::Monster(float pos_x, float pos_y, float dim_x, float dim_y, MonsterState state) : GameObject(MONSTER) {
     this->position_.x = pos_x;

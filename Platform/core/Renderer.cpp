@@ -4,6 +4,7 @@
 
 #include "../include/Renderer.h"
 #include "raylib.h"
+#include "../../Game/include/Sprites/TextureManager.h"
 
 Renderer::Renderer() = default;
 

@@ -6,7 +6,7 @@
 #define PLATFORMER_TILE_H
 
 #include "../GameObject.h"
-#include "../Sprites/TextureManager.h"
+#include "../../Sprites/TextureManager.h"
 
 
 class Tile : public GameObject {

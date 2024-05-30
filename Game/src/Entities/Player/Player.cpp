@@ -2,8 +2,7 @@
 // Created by ben on 5/17/24.
 //
 
-#include "../../../include/Player/Player.h"
-#include "../../../include/Level/Scene.h"
+#include "../../../include/Entities/Player/Player.h"
 
 Player::Player() : playerAnimation_(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE),
                                                    PLAYER_IDLE_FRAMES, 0.2f, true), GameObject(PLAYER) {
