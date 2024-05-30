@@ -2,7 +2,7 @@
 // Created by ben on 5/20/24.
 //
 
-#include "../../include/Animation.h"
+#include "../../include/Sprites/Animation.h"
 
 Animation::Animation(GameTexture gameTexture, int frameCount, float frameDuration, bool replay) {
     this->gameTexture_ = gameTexture;

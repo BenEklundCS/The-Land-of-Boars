@@ -5,9 +5,9 @@
 #include <vector>
 #include "Window.h"
 #include "../../Game/include/GameObject.h"
-#include "../../Game/include/Platform.h"
-#include "../../Game/include/Monster.h"
-#include "../../Game/include/Scene.h"
+#include "../../Game/include/Objects/Platform.h"
+#include "../../Game/include/Monsters/Monster.h"
+#include "../../Game/include/Level/Scene.h"
 
 
 #ifndef PLATFORMER_RENDERER_H
@@ -18,7 +18,7 @@ private:
     static void RenderBackground();
 public:
     Renderer(); // constructor
-    static void Draw(Scene scene); // draw call
+    void Draw(Scene* scene); // draw call
     ~Renderer(); // destructor
 };
 

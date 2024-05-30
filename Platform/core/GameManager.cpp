@@ -3,7 +3,7 @@
 //
 
 #include "../include/GameManager.h"
-#include "../../Game/include/LevelOne.h"
+#include "../../Game/include/Level/LevelOne.h"
 #include "../include/Window.h"
 
 // Load all the levels for the game
@@ -23,18 +23,17 @@ void GameManager::StartGame() {
     LoadLevels();
     // Start each level
     for (auto& level : levels) {
-        Scene scene = level->GetScene();
-        scene.InitCamera();
+        Scene* scene = level->GetScene();
+        scene->InitCamera();
         RenderLevelScene(scene);
     }
 }
 
-void GameManager::RenderLevelScene(Scene scene) {
+void GameManager::RenderLevelScene(Scene* scene) {
     renderer = Renderer();
-    while (!WindowShouldClose() && !scene.IsLevelOver()) {
-        scene.UpdateCamera();
-        scene.Update();
-        Camera2D camera = scene.GetCamera();
+    while (!WindowShouldClose() && !scene->IsLevelOver()) {
+        scene->UpdateCamera();
+        scene->Update();
         renderer.Draw(scene);
     }
 }

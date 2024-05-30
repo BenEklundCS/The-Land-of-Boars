@@ -7,9 +7,9 @@
 
 
 #include <vector>
-#include "../../Game/include/Level.h"
+#include "../../Game/include/Level/Level.h"
 #include "Renderer.h"
-#include "../../Game/include/Scene.h"
+#include "../../Game/include/Level/Scene.h"
 
 
 // GameManager is responsible for managing game levels, and starting the game.
@@ -21,7 +21,7 @@ private:
 public:
     void StartGame();
     void LoadLevels();
-    void RenderLevelScene(Scene scene);
+    void RenderLevelScene(Scene* scene);
 };
 
 

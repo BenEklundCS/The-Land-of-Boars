@@ -2,7 +2,7 @@
 // Created by ben on 5/25/24.
 //
 
-#include "../../../include/Boar.h"
+#include "../../../include/Monsters/Boar.h"
 
 Boar::Boar(float posX, float posY, float dimX, float dimY, MonsterState state)
 : Monster(posX, posY, dimX, dimY, state),

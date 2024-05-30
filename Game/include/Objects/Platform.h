@@ -5,8 +5,8 @@
 #ifndef PLATFORMER_RECTANGLE_H
 #define PLATFORMER_RECTANGLE_H
 
-#include "GameObject.h"
-#include "../src/Entities/Player/Player.h"
+#include "../GameObject.h"
+#include "../Player/Player.h"
 
 
 class Platform : public GameObject {

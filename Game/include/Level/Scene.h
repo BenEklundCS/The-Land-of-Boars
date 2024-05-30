@@ -8,9 +8,9 @@
 #define PLATFORMER_SCENE_H
 
 #include <vector>
-#include "../src/Entities/Player/Player.h"
-#include "Monster.h"
-#include "Platform.h"
+#include "../Player/Player.h"
+#include "../Monsters/Monster.h"
+#include "../Objects/Platform.h"
 
 class Scene {
 
@@ -30,8 +30,8 @@ public:
     std::vector<Monster*> monsters_;
     std::vector<Platform*> platforms_;
     std::vector<GameObject*> otherObjects_;
-    static void SetLevelOver();
-    static bool IsLevelOver();
+    void SetLevelOver();
+    bool IsLevelOver();
     void AddObject(GameObject* obj);
     ~Scene();
 };

@@ -2,7 +2,7 @@
 // Created by ben on 5/18/24.
 //
 
-#include "../../include/TextureManager.h"
+#include "../../include/Sprites/TextureManager.h"
 
 std::unique_ptr<TextureManager> TextureManager::instance = nullptr;
 

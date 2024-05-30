@@ -5,8 +5,8 @@
 #ifndef PLATFORMER_TILE_H
 #define PLATFORMER_TILE_H
 
-#include "GameObject.h"
-#include "TextureManager.h"
+#include "../GameObject.h"
+#include "../Sprites/TextureManager.h"
 
 
 class Tile : public GameObject {

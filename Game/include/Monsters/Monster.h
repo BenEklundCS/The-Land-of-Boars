@@ -5,9 +5,9 @@
 #ifndef PLATFORMER_MONSTER_H
 #define PLATFORMER_MONSTER_H
 
-#include "GameObject.h"
-#include "../src/Entities/Player/Player.h"
-#include "PhysicsConstants.h"
+#include "../GameObject.h"
+#include "../Player/Player.h"
+#include "../PhysicsConstants.h"
 
 #define PACING_WINDOW 800
 #define MONSTER_SPEED 3

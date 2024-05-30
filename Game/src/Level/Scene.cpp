@@ -2,7 +2,7 @@
 // Created by ben on 5/16/24.
 //
 
-#include "../../include/Scene.h"
+#include "../../include/Level/Scene.h"
 #include "../../../Platform/include/Renderer.h"
 
 Scene::Scene() = default;
@@ -85,4 +85,21 @@ Camera2D Scene::GetCamera() {
     return camera;
 }
 
-Scene::~Scene() = default;
+Scene::~Scene() {
+    for (auto player : players_) {
+        delete player;
+    }
+    for (auto monster : monsters_) {
+        delete monster;
+    }
+    for (auto platform : platforms_) {
+        delete platform;
+    }
+    for (auto object : otherObjects_) {
+        delete object;
+    }
+    players_.clear();
+    monsters_.clear();
+    platforms_.clear();
+    otherObjects_.clear();
+}

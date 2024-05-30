@@ -12,9 +12,9 @@
 
 #include <memory>
 #include "raylib.h"
-#include "../../../include/GameObject.h"
-#include "../../../include/PhysicsConstants.h"
-#include "../../../include/Animation.h"
+#include "../GameObject.h"
+#include "../PhysicsConstants.h"
+#include "../Sprites/Animation.h"
 
 enum PlayerState {
     IDLE,
@@ -45,7 +45,7 @@ private:
     int jumps_ = 0;
     int hp_ = PLAYER_MAX_HP;
 public:
-    GameObjectType type_;
+    GameObjectType type_ = PLAYER;
     Player();
     void Update() override;
     void Draw() override;

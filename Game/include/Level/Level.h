@@ -6,7 +6,7 @@
 #define PLATFORMER_LEVEL_H
 
 #include <memory>
-#include "../src/Entities/Player/Player.h"
+#include "../Player/Player.h"
 #include "Scene.h"
 
 
@@ -16,7 +16,7 @@ protected:
 public:
 public:
     Level();
-    virtual Scene GetScene();
+    virtual Scene* GetScene();
     ~Level();
 };
 
