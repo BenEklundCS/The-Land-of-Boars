@@ -22,6 +22,11 @@ void Scene::UpdatePlayers() {
         for (auto& platform : platforms_) {
             player->PlatformCollision(platform);
         }
+        for (auto& other : otherObjects_) {
+            if (other->type_ == TILE) {
+                player->PlatformCollision(other);
+            }
+        }
     }
 }
 

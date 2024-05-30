@@ -33,7 +33,7 @@ void TextureManager::LoadPlayerTextures() {
 
 void TextureManager::LoadTileTextures() {
     Texture2D grassTexture = ::LoadTexture(TILE_TEXTURE_PATH);
-    TextureManager::LoadTexture(grassTexture, TILE_TEXTURE, Rectangle{0, 0, (float)grassTexture.width/8, (float)grassTexture.height/8});
+    TextureManager::LoadTexture(grassTexture, TILE_TEXTURE, Rectangle{0, 0, (float)grassTexture.width/5, (float)grassTexture.height/5});
 }
 
 void TextureManager::LoadOtherTextures() {
