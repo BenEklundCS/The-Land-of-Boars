@@ -28,16 +28,7 @@ void Renderer::Draw(Scene* scene) {
     DrawFPS(100, 100);
 
     // For each object in each std::vector of GameObjects, call Draw on the object
-    for (const auto& object : scene->players_) {
-        object->Draw(); // <-- All GameObjects implement a Draw call
-    }
-    for (const auto& object : scene->monsters_) {
-        object->Draw(); // <-- All GameObjects implement a Draw call
-    }
-    for (const auto& object : scene->platforms_) {
-        object->Draw(); // <-- All GameObjects implement a Draw call
-    }
-    for (const auto& object : scene->otherObjects_) {
+    for (const auto& object : scene->GetAllObjects()) {
         object->Draw(); // <-- All GameObjects implement a Draw call
     }
 

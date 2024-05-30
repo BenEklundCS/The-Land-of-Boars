@@ -91,6 +91,15 @@ Camera2D Scene::GetCamera() {
     return camera;
 }
 
+std::vector<GameObject*> Scene::GetAllObjects() {
+    std::vector<GameObject*> allObjects;
+    allObjects.insert(allObjects.end(), players_.begin(), players_.end());
+    allObjects.insert(allObjects.end(), monsters_.begin(), monsters_.end());
+    allObjects.insert(allObjects.end(), platforms_.begin(), platforms_.end());
+    allObjects.insert(allObjects.end(), otherObjects_.begin(), otherObjects_.end());
+    return allObjects;
+}
+
 Scene::~Scene() {
     for (auto player : players_) {
         delete player;

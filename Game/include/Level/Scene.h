@@ -20,16 +20,17 @@ private:
     void UpdateMonsters();
     // CAMERA/SCENE ONLY SUPPORT ONE PLAYER CURRENTLY, BEWARE
     void UpdateCamera();
+    std::vector<Player*> players_;
+    std::vector<Monster*> monsters_;
+    std::vector<Platform*> platforms_;
+    std::vector<GameObject*> otherObjects_;
     Camera2D camera;
 public:
     Scene();
     void InitCamera();
     void Update();
     Camera2D GetCamera();
-    std::vector<Player*> players_;
-    std::vector<Monster*> monsters_;
-    std::vector<Platform*> platforms_;
-    std::vector<GameObject*> otherObjects_;
+    std::vector<GameObject*> GetAllObjects();
     void SetLevelOver();
     bool IsLevelOver();
     void AddObject(GameObject* obj);
