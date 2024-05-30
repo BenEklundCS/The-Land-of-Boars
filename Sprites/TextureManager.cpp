@@ -71,7 +71,7 @@ void TextureManager::LoadAnimatedTexture(const char * filePath, int offset, int 
     Texture2D texture = ::LoadTexture(filePath);
     GameTexture gameTexture = {texture, Rectangle{0,
                                                  (float)offset,
-                                                 (float)texture.width/frames,
+                                                 (float)texture.width/(float)frames,
                                                  (float)texture.height}};
     Emplace(textureName, gameTexture);
 }
