@@ -3,7 +3,7 @@
 //
 
 #include "Scene.h"
-#include "../Renderer/Renderer.h"
+#include "Renderer.h"
 
 Scene::Scene() = default;
 
@@ -12,12 +12,20 @@ bool Scene::levelOver = false;
 // Update all game objects and handle collisions
 void Scene::Update() {
     // Update all game objects and handle collisions
+    UpdatePlayers();
+    UpdateMonsters();
+}
+
+void Scene::UpdatePlayers() {
     for (auto& player : players_) {
         player->Update();
         for (auto& platform : platforms_) {
             player->PlatformCollision(platform);
         }
     }
+}
+
+void Scene::UpdateMonsters() {
     for (auto& monster : monsters_) {
         monster->Update();
         for (auto& player : players_) {

@@ -9,7 +9,7 @@
 #include "../Renderer/Window.h"
 #include "../Renderer/Renderer.h"
 #include "../Entities/Player/Player.h"
-#include "../Game/Scene.h"
+#include "../Renderer/Scene.h"
 
 
 class Level {

@@ -41,8 +41,6 @@ void Player::Update() {
     MovePlayer(deltaTime);
     // Check to see if we need to update the displayed animation
     AnimatePlayer();
-    // Call Animate to get the next rect
-    playerAnimation_.Animate();
 }
 
 void Player::VelocityBound() {
@@ -178,21 +176,27 @@ bool Player::CheckPlayerDeath() const {
 }
 
 void Player::AnimatePlayer() {
+    // Call Animate to get the next rect
+    playerAnimation_.Animate();
     // Check to see if we need to load the IDLE animation
-    TextureManager* textureManager = TextureManager::GetInstance();
-    float idleAnimationSpeed = 0.2f;
-    float runningAnimationSpeed = 0.2f;
-    float jumpingAnimationSpeed = 0.075f;
-    if (state_ == IDLE && last_state_ != IDLE) { // replay the idle animation (replay == true)
-        playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_IDLE_TEXTURE), PLAYER_IDLE_FRAMES, idleAnimationSpeed, true);
-    }
-    // Check to see if we need to load the RUNNING animation
-    else if (state_ == RUNNING && last_state_ != RUNNING) { // replay the running animation (replay == true)
-        playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_RUNNING_TEXTURE), PLAYER_RUNNING_FRAMES, runningAnimationSpeed, true);
-    }
-    // Check to see if we need to load the JUMPING animation
-    else if (state_ == JUMPING && last_state_ != JUMPING) { // do not replay the jump animation (replay == false)
-        playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_JUMPING_TEXTURE), PLAYER_JUMPING_FRAMES, jumpingAnimationSpeed, false);
+    if (state_ != last_state_) {
+        // Changing state, so get the TextureManager
+        TextureManager* textureManager = TextureManager::GetInstance();
+        float idleAnimationSpeed = 0.2f;
+        float runningAnimationSpeed = 0.2f;
+        float jumpingAnimationSpeed = 0.075f;
+        // Check to see if we need to load the PLAYER animation
+        if (state_ == IDLE && last_state_ != IDLE) { // replay the idle animation (replay == true)
+            playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_IDLE_TEXTURE), PLAYER_IDLE_FRAMES, idleAnimationSpeed, true);
+        }
+            // Check to see if we need to load the RUNNING animation
+        else if (state_ == RUNNING && last_state_ != RUNNING) { // replay the running animation (replay == true)
+            playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_RUNNING_TEXTURE), PLAYER_RUNNING_FRAMES, runningAnimationSpeed, true);
+        }
+            // Check to see if we need to load the JUMPING animation
+        else if (state_ == JUMPING && last_state_ != JUMPING) { // do not replay the jump animation (replay == false)
+            playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_JUMPING_TEXTURE), PLAYER_JUMPING_FRAMES, jumpingAnimationSpeed, false);
+        }
     }
 }
 

@@ -9,7 +9,7 @@
 
 #include <vector>
 #include "../Entities/Player/Player.h"
-#include "../Renderer/Renderer.h"
+#include "Renderer.h"
 #include "../Entities/Monsters/Monster.h"
 #include "../Entities/Objects/Platform.h"
 
@@ -25,6 +25,8 @@ private:
     std::vector<Monster*> monsters_;
     std::vector<Platform*> platforms_;
     std::vector<GameObject*> otherObjects_;
+    void UpdatePlayers();
+    void UpdateMonsters();
     // CAMERA/SCENE ONLY SUPPORT ONE PLAYER CURRENTLY, BEWARE
     Camera2D camera;
     void UpdateCamera();
