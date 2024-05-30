@@ -7,8 +7,6 @@
 
 Scene::Scene() = default;
 
-bool Scene::levelOver = false;
-
 // Update all game objects and handle collisions
 void Scene::Update() {
     // Update the camera

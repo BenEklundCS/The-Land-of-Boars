@@ -15,7 +15,7 @@
 class Scene {
 
 private:
-    static bool levelOver;
+    bool levelOver;
     void UpdatePlayers();
     void UpdateMonsters();
     // CAMERA/SCENE ONLY SUPPORT ONE PLAYER CURRENTLY, BEWARE
