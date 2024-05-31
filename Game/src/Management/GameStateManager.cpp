@@ -46,7 +46,8 @@ void GameStateManager::UpdateMonsters() {
     }
 }
 
-// Add a game object to the scene
+// Add a game object to the GameStateManager. The GameStateManager maintains unique_ptr ownership over Objects.
+// Make sure to pass a std::unique_ptr<GameObject> to it using std::move()
 void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
     allGameObjects_.push_back(obj.get());
     if (obj->type_ == PLAYER) {
@@ -63,7 +64,8 @@ void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
     }
 }
 
-// Init the camera
+// Init the camera to its base target, offset, rotation, and zoom.
+// Currently, supports only one player.
 void GameStateManager::InitCamera() {
     Player* player1 = players_.at(0).get();
     camera.target = (Vector2){ player1->GetPosition().x + 20.0f, player1->GetPosition().y + 20.0f };
@@ -72,28 +74,33 @@ void GameStateManager::InitCamera() {
     camera.zoom = 1.0f;
 }
 
-// Update the camera
+// Update the camera using the players current position
 void GameStateManager::UpdateCamera() {
     Player* player1 = players_.at(0).get();
     camera.target = (Vector2){ player1->GetPosition().x + 20, player1->GetPosition().y + 20 };
 }
 
+// Return the levelOver boolean flag
 bool GameStateManager::IsLevelOver() const {
     return levelOver;
 }
 
+// Set levelOver to true
 void GameStateManager::SetLevelOver() {
     levelOver = true;
 }
 
+// Return the camera
 Camera2D GameStateManager::GetCamera() {
     return camera;
 }
 
+// Return the full GameObject* vector
 std::vector<GameObject*> GameStateManager::GetAllObjects() {
     return allGameObjects_;
 }
 
+// Cleanup the vectors on destruct
 GameStateManager::~GameStateManager() {
     players_.clear();
     monsters_.clear();

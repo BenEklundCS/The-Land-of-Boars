@@ -4,8 +4,8 @@
 
 #include "../../../include/Entities/Player/Player.h"
 
-Player::Player() : playerAnimation_(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE),
-                                                   PLAYER_IDLE_FRAMES, 0.2f, true), GameObject(PLAYER) {
+Player::Player() : GameObject(PLAYER), playerAnimation_(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE),
+                                                   PLAYER_IDLE_FRAMES, 0.2f, true) {
     this->position_ = {100, 100};
     this->dimensions_ = {PLAYER_LENGTH, PLAYER_LENGTH};
     this->state_ = IDLE;
