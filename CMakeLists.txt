@@ -22,30 +22,30 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
 
 add_executable(
         ${PROJECT_NAME}
-        Platform/core/main.cpp
-        Platform/core/Window.cpp
-        Platform/core/Renderer.cpp
-        Game/src/Management/GameStateManager.cpp
-        Game/src/Entities/Player/Player.cpp
-        Game/src/Entities/GameObject.cpp
-        Game/src/Entities/Objects/Platform.cpp
-        Game/include/Entities/Monsters/Monster.h
-        Game/src/Entities/Monsters/Monster.cpp
-        Game/src/Sprites/TextureManager.cpp
-        Game/include/Sprites/Animation.h
-        Game/src/Sprites/Animation.cpp
-        Game/include/Level/Level.h
-        Game/src/Level/LevelOne.cpp
-        Game/include/Level/LevelOne.h
-        Game/src/Level/Level.cpp
-        Game/include/Entities/Monsters/Boar.h
-        Game/src/Entities/Monsters/Boar.cpp
-        Game/include/Entities/PhysicsConstants.h
-        Platform/core/Engine.cpp
-        Game/include/Entities/Objects/Tile.h
-        Game/src/Entities/Objects/Tile.cpp
-        Game/include/Management/TileManager.h
-        Game/src/Management/TileManager.cpp
+        src/Platform/main.cpp
+        src/Platform/Window.cpp
+        src/Platform/Renderer.cpp
+        src/Game/Management/GameStateManager.cpp
+        src/Game/Entities/Player/Player.cpp
+        src/Game/Entities/GameObject.cpp
+        src/Game/Entities/Objects/Platform.cpp
+        include/Game/Entities/Monsters/Monster.h
+        src/Game/Entities/Monsters/Monster.cpp
+        src/Game/Sprites/TextureManager.cpp
+        include/Game/Sprites/Animation.h
+        src/Game/Sprites/Animation.cpp
+        include/Game/Level/Level.h
+        src/Game/Level/LevelOne.cpp
+        include/Game/Level/LevelOne.h
+        src/Game/Level/Level.cpp
+        include/Game/Entities/Monsters/Boar.h
+        src/Game/Entities/Monsters/Boar.cpp
+        include/Game/Entities/PhysicsConstants.h
+        src/Platform/Engine.cpp
+        include/Game/Entities/Objects/Tile.h
+        src/Game/Entities/Objects/Tile.cpp
+        include/Game/Management/TileManager.h
+        src/Game/Management/TileManager.cpp
 ) # Create an executable with main.cpp as the source
 
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib) # Link raylib to your project
