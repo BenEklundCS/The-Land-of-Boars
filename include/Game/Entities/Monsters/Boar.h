@@ -11,11 +11,11 @@
 
 class Boar : public Monster {
 private:
-    Animation boarAnimation_;
+    Animation boarAnimation_; // Boar animation
 public:
     Boar(float posX, float posY, float dimX, float dimY, MonsterState state);
-    void Draw() override;
-    void Update() override;
+    void Draw() override; // Draw the boar
+    void Update() override; // Update the boar
 };
 
 

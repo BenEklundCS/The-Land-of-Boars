@@ -39,13 +39,13 @@ private:
     void VelocityBound(); // Prevent the players velocity from increasing past the bound
     [[nodiscard]] bool CheckPlayerDeath() const; // Check if the player is dead
     // Attributes
-    Vector2 velocity_{0, 15};
-    Animation playerAnimation_;
-    PlayerState state_;
-    PlayerState last_state_;
-    bool movingRight_;
-    int jumps_ = 0;
-    int hp_ = PLAYER_MAX_HP;
+    Vector2 velocity_{0, 15}; // Player velocity vector
+    Animation playerAnimation_; // Player animation
+    PlayerState state_; // Player state
+    PlayerState last_state_; // Previous player state
+    bool movingRight_; // Flag to check x direction
+    int jumps_ = 0; // Jump counter used to check if we can jump
+    int hp_ = PLAYER_MAX_HP; // Current player hp
 public:
     GameObjectType type_ = PLAYER;
     Player();
