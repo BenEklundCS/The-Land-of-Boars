@@ -4,7 +4,8 @@
 
 #include "../../../include/Entities/Objects/Tile.h"
 
-Tile::Tile(float x, float y) : texture_(TextureManager::GetInstance()->GetTexture(TILE_TEXTURE)){
+Tile::Tile(float x, float y) : texture_(TextureManager::GetInstance()->GetTexture(TILE_TEXTURE)),
+                               GameObject(TILE) { // Ensure to instantiate the GameObject!
     dimensions_ = Vector2{128, 128};
     position_ = Vector2{x, y};
 }

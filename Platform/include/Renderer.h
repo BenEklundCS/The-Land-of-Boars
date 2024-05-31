@@ -7,7 +7,7 @@
 #include "../../Game/include/Entities/GameObject.h"
 #include "../../Game/include/Entities/Objects/Platform.h"
 #include "../../Game/include/Entities/Monsters/Monster.h"
-#include "../../Game/include/GameStateManager.h"
+#include "../../Game/include/Management/GameStateManager.h"
 
 
 #ifndef PLATFORMER_RENDERER_H

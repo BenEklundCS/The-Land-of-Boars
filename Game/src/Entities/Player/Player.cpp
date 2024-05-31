@@ -123,10 +123,14 @@ void Player::HandlePlayerInput(float deltaTime) {
     // Handle jumping and jump animation state management
     if ((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)) && jumps_ <= MAX_JUMPS) { // jump
         jumps_++;
+
+            playerAnimation_.Reset();
+
         Jump(deltaTime);
     }
 }
 
+// Respond to a platform collision, adjusting the players position and velocity
 void Player::PlatformCollision(GameObject* obj) {
     if (CheckCollisionRecs(GetRect(), obj->GetRect())) {
         Rectangle playerRect = GetRect();

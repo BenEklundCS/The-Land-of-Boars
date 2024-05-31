@@ -28,14 +28,6 @@ std::unique_ptr<GameStateManager> LevelOne::GetGameState() {
     auto monster1 = std::make_unique<Boar>(1000, 200, 100, 100, MonsterState::PACING);
     auto monster2 = std::make_unique<Boar>(2000, GetScreenHeight() - 200, 100, 100, MonsterState::DEFAULT);
 
-    // Spam monsters for performance tests lol
-    /*
-    for (int i = 0; i < 50000; i++) {
-        auto monster = std::make_unique<Boar>(1000 + i, 200, 100, 100, MonsterState::PACING);
-        scene->AddObject(std::move(monster));
-    }
-     */
-
     gameState->AddObject(std::move(monster1));
     gameState->AddObject(std::move(monster2));
 

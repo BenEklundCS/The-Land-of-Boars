@@ -13,7 +13,7 @@
 #include <memory>
 #include "raylib.h"
 #include "../GameObject.h"
-#include "../../PhysicsConstants.h"
+#include "../PhysicsConstants.h"
 #include "../../Sprites/Animation.h"
 
 enum PlayerState {

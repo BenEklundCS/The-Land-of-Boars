@@ -2,8 +2,8 @@
 // Created by ben on 5/16/24.
 //
 
-#include "include/GameStateManager.h"
-#include "../Platform/include/Renderer.h"
+#include "../../include/Management/GameStateManager.h"
+#include "../../../Platform/include/Renderer.h"
 
 GameStateManager::GameStateManager() = default;
 
@@ -48,6 +48,7 @@ void GameStateManager::UpdateMonsters() {
 
 // Add a game object to the scene
 void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
+    allGameObjects_.push_back(obj.get());
     if (obj->type_ == PLAYER) {
         players_.push_back(std::unique_ptr<Player>(dynamic_cast<Player*>(obj.release())));
     }
@@ -90,12 +91,7 @@ Camera2D GameStateManager::GetCamera() {
 }
 
 std::vector<GameObject*> GameStateManager::GetAllObjects() {
-    std::vector<GameObject*> allObjects;
-    for (const auto& player : players_) allObjects.push_back(player.get());
-    for (const auto& monster : monsters_) allObjects.push_back(monster.get());
-    for (const auto& platform : platforms_) allObjects.push_back(platform.get());
-    for (const auto& other : otherObjects_) allObjects.push_back(other.get());
-    return allObjects;
+    return allGameObjects_;
 }
 
 GameStateManager::~GameStateManager() {

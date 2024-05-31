@@ -4,6 +4,10 @@
 
 #include "../include/Renderer.h"
 #include "raylib.h"
+#include "../../Game/include/Entities/GameObject.h"
+#include "../../Game/include/Entities/Objects/Platform.h"
+#include "../../Game/include/Entities/Monsters/Monster.h"
+#include "../../Game/include/Management/GameStateManager.h"
 
 Renderer::Renderer() = default;
 
@@ -21,7 +25,7 @@ void Renderer::RenderBackground() {
 // Draw all game objects
 void Renderer::Draw(GameStateManager* gameState) {
     BeginDrawing(); // Setup canvas (framebuffer) to start drawing
-    ClearBackground(RAYWHITE);
+    ClearBackground(BLACK);
     BeginMode2D(gameState->GetCamera());
     // Render the background
     RenderBackground();

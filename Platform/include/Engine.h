@@ -9,7 +9,7 @@
 #include <vector>
 #include "../../Game/include/Level/Level.h"
 #include "Renderer.h"
-#include "../../Game/include/GameStateManager.h"
+#include "../../Game/include/Management/GameStateManager.h"
 
 
 // Engine is responsible for managing game levels, and starting the game.

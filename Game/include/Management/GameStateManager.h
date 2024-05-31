@@ -8,9 +8,9 @@
 #define PLATFORMER_GAMESTATEMANAGER_H
 
 #include <vector>
-#include "Entities/Player/Player.h"
-#include "Entities/Monsters/Monster.h"
-#include "Entities/Objects/Platform.h"
+#include "../Entities/Player/Player.h"
+#include "../Entities/Monsters/Monster.h"
+#include "../Entities/Objects/Platform.h"
 
 class GameStateManager {
 
@@ -24,6 +24,7 @@ private:
     std::vector<std::unique_ptr<Monster>> monsters_;
     std::vector<std::unique_ptr<Platform>> platforms_;
     std::vector<std::unique_ptr<GameObject>> otherObjects_;
+    std::vector<GameObject*> allGameObjects_;
     Camera2D camera;
 public:
     GameStateManager();

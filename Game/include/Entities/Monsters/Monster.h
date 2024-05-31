@@ -7,7 +7,7 @@
 
 #include "../GameObject.h"
 #include "../Player/Player.h"
-#include "../../PhysicsConstants.h"
+#include "../PhysicsConstants.h"
 
 #define PACING_WINDOW 800
 #define MONSTER_SPEED 3

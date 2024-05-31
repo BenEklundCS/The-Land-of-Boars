@@ -7,7 +7,7 @@
 
 #include <memory>
 #include "../Entities/Player/Player.h"
-#include "../GameStateManager.h"
+#include "../Management/GameStateManager.h"
 
 
 class Level {

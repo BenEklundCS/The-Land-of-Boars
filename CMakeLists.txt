@@ -25,7 +25,7 @@ add_executable(
         Platform/core/main.cpp
         Platform/core/Window.cpp
         Platform/core/Renderer.cpp
-        Game/GameStateManager.cpp
+        Game/src/Management/GameStateManager.cpp
         Game/src/Entities/Player/Player.cpp
         Game/src/Entities/GameObject.cpp
         Game/src/Entities/Objects/Platform.cpp
@@ -40,10 +40,12 @@ add_executable(
         Game/src/Level/Level.cpp
         Game/include/Entities/Monsters/Boar.h
         Game/src/Entities/Monsters/Boar.cpp
-        Game/include/PhysicsConstants.h
+        Game/include/Entities/PhysicsConstants.h
         Platform/core/Engine.cpp
         Game/include/Entities/Objects/Tile.h
         Game/src/Entities/Objects/Tile.cpp
+        Game/include/Management/TileManager.h
+        Game/src/Management/TileManager.cpp
 ) # Create an executable with main.cpp as the source
 
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib) # Link raylib to your project
