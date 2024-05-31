@@ -8,16 +8,14 @@
 #include "../GameObject.h"
 #include "../../Sprites/TextureManager.h"
 
-
 class Tile : public GameObject {
 private:
     GameTexture texture_;
 public:
-    Tile(float x, float y);
+    Tile(float x, float y, std::string tileTexture);
     void SetTexture(GameTexture texture);
     void Draw() override;
     void Update() override;
-    ~Tile();
 };
 
 

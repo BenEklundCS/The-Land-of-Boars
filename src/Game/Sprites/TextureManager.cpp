@@ -2,8 +2,6 @@
 // Created by ben on 5/18/24.
 //
 
-
-
 #include "../../../include/Game/Sprites/TextureManager.h"
 
 std::unique_ptr<TextureManager> TextureManager::instance = nullptr;
@@ -34,8 +32,9 @@ void TextureManager::LoadPlayerTextures() {
 }
 
 void TextureManager::LoadTileTextures() {
-    Texture2D grassTexture = ::LoadTexture(TILE_TEXTURE_PATH);
-    TextureManager::LoadTexture(grassTexture, TILE_TEXTURE, Rectangle{0, 0, (float)grassTexture.width/5, (float)grassTexture.height/5});
+    Texture2D texture = ::LoadTexture(TILE_TEXTURE_PATH);
+    TextureManager::LoadTexture(texture, TILE_GRASS_TEXTURE, Rectangle{0, 0, (float)texture.width/5, (float)texture.height/5});
+    TextureManager::LoadTexture(texture, TILE_DIRT_TEXTURE, Rectangle{0, TILE_LENGTH, (float)texture.width/5, (float)texture.height/5});
 }
 
 void TextureManager::LoadOtherTextures() {

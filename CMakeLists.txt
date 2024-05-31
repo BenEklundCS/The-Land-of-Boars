@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 3.11) # Set the minimum version of CMake
+cmake_minimum_required(VERSION 3.11)
 
 project(Platformer) # Define the project name
 
 # Find raylib
-find_package(raylib 3.0 QUIET) # Let CMake search for a pre-installed raylib
+find_package(raylib 3.0 QUIET)
 
-if (NOT raylib_FOUND) # If there's none found, fetch and build raylib
+if (NOT raylib_FOUND)
     include(FetchContent)
     FetchContent_Declare(
             raylib
@@ -14,43 +14,68 @@ if (NOT raylib_FOUND) # If there's none found, fetch and build raylib
     FetchContent_MakeAvailable(raylib)
 endif()
 
-set(CMAKE_CXX_STANDARD 17) # Set C++ standard to C++17
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
 
-
-add_executable(
-        ${PROJECT_NAME}
+# Group related files into variables
+set(PLATFORM_SOURCES
         src/Platform/main.cpp
         src/Platform/Window.cpp
         src/Platform/Renderer.cpp
+        src/Platform/Engine.cpp
+)
+
+set(GAME_MANAGEMENT_SOURCES
         src/Game/Management/GameStateManager.cpp
+        src/Game/Management/TileManager.cpp
+)
+
+set(GAME_ENTITIES_SOURCES
         src/Game/Entities/Player/Player.cpp
         src/Game/Entities/GameObject.cpp
         src/Game/Entities/Objects/Platform.cpp
-        include/Game/Entities/Monsters/Monster.h
-        src/Game/Entities/Monsters/Monster.cpp
-        src/Game/Sprites/TextureManager.cpp
-        include/Game/Sprites/Animation.h
-        src/Game/Sprites/Animation.cpp
-        include/Game/Level/Level.h
-        src/Game/Level/LevelOne.cpp
-        include/Game/Level/LevelOne.h
-        src/Game/Level/Level.cpp
-        include/Game/Entities/Monsters/Boar.h
-        src/Game/Entities/Monsters/Boar.cpp
-        include/Game/Entities/PhysicsConstants.h
-        src/Platform/Engine.cpp
-        include/Game/Entities/Objects/Tile.h
         src/Game/Entities/Objects/Tile.cpp
+        src/Game/Entities/Monsters/Monster.cpp
+        src/Game/Entities/Monsters/Boar.cpp
+)
+
+set(GAME_LEVEL_SOURCES
+        src/Game/Level/LevelOne.cpp
+        src/Game/Level/Level.cpp
+)
+
+set(GAME_SPRITES_SOURCES
+        src/Game/Sprites/TextureManager.cpp
+        src/Game/Sprites/Animation.cpp
+)
+
+set(GAME_HEADERS
+        include/Game/Entities/Monsters/Monster.h
+        include/Game/Sprites/Animation.h
+        include/Game/Level/Level.h
+        include/Game/Level/LevelOne.h
+        include/Game/Entities/Monsters/Boar.h
+        include/Game/Entities/PhysicsConstants.h
+        include/Game/Entities/Objects/Tile.h
         include/Game/Management/TileManager.h
-        src/Game/Management/TileManager.cpp
-) # Create an executable with main.cpp as the source
+)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE raylib) # Link raylib to your project
+# Combine all sources
+set(SOURCES
+        ${PLATFORM_SOURCES}
+        ${GAME_MANAGEMENT_SOURCES}
+        ${GAME_ENTITIES_SOURCES}
+        ${GAME_LEVEL_SOURCES}
+        ${GAME_SPRITES_SOURCES}
+        ${GAME_HEADERS}
+)
 
-# If additional configuration is needed, set it here:
+add_executable(${PROJECT_NAME} ${SOURCES})
+
+target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
+
 if(MSVC)
     set_target_properties(${PROJECT_NAME} PROPERTIES
             WIN32_EXECUTABLE YES

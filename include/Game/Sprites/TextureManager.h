@@ -42,9 +42,11 @@
 #define BOAR_RUNNING_TEXTURE_WHITE "boarTextureWhite"
 
 // Tiles
-#define TILE_LENGTH 16
 #define TILE_TEXTURE_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Assets/Tiles.png"
-#define TILE_TEXTURE "tileTexture"
+#define TILE_GRASS_TEXTURE "tileGrassTexture"
+#define TILE_DIRT_TEXTURE "tileDirtTexture"
+
+#define TILE_LENGTH 80
 
 struct GameTexture {
     Texture2D texture;
