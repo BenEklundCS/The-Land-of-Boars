@@ -21,9 +21,9 @@ private:
     std::vector<std::unique_ptr<Level>> levels;
     int curr = 0;
 public:
-    void StartGame();
-    void LoadLevels();
-    static void RenderLevelScene(std::unique_ptr<GameStateManager> scene);
+    void StartGame(); // Start the game
+    void LoadLevels(); // Load all the game levels
+    static void RenderLevelScene(std::unique_ptr<GameStateManager> scene); // Start the render loop
 };
 
 

@@ -11,11 +11,11 @@
 
 class Platform : public GameObject {
 private:
-    Color color_{};
+    Color color_{}; // Platform color
 public:
     Platform(float pos_x, float pos_y, float dim_x, float dim_y, Color color);
-    void Update() override;
-    void Draw() override;
+    void Update() override; // Update the platform
+    void Draw() override; // Draw the platform
 };
 
 
