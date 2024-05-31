@@ -17,27 +17,27 @@
  */
 class GameStateManager {
 private:
-    bool levelOver;
-    void UpdatePlayers();
-    void UpdateMonsters();
+    bool levelOver; // Flag for if the level is over
+    void UpdatePlayers(); // Update the player vector
+    void UpdateMonsters(); // Update the monster vector
     // CAMERA/SCENE ONLY SUPPORT ONE PLAYER CURRENTLY, BEWARE
-    void UpdateCamera();
-    std::vector<std::unique_ptr<Player>> players_;
-    std::vector<std::unique_ptr<Monster>> monsters_;
-    std::vector<std::unique_ptr<Platform>> platforms_;
-    std::vector<std::unique_ptr<GameObject>> otherObjects_;
-    std::vector<GameObject*> allGameObjects_;
-    Camera2D camera;
+    void UpdateCamera(); // Update the camera
+    std::vector<std::unique_ptr<Player>> players_; // player object vector
+    std::vector<std::unique_ptr<Monster>> monsters_; // monster object vector
+    std::vector<std::unique_ptr<Platform>> platforms_; // platform object vector
+    std::vector<std::unique_ptr<GameObject>> otherObjects_; // other object vector
+    std::vector<GameObject*> allGameObjects_; // All game object vector
+    Camera2D camera; // Camera
 public:
-    GameStateManager();
-    void InitCamera();
-    void Update();
-    Camera2D GetCamera();
-    std::vector<GameObject*> GetAllObjects();
-    void SetLevelOver();
-    bool IsLevelOver() const;
-    void AddObject(std::unique_ptr<GameObject> obj);
-    ~GameStateManager();
+    GameStateManager(); // Constructor
+    void InitCamera(); // Initialize the camera - call before rendering
+    void Update(); // Update the game state
+    Camera2D GetCamera(); // Get the Camera2D
+    std::vector<GameObject*> GetAllObjects(); // Get all game objects from the GameState
+    void SetLevelOver(); // Set levelOver to true
+    bool IsLevelOver() const; // Return the levelOver flag
+    void AddObject(std::unique_ptr<GameObject> obj); // Add a GameObject to the scene
+    ~GameStateManager(); // Destructor
 };
 
 #endif //PLATFORMER_GAMESTATEMANAGER_H
