@@ -15,6 +15,7 @@ public:
     Tile(float x, float y, std::string tileTexture);
     void Draw() override; // Draw the tile
     void Update() override; // Update the tile
+    void SetTexture(GameTexture texture);
 };
 
 
