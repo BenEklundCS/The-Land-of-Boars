@@ -6,7 +6,7 @@
 
 Level::Level() = default;
 
-std::unique_ptr<Scene> Level::GetScene() {
+std::unique_ptr<GameStateManager> Level::GetGameState() {
 
 }
 

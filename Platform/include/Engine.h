@@ -9,7 +9,7 @@
 #include <vector>
 #include "../../Game/include/Level/Level.h"
 #include "Renderer.h"
-#include "../../Game/include/Level/Scene.h"
+#include "../../Game/include/GameStateManager.h"
 
 
 // Engine is responsible for managing game levels, and starting the game.
@@ -20,7 +20,7 @@ private:
 public:
     void StartGame();
     void LoadLevels();
-    static void RenderLevelScene(std::unique_ptr<Scene> scene);
+    static void RenderLevelScene(std::unique_ptr<GameStateManager> scene);
 };
 
 

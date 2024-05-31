@@ -6,9 +6,9 @@
 #include "../../include/Entities/Objects/Tile.h"
 #include "../../include/Entities/Monsters/Boar.h"
 
-std::unique_ptr<Scene> LevelOne::GetScene() {
+std::unique_ptr<GameStateManager> LevelOne::GetGameState() {
     auto player = std::make_unique<Player>();
-    auto scene = std::make_unique<Scene>();
+    auto scene = std::make_unique<GameStateManager>();
 
     scene->AddObject(std::move(player));
 

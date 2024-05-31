@@ -2,13 +2,13 @@
 // Created by ben on 5/16/24.
 //
 
-#include "../../include/Level/Scene.h"
-#include "../../../Platform/include/Renderer.h"
+#include "include/GameStateManager.h"
+#include "../Platform/include/Renderer.h"
 
-Scene::Scene() = default;
+GameStateManager::GameStateManager() = default;
 
 // Update all game objects and handle collisions
-void Scene::Update() {
+void GameStateManager::Update() {
     // Update the camera
     UpdateCamera();
     // Update all game objects and handle collisions
@@ -17,7 +17,7 @@ void Scene::Update() {
 }
 
 // Update all players in the scene by iterating over the players, calling update, and then checking for collisions
-void Scene::UpdatePlayers() {
+void GameStateManager::UpdatePlayers() {
     for (auto& player : players_) {
         player->Update();
         // Iterate over the platforms to check for collisions
@@ -34,7 +34,7 @@ void Scene::UpdatePlayers() {
 }
 
 // Update all players in the scene by iterating over the monsters, calling update, and then checking for collisions
-void Scene::UpdateMonsters() {
+void GameStateManager::UpdateMonsters() {
     for (auto& monster : monsters_) {
         monster->Update();
         for (auto& player : players_) {
@@ -47,7 +47,7 @@ void Scene::UpdateMonsters() {
 }
 
 // Add a game object to the scene
-void Scene::AddObject(std::unique_ptr<GameObject> obj) {
+void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
     if (obj->type_ == PLAYER) {
         players_.push_back(std::unique_ptr<Player>(dynamic_cast<Player*>(obj.release())));
     }
@@ -63,7 +63,7 @@ void Scene::AddObject(std::unique_ptr<GameObject> obj) {
 }
 
 // Init the camera
-void Scene::InitCamera() {
+void GameStateManager::InitCamera() {
     Player* player1 = players_.at(0).get();
     camera.target = (Vector2){ player1->GetPosition().x + 20.0f, player1->GetPosition().y + 20.0f };
     camera.offset = (Vector2){ (float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f };
@@ -72,24 +72,24 @@ void Scene::InitCamera() {
 }
 
 // Update the camera
-void Scene::UpdateCamera() {
+void GameStateManager::UpdateCamera() {
     Player* player1 = players_.at(0).get();
     camera.target = (Vector2){ player1->GetPosition().x + 20, player1->GetPosition().y + 20 };
 }
 
-bool Scene::IsLevelOver() const {
+bool GameStateManager::IsLevelOver() const {
     return levelOver;
 }
 
-void Scene::SetLevelOver() {
+void GameStateManager::SetLevelOver() {
     levelOver = true;
 }
 
-Camera2D Scene::GetCamera() {
+Camera2D GameStateManager::GetCamera() {
     return camera;
 }
 
-std::vector<GameObject*> Scene::GetAllObjects() {
+std::vector<GameObject*> GameStateManager::GetAllObjects() {
     std::vector<GameObject*> allObjects;
     for (const auto& player : players_) allObjects.push_back(player.get());
     for (const auto& monster : monsters_) allObjects.push_back(monster.get());
@@ -98,7 +98,7 @@ std::vector<GameObject*> Scene::GetAllObjects() {
     return allObjects;
 }
 
-Scene::~Scene() {
+GameStateManager::~GameStateManager() {
     players_.clear();
     monsters_.clear();
     platforms_.clear();

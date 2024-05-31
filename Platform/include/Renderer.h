@@ -7,7 +7,7 @@
 #include "../../Game/include/Entities/GameObject.h"
 #include "../../Game/include/Entities/Objects/Platform.h"
 #include "../../Game/include/Entities/Monsters/Monster.h"
-#include "../../Game/include/Level/Scene.h"
+#include "../../Game/include/GameStateManager.h"
 
 
 #ifndef PLATFORMER_RENDERER_H
@@ -18,7 +18,7 @@ private:
     static void RenderBackground();
 public:
     Renderer(); // constructor
-    static void Draw(Scene* scene); // draw call
+    static void Draw(GameStateManager* scene); // draw call
     ~Renderer(); // destructor
 };
 

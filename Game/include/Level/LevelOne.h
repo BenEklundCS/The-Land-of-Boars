@@ -9,7 +9,7 @@
 
 class LevelOne : public Level {
 public:
-    std::unique_ptr<Scene> GetScene() override;
+    std::unique_ptr<GameStateManager> GetGameState() override;
 };
 
 #endif //PLATFORMER_LEVELONE_H

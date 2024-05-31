@@ -22,17 +22,17 @@ void Engine::StartGame() {
     LoadLevels();
     // Start each level
     for (auto& level : levels) {
-        auto scene = level->GetScene();
-        scene->InitCamera();
-        RenderLevelScene(std::move(scene));
+        auto gameState = level->GetGameState();
+        gameState->InitCamera();
+        RenderLevelScene(std::move(gameState));
     }
 }
 
-// Take a Scene* as a parameter, initialize a renderer, and then render the scene
-void Engine::RenderLevelScene(std::unique_ptr<Scene> scene) {
-    while (!WindowShouldClose() && !scene->IsLevelOver()) {
-        scene->Update();        // Update the scene in every frame
-        Renderer::Draw(scene.get());   // Draw the scene using the renderer
+// Take a GameStateManager* as a parameter, initialize a renderer, and then render the scene
+void Engine::RenderLevelScene(std::unique_ptr<GameStateManager> gameState) {
+    while (!WindowShouldClose() && !gameState->IsLevelOver()) {
+        gameState->Update();        // Update the scene in every frame
+        Renderer::Draw(gameState.get());   // Draw the scene using the renderer
     }
 }
 

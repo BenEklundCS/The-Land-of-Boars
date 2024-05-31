@@ -7,16 +7,13 @@
 
 #include <memory>
 #include "../Entities/Player/Player.h"
-#include "Scene.h"
+#include "../GameStateManager.h"
 
 
 class Level {
-protected:
-    std::unique_ptr<Player> player;
-public:
 public:
     Level();
-    virtual std::unique_ptr<Scene> GetScene();
+    virtual std::unique_ptr<GameStateManager> GetGameState();
     ~Level();
 };
 

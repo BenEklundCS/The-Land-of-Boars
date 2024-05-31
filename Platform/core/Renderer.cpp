@@ -4,7 +4,6 @@
 
 #include "../include/Renderer.h"
 #include "raylib.h"
-#include "../../Game/include/Sprites/TextureManager.h"
 
 Renderer::Renderer() = default;
 
@@ -20,16 +19,16 @@ void Renderer::RenderBackground() {
 }
 
 // Draw all game objects
-void Renderer::Draw(Scene* scene) {
+void Renderer::Draw(GameStateManager* gameState) {
     BeginDrawing(); // Setup canvas (framebuffer) to start drawing
     ClearBackground(RAYWHITE);
-    BeginMode2D(scene->GetCamera());
+    BeginMode2D(gameState->GetCamera());
     // Render the background
     RenderBackground();
     DrawFPS(100, 100);
 
     // For each object in each std::vector of GameObjects, call Draw on the object
-    for (const auto& object : scene->GetAllObjects()) {
+    for (const auto& object : gameState->GetAllObjects()) {
         object->Draw(); // <-- All GameObjects implement a Draw call
     }
 

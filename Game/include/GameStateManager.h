@@ -4,15 +4,15 @@
 
 #pragma once
 
-#ifndef PLATFORMER_SCENE_H
-#define PLATFORMER_SCENE_H
+#ifndef PLATFORMER_GAMESTATEMANAGER_H
+#define PLATFORMER_GAMESTATEMANAGER_H
 
 #include <vector>
-#include "../Entities/Player/Player.h"
-#include "../Entities/Monsters/Monster.h"
-#include "../Entities/Objects/Platform.h"
+#include "Entities/Player/Player.h"
+#include "Entities/Monsters/Monster.h"
+#include "Entities/Objects/Platform.h"
 
-class Scene {
+class GameStateManager {
 
 private:
     bool levelOver;
@@ -26,7 +26,7 @@ private:
     std::vector<std::unique_ptr<GameObject>> otherObjects_;
     Camera2D camera;
 public:
-    Scene();
+    GameStateManager();
     void InitCamera();
     void Update();
     Camera2D GetCamera();
@@ -34,7 +34,7 @@ public:
     void SetLevelOver();
     bool IsLevelOver() const;
     void AddObject(std::unique_ptr<GameObject> obj);
-    ~Scene();
+    ~GameStateManager();
 };
 
-#endif //PLATFORMER_SCENE_H
+#endif //PLATFORMER_GAMESTATEMANAGER_H
