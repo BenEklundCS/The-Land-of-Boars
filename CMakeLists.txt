@@ -41,7 +41,7 @@ add_executable(
         Game/include/Entities/Monsters/Boar.h
         Game/src/Entities/Monsters/Boar.cpp
         Game/include/PhysicsConstants.h
-        Platform/core/GameManager.cpp
+        Platform/core/Engine.cpp
         Game/include/Entities/Objects/Tile.h
         Game/src/Entities/Objects/Tile.cpp
 ) # Create an executable with main.cpp as the source

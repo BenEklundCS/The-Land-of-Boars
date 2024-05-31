@@ -6,7 +6,7 @@
 
 Level::Level() = default;
 
-Scene* Level::GetScene() {
+std::unique_ptr<Scene> Level::GetScene() {
 
 }
 

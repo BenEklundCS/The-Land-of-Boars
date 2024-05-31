@@ -9,7 +9,7 @@
 
 class LevelOne : public Level {
 public:
-    Scene* GetScene() override;
+    std::unique_ptr<Scene> GetScene() override;
 };
 
 #endif //PLATFORMER_LEVELONE_H

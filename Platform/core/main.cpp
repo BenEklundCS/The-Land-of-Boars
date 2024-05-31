@@ -1,11 +1,11 @@
 #include <cstdlib>
-#include "../include/GameManager.h"
+#include "../include/Engine.h"
 
 int main() {
 
-    GameManager gameManager = GameManager();
+    Engine gameEngine = Engine();
 
-    gameManager.StartGame();
+    gameEngine.StartGame();
 
     exit(EXIT_SUCCESS);
 

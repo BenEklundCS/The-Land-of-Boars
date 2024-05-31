@@ -16,7 +16,7 @@ protected:
 public:
 public:
     Level();
-    virtual Scene* GetScene();
+    virtual std::unique_ptr<Scene> GetScene();
     ~Level();
 };
 
