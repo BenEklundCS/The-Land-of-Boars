@@ -12,7 +12,10 @@
 #include "../Game/Level/Level.h"
 
 
-// Engine is responsible for managing game levels, and starting the game.
+/*
+ * The Engine class is responsible for starting the game, loading the game levels, and
+ * contains the main game loop, which takes ownership of a GameStateManager to draw the gameState
+*/
 class Engine {
 private:
     std::vector<std::unique_ptr<Level>> levels;

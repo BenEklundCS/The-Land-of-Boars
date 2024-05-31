@@ -9,7 +9,7 @@
 #include "../Entities/Player/Player.h"
 #include "../Management/GameStateManager.h"
 
-
+// A level is really a loader script for a GameStateManager object
 class Level {
 public:
     Level();

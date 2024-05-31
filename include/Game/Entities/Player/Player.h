@@ -16,27 +16,28 @@
 #include "../PhysicsConstants.h"
 #include "../../Sprites/Animation.h"
 
-
+// Definitions for PlayerState types
 enum PlayerState {
     IDLE,
     RUNNING,
     JUMPING
 };
 
+// Player is a GameObject with all player logic encapsulated
 class Player : public GameObject {
 private:
     // Methods
-    void MovePlayer(float deltaTime);
-    void UpdatePosition();
-    void ApplyFriction(float deltaTime);
-    void ApplyGravity(float deltaTime);
-    void HandlePlayerInput(float deltaTime);
-    void MoveLeft(float deltaTime);
-    void MoveRight(float deltaTime);
-    void Jump(float deltaTime);
-    void ResetJumps();
-    void VelocityBound();
-    [[nodiscard]] bool CheckPlayerDeath() const;
+    void MovePlayer(float deltaTime); // Move the player for the current frame
+    void UpdatePosition(); // Update the player position based on its velocity
+    void ApplyFriction(float deltaTime); // Friction
+    void ApplyGravity(float deltaTime); // Gravity
+    void HandlePlayerInput(float deltaTime); // Input handling
+    void MoveLeft(float deltaTime); // Move the player to the left
+    void MoveRight(float deltaTime); // Move the player to the right
+    void Jump(float deltaTime); // Jump (with double jump!)
+    void ResetJumps(); // Reset the player jump counter
+    void VelocityBound(); // Prevent the players velocity from increasing past the bound
+    [[nodiscard]] bool CheckPlayerDeath() const; // Check if the player is dead
     // Attributes
     Vector2 velocity_{0, 15};
     Animation playerAnimation_;
@@ -48,10 +49,10 @@ private:
 public:
     GameObjectType type_ = PLAYER;
     Player();
-    void Update() override;
-    void Draw() override;
-    void PlatformCollision(GameObject* obj);
-    void AnimatePlayer();
+    void Update() override; // Update the player for the current frame
+    void Draw() override; // Draw the player
+    void PlatformCollision(GameObject* obj); // Handle a collision with a platform GameObject
+    void AnimatePlayer(); // Animate the player
     void HitPlayer();
 };
 

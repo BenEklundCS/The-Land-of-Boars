@@ -11,9 +11,11 @@
 #include "../Entities/Player/Player.h"
 #include "../Entities/Monsters/Monster.h"
 #include "../Entities/Objects/Platform.h"
-
+/*
+ * The GameStateManager is responsible for ownership of GameObjects and updating them,
+ * as well as any other game state items such as the camera, collisions, or other logic
+ */
 class GameStateManager {
-
 private:
     bool levelOver;
     void UpdatePlayers();

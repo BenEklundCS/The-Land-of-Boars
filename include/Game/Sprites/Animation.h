@@ -7,8 +7,11 @@
 
 #include "TextureManager.h"
 
+/*
+ * The Animation class is responsible for Animating Texture2D objects, by
+ * calculating the current rect that should be displayed.
+ */
 class Animation {
-    // Animation
 private:
     GameTexture gameTexture_{};
     int currentFrame_;
@@ -18,11 +21,11 @@ private:
     bool replay_;
 public:
     Animation(GameTexture gameTexture, int frameCount, float frameDuration, bool replay);
-    [[nodiscard]] Texture2D GetTexture() const;
-    [[nodiscard]] Rectangle GetCurrentRect() const;
-    void Animate();
-    void Reset();
-    void FlipX(bool movingRight);
+    [[nodiscard]] Texture2D GetTexture() const; // Get the current Texture2D
+    [[nodiscard]] Rectangle GetCurrentRect() const; // Get the current animation rect
+    void Animate(); // Get the next frame of the animation
+    void Reset(); // Reset to the first frame
+    void FlipX(bool movingRight); // Flip the animation across the X axis
 };
 
 

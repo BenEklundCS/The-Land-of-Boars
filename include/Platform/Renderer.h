@@ -10,12 +10,15 @@
 #ifndef PLATFORMER_RENDERER_H
 #define PLATFORMER_RENDERER_H
 
+/*
+ * The Renderer takes a pointer to a GameStateManager to draw the gameState
+*/
 class Renderer {
 private:
     static void RenderBackground();
 public:
     Renderer(); // constructor
-    static void Draw(GameStateManager* scene); // draw call
+    static void Draw(GameStateManager* gameState); // draw call
     ~Renderer(); // destructor
 };
 

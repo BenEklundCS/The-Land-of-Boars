@@ -11,8 +11,11 @@
 
 #include <memory>
 
+/*
+ * The Window class is a Singleton pattern responsible for managing the game window
+ * We can resize the window as well with Window::Resize
+ */
 class Window {
-
 private:
     // windowWidth and windowHeight are set by DEFAULT macros
     int windowWidth_ = DEFAULT_WINDOW_WIDTH;

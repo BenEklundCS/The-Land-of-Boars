@@ -2,6 +2,12 @@
 // Created by ben on 5/18/24.
 //
 
+/*
+ * The following is essentially a hardcoded texture loader with hardcoded paths to my development directory
+ * This must be refactored to find resources dynamically on the target machine at some point
+ *
+ */
+
 #ifndef PLATFORMER_TEXTUREMANAGER_H
 #define PLATFORMER_TEXTUREMANAGER_H
 
@@ -34,25 +40,26 @@
 #define BOAR_RUNNING_FRAMES 6
 
 // Player Spritesheet offsets
-#define PLAYER_IDLESHEET_OFFSET -16
-#define PLAYER_RUNSHEET_OFFSET -12
+#define PLAYER_IDLESHEET_OFFSET (-16)
+#define PLAYER_RUNSHEET_OFFSET (-12)
 
 // Boar stuff
 #define BOAR_TEXTURE_RUNNING_PATH_WHITE "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Mob/Boar/Run/Run-Sheet-White.png"
 #define BOAR_RUNNING_TEXTURE_WHITE "boarTextureWhite"
 
 // Tiles
-#define TILE_TEXTURE_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Assets/Tiles.png"
+#define TILE_TEXTURE_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Assets/Tiles.png" // Texture path
 #define TILE_GRASS_TEXTURE "tileGrassTexture"
 #define TILE_DIRT_TEXTURE "tileDirtTexture"
 
-#define TILE_LENGTH 80
+#define TILE_LENGTH 80 // Offset for finding tiles on the sprite sheet
 
 struct GameTexture {
     Texture2D texture;
     Rectangle rect;
 };
 
+// Texture Manager loads all textures as a Singleton, and has a GetTexture method to retrieve loaded texture objects
 class TextureManager {
 private:
     static std::unique_ptr<TextureManager> instance;

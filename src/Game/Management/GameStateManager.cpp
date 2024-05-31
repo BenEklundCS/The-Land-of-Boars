@@ -3,9 +3,10 @@
 //
 
 #include "../../../include/Platform/Renderer.h"
-#include "../../../include/Game/Management/GameStateManager.h"
 
-GameStateManager::GameStateManager() = default;
+GameStateManager::GameStateManager() {
+    levelOver = false;
+}
 
 // Update all game objects and handle collisions
 void GameStateManager::Update() {
@@ -66,10 +67,12 @@ void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
 
 // Init the camera to its base target, offset, rotation, and zoom.
 // Currently, supports only one player.
+// Call this function just before attempting to render the GameState
+// DO NOT CALL UNLESS players_ HAS AT LEAST ONE PLAYER
 void GameStateManager::InitCamera() {
     Player* player1 = players_.at(0).get();
     camera.target = (Vector2){ player1->GetPosition().x + 20.0f, player1->GetPosition().y + 20.0f };
-    camera.offset = (Vector2){ (float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f };
+    camera.offset = (Vector2){ (float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
 }

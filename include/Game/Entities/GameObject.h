@@ -9,6 +9,7 @@
 
 class Player; // forward declaration, as Player is an instance of GameObject
 
+// Definitions of GameObject types
 enum GameObjectType {
     PLAYER,
     PLATFORM,
@@ -17,19 +18,21 @@ enum GameObjectType {
     OTHER
 };
 
+// A GameObject contains information about the position, dimensions, and type of the GameObject
+// GameObjects are drawable, and updatable with overrides
 class GameObject {
 protected:
     Vector2 position_{};
     Vector2 dimensions_{};
 public:
-    GameObjectType type_;
+    GameObjectType type_; // The type of GameObject used for identification in loops
     explicit GameObject(GameObjectType type = OTHER);
-    Vector2 GetPosition();
-    virtual void Update() = 0;
-    virtual void Draw() = 0;
+    Vector2 GetPosition(); // Get the current position Vector2
+    virtual void Update() = 0; // Update the GameObject
+    virtual void Draw() = 0; // Draw the GameObject
     virtual void CollideWithPlayer(Player* player);
-    Rectangle GetRect();
-    virtual ~GameObject();
+    Rectangle GetRect(); // Get the current GameObject rect
+    virtual ~GameObject(); // Destructor
 };
 
 #endif //PLATFORMER_GAMEOBJECT_H
