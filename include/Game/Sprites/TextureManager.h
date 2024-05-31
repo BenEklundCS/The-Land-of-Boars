@@ -62,20 +62,20 @@ struct GameTexture {
 // Texture Manager loads all textures as a Singleton, and has a GetTexture method to retrieve loaded texture objects
 class TextureManager {
 private:
-    static std::unique_ptr<TextureManager> instance;
-    std::map<std::string, GameTexture> Textures;
+    static std::unique_ptr<TextureManager> instance; // Instance of texture manager
+    std::map<std::string, GameTexture> Textures; // Map of textures
     void LoadAnimatedTexture(const char * filePath, int offset, int frames, const std::string& textureName);
-    void LoadTexture(Texture2D texture, const std::string& textureName, Rectangle rect);
-    void Emplace(const std::string& textureName, GameTexture gameTexture);
-    void LoadPlayerTextures();
-    void LoadTileTextures();
-    void LoadMonsterTextures();
-    void LoadOtherTextures();
+    void LoadTexture(Texture2D texture, const std::string& textureName, Rectangle rect); // Load a texture
+    void Emplace(const std::string& textureName, GameTexture gameTexture); // Emplace a texture into the texture map
+    void LoadPlayerTextures(); // Load player textures
+    void LoadTileTextures(); // Load tile textures
+    void LoadMonsterTextures(); // Load monster textures
+    void LoadOtherTextures(); // Load all other textures
 public:
     TextureManager();
-    static TextureManager* GetInstance();
-    void LoadTextures();
-    GameTexture GetTexture(const std::string& texture);
+    static TextureManager* GetInstance(); // Get the TextureManager instance
+    void LoadTextures(); // Load all textures
+    GameTexture GetTexture(const std::string& texture); // Get a texture by name
     ~TextureManager();
 };
 
