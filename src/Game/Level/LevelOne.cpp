@@ -33,17 +33,23 @@ std::unique_ptr<GameStateManager> LevelOne::GetGameState() {
     }
      */
 
-    auto tileManager = std::make_unique<TileManager>(Vector2{0, 0});
+    auto tileManager = std::make_unique<TileManager>(Vector2{1000, 1000});
 
     std::vector<std::vector<int>> tileMap = {
-            {0, 0, 1, 1, 0, 0, 0, 0, 1, 1},
-            {1, 1, 0, 0, 0, 0, 1, 1, 0, 0},
+            {0, 0, 1, 1, 0, 1, 1},
+            {1, 1, 2, 2, 1, 0, 0, 1},
+            {1, 1, 0, 0, 1, 0, 0},
             // Add more rows as needed
     };
 
     tileManager->CreateTiles(tileMap);
+    std::vector<std::unique_ptr<Tile>> tiles = tileManager->GetTiles();
 
-    gameState->AddObject(std::move(tileManager));
+    for (auto& tile : tiles) {
+        if (tile != nullptr) {
+            gameState->AddObject(std::move(tile));
+        }
+    }
 
     gameState->AddObject(std::move(platform1));
     gameState->AddObject(std::move(platform2));

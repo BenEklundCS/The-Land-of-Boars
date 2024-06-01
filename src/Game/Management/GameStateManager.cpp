@@ -28,9 +28,7 @@ void GameStateManager::UpdatePlayers() {
         }
         // Iterate over any other objects to check for collisions (especially TILEs)
         for (auto& other : otherObjects_) {
-            if (other->type_ == TILE) {
-                player->PlatformCollision(other.get());
-            }
+            player->PlatformCollision(other.get());
         }
     }
 }
@@ -46,15 +44,14 @@ void GameStateManager::UpdateMonsters() {
             monster->PlatformCollision(platform.get());
         }
         for (auto& other : otherObjects_) {
-            if (other->type_ == TILE) {
-                monster->PlatformCollision(other.get());
-            }
+            monster->PlatformCollision(other.get());
         }
     }
 }
 
 // Add a game object to the GameStateManager. The GameStateManager maintains unique_ptr ownership over Objects.
 // Make sure to pass a std::unique_ptr<GameObject> to it using std::move()
+// Do not add nullptr objects, undefined behavior
 void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
     allGameObjects_.push_back(obj.get());
     if (obj->type_ == PLAYER) {

@@ -10,14 +10,14 @@
 #include "../Entities/Objects/Tile.h"
 
 // The TileManager is a drawable GameObject, simplifying the management of its tiles
-class TileManager : public GameObject {
+class TileManager {
 private:
+    Vector2 position_;
     std::vector<std::vector<std::unique_ptr<Tile>>> tiles_;
 public:
     TileManager(Vector2 position);
-    void Draw() override;
-    void Update() override;
     void CreateTiles(std::vector<std::vector<int>> tileMap_);
+    std::vector<std::unique_ptr<Tile>> GetTiles();
 };
 
 

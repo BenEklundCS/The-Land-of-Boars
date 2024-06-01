@@ -4,18 +4,10 @@
 
 #include "../../../include/Game/Management/TileManager.h"
 
-void TileManager::Draw() {
-    for (auto& tile_vector : tiles_) {
-        for (auto& tile : tile_vector) {
-            if (tile != nullptr) {
-                tile->Draw();
-            }
-        }
-    }
-}
-
-void TileManager::Update() {}
-
+// Create tiles creates a tilemap given a 2d vector of integers
+// - 0 for GRASS
+// - 1 for DIRT
+// - 2 for EMPTY (nullptr)
 void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
     // Resize tiles_ to match the size of tileMap
     tiles_.resize(tileMap.size());
@@ -38,6 +30,18 @@ void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
             }
         }
     }
+}
+
+// GetTiles returns a flattened Vector representing the tile objects
+// May return nullptr tiles for empty tiles
+std::vector<std::unique_ptr<Tile>> TileManager::GetTiles() {
+    std::vector<std::unique_ptr<Tile>> tiles;
+    for (auto & tile_vector : tiles_) {
+        for (auto & tile : tile_vector) {
+            tiles.push_back(std::move(tile));
+        }
+    }
+    return tiles;
 }
 
 TileManager::TileManager(Vector2 position) {
