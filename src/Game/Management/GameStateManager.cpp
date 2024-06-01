@@ -15,6 +15,7 @@ void GameStateManager::Update() {
     // Update all game objects and handle collisions
     UpdatePlayers(); // update Players
     UpdateMonsters(); // update Monsters
+
 }
 
 // Update all players in the scene by iterating over the players, calling update, and then checking for collisions
@@ -43,6 +44,11 @@ void GameStateManager::UpdateMonsters() {
         }
         for (auto& platform : platforms_) {
             monster->PlatformCollision(platform.get());
+        }
+        for (auto& other : otherObjects_) {
+            if (other->type_ == TILE) {
+                monster->PlatformCollision(other.get());
+            }
         }
     }
 }
