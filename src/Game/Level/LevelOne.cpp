@@ -6,61 +6,56 @@
 #include "../../../include/Game/Management/TileManager.h"
 
 std::unique_ptr<GameStateManager> LevelOne::GetGameState() {
+#pragma region main game objects
     auto player = std::make_unique<Player>();
     auto gameState = std::make_unique<GameStateManager>();
 
     gameState->AddObject(std::move(player));
+#pragma endregion
 
-    auto platform1 = std::make_unique<Platform>(0, (float) GetScreenHeight() - 100, (float) GetScreenWidth(), 100,
-                                                DARKBROWN);
-    auto platform2 = std::make_unique<Platform>(550, (float) GetScreenHeight() - 400, 500, 50, BLACK);
+
+#pragma region platforms
     auto platform3 = std::make_unique<Platform>(1300, (float) GetScreenHeight() - 700, 500, 50, BLACK);
     auto platform4 = std::make_unique<Platform>(550, 300, 500, 50, BLACK);
 
-    float floorHeight = (float) GetScreenHeight() - 100;
-
-    /*
-    for (int i = 0; i < 4000; i++) {
-        auto tile = std::make_unique<Tile>(-1000 + i * 100, floorHeight - 1000, TILE_GRASS_TEXTURE);
-        gameState->AddObject(std::move(tile));
-    }
+    gameState->AddObject(std::move(platform3));
+    gameState->AddObject(std::move(platform4));
+#pragma endregion
 
 
+#pragma region game tiles
+    // Get the TileManager
+    auto tileManager = std::make_unique<TileManager>(Vector2{-2000, 0});
+    // Define the main game map
+    const int mapWidth = 500;
+    const int mapHeight = 50;
+    const int tilesStartAtX = 20;
+    const int tilesStartAtY = 15;
+    std::vector<std::vector<int>> tileMap(mapHeight, std::vector<int>(mapWidth));
+    for (int i = 0; i < mapWidth; i++)
+        tileMap[tilesStartAtY-1][i] = 2;
+    for (int i = 0; i < mapWidth; i++)
+        for (int j = tilesStartAtY; j < mapHeight; j++)
+            tileMap[j][i] = 1;
 
-    for (int i = 0; i < 100000; i++) {
-        auto boar = std::make_unique<Boar>(1000 + i * 10, 200, 100, 100, MonsterState::PACING);;
-        gameState->AddObject(std::move(boar));
-    }
-     */
-
-    auto tileManager = std::make_unique<TileManager>(Vector2{1000, 1000});
-
-    std::vector<std::vector<int>> tileMap = {
-            {0, 0, 1, 1, 0, 1, 1},
-            {1, 1, 2, 2, 1, 0, 0, 1},
-            {1, 1, 0, 0, 1, 0, 0},
-            // Add more rows as needed
-    };
 
     tileManager->CreateTiles(tileMap);
     std::vector<std::unique_ptr<Tile>> tiles = tileManager->GetTiles();
 
     for (auto& tile : tiles) {
-        if (tile != nullptr) {
-            gameState->AddObject(std::move(tile));
-        }
+
+        gameState->AddObject(std::move(tile));
+
     }
+#pragma endregion
 
-    gameState->AddObject(std::move(platform1));
-    gameState->AddObject(std::move(platform2));
-    gameState->AddObject(std::move(platform3));
-    gameState->AddObject(std::move(platform4));
 
+#pragma region monsters
     auto monster1 = std::make_unique<Boar>(1000, 200, 100, 100, MonsterState::PACING);
     auto monster2 = std::make_unique<Boar>(2000, GetScreenHeight() - 200, 100, 100, MonsterState::DEFAULT);
 
     gameState->AddObject(std::move(monster1));
     gameState->AddObject(std::move(monster2));
-
+#pragma endregion
     return gameState;
 }

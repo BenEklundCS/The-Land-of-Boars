@@ -5,7 +5,6 @@
 
 
 #include "../../../../include/Game/Entities/Player/Player.h"
-#include "../../../../include/Game/Sprites/TextureManager.h"
 
 Player::Player() : GameObject(PLAYER), playerAnimation_(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE),
                                                         PLAYER_IDLE_FRAMES, 0.2f, true) {
@@ -120,6 +119,7 @@ void Player::Jump(float deltaTime) {
 }
 
 void Player::HandlePlayerInput(float deltaTime) {
+#pragma region player controls
     if (IsKeyDown(KEY_LEFT)) { // move left
         MoveLeft(deltaTime);
     }
@@ -134,6 +134,7 @@ void Player::HandlePlayerInput(float deltaTime) {
 
         Jump(deltaTime);
     }
+#pragma endregion
 }
 
 // Respond to a platform collision, adjusting the players position and velocity

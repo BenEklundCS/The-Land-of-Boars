@@ -15,6 +15,7 @@
 #include "../GameObject.h"
 #include "../PhysicsConstants.h"
 #include "../../Sprites/Animation.h"
+#include "../../../../src/Platform/Settings.cpp"
 
 // Definitions for PlayerState types
 enum PlayerState {

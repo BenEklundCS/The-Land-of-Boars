@@ -19,13 +19,13 @@ void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
         for (int j = 0; j < tileMap[i].size(); ++j) {
             switch (tileMap[i][j]) {
                 case 0:
-                    tiles_[i][j] = std::make_unique<Tile>(position_.x + j * 100, position_.y + i * 100, TILE_GRASS_TEXTURE);
+                    tiles_[i][j] = nullptr;
                     break;
                 case 1:
-                    tiles_[i][j] = std::make_unique<Tile>(position_.x + j * 100, position_.y + i * 100, TILE_DIRT_TEXTURE);
+                    tiles_[i][j] = std::make_unique<Tile>(position_.x + j * 90, position_.y + i * 90, TILE_DIRT_TEXTURE);
                     break;
                 case 2:
-                    tiles_[i][j] = nullptr; // empty space/no tile
+                    tiles_[i][j] = std::make_unique<Tile>(position_.x + j * 90, position_.y + i * 90, TILE_GRASS_TEXTURE);
                     break;
             }
         }
@@ -33,14 +33,13 @@ void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
 }
 
 // GetTiles returns a flattened Vector representing the tile objects
-// May return nullptr tiles for empty tiles
+// Handles the nullptrs and does not return them to the outside
 std::vector<std::unique_ptr<Tile>> TileManager::GetTiles() {
     std::vector<std::unique_ptr<Tile>> tiles;
-    for (auto & tile_vector : tiles_) {
-        for (auto & tile : tile_vector) {
-            tiles.push_back(std::move(tile));
-        }
-    }
+    for (auto & tile_vector : tiles_)
+        for (auto & tile : tile_vector)
+            if (tile != nullptr)
+                tiles.push_back(std::move(tile));
     return tiles;
 }
 

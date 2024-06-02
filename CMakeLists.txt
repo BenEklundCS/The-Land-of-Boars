@@ -25,6 +25,7 @@ set(PLATFORM_SOURCES
         src/Platform/Window.cpp
         src/Platform/Renderer.cpp
         src/Platform/Engine.cpp
+        src/Platform/Settings.cpp
 )
 
 set(GAME_MANAGEMENT_SOURCES
