@@ -34,7 +34,7 @@ void Renderer::Draw(GameStateManager* gameState) {
     BeginMode2D(camera);
     // Render the background
     RenderBackground(camera);
-    // Render FPS if FPS_ENABLED
+    // Render FPS
 
     RenderFPS(camera);
 
