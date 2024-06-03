@@ -46,6 +46,7 @@ private:
     PlayerState last_state_; // Previous player state
     bool movingRight_; // Flag to check x direction
     int jumps_ = 0; // Jump counter used to check if we can jump
+    float jumpCooldown_ = 0.0f;
     int hp_ = PLAYER_MAX_HP; // Current player hp
 public:
     GameObjectType type_ = PLAYER;

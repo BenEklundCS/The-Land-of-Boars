@@ -17,7 +17,7 @@ void Renderer::RenderBackground(Camera2D camera) {
     Vector2 backgroundPosition = { camera.target.x - (float)GetScreenWidth() / 2, camera.target.y - (float)GetScreenHeight() / 2 };
     // Render the background.texture across the full screen's dimensions
     DrawTexturePro(background.texture, background.rect,
-                   Rectangle{ backgroundPosition.x, backgroundPosition.y,(float)GetScreenWidth(), (float)GetScreenHeight()},
+                   Rectangle{backgroundPosition.x, backgroundPosition.y,(float)GetScreenWidth(), (float)GetScreenHeight()},
                    Vector2{0, 0}, 0, WHITE);
 }
 
