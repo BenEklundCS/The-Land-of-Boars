@@ -14,6 +14,7 @@ The project uses modern C++ features, including `std::unique_ptr` for memory man
 1. **Install Dependencies**:
    - C++ compiler
    - Raylib
+   - CMakeLists should build these things for you, but I'm not to the point of testing that yet :) 
 
 2. **Build**:
    ```bash
