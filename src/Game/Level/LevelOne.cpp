@@ -15,8 +15,8 @@ std::unique_ptr<GameStateManager> LevelOne::GetGameState() {
 
 
 #pragma region platforms
-    auto platform3 = std::make_unique<Platform>(1300, (float) GetScreenHeight() - 700, 500, 50, BLACK);
-    auto platform4 = std::make_unique<Platform>(550, 300, 500, 50, BLACK);
+    auto platform3 = std::make_unique<Platform>(1300, 300, 500, 50, BLACK);
+    auto platform4 = std::make_unique<Platform>(550, (float) GetScreenHeight() - 700, 500, 50, BLACK);
 
     gameState->AddObject(std::move(platform3));
     gameState->AddObject(std::move(platform4));
@@ -26,6 +26,8 @@ std::unique_ptr<GameStateManager> LevelOne::GetGameState() {
 #pragma region game tiles
     // Get the TileManager
     auto tileManager = std::make_unique<TileManager>(Vector2{-2000, 0});
+
+
     // Define the main game map
     const int mapWidth = 500;
     const int mapHeight = 50;
@@ -38,6 +40,15 @@ std::unique_ptr<GameStateManager> LevelOne::GetGameState() {
         for (int j = tilesStartAtY; j < mapHeight; j++)
             tileMap[j][i] = 1;
 
+    // Wall on the left
+    for (int i = 0; i < 15; i++) {
+        for (int j = 0; j < 15; j++) {
+            tileMap[i][j] = 1;
+        }
+    }
+    for (int i = 0; i < 15; i++) {
+        tileMap[0][i] = 2;
+    }
 
     tileManager->CreateTiles(tileMap);
     std::vector<std::unique_ptr<Tile>> tiles = tileManager->GetTiles();

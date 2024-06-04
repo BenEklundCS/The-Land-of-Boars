@@ -128,18 +128,19 @@ void Player::HandlePlayerInput(float deltaTime) {
     }
     // Handle jumping and jump animation state management
     if ((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)) && jumps_ <= MAX_JUMPS) { // jump
-        jumps_++;
-
-            playerAnimation_.Reset();
-
-        Jump(deltaTime);
+        jumps_++; // Increment jumps
+        playerAnimation_.Reset(); // Reset the player's animation on Jump (handles double jump animating)
+        Jump(deltaTime); // Call jump to make the player jump
     }
 #pragma endregion
 }
 
 // Respond to a platform collision, adjusting the players position and velocity
+// Invoke this method when the player should interact with the passed GameObject as if it is a solid block/platform/tile
 void Player::PlatformCollision(GameObject* obj) {
+    // Check to see if the objects have collided
     if (CheckCollisionRecs(GetRect(), obj->GetRect())) {
+        // If so, we do some crazy math to handle the collision with the Platform
         Rectangle playerRect = GetRect();
         Rectangle platformRect = obj->GetRect();
 
@@ -187,23 +188,35 @@ bool Player::CheckPlayerDeath() const {
 void Player::AnimatePlayer() {
     // Call Animate to get the next rect
     playerAnimation_.Animate();
-    // Check to see if we need to load a new animation
+
+    // Check to see if we need to load a new animation to playerAnimation_
+        // We need to load a new animation if state_ != last_state_
     if (state_ != last_state_) {
+
         // Changing state, so get the TextureManager so we can load the next animation
         TextureManager* textureManager = TextureManager::GetInstance();
+
         // Check to see if we need to load the PLAYER animation
-        if (state_ == IDLE && last_state_ != IDLE) { // replay the idle animation (replay == true)
+        if (state_ == IDLE) {
             float idleAnimationSpeed = 0.2f;
+            // Invoke the Animation constructor to load a new animation with the IDLE state, and properties
+            // replay the idle animation (replay == true)
             playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_IDLE_TEXTURE), PLAYER_IDLE_FRAMES, idleAnimationSpeed, true);
         }
+
         // Check to see if we need to load the RUNNING animation
-        else if (state_ == RUNNING && last_state_ != RUNNING) { // replay the running animation (replay == true)
+        else if (state_ == RUNNING) {
             float runningAnimationSpeed = 0.2f;
+            // Invoke the Animation constructor to load a new animation with the RUNNING state, and properties
+            // replay the running animation (replay == true)
             playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_RUNNING_TEXTURE), PLAYER_RUNNING_FRAMES, runningAnimationSpeed, true);
         }
+
         // Check to see if we need to load the JUMPING animation
-        else if (state_ == JUMPING && last_state_ != JUMPING) { // do not replay the jump animation (replay == false)
+        else if (state_ == JUMPING) {
             float jumpingAnimationSpeed = 0.075f;
+            // Invoke the Animation constructor to load a new animation with the JUMPING state, and properties
+            // do not replay the jump animation (replay == false)
             playerAnimation_ = Animation(textureManager->GetTexture(PLAYER_JUMPING_TEXTURE), PLAYER_JUMPING_FRAMES, jumpingAnimationSpeed, false);
         }
     }
