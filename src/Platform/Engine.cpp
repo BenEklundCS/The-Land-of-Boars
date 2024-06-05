@@ -44,7 +44,7 @@ void Engine::RenderLevelScene(std::unique_ptr<GameStateManager> gameState) {
         // show ImGui Content
         bool open = true;
         ImGui::ShowDemoWindow(&open);
-
+        ImGui::ShowMetricsWindow();
         rlImGuiEnd();
         TraceLog(LOG_INFO, "ImGui frame rendered");
 
