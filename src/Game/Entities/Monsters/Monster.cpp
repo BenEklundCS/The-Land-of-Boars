@@ -17,6 +17,8 @@ Monster::Monster(float pos_x, float pos_y, float dim_x, float dim_y, MonsterStat
     this->velocity_ = Vector2{0, 0};
 }
 
+#pragma region render methods
+
 void Monster::Update() {
     MoveMonster();
     float deltaTime = GetFrameTime();
@@ -27,6 +29,10 @@ void Monster::Update() {
 void Monster::Draw() {
     DrawRectangle((int)position_.x, (int)position_.y, (int)dimensions_.x, (int)dimensions_.y, RED);
 }
+
+#pragma endregion
+
+#pragma region object collisions
 
 // Monster implements its own collision with the player
 // Will deal damage to the player, or end the game
@@ -71,6 +77,10 @@ void Monster::PlatformCollision(GameObject* obj) {
     }
 }
 
+#pragma endregion
+
+#pragma region update methods
+
 void Monster::MoveMonster() {
     // If the monster is pacing, calculate boundaries and move between them
     if (this->state_ == PACING) {
@@ -100,3 +110,5 @@ void Monster::ApplyGravity(float deltaTime) {
         velocity_.y += GRAVITY * deltaTime;
     }
 }
+
+#pragma endregion

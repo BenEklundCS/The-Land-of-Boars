@@ -10,14 +10,14 @@ Tile::Tile(float x, float y, std::string tileTexture) : GameObject(TILE), textur
     position_ = Vector2{x, y};
 }
 
-void Tile::SetTexture(GameTexture texture) {
-    texture_ = texture;
-}
-
 void Tile::Draw() {
     DrawTexturePro(texture_.texture, texture_.rect, GetRect(), Vector2{0, 0}, 0, WHITE);     // Draw the texture
 }
 
 void Tile::Update() {
 
+}
+
+void Tile::SetTexture(GameTexture texture) {
+    texture_ = texture;
 }

@@ -13,6 +13,8 @@ boarAnimation_(TextureManager::GetInstance()->GetTexture(BOAR_RUNNING_TEXTURE_WH
 
 }
 
+#pragma region render methods
+
 void Boar::Draw() {
     // Get the playerTexture sheet and currentRect from the Animation object
     Texture2D boarTexture = boarAnimation_.GetTexture();
@@ -26,4 +28,6 @@ void Boar::Update() {
     boarAnimation_.Animate();
     Monster::Update();
 }
+
+#pragma endregion
 

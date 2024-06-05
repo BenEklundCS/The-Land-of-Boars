@@ -8,6 +8,8 @@ GameStateManager::GameStateManager() {
     levelOver = false;
 }
 
+#pragma region update gameState methods
+
 // Update all game objects and handle collisions
 void GameStateManager::Update() {
     // Update the camera
@@ -49,6 +51,10 @@ void GameStateManager::UpdateMonsters() {
     }
 }
 
+#pragma endregion
+
+#pragma region object loading/interaction
+
 // Add a game object to the GameStateManager. The GameStateManager maintains unique_ptr ownership over Objects.
 // Make sure to pass a std::unique_ptr<GameObject> to it using std::move()
 // Do not add nullptr objects, undefined behavior
@@ -67,6 +73,15 @@ void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
         otherObjects_.push_back(std::move(obj));
     }
 }
+
+// Return the full GameObject* vector
+std::vector<GameObject*> GameStateManager::GetAllObjects() {
+    return allGameObjects_;
+}
+
+#pragma endregion
+
+#pragma region game state methods
 
 // Init the camera to its base target, offset, rotation, and zoom.
 // Currently, supports only one player.
@@ -101,10 +116,7 @@ Camera2D GameStateManager::GetCamera() {
     return camera;
 }
 
-// Return the full GameObject* vector
-std::vector<GameObject*> GameStateManager::GetAllObjects() {
-    return allGameObjects_;
-}
+#pragma endregion
 
 // Cleanup the vectors on destruct
 GameStateManager::~GameStateManager() {
