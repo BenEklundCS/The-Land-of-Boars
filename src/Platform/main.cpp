@@ -1,6 +1,6 @@
 #include <cstdlib>
 #include "../../include/Platform/Engine.h"
-/*
+
 int main() {
 
     Engine gameEngine = Engine();
@@ -9,11 +9,9 @@ int main() {
 
     exit(EXIT_SUCCESS);
 
-
-
 }
-*/
 
+/*
 int main() {
     // Initialize window
     int screenWidth = 1280;
@@ -56,3 +54,4 @@ int main() {
 
     return 0;
 }
+*/

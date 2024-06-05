@@ -23,7 +23,7 @@ void Engine::StartGame() {
     // Start ImGUI
     // Start ImGUI
     TraceLog(LOG_INFO, "Setting up ImGui");
-    rlImGuiSetup(true);
+    debug_gui_.InitGui();
     TraceLog(LOG_INFO, "ImGui setup complete");
     // Start each level
     for (auto& level : levels) {
@@ -37,19 +37,10 @@ void Engine::StartGame() {
 void Engine::RenderLevelScene(std::unique_ptr<GameStateManager> gameState) {
     while (!WindowShouldClose() && !gameState->IsLevelOver()) {
         gameState->Update();        // Update the scene in every frame
-        BeginDrawing();
-        ClearBackground(WHITE);
-        rlImGuiBegin();
-        // show ImGui Content
-        // show ImGui Content
-        bool open = true;
-        ImGui::ShowDemoWindow(&open);
-        ImGui::ShowMetricsWindow();
-        rlImGuiEnd();
-        TraceLog(LOG_INFO, "ImGui frame rendered");
-
-        Renderer::Draw(gameState.get());   // Draw the scene using the renderer
-        EndDrawing();
+        BeginDrawing();             // Setup canvas (framebuffer) to start drawing
+        Renderer::Draw(gameState.get());    // Draw the scene using the renderer
+        debug_gui_.DrawGui(gameState.get());// Draw the Debug GUI using the debug gui class
+        EndDrawing();               // End canvas drawing and swap buffers (double buffering)
     }
 }
 
