@@ -20,9 +20,6 @@ void Engine::StartGame() {
     Window* window = Window::GetInstance();
     // Load all the levels
     LoadLevels();
-    // Start ImGUI
-    debug_gui_ = DebugGUI();
-    DebugGUI::InitGui();
     // Start each level
     for (auto& level : levels) {
         auto gameState = level->GetGameState();
@@ -35,7 +32,6 @@ void Engine::StartGame() {
 void Engine::RenderLevelScene(std::unique_ptr<GameStateManager> gameState) {
     while (!WindowShouldClose() && !gameState->IsLevelOver()) {
         gameState->Update();        // Update the scene in every frame
-        debug_gui_.DrawGui(gameState.get());
         Renderer::Draw(gameState.get());   // Draw the scene using the renderer
     }
 }
