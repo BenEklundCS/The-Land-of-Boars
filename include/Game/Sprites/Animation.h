@@ -26,6 +26,7 @@ public:
     void Animate(); // Get the next frame of the animation
     void Reset(); // Reset to the first frame
     void FlipX(bool movingRight); // Flip the animation across the X axis
+    bool IsDone() const;
 };
 
 

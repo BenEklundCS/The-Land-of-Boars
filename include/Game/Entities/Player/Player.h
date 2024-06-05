@@ -5,10 +5,10 @@
 #ifndef PLATFORMER_PLAYER_H
 #define PLATFORMER_PLAYER_H
 
-#define PLAYER_LENGTH 150
 #define PLAYER_SPEED 200
 #define MAX_JUMPS 1
 #define PLAYER_MAX_HP 3
+#define PLAYER_LENGTH 150
 
 #include <memory>
 #include "raylib.h"
@@ -16,6 +16,7 @@
 #include "../PhysicsConstants.h"
 #include "../../Sprites/Animation.h"
 #include "../../../../src/Platform/Settings.cpp"
+#include "../../Sprites/TextureManager.h"
 
 // Definitions for PlayerState types
 enum PlayerState {
@@ -24,12 +25,34 @@ enum PlayerState {
     JUMPING
 };
 
+struct playerDataStruct {
+    // general properties
+    Color color_ = WHITE;
+    int hp_ = PLAYER_MAX_HP; // Current player hp
+
+    // animation
+    bool movingRight_ = true; // Flag to check x direction
+    bool hasBeenHit_ = false;
+    float timeSinceHit_ = 0.0f;
+    float timeStepForFlash_ = 0.0f;
+    float flashToggle_ = false;
+
+    std::unique_ptr<Animation> playerAnimation_; // player animation
+    PlayerState state_ = IDLE; // Player state
+    PlayerState last_state_ = IDLE; // Previous player state
+
+    // movement
+    Vector2 velocity_{0, 15}; // Player velocity vector
+    int jumps_ = 0; // Jump counter used to check if we can jump
+};
+
 // Player is a GameObject with all player logic encapsulated
 class Player : public GameObject {
 private:
     // Methods
     void MovePlayer(float deltaTime); // Move the player for the current frame
     void UpdatePosition(); // Update the player position based on its velocity
+    void UpdateFlashing(float deltaTime); // Handle flashing red of the player
     void ApplyFriction(float deltaTime); // Friction
     void ApplyGravity(float deltaTime); // Gravity
     void HandlePlayerInput(float deltaTime); // Input handling
@@ -40,14 +63,7 @@ private:
     void VelocityBound(); // Prevent the players velocity from increasing past the bound
     [[nodiscard]] bool CheckPlayerDeath() const; // Check if the player is dead
     // Attributes
-    Vector2 velocity_{0, 15}; // Player velocity vector
-    Animation playerAnimation_; // Player animation
-    PlayerState state_; // Player state
-    PlayerState last_state_; // Previous player state
-    bool movingRight_; // Flag to check x direction
-    int jumps_ = 0; // Jump counter used to check if we can jump
-    float jumpCooldown_ = 0.0f;
-    int hp_ = PLAYER_MAX_HP; // Current player hp
+    playerDataStruct playerData;
 public:
     GameObjectType type_ = PLAYER;
     Player();

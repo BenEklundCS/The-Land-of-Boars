@@ -32,7 +32,7 @@ void Monster::Draw() {
 // Will deal damage to the player, or end the game
 void Monster::CollideWithPlayer(Player* player) {
     if (CheckCollisionRecs(player->GetRect(), GetRect())) {
-        TraceLog(LOG_INFO, "Touched");
+        player->HitPlayer();
     }
 }
 
