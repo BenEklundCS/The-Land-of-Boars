@@ -12,16 +12,10 @@ void DebugGUI::DrawGui(GameStateManager *gameState) {
     int player_one = 0;
     playerDataStruct* playerData = gameState->GetPlayerData(player_one);
 
-    // Start imgui frame
+    TraceLog(LOG_INFO, "Drawing ImGUI");
     rlImGuiBegin();
-
-    // Render imgui
-    ImGui::Begin("Hello, world!");
-    ImGui::Text("This is some useful text.");
+    // show ImGui Content
     bool open = true;
     ImGui::ShowDemoWindow(&open);
-    ImGui::End();
-
-    // End imgui frame
     rlImGuiEnd();
 }
