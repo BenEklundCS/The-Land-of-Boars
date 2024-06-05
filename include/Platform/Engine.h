@@ -9,7 +9,9 @@
 #include <vector>
 
 #include "Renderer.h"
+#include "../Platform/DebugGUI.h"
 #include "../Game/Level/Level.h"
+
 
 
 /*
@@ -20,10 +22,11 @@ class Engine {
 private:
     std::vector<std::unique_ptr<Level>> levels;
     int curr = 0;
+    DebugGUI debug_gui_;
 public:
     void StartGame(); // Start the game
     void LoadLevels(); // Load all the game levels
-    static void RenderLevelScene(std::unique_ptr<GameStateManager> scene); // Start the render loop
+    void RenderLevelScene(std::unique_ptr<GameStateManager> scene); // Start the render loop
 };
 
 

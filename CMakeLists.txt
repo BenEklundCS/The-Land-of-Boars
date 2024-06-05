@@ -14,6 +14,23 @@ if (NOT raylib_FOUND)
     FetchContent_MakeAvailable(raylib)
 endif()
 
+# FetchContent for ImGUI
+include(FetchContent)
+FetchContent_Declare(
+        imgui
+        GIT_REPOSITORY https://github.com/ocornut/imgui.git
+        GIT_TAG v1.89.1
+)
+FetchContent_MakeAvailable(imgui)
+
+# FetchContent for rlImGui
+FetchContent_Declare(
+        rlimgui
+        GIT_REPOSITORY https://github.com/raylib-extras/rlImGui.git
+        GIT_TAG main
+)
+FetchContent_MakeAvailable(rlimgui)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
@@ -26,6 +43,7 @@ set(PLATFORM_SOURCES
         src/Platform/Renderer.cpp
         src/Platform/Engine.cpp
         src/Platform/Settings.cpp
+        src/Platform/DebugGUI.cpp
 )
 
 set(GAME_MANAGEMENT_SOURCES
@@ -71,10 +89,21 @@ set(SOURCES
         ${GAME_LEVEL_SOURCES}
         ${GAME_SPRITES_SOURCES}
         ${GAME_HEADERS}
+        ${rlimgui_SOURCE_DIR}/rlImGui.cpp
+        ${imgui_SOURCE_DIR}/imgui.cpp
+        ${imgui_SOURCE_DIR}/imgui_demo.cpp
+        ${imgui_SOURCE_DIR}/imgui_draw.cpp
+        ${imgui_SOURCE_DIR}/imgui_tables.cpp
+        ${imgui_SOURCE_DIR}/imgui_widgets.cpp
 )
 
+# Define executable
 add_executable(${PROJECT_NAME} ${SOURCES})
 
+# Include directories for ImGUI and rlImGui
+target_include_directories(${PROJECT_NAME} PRIVATE ${imgui_SOURCE_DIR} ${rlimgui_SOURCE_DIR})
+
+# Link libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
 
 if(MSVC)

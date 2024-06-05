@@ -3,6 +3,8 @@
 //
 
 #include "../../../include/Platform/Renderer.h"
+#include "../../../include/Game/Management/GameStateManager.h"
+
 
 GameStateManager::GameStateManager() {
     levelOver = false;
@@ -124,4 +126,10 @@ GameStateManager::~GameStateManager() {
     monsters_.clear();
     platforms_.clear();
     otherObjects_.clear();
+}
+
+playerDataStruct* GameStateManager::GetPlayerData(int player_index) {
+    if (player_index <= players_.size() - 1) {
+        return players_[player_index]->GetPlayerData();
+    }
 }

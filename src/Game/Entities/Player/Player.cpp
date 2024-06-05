@@ -5,8 +5,10 @@
 #include "../../../../include/Game/Entities/Player/Player.h"
 
 Player::Player() : GameObject(PLAYER){
+    // Load it here to ensure the TextureManager is queried after the player object is created
     playerData.playerAnimation_ = std::make_unique<Animation>(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE),
                                 PLAYER_IDLE_FRAMES, 0.2f, true);
+    // Construct the primitize GameObject attributes
     position_ = Vector2{100, 100};
     dimensions_ = Vector2{PLAYER_LENGTH, PLAYER_LENGTH};
 }
@@ -191,7 +193,7 @@ void Player::PlatformCollision(GameObject* obj) {
     // Check to see if the objects have collided
     if (CheckCollisionRecs(GetRect(), obj->GetRect())) {
         // If so, we do some crazy math to handle the collision with the Platform
-        Rectangle playerRect = GetRect();
+        Rectangle playerRect = this->GetRect();
         Rectangle platformRect = obj->GetRect();
 
         float deltaX = (playerRect.x + playerRect.width / 2) - (platformRect.x + platformRect.width / 2);
@@ -236,8 +238,10 @@ void Player::HitPlayer() {
 void Player::UpdateFlashing(float deltaTime) {
     playerData.timeSinceHit_ += deltaTime;
     playerData.timeStepForFlash_ += deltaTime;
+
     if (playerData.hasBeenHit_) {
-        if (playerData.timeStepForFlash_ > 0.1f) {
+
+        if (playerData.timeStepForFlash_ > 0.2f) {
             playerData.flashToggle_ = !(bool)playerData.flashToggle_;
             if (playerData.flashToggle_ == false) {
                 playerData.color_ = RED;
@@ -257,6 +261,10 @@ void Player::UpdateFlashing(float deltaTime) {
 
 bool Player::CheckPlayerDeath() const {
     return playerData.hp_ <= 0;
+}
+
+playerDataStruct* Player::GetPlayerData() {
+    return &playerData;
 }
 
 #pragma endregion

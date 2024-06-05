@@ -71,6 +71,7 @@ public:
     void Draw() override; // Draw the player
     void PlatformCollision(GameObject* obj); // Handle a collision with a platform GameObject
     void AnimatePlayer(); // Animate the player
+    playerDataStruct* GetPlayerData();
     void HitPlayer();
 };
 

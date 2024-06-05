@@ -36,6 +36,7 @@ public:
     std::vector<GameObject*> GetAllObjects(); // Get all game objects from the GameState
     void SetLevelOver(); // Set levelOver to true
     bool IsLevelOver() const; // Return the levelOver flag
+    playerDataStruct* GetPlayerData(int player_index);
     void AddObject(std::unique_ptr<GameObject> obj); // Add a GameObject to the scene
     ~GameStateManager(); // Destructor
 };

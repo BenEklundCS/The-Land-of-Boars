@@ -43,6 +43,7 @@ std::vector<std::unique_ptr<Tile>> TileManager::GetTiles() {
     return tiles;
 }
 
+// Constructor
 TileManager::TileManager(Vector2 position) {
     this->position_ = position;
 }
