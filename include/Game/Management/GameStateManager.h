@@ -11,10 +11,18 @@
 #include "../Entities/Player/Player.h"
 #include "../Entities/Monsters/Monster.h"
 #include "../Entities/Objects/Platform.h"
+
+struct gameData {
+    Vector2 playerPosition;
+    const playerDataStruct* playerData;
+};
+
 /*
  * The GameStateManager is responsible for ownership of GameObjects and updating them,
  * as well as any other game state items such as the camera, collisions, or other logic
  */
+// IMPORTANT, GameStateManager uses a Vector to store players_, but currently only supports ONE player.
+// Multiplayer support is not planned for this project.
 class GameStateManager {
 private:
     bool levelOver; // Flag for if the level is over
@@ -36,7 +44,7 @@ public:
     std::vector<GameObject*> GetAllObjects(); // Get all game objects from the GameState
     void SetLevelOver(); // Set levelOver to true
     bool IsLevelOver() const; // Return the levelOver flag
-    playerDataStruct* GetPlayerData(int player_index);
+    const gameData* GetGameData();
     void AddObject(std::unique_ptr<GameObject> obj); // Add a GameObject to the scene
     ~GameStateManager(); // Destructor
 };

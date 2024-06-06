@@ -36,11 +36,13 @@ void Engine::StartGame() {
 // Take a GameStateManager* as a parameter, initialize a renderer, and then render the scene
 void Engine::RenderLevelScene(std::unique_ptr<GameStateManager> gameState) {
     while (!WindowShouldClose() && !gameState->IsLevelOver()) {
-        gameState->Update();        // Update the scene in every frame
+        gameState->Update();        // Update the scene
+        // frame
         BeginDrawing();             // Setup canvas (framebuffer) to start drawing
         Renderer::Draw(gameState.get());    // Draw the scene using the renderer
         debug_gui_.DrawGui(gameState.get());// Draw the Debug GUI using the debug gui class
         EndDrawing();               // End canvas drawing and swap buffers (double buffering)
+        // End frame
     }
 }
 
