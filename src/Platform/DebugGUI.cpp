@@ -10,18 +10,24 @@ void DebugGUI::InitGui() {
 
 void DebugGUI::DrawGui(GameStateManager *gameState) {
     int player_one = 0;
-    playerDataStruct* playerData = gameState->GetPlayerData(player_one);
-
-    // Start imgui frame
+    const gameData* gameData = gameState->GetGameData();
+    const playerDataStruct* playerData = gameData->playerData;
     rlImGuiBegin();
-
-    // Render imgui
-    ImGui::Begin("Hello, world!");
-    ImGui::Text("This is some useful text.");
-    bool open = true;
-    ImGui::ShowDemoWindow(&open);
-    ImGui::End();
-
-    // End imgui frame
+    // show ImGui Content
+    //bool open = true;
+    //ImGui::ShowDemoWindow(&open);
+    ImGui::SetWindowFontScale(2);
+    ImGui::Text("playerData:");
+    ImGui::Text("");
+    ImGui::Text("Position: %fx, %fy", gameData->playerPosition.x, gameData->playerPosition.y);
+    ImGui::Text("Velocity: %fx, %fy", playerData->velocity_.x, playerData->velocity_.y);
+    ImGui::Text("Color %d", ColorToInt(playerData->color_));
+    ImGui::Text("Health: %d", playerData->hp_);
+    ImGui::Text("Jumps: %d", playerData->jumps_);
+    ImGui::Text("State: %u", playerData->state_);
+    ImGui::Text("timeSinceHit: %f", playerData->timeSinceHit_);
     rlImGuiEnd();
+
+    delete gameData;
+
 }

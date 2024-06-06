@@ -29,7 +29,7 @@ void Renderer::RenderFPS(Camera2D camera) {
 
 // Draw all game objects
 void Renderer::Draw(GameStateManager* gameState) {
-    BeginDrawing(); // Setup canvas (framebuffer) to start drawing
+
     Camera2D camera = gameState->GetCamera();
     BeginMode2D(camera);
     // Render the background
@@ -44,8 +44,6 @@ void Renderer::Draw(GameStateManager* gameState) {
     }
 
     EndMode2D();
-    EndDrawing(); // End canvas drawing and swap buffers (double buffering)
-
 }
 
 Renderer::~Renderer() = default;
