@@ -11,21 +11,8 @@ The project uses modern C++ features, including `std::unique_ptr` for memory man
 - Level management
 
 ## Setup
-1. **Install Dependencies**:
-   - C++ compiler
-   - Raylib
-   - CMakeLists should build these things for you, but I'm not to the point of testing that yet :) 
 
-2. **Build**:
-   ```bash
-   mkdir build
-   cd build
-   cmake ..
-   make
-
-3. **Run**:
-
-  ./Platformer
+- Coming Soon 
 
 ## Usage
 
