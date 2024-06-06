@@ -35,7 +35,6 @@ void Renderer::Draw(GameStateManager* gameState) {
     // Render the background
     RenderBackground(camera);
     // Render FPS
-
     RenderFPS(camera);
 
     // For each object in each std::vector of GameObjects, call Draw on the object

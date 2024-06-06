@@ -21,7 +21,7 @@ void DebugGUI::DrawGui(GameStateManager *gameState) {
     ImGui::Text("");
     ImGui::Text("Position: %fx, %fy", gameData->playerPosition.x, gameData->playerPosition.y);
     ImGui::Text("Velocity: %fx, %fy", playerData->velocity_.x, playerData->velocity_.y);
-    ImGui::Text("Color %d", ColorToInt(playerData->color_));
+    ImGui::Text("Color: %d", ColorToInt(playerData->color_));
     ImGui::Text("Health: %d", playerData->hp_);
     ImGui::Text("Jumps: %d", playerData->jumps_);
     ImGui::Text("State: %u", playerData->state_);
