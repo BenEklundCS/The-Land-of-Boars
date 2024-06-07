@@ -134,11 +134,7 @@ void Player::Jump(float deltaTime) {
 void Player::HandlePlayerInput(float deltaTime) {
     if (IsKeyDown(KEY_LEFT)) MoveLeft(deltaTime); // move left on left keypress
     if (IsKeyDown(KEY_RIGHT)) MoveRight(deltaTime); // move right on right keypress
-
-    // Handle jumping and jump animation state management
-    if (CanJump()) { // jump
-        Jump(deltaTime); // Call jump to make the player jump
-    }
+    if (CanJump()) Jump(deltaTime); // make the player jump if can jump
 }
 
 // Animate the player by calling .Animate on the playerAnimation_
