@@ -3,6 +3,7 @@
 //
 
 #include "../../../include/Game/Sprites/TextureManager.h"
+#include "stdexcept"
 
 std::unique_ptr<TextureManager> TextureManager::instance = nullptr;
 
@@ -33,14 +34,19 @@ void TextureManager::LoadPlayerTextures() {
 
 void TextureManager::LoadTileTextures() {
     Texture2D texture = ::LoadTexture(TILE_TEXTURE_PATH);
-    TextureManager::LoadTexture(texture, TILE_GRASS_TEXTURE, Rectangle{0, 0, (float)texture.width/5, (float)texture.height/5});
-    TextureManager::LoadTexture(texture, TILE_DIRT_TEXTURE, Rectangle{0, TILE_LENGTH, (float)texture.width/5, (float)texture.height/5});
+    float tileWidth = 64;
+    float tileHeight = 64;
+    TextureManager::LoadTexture(texture, TILE_GRASS_TEXTURE,
+                                Rectangle{10, TILE_OFFSET, tileWidth, tileHeight});
+    TextureManager::LoadTexture(texture, TILE_DIRT_TEXTURE,
+                                Rectangle{10, TILE_OFFSET + TILE_LENGTH, tileWidth, tileHeight});
 }
 
 void TextureManager::LoadOtherTextures() {
     // Background
     Texture2D backgroundTexture = ::LoadTexture(BACKGROUND_TEXTURE_PATH);
-    TextureManager::LoadTexture(backgroundTexture, BACKGROUND_TEXTURE, Rectangle{0, 0, (float)backgroundTexture.width, (float)backgroundTexture.height});
+    TextureManager::LoadTexture(backgroundTexture, BACKGROUND_TEXTURE,
+                                Rectangle{0, 0, (float)backgroundTexture.width, (float)backgroundTexture.height});
 }
 
 void TextureManager::LoadMonsterTextures() {
@@ -54,6 +60,7 @@ GameTexture TextureManager::GetTexture(const std::string& texture) {
     }
     else {
         TraceLog(LOG_ERROR, "Failed to load texture %s", texture.c_str());
+        throw std::invalid_argument("Texture not found.");
     }
 }
 

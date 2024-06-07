@@ -52,7 +52,8 @@
 #define TILE_GRASS_TEXTURE "tileGrassTexture"
 #define TILE_DIRT_TEXTURE "tileDirtTexture"
 
-#define TILE_LENGTH 80 // Offset for finding tiles on the sprite sheet
+#define TILE_LENGTH 80 // size of a tile
+#define TILE_OFFSET 10 // starting offset to get tile from spritesheet
 
 struct GameTexture {
     Texture2D texture;

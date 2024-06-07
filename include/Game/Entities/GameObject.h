@@ -31,7 +31,7 @@ public:
     virtual void Update() = 0; // Update the GameObject
     virtual void Draw() = 0; // Draw the GameObject
     virtual void CollideWithPlayer(Player* player);
-    Rectangle GetRect(); // Get the current GameObject rect
+    virtual Rectangle GetRect(); // Get the current GameObject rect
     virtual ~GameObject(); // Destructor
 };
 

@@ -50,18 +50,22 @@ struct playerDataStruct {
 class Player : public GameObject {
 private:
     // Methods
+    // Movement methods
     void MovePlayer(float deltaTime); // Move the player for the current frame
     void UpdatePosition(); // Update the player position based on its velocity
-    void UpdateFlashing(float deltaTime); // Handle flashing red of the player
+    void MoveLeft(float deltaTime); // Move the player to the left
+    void MoveRight(float deltaTime); // Move the player to the right
     void ApplyFriction(float deltaTime); // Friction
     void ApplyGravity(float deltaTime); // Gravity
     void HandlePlayerInput(float deltaTime); // Input handling
-    void MoveLeft(float deltaTime); // Move the player to the left
-    void MoveRight(float deltaTime); // Move the player to the right
     void Jump(float deltaTime); // Jump (with double jump!)
-    void ResetJumps(); // Reset the player jump counter
     void VelocityBound(); // Prevent the players velocity from increasing past the bound
+    // Animations
+    void UpdateFlashing(float deltaTime); // Handle flashing red of the player
+    // Player state
     [[nodiscard]] bool CheckPlayerDeath() const; // Check if the player is dead
+    void ResetJumps(); // Reset the player jump counter
+    [[nodiscard]] bool CanJump() const; // Check if the player can jump
     // Attributes
     playerDataStruct playerData;
 public:

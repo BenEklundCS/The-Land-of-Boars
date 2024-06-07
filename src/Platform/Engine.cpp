@@ -7,6 +7,7 @@
 
 // Load all the levels for the game
 void Engine::LoadLevels() {
+    TraceLog(LOG_INFO, "Engine loading levels...");
     auto levelOne = std::make_unique<LevelOne>();
     // auto levelTwo =
     // auto LevelThree =
@@ -16,6 +17,7 @@ void Engine::LoadLevels() {
 
 // Start the game by loading the levels, then playing them in sequence
 void Engine::StartGame() {
+    TraceLog(LOG_INFO, "Engine starting game...");
     // Get the window
     Window* window = Window::GetInstance();
     // Load all the levels
@@ -35,9 +37,10 @@ void Engine::StartGame() {
 
 // Take a GameStateManager* as a parameter, initialize a renderer, and then render the scene
 void Engine::RenderLevelScene(std::unique_ptr<GameStateManager> gameState) {
+    TraceLog(LOG_INFO, "Engine rendering a gameState...");
     while (!WindowShouldClose() && !gameState->IsLevelOver()) {
         gameState->Update();        // Update the scene
-        // frame
+        // Frame
         BeginDrawing();             // Setup canvas (framebuffer) to start drawing
         Renderer::Draw(gameState.get());    // Draw the scene using the renderer
         debug_gui_.DrawGui(gameState.get());// Draw the Debug GUI using the debug gui class

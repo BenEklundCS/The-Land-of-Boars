@@ -6,7 +6,7 @@
 
 Tile::Tile(float x, float y, std::string tileTexture) : GameObject(TILE), texture_(TextureManager::GetInstance()->GetTexture(tileTexture))
                                { // Ensure to instantiate the GameObject!
-    dimensions_ = Vector2{128, 128};
+    dimensions_ = Vector2{TILE_LENGTH, TILE_LENGTH};
     position_ = Vector2{x, y};
 }
 

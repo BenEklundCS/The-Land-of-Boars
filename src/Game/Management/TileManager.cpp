@@ -11,9 +11,12 @@
 void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
     // Resize tiles_ to match the size of tileMap
     tiles_.resize(tileMap.size());
+
     for (int i = 0; i < tileMap.size(); ++i) {
         tiles_[i].resize(tileMap[i].size());
     }
+
+    int tile_overlap = 6;
 
     for (int i = 0; i < tileMap.size(); ++i) {
         for (int j = 0; j < tileMap[i].size(); ++j) {
@@ -22,10 +25,12 @@ void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
                     tiles_[i][j] = nullptr;
                     break;
                 case 1:
-                    tiles_[i][j] = std::make_unique<Tile>(position_.x + j * 90, position_.y + i * 90, TILE_DIRT_TEXTURE);
+                    tiles_[i][j] = std::make_unique<Tile>(position_.x + (float)(j * (TILE_LENGTH - tile_overlap)),
+                                                          position_.y + (float)(i * (TILE_LENGTH - tile_overlap)), TILE_DIRT_TEXTURE);
                     break;
                 case 2:
-                    tiles_[i][j] = std::make_unique<Tile>(position_.x + j * 90, position_.y + i * 90, TILE_GRASS_TEXTURE);
+                    tiles_[i][j] = std::make_unique<Tile>(position_.x + (float)(j * (TILE_LENGTH - tile_overlap)),
+                                                          position_.y + (float)(i * (TILE_LENGTH - tile_overlap)), TILE_GRASS_TEXTURE);
                     break;
             }
         }

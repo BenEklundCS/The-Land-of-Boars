@@ -27,6 +27,7 @@ void Window::Resize(int window_width, int window_height) {
 Window* Window::GetInstance() {
     TraceLog(LOG_INFO, "Window::GetInstance() Invoked."); // Log
     if (instance == nullptr) {
+        TraceLog(LOG_INFO, "Creating window...");
         instance = std::make_unique<Window>(); // Typical singleton stuff, but I've implemented the instance as a unique ptr
     }
     return instance.get(); // if the window already exists, simply return it

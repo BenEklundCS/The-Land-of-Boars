@@ -25,7 +25,7 @@ std::unique_ptr<GameStateManager> LevelOne::GetGameState() {
 
 #pragma region game tiles
     // Get the TileManager
-    auto tileManager = std::make_unique<TileManager>(Vector2{-2000, 0});
+    auto tileManager = std::make_unique<TileManager>(Vector2{-2000, +250});
 
 
     // Define the main game map

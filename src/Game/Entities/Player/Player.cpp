@@ -21,11 +21,16 @@ Player::Player() : GameObject(PLAYER){
 // From the playerTexture. Flips the player across the X axis depending on the movingRight_ boolean.
 void Player::Draw() {
     // Get the playerTexture sheet and currentRect from the Animation object
+
     Texture2D playerTexture = playerData.playerAnimation_->GetTexture();
     Rectangle currentRect = playerData.playerAnimation_->GetCurrentRect();
+
     playerData.playerAnimation_->FlipX(playerData.movingRight_); // flip x axis based on the movingRight_ flag
     // Draw the player utilizing the currently loaded playerTexture, and rect position
     DrawTexturePro(playerTexture, currentRect, GetRect(), Vector2{0, 0}, 0, playerData.color_);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
+
+    // Debug
+    //DrawRectangle(position_.x, position_.y, GetRect().width, GetRect().height, RED);
 }
 
 // Update the player for the frame
@@ -59,13 +64,6 @@ void Player::VelocityBound() {
     // If the players x or y velocity is greater than MAX_VELOCITY,
     if (playerData.velocity_.x > MAX_VELOCITY) playerData.velocity_.x = MAX_VELOCITY;
     if (playerData.velocity_.y > MAX_VELOCITY) playerData.velocity_.y = MAX_VELOCITY;
-}
-
-void Player::ResetJumps() {
-    // If the player's y velocity is 0, they're allowed to jump again
-    if (playerData.velocity_.y == 0) {
-        playerData.jumps_ = 0;
-    }
 }
 
 void Player::MovePlayer(float deltaTime) {
@@ -124,22 +122,21 @@ void Player::MoveRight(float deltaTime) {
 }
 
 void Player::Jump(float deltaTime) {
+    // Set jumps and reset player animation
+    playerData.jumps_++; // Increment jumps
+    playerData.playerAnimation_->Reset(); // Reset the player's animation on Jump (handles double jump animating)
+    // Make the player jump!
     const float jumpPower = 6.5f;
     playerData.state_ = JUMPING;
     playerData.velocity_.y -= PLAYER_SPEED * jumpPower * deltaTime;
 }
 
 void Player::HandlePlayerInput(float deltaTime) {
-    if (IsKeyDown(KEY_LEFT)) { // move left
-        MoveLeft(deltaTime);
-    }
-    if (IsKeyDown(KEY_RIGHT)) { // move right
-        MoveRight(deltaTime);
-    }
+    if (IsKeyDown(KEY_LEFT)) MoveLeft(deltaTime); // move left on left keypress
+    if (IsKeyDown(KEY_RIGHT)) MoveRight(deltaTime); // move right on right keypress
+
     // Handle jumping and jump animation state management
-    if ((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)) && playerData.jumps_ <= MAX_JUMPS) { // jump
-        playerData.jumps_++; // Increment jumps
-        playerData.playerAnimation_->Reset(); // Reset the player's animation on Jump (handles double jump animating)
+    if (CanJump()) { // jump
         Jump(deltaTime); // Call jump to make the player jump
     }
 }
@@ -180,6 +177,21 @@ void Player::AnimatePlayer() {
             // do not replay the jump animation (replay == false)
             playerData.playerAnimation_ = std::make_unique<Animation>(textureManager->GetTexture(PLAYER_JUMPING_TEXTURE), PLAYER_JUMPING_FRAMES, jumpingAnimationSpeed, false);
         }
+    }
+}
+
+#pragma endregion
+
+#pragma region player state
+
+bool Player::CanJump() const {
+    return (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)) && playerData.jumps_ <= MAX_JUMPS;
+}
+
+void Player::ResetJumps() {
+    // If the player's y velocity is 0, they're allowed to jump again
+    if (playerData.velocity_.y == 0) {
+        playerData.jumps_ = 0;
     }
 }
 
