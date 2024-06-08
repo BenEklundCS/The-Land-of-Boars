@@ -211,22 +211,20 @@ void Player::PlatformCollision(GameObject* obj) {
             if (deltaY > 0) { // Collision from above
                 position_.y = platformRect.y + platformRect.height;
                 playerData.velocity_.y = 0;
-                // Reset jumps on collision from above
-            } else { // Collision from below
+            } else if (deltaY < 0) { // Collision from below
                 position_.y = platformRect.y - playerRect.height;
                 playerData.velocity_.y = 0;
             }
         } else {
             if (deltaX > 0) { // Collision from the left
                 position_.x = platformRect.x + platformRect.width;
-                playerData.velocity_.x = 0;
-            } else { // Collision from the right
+            } else if (deltaX < 0) { // Collision from the right
                 position_.x = platformRect.x - playerRect.width;
-                playerData.velocity_.x = 0;
             }
         }
     }
 }
+
 
 void Player::HitPlayer() {
     if (!playerData.hasBeenHit_) {
