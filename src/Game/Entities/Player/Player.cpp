@@ -4,11 +4,11 @@
 
 #include "../../../../include/Game/Entities/Player/Player.h"
 
-Player::Player() : GameObject(PLAYER){
+Player::Player() : GameObject(PLAYER) {
     // Load it here to ensure the TextureManager is queried after the player object is created
     playerData.playerAnimation_ = std::make_unique<Animation>(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE),
-                                PLAYER_IDLE_FRAMES, 0.2f, true);
-    // Construct the primitize GameObject attributes
+                                                              PLAYER_IDLE_FRAMES, 0.2f, true);
+    // Construct the primitive GameObject attributes
     position_ = Vector2{100, 100};
     dimensions_ = Vector2{PLAYER_LENGTH, PLAYER_LENGTH};
 }
@@ -17,8 +17,6 @@ Player::Player() : GameObject(PLAYER){
 
 // Overridden render methods from the GameObject parent class
 
-// Draw the player to the screen. Uses the playerAnimation_ member to determine which rect to draw
-// From the playerTexture. Flips the player across the X axis depending on the movingRight_ boolean.
 void Player::Draw() {
     // Get the playerTexture sheet and currentRect from the Animation object
 
@@ -33,9 +31,8 @@ void Player::Draw() {
     //DrawRectangle(position_.x, position_.y, GetRect().width, GetRect().height, RED);
 }
 
-// Update the player for the frame
-// Get the frame time and then
 void Player::Update() {
+    // Get deltaTime
     float deltaTime = GetFrameTime();
     // Update state information FIRST
     playerData.last_state_ = playerData.state_;
@@ -45,9 +42,9 @@ void Player::Update() {
     // Reset Jumps
     ResetJumps();
     // Handle Player Input
-    HandlePlayerInput(deltaTime);
+    HandlePlayerInput();
     // Stop crazy acceleration
-    VelocityBound();
+    //VelocityBound();
     // Move the player based on their velocity and position
     MovePlayer(deltaTime);
     // Check to see if we need to update the displayed animation
@@ -61,40 +58,40 @@ void Player::Update() {
 #pragma region update methods
 
 void Player::VelocityBound() {
-    // If the players x or y velocity is greater than MAX_VELOCITY,
+    // If the player's x or y velocity is greater than MAX_VELOCITY,
     if (playerData.velocity_.x > MAX_VELOCITY) playerData.velocity_.x = MAX_VELOCITY;
     if (playerData.velocity_.y > MAX_VELOCITY) playerData.velocity_.y = MAX_VELOCITY;
 }
 
 void Player::MovePlayer(float deltaTime) {
     // Call the updatePosition and velocity changing functions
-    ApplyFriction(deltaTime);
-    ApplyGravity(deltaTime);
-    UpdatePosition();
+    ApplyFriction();
+    ApplyGravity();
+    UpdatePosition(deltaTime);
 }
 
-void Player::UpdatePosition() {
-    position_.x += playerData.velocity_.x;
-    position_.y += playerData.velocity_.y;
+void Player::UpdatePosition(float deltaTime) {
+    position_.x += playerData.velocity_.x * deltaTime;
+    position_.y += playerData.velocity_.y * deltaTime;
 }
 
-void Player::ApplyFriction(float deltaTime) {
-    const int minVelocity = 1;
+void Player::ApplyFriction() {
+    const int minVelocity = 50;
     if (playerData.velocity_.x > minVelocity) {
-        playerData.velocity_.x -= FRICTION * deltaTime;
+        playerData.velocity_.x -= FRICTION;
     } else if (playerData.velocity_.x < -minVelocity) {
-        playerData.velocity_.x += FRICTION * deltaTime;
+        playerData.velocity_.x += FRICTION;
     } else {
         playerData.velocity_.x = 0;
     }
 }
 
-void Player::ApplyGravity(float deltaTime) {
-    playerData.velocity_.y += GRAVITY * deltaTime;
+void Player::ApplyGravity() {
+    playerData.velocity_.y += GRAVITY;
 }
 
-void Player::MoveLeft(float deltaTime) {
-    float maxXVelocity = 25;
+void Player::MoveLeft() {
+    float maxXVelocity = 1500;
     // If the player is not also jumping, we'll display the RUNNING animation
     if (playerData.velocity_.y == 0) {
         playerData.state_ = RUNNING;
@@ -103,12 +100,12 @@ void Player::MoveLeft(float deltaTime) {
     playerData.movingRight_ = false;
     // Set the player's X velocity
     if (playerData.velocity_.x >= -maxXVelocity) {
-        playerData.velocity_.x -= PLAYER_SPEED * deltaTime;
+        playerData.velocity_.x -= PLAYER_SPEED;
     }
 }
 
-void Player::MoveRight(float deltaTime) {
-    float maxXVelocity = 25;
+void Player::MoveRight() {
+    float maxXVelocity = 1500;
     // If the player is not also jumping, we'll display the RUNNING animation
     if (playerData.velocity_.y == 0) {
         playerData.state_ = RUNNING;
@@ -117,28 +114,26 @@ void Player::MoveRight(float deltaTime) {
     playerData.movingRight_ = true;
     // Set the player's X velocity
     if (playerData.velocity_.x <= maxXVelocity) {
-        playerData.velocity_.x += PLAYER_SPEED * deltaTime;
+        playerData.velocity_.x += PLAYER_SPEED;
     }
 }
 
-void Player::Jump(float deltaTime) {
+void Player::Jump() {
     // Set jumps and reset player animation
     playerData.jumps_++; // Increment jumps
     playerData.playerAnimation_->Reset(); // Reset the player's animation on Jump (handles double jump animating)
     // Make the player jump!
     const float jumpPower = 6.5f;
     playerData.state_ = JUMPING;
-    playerData.velocity_.y -= PLAYER_SPEED * jumpPower * deltaTime;
+    playerData.velocity_.y -= PLAYER_SPEED * jumpPower;
 }
 
-void Player::HandlePlayerInput(float deltaTime) {
-    if (IsKeyDown(KEY_LEFT)) MoveLeft(deltaTime); // move left on left keypress
-    if (IsKeyDown(KEY_RIGHT)) MoveRight(deltaTime); // move right on right keypress
-    if (CanJump()) Jump(deltaTime); // make the player jump if can jump
+void Player::HandlePlayerInput() {
+    if (IsKeyDown(KEY_LEFT)) MoveLeft(); // move left on left keypress
+    if (IsKeyDown(KEY_RIGHT)) MoveRight(); // move right on right keypress
+    if (CanJump()) Jump(); // make the player jump if can jump
 }
 
-// Animate the player by calling .Animate on the playerAnimation_
-// If the state_ is not equal to the last_state_, then we need to load the next playerAnimation for rendering
 void Player::AnimatePlayer() {
     // Call Animate to get the next rect
     playerData.playerAnimation_->Animate();
@@ -195,8 +190,6 @@ void Player::ResetJumps() {
 
 #pragma region player object interactions
 
-// Respond to a platform collision, adjusting the players position and velocity
-// Invoke this method when the player should interact with the passed GameObject as if it is a solid block/platform/tile
 void Player::PlatformCollision(GameObject* obj) {
     // Check to see if the objects have collided
     if (CheckCollisionRecs(GetRect(), obj->GetRect())) {
@@ -253,8 +246,7 @@ void Player::UpdateFlashing(float deltaTime) {
             playerData.flashToggle_ = !(bool)playerData.flashToggle_;
             if (playerData.flashToggle_ == false) {
                 playerData.color_ = RED;
-            }
-            else {
+            } else {
                 playerData.color_ = WHITE;
             }
             playerData.timeStepForFlash_ = 0.0f;
@@ -276,4 +268,3 @@ playerDataStruct* Player::GetPlayerData() {
 }
 
 #pragma endregion
-

@@ -15,8 +15,8 @@
 
 class DebugGUI {
 public:
-    void InitGui();
-    void DrawGui(GameStateManager* gameState);
+    static void InitGui();
+    static void DrawGui(GameStateManager* gameState);
 };
 
 

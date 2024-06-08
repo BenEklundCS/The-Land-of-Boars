@@ -43,6 +43,7 @@ struct playerDataStruct {
 
     // movement
     Vector2 velocity_{0, 15}; // Player velocity vector
+    Vector2 previousPosition_{0, 0};
     int jumps_ = 0; // Jump counter used to check if we can jump
 };
 
@@ -52,13 +53,13 @@ private:
     // Methods
     // Movement methods
     void MovePlayer(float deltaTime); // Move the player for the current frame
-    void UpdatePosition(); // Update the player position based on its velocity
-    void MoveLeft(float deltaTime); // Move the player to the left
-    void MoveRight(float deltaTime); // Move the player to the right
-    void ApplyFriction(float deltaTime); // Friction
-    void ApplyGravity(float deltaTime); // Gravity
-    void HandlePlayerInput(float deltaTime); // Input handling
-    void Jump(float deltaTime); // Jump (with double jump!)
+    void UpdatePosition(float deltaTime); // Update the player position based on its velocity
+    void MoveLeft(); // Move the player to the left
+    void MoveRight(); // Move the player to the right
+    void ApplyFriction(); // Friction
+    void ApplyGravity(); // Gravity
+    void HandlePlayerInput(); // Input handling
+    void Jump(); // Jump (with double jump!)
     void VelocityBound(); // Prevent the players velocity from increasing past the bound
     // Animations
     void UpdateFlashing(float deltaTime); // Handle flashing red of the player

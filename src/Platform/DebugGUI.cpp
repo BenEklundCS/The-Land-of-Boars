@@ -24,7 +24,20 @@ void DebugGUI::DrawGui(GameStateManager *gameState) {
     ImGui::Text("Color: %d", ColorToInt(playerData->color_));
     ImGui::Text("Health: %d", playerData->hp_);
     ImGui::Text("Jumps: %d", playerData->jumps_);
-    ImGui::Text("State: %u", playerData->state_);
+    // Render player state
+    PlayerState state = playerData->state_;
+    std::string stateString;
+    // Parse the state
+    if (state == IDLE) {
+        stateString = "IDLE";
+    }
+    else if (state == RUNNING) {
+        stateString = "RUNNING";
+    }
+    else {
+        stateString = "JUMPING";
+    }
+    ImGui::Text("State: %s", stateString.c_str());
     ImGui::Text("timeSinceHit: %f", playerData->timeSinceHit_);
     rlImGuiEnd();
 
