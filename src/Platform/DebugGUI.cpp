@@ -8,6 +8,13 @@ void DebugGUI::InitGui() {
     rlImGuiSetup(true);
 }
 
+std::string ColorToString(Color color) {
+    return "r: " + std::to_string(color.r) +
+           ", g: " + std::to_string(color.g) +
+           ", b: " + std::to_string(color.b) +
+           ", a: " + std::to_string(color.a) + ")";
+}
+
 void DebugGUI::DrawGui(GameStateManager *gameState) {
     int player_one = 0;
     const gameData* gameData = gameState->GetGameData();
@@ -21,7 +28,7 @@ void DebugGUI::DrawGui(GameStateManager *gameState) {
     ImGui::Text("");
     ImGui::Text("Position: %fx, %fy", gameData->playerPosition.x, gameData->playerPosition.y);
     ImGui::Text("Velocity: %fx, %fy", playerData->velocity_.x, playerData->velocity_.y);
-    ImGui::Text("Color: %d", ColorToInt(playerData->color_));
+    ImGui::Text("Color: %s", ColorToString(playerData->color_).c_str());
     ImGui::Text("Health: %d", playerData->hp_);
     ImGui::Text("Jumps: %d", playerData->jumps_);
     // Render player state

@@ -93,7 +93,6 @@ void Player::ApplyGravity() {
 }
 
 void Player::MoveLeft() {
-    float maxXVelocity = 1500;
     // If the player is not also jumping, we'll display the RUNNING animation
     if (playerData.velocity_.y == 0) {
         playerData.state_ = RUNNING;
@@ -101,13 +100,12 @@ void Player::MoveLeft() {
     // Flip the animation across the X axis - feed the "moving right" boolean value
     playerData.movingRight_ = false;
     // Set the player's X velocity
-    if (playerData.velocity_.x >= -maxXVelocity) {
+    if (playerData.velocity_.x >= -MAX_VELOCITY) {
         playerData.velocity_.x -= PLAYER_SPEED;
     }
 }
 
 void Player::MoveRight() {
-    float maxXVelocity = 1500;
     // If the player is not also jumping, we'll display the RUNNING animation
     if (playerData.velocity_.y == 0) {
         playerData.state_ = RUNNING;
@@ -115,7 +113,7 @@ void Player::MoveRight() {
     // Flip the animation across the X axis - feed the "moving right" boolean value
     playerData.movingRight_ = true;
     // Set the player's X velocity
-    if (playerData.velocity_.x <= maxXVelocity) {
+    if (playerData.velocity_.x <= MAX_VELOCITY) {
         playerData.velocity_.x += PLAYER_SPEED;
     }
 }
@@ -211,7 +209,6 @@ void Player::PlatformCollision(GameObject* obj) {
 
         // Revert only the relevant axis position
         if (overlapX >= overlapY) {
-            position_.y = playerData.previousPosition_.y; // Revert y position to previous
             if (deltaY > 0) { // Collision from above
                 position_.y = platformRect.y + platformRect.height;
                 if (playerData.velocity_.y < 0) playerData.velocity_.y = 0; // Reset Y velocity only if moving downwards
@@ -222,7 +219,6 @@ void Player::PlatformCollision(GameObject* obj) {
                 playerData.isOnGround_ = true;
             }
         } else {
-            position_.x = playerData.previousPosition_.x; // Revert x position to previous
             if (deltaX > 0) { // Collision from the left
                 position_.x = platformRect.x + platformRect.width;
             } else if (deltaX < 0) { // Collision from the right
