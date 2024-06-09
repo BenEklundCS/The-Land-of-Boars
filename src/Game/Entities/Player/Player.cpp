@@ -10,6 +10,7 @@ Player::Player() : GameObject(PLAYER) {
                                                               PLAYER_IDLE_FRAMES, 0.2f, true);
     // Construct the primitive GameObject attributes
     position_ = Vector2{100, 100};
+    playerData.previousPosition_ = position_;
     dimensions_ = Vector2{PLAYER_LENGTH, PLAYER_LENGTH};
 }
 
@@ -71,6 +72,7 @@ void Player::MovePlayer(float deltaTime) {
 }
 
 void Player::UpdatePosition(float deltaTime) {
+    playerData.previousPosition_ = position_;
     position_.x += playerData.velocity_.x * deltaTime;
     position_.y += playerData.velocity_.y * deltaTime;
 }
@@ -180,9 +182,10 @@ bool Player::CanJump() const {
 }
 
 void Player::ResetJumps() {
-    // If the player's y velocity is 0, they're allowed to jump again
-    if (playerData.velocity_.y == 0) {
+    // If the player's on the ground, reset jumps
+    if (playerData.isOnGround_) {
         playerData.jumps_ = 0;
+        playerData.isOnGround_ = false; // reset flag after resetting jumps
     }
 }
 
@@ -191,9 +194,8 @@ void Player::ResetJumps() {
 #pragma region player object interactions
 
 void Player::PlatformCollision(GameObject* obj) {
-    // Check to see if the objects have collided
+    // Check for collision
     if (CheckCollisionRecs(GetRect(), obj->GetRect())) {
-        // If so, we do some crazy math to handle the collision with the Platform
         Rectangle playerRect = this->GetRect();
         Rectangle platformRect = obj->GetRect();
 
@@ -207,15 +209,20 @@ void Player::PlatformCollision(GameObject* obj) {
         float overlapX = combinedHalfWidths - std::abs(deltaX);
         float overlapY = combinedHalfHeights - std::abs(deltaY);
 
+        // Revert only the relevant axis position
         if (overlapX >= overlapY) {
+            position_.y = playerData.previousPosition_.y; // Revert y position to previous
             if (deltaY > 0) { // Collision from above
                 position_.y = platformRect.y + platformRect.height;
-                playerData.velocity_.y = 0;
+                if (playerData.velocity_.y < 0) playerData.velocity_.y = 0; // Reset Y velocity only if moving downwards
             } else if (deltaY < 0) { // Collision from below
                 position_.y = platformRect.y - playerRect.height;
-                playerData.velocity_.y = 0;
+                if (playerData.velocity_.y > 0) playerData.velocity_.y = 0; // Reset Y velocity only if moving upwards
+                // Set the isOnGround flag
+                playerData.isOnGround_ = true;
             }
         } else {
+            position_.x = playerData.previousPosition_.x; // Revert x position to previous
             if (deltaX > 0) { // Collision from the left
                 position_.x = platformRect.x + platformRect.width;
             } else if (deltaX < 0) { // Collision from the right

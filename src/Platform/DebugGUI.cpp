@@ -38,6 +38,7 @@ void DebugGUI::DrawGui(GameStateManager *gameState) {
         stateString = "JUMPING";
     }
     ImGui::Text("State: %s", stateString.c_str());
+    ImGui::Text("isOnGround %b", playerData->isOnGround_);
     ImGui::Text("timeSinceHit: %f", playerData->timeSinceHit_);
     rlImGuiEnd();
 

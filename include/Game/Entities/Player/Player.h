@@ -45,6 +45,7 @@ struct playerDataStruct {
     Vector2 velocity_{0, 15}; // Player velocity vector
     Vector2 previousPosition_{0, 0};
     int jumps_ = 0; // Jump counter used to check if we can jump
+    bool isOnGround_ = false;
 };
 
 // Player is a GameObject with all player logic encapsulated
