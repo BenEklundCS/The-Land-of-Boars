@@ -38,6 +38,7 @@ void Renderer::Draw(GameStateManager* gameState) {
     RenderFPS(camera);
 
     // For each object in each std::vector of GameObjects, call Draw on the object
+
     for (const auto& object : gameState->GetAllObjects()) {
         object->Draw(); // <-- All GameObjects implement a Draw call
     }

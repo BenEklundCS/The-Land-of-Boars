@@ -40,10 +40,13 @@ void Engine::RenderLevelScene(std::unique_ptr<GameStateManager> gameState) {
     TraceLog(LOG_INFO, "Engine rendering a gameState...");
     while (!WindowShouldClose() && !gameState->IsLevelOver()) {
         gameState->Update();        // Update the scene
+        if (IsKeyPressed(KEY_D))
+            displayDebug = !displayDebug;
         // Frame
         BeginDrawing();             // Setup canvas (framebuffer) to start drawing
         Renderer::Draw(gameState.get());    // Draw the scene using the renderer
-        debug_gui_.DrawGui(gameState.get());// Draw the Debug GUI using the debug gui class
+        if (displayDebug)
+            debug_gui_.DrawGui(gameState.get());// Draw the Debug GUI using the debug gui class
         EndDrawing();               // End canvas drawing and swap buffers (double buffering)
         // End frame
     }

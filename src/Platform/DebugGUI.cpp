@@ -16,7 +16,6 @@ std::string ColorToString(Color color) {
 }
 
 void DebugGUI::DrawGui(GameStateManager *gameState) {
-    int player_one = 0;
     const gameData* gameData = gameState->GetGameData();
     const playerDataStruct* playerData = gameData->playerData;
     rlImGuiBegin();

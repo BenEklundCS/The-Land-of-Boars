@@ -228,7 +228,6 @@ void Player::PlatformCollision(GameObject* obj) {
     }
 }
 
-
 void Player::HitPlayer() {
     if (!playerData.hasBeenHit_) {
         playerData.hasBeenHit_ = true;

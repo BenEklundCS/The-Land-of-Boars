@@ -29,8 +29,8 @@ std::unique_ptr<GameStateManager> LevelOne::GetGameState() {
 
 
     // Define the main game map
-    const int mapWidth = 500;
-    const int mapHeight = 50;
+    const int mapWidth = 100;
+    const int mapHeight = 25;
     const int tilesStartAtX = 20;
     const int tilesStartAtY = 15;
     std::vector<std::vector<int>> tileMap(mapHeight, std::vector<int>(mapWidth));
