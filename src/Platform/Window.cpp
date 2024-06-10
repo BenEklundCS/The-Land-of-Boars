@@ -9,6 +9,7 @@ std::unique_ptr<Window> Window::instance = nullptr;
 
 Window::Window() {
     InitWindow(this->windowWidth_, this->windowHeight_, WINDOW_NAME); // initialize the window based on windowWidth_ and windowHeight_
+    InitAudioDevice();
     SetConfigFlags(FLAG_WINDOW_RESIZABLE); // set window resizable such that Window::Resize is callable later on
     SetTargetFPS(60); // Set the desired frames per second
     TraceLog(LOG_INFO, "Window::Window() Started successfully."); // Log Window started successfully

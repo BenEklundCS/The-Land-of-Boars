@@ -22,7 +22,6 @@ class Engine {
 private:
     std::vector<std::unique_ptr<Level>> levels;
     int curr = 0;
-    DebugGUI debug_gui_;
     bool displayDebug = false;
 public:
     void StartGame(); // Start the game

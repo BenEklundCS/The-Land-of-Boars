@@ -43,7 +43,7 @@ public:
     Camera2D GetCamera(); // Get the Camera2D
     std::vector<GameObject*> GetAllObjects(); // Get all game objects from the GameState
     void SetLevelOver(); // Set levelOver to true
-    bool IsLevelOver() const; // Return the levelOver flag
+    [[nodiscard]] bool IsLevelOver() const; // Return the levelOver flag
     const gameData* GetGameData();
     void AddObject(std::unique_ptr<GameObject> obj); // Add a GameObject to the scene
     ~GameStateManager(); // Destructor

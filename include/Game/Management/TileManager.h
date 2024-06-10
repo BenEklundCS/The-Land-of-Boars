@@ -9,13 +9,14 @@
 #include <vector>
 #include "../Entities/Objects/Tile.h"
 
-// The TileManager is a drawable GameObject, simplifying the management of its tiles
+// The TileManager class manages and creates tiles from a 2D array of integers
+// simplifying the creation of tiles!
 class TileManager {
 private:
     Vector2 position_{};
     std::vector<std::vector<std::unique_ptr<Tile>>> tiles_;
 public:
-    TileManager(Vector2 position);
+    explicit TileManager(Vector2 position);
     void CreateTiles(std::vector<std::vector<int>> tileMap_);
     std::vector<std::unique_ptr<Tile>> GetTiles();
 };

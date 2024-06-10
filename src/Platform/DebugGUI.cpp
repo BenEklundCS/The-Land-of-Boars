@@ -5,33 +5,19 @@
 #include "../../include/Platform/DebugGUI.h"
 
 void DebugGUI::InitGui() {
+    TraceLog(LOG_INFO, "Setting up ImGui");
     rlImGuiSetup(true);
+    TraceLog(LOG_INFO, "ImGui setup complete");
 }
 
 std::string ColorToString(Color color) {
-    return "r: " + std::to_string(color.r) +
+    return "(r: " + std::to_string(color.r) +
            ", g: " + std::to_string(color.g) +
            ", b: " + std::to_string(color.b) +
            ", a: " + std::to_string(color.a) + ")";
 }
 
-void DebugGUI::DrawGui(GameStateManager *gameState) {
-    const gameData* gameData = gameState->GetGameData();
-    const playerDataStruct* playerData = gameData->playerData;
-    rlImGuiBegin();
-    // show ImGui Content
-    //bool open = true;
-    //ImGui::ShowDemoWindow(&open);
-    ImGui::SetWindowFontScale(2);
-    ImGui::Text("playerData:");
-    ImGui::Text("");
-    ImGui::Text("Position: %fx, %fy", gameData->playerPosition.x, gameData->playerPosition.y);
-    ImGui::Text("Velocity: %fx, %fy", playerData->velocity_.x, playerData->velocity_.y);
-    ImGui::Text("Color: %s", ColorToString(playerData->color_).c_str());
-    ImGui::Text("Health: %d", playerData->hp_);
-    ImGui::Text("Jumps: %d", playerData->jumps_);
-    // Render player state
-    PlayerState state = playerData->state_;
+std::string PlayerStateToString(PlayerState state) {
     std::string stateString;
     // Parse the state
     if (state == IDLE) {
@@ -43,9 +29,27 @@ void DebugGUI::DrawGui(GameStateManager *gameState) {
     else {
         stateString = "JUMPING";
     }
-    ImGui::Text("State: %s", stateString.c_str());
-    ImGui::Text("isOnGround %b", playerData->isOnGround_);
-    ImGui::Text("timeSinceHit: %f", playerData->timeSinceHit_);
+    return stateString;
+}
+
+void DebugGUI::DrawGui(GameStateManager *gameState) {
+    const gameData* gameData = gameState->GetGameData();
+    const playerDataStruct* playerData = gameData->playerData;
+    rlImGuiBegin();
+    // show ImGui Content
+    ImGui::SetWindowFontScale(2);
+    ImGui::Text("playerData:");
+    ImGui::Text("");
+    ImGui::Text("Position: %1.2fx, %1.2fy", gameData->playerPosition.x, gameData->playerPosition.y);
+    ImGui::Text("Velocity: %1.2fx, %1.2fy", playerData->velocity_.x, playerData->velocity_.y);
+    // Render color
+    ImGui::Text("Color: %s", ColorToString(playerData->color_).c_str());
+    ImGui::Text("Health: %d", playerData->hp_);
+    ImGui::Text("Jumps: %d", playerData->jumps_);
+    // Render player state
+    ImGui::Text("State: %s", PlayerStateToString(playerData->state_).c_str());
+    ImGui::Text("isOnGround: %s", (playerData->isOnGround_) ? "True" : "False");
+    ImGui::Text("timeSinceHit: %1.2f", playerData->timeSinceHit_);
     rlImGuiEnd();
 
     delete gameData;
