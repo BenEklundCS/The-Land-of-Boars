@@ -41,6 +41,8 @@ void Renderer::Draw(GameStateManager* gameState) {
 
     for (const auto& object : gameState->GetAllObjects()) {
         object->Draw(); // <-- All GameObjects implement a Draw call
+        Rectangle redBox = object->GetRect();
+        DrawRectangleLines(redBox.x, redBox.y, redBox.width, redBox.height, RED);
     }
 
     EndMode2D();

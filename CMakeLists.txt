@@ -42,7 +42,6 @@ set(PLATFORM_SOURCES
         src/Platform/Window.cpp
         src/Platform/Renderer.cpp
         src/Platform/Engine.cpp
-        src/Platform/Settings.cpp
         src/Platform/DebugGUI.cpp
         include/Platform/Window.h
 )

@@ -15,7 +15,6 @@
 #include "../GameObject.h"
 #include "../PhysicsConstants.h"
 #include "../../Sprites/Animation.h"
-#include "../../../../src/Platform/Settings.cpp"
 #include "../../Sprites/TextureManager.h"
 
 // Definitions for PlayerState types

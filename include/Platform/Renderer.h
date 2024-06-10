@@ -5,7 +5,6 @@
 #include <vector>
 #include "Window.h"
 #include "../Game/Management/GameStateManager.h"
-#include "../../src/Platform/Settings.cpp"
 
 
 #ifndef PLATFORMER_RENDERER_H
