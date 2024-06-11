@@ -158,6 +158,25 @@ void Player::AnimatePlayer() {
     }
 }
 
+// Check if the player should go to IDLE state
+// This should be called after resetting x or y velocity to 0, and should NOT be called
+// after the velocities have been increased to ensure proper state transition
+/*
+ * Good usage:
+ * e.g. PlayerHitFloor (velocity.y set to 0)
+ *       call GoIdle, should they be in an Idle state?\
+ *
+ *
+ * Bad usage:
+ *
+ * Update()
+ *      MovePlayer();
+ *      ApplyGravity;
+ *      GoIdle(); // should not be called here as the velocities have been increased for the frame!
+ *
+ * This is important, because even if the player is on the ground we apply constant y velocity downwards, so they'd never
+ * go idle.
+ */
 void Player::GoIdle() {
     if (playerData.velocity_.x == 0 && playerData.velocity_.y == 0) {
         playerData.state_ = IDLE;
@@ -168,10 +187,12 @@ void Player::GoIdle() {
 
 #pragma region player state
 
+// Check and return if the player can jump!
 bool Player::CanJump() const {
     return (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)) && playerData.jumps_ <= MAX_JUMPS;
 }
 
+// If the player is on the ground, reset their jump counter to 0 and set isOnGround_ to false
 void Player::ResetJumps() {
     // If the player's on the ground, reset jumps
     if (playerData.isOnGround_) {
@@ -184,6 +205,7 @@ void Player::ResetJumps() {
 
 #pragma region player object interactions
 
+// Handle a Player Platform collision using bounding rectangles and overlapping axis
 void Player::PlatformCollision(GameObject* obj) {
     // Check for collision between the player and the platform
     if (CheckCollisionRecs(GetRect(), obj->GetRect())) {
@@ -227,7 +249,7 @@ void Player::PlatformCollision(GameObject* obj) {
     }
 }
 
-
+// Hit the player externally
 void Player::HitPlayer() {
     if (!playerData.hasBeenHit_) {
         playerData.hasBeenHit_ = true;
@@ -236,6 +258,7 @@ void Player::HitPlayer() {
     }
 }
 
+// Update player flashing behavior
 void Player::UpdateFlashing(float deltaTime) {
     playerData.timeSinceHit_ += deltaTime;
     playerData.timeStepForFlash_ += deltaTime;
@@ -259,10 +282,12 @@ void Player::UpdateFlashing(float deltaTime) {
     }
 }
 
+// Return if the player has died
 bool Player::CheckPlayerDeath() const {
     return playerData.hp_ <= 0;
 }
 
+// Return a ptr to the playerData struct stored in memory
 playerDataStruct* Player::GetPlayerData() {
     return &playerData;
 }
