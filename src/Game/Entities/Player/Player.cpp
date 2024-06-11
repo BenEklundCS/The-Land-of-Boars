@@ -35,20 +35,14 @@ void Player::Draw() {
 void Player::Update() {
     // Get deltaTime
     float deltaTime = GetFrameTime();
-    // Update state information FIRST
-    playerData.last_state_ = playerData.state_;
-    if (playerData.velocity_.x == 0 && playerData.velocity_.y == 0) {
-        playerData.state_ = IDLE;
-    }
-    // Reset Jumps
-    ResetJumps();
-    // Stop crazy acceleration
-
-    //VelocityBound();
-    // Move the player based on their velocity and position
-    MovePlayer(deltaTime);
+    // State
     // Check to see if we need to update the displayed animation
     AnimatePlayer();
+    // Reset Jumps
+    ResetJumps();
+    // Move the player based on their velocity and position
+    MovePlayer(deltaTime);
+    playerData.last_state_ = playerData.state_;
     // Update flashing red if hit
     UpdateFlashing(deltaTime);
 }
@@ -164,6 +158,13 @@ void Player::AnimatePlayer() {
     }
 }
 
+void Player::GoIdle() {
+    TraceLog(LOG_INFO, "%f %f", playerData.velocity_.x, playerData.velocity_.y);
+    if (playerData.velocity_.x == 0 && playerData.velocity_.y == 0) {
+        playerData.state_ = IDLE;
+    }
+}
+
 #pragma endregion
 
 #pragma region player state
@@ -185,14 +186,17 @@ void Player::ResetJumps() {
 #pragma region player object interactions
 
 void Player::PlatformCollision(GameObject* obj) {
-    // Check for collision
+    // Check for collision between the player and the platform
     if (CheckCollisionRecs(GetRect(), obj->GetRect())) {
+        // Get the bounding rectangles of the player and the platform
         Rectangle playerRect = this->GetRect();
         Rectangle platformRect = obj->GetRect();
 
+        // Calculate the difference in the x and y positions of the centers of the player and the platform
         float deltaX = (playerRect.x + playerRect.width / 2) - (platformRect.x + platformRect.width / 2);
         float deltaY = (playerRect.y + playerRect.height / 2) - (platformRect.y + platformRect.height / 2);
 
+        // Calculate the combined half-widths and half-heights of the player and the platform
         float combinedHalfWidths = (playerRect.width + platformRect.width) / 2;
         float combinedHalfHeights = (playerRect.height + platformRect.height) / 2;
 
@@ -200,16 +204,19 @@ void Player::PlatformCollision(GameObject* obj) {
         float overlapX = combinedHalfWidths - std::abs(deltaX);
         float overlapY = combinedHalfHeights - std::abs(deltaY);
 
-        // Revert only the relevant axis position
+        // Revert only the relevant axis position based on the overlap values
         if (overlapX >= overlapY) {
             if (deltaY > 0) { // Collision from above
                 position_.y = platformRect.y + platformRect.height;
-                if (playerData.velocity_.y < 0) playerData.velocity_.y = 0; // Reset Y velocity only if moving downwards
+                // Reset Y velocity only if moving downwards
+                if (playerData.velocity_.y < 0) playerData.velocity_.y = 0;
             } else if (deltaY < 0) { // Collision from below
                 position_.y = platformRect.y - playerRect.height;
-                if (playerData.velocity_.y > 0) playerData.velocity_.y = 0; // Reset Y velocity only if moving upwards
-                // Set the isOnGround flag
+                // Reset Y velocity only if moving upwards
+                if (playerData.velocity_.y > 0) playerData.velocity_.y = 0;
+                // Set the isOnGround flag and call GoIdle to change state to IDLE
                 playerData.isOnGround_ = true;
+                GoIdle();
             }
         } else {
             if (deltaX > 0) { // Collision from the left
@@ -220,6 +227,7 @@ void Player::PlatformCollision(GameObject* obj) {
         }
     }
 }
+
 
 void Player::HitPlayer() {
     if (!playerData.hasBeenHit_) {

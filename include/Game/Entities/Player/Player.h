@@ -62,6 +62,7 @@ private:
     // Player state
     [[nodiscard]] bool CheckPlayerDeath() const; // Check if the player is dead
     void ResetJumps(); // Reset the player jump counter
+    void GoIdle();
     // Attributes
     playerDataStruct playerData;
 public:
