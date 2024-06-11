@@ -42,9 +42,8 @@ void Player::Update() {
     }
     // Reset Jumps
     ResetJumps();
-    // Handle Player Input
-    HandlePlayerInput();
     // Stop crazy acceleration
+
     //VelocityBound();
     // Move the player based on their velocity and position
     MovePlayer(deltaTime);
@@ -126,12 +125,6 @@ void Player::Jump() {
     const float jumpPower = 6.5f;
     playerData.state_ = JUMPING;
     playerData.velocity_.y -= PLAYER_SPEED * jumpPower;
-}
-
-void Player::HandlePlayerInput() {
-    if (IsKeyDown(KEY_LEFT)) MoveLeft(); // move left on left keypress
-    if (IsKeyDown(KEY_RIGHT)) MoveRight(); // move right on right keypress
-    if (CanJump()) Jump(); // make the player jump if can jump
 }
 
 void Player::AnimatePlayer() {

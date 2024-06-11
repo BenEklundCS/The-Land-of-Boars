@@ -11,6 +11,7 @@
 #include "../Entities/Player/Player.h"
 #include "../Entities/Monsters/Monster.h"
 #include "../Entities/Objects/Platform.h"
+#include "GameInputManager.h"
 
 struct gameData {
     Vector2 playerPosition;
@@ -36,6 +37,7 @@ private:
     std::vector<std::unique_ptr<GameObject>> otherObjects_; // other object vector
     std::vector<GameObject*> allGameObjects_; // All game object vector
     Camera2D camera; // Camera
+    std::unique_ptr<GameInputManager> inputManager;
 public:
     GameStateManager(); // Constructor
     void InitCamera(); // Initialize the camera - call before rendering
@@ -46,6 +48,7 @@ public:
     [[nodiscard]] bool IsLevelOver() const; // Return the levelOver flag
     const gameData* GetGameData();
     void AddObject(std::unique_ptr<GameObject> obj); // Add a GameObject to the scene
+    void InitInput(); // call to make input available to the GameState
     ~GameStateManager(); // Destructor
 };
 

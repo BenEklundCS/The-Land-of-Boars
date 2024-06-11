@@ -14,10 +14,13 @@ GameStateManager::GameStateManager() {
 
 // Update all game objects and handle collisions
 void GameStateManager::Update() {
+
     // Update the camera
     UpdateCamera();
     // Update all game objects and handle collisions
     UpdatePlayers(); // update Players
+    // Handle user input
+    inputManager->HandleUserInput();
     UpdateMonsters(); // update Monsters
 
 }
@@ -139,4 +142,8 @@ GameStateManager::~GameStateManager() {
     monsters_.clear();
     platforms_.clear();
     otherObjects_.clear();
+}
+
+void GameStateManager::InitInput() {
+    inputManager = std::make_unique<GameInputManager>(players_[0].get());
 }

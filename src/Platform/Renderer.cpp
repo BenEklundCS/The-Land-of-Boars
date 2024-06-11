@@ -31,6 +31,7 @@ void Renderer::RenderFPS(Camera2D camera) {
 void Renderer::Draw(GameStateManager* gameState) {
 
     Camera2D camera = gameState->GetCamera();
+
     BeginMode2D(camera);
     // Render the background
     RenderBackground(camera);
@@ -41,8 +42,11 @@ void Renderer::Draw(GameStateManager* gameState) {
 
     for (const auto& object : gameState->GetAllObjects()) {
         object->Draw(); // <-- All GameObjects implement a Draw call
+        // Draw object hitboxes
+
         Rectangle redBox = object->GetRect();
-        DrawRectangleLines(redBox.x, redBox.y, redBox.width, redBox.height, RED);
+        DrawRectangleLines((int)redBox.x, (int)redBox.y, (int)redBox.width, (int)redBox.height, RED);
+
     }
 
     EndMode2D();

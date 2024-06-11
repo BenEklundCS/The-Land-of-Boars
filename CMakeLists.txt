@@ -49,6 +49,7 @@ set(PLATFORM_SOURCES
 set(GAME_MANAGEMENT_SOURCES
         src/Game/Management/GameStateManager.cpp
         src/Game/Management/TileManager.cpp
+        src/Game/Management/GameInputManager.cpp
 )
 
 set(GAME_ENTITIES_SOURCES

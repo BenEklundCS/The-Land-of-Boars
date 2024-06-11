@@ -28,6 +28,7 @@ void Engine::StartGame() {
     for (auto& level : levels) {
         auto gameState = level->GetGameState();
         gameState->InitCamera();
+        gameState->InitInput();
         RenderLevelScene(std::move(gameState));
     }
 }
