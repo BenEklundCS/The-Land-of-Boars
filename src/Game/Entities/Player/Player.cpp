@@ -159,7 +159,6 @@ void Player::AnimatePlayer() {
 }
 
 void Player::GoIdle() {
-    TraceLog(LOG_INFO, "%f %f", playerData.velocity_.x, playerData.velocity_.y);
     if (playerData.velocity_.x == 0 && playerData.velocity_.y == 0) {
         playerData.state_ = IDLE;
     }
