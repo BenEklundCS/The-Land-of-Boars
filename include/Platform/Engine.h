@@ -12,6 +12,15 @@
 #include "../Platform/DebugGUI.h"
 #include "../Game/Level/Level.h"
 
+class GameStateManager;
+
+// Engine settings dictating the behavior of the PLATFORM.
+struct EngineSettings {
+    // Renderer
+    bool renderRedBorders = false;
+    // Debugging
+    bool displayDebug = false;
+};
 
 
 /*
@@ -22,11 +31,14 @@ class Engine {
 private:
     std::vector<std::unique_ptr<Level>> levels;
     int curr = 0;
-    bool displayDebug = false;
+    static EngineSettings* settings;
 public:
     void StartGame(); // Start the game
     void LoadLevels(); // Load all the game levels
     void RenderLevelScene(std::unique_ptr<GameStateManager> scene); // Start the render loop
+    static EngineSettings* GetSettings() {
+        return settings;
+    }
 };
 
 

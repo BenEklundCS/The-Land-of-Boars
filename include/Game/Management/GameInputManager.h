@@ -7,16 +7,18 @@
 
 #include "../Entities/Player/Player.h"
 
+class EngineSettings;
+
 class GameInputManager {
 private:
     Player* player_;
+    EngineSettings& settings_;
     void HandlePlayerInput();
     void HandleUIInput();
     void HandleDebugInput();
 public:
-    explicit GameInputManager(Player* player) {
-        player_ = player;
-    }
+    explicit GameInputManager(Player* player, EngineSettings& settings)
+    : player_(player), settings_(settings) {}
     void HandleUserInput();
 };
 

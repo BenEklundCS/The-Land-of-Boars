@@ -5,6 +5,7 @@
 
 
 #include "../../../include/Game/Level/Level.h"
+#include "../../../include/Game/Management/GameStateManager.h"
 
 Level::Level() = default;
 

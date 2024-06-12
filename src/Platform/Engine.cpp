@@ -17,6 +17,7 @@ void Engine::LoadLevels() {
 
 // Start the game by loading the levels, then playing them in sequence
 void Engine::StartGame() {
+    settings = new EngineSettings();
     TraceLog(LOG_INFO, "Engine starting game...");
     // Get the window
     Window* window = Window::GetInstance();
@@ -28,7 +29,7 @@ void Engine::StartGame() {
     for (auto& level : levels) {
         auto gameState = level->GetGameState();
         gameState->InitCamera();
-        gameState->InitInput();
+        gameState->InitInput(settings);
         RenderLevelScene(std::move(gameState));
     }
 }
@@ -40,13 +41,10 @@ void Engine::RenderLevelScene(std::unique_ptr<GameStateManager> gameState) {
     while (!WindowShouldClose() && !gameState->IsLevelOver()) {
         // Update the game
         gameState->Update();        // Update the scene
-        if (IsKeyPressed(KEY_D)) // if KEY_D is pressed
-            displayDebug = !displayDebug; // Toggle the debug display
-
         // Draw the frame
         BeginDrawing();             // Setup canvas (framebuffer) to start drawing
-            Renderer::Draw(gameState.get());    // Draw the scene using the renderer
-            if (displayDebug) // If the debug display is enabled, display it
+            Renderer::Draw(gameState.get(), settings->renderRedBorders);    // Draw the scene using the renderer
+            if (settings->displayDebug) // If the debug display is enabled, display it
                 DebugGUI::DrawGui(gameState.get());// Draw the Debug GUI using the debug gui class
         EndDrawing();               // End canvas drawing and swap buffers (double buffering)
         // End frame

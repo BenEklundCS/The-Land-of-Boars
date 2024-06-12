@@ -11,7 +11,10 @@
 #include "../Entities/Player/Player.h"
 #include "../Entities/Monsters/Monster.h"
 #include "../Entities/Objects/Platform.h"
-#include "GameInputManager.h"
+#include "../../Platform/Engine.h"
+
+class GameInputManager;
+struct EngineSettings;
 
 struct gameData {
     Vector2 playerPosition;
@@ -48,7 +51,7 @@ public:
     [[nodiscard]] bool IsLevelOver() const; // Return the levelOver flag
     const gameData* GetGameData();
     void AddObject(std::unique_ptr<GameObject> obj); // Add a GameObject to the scene
-    void InitInput(); // call to make input available to the GameState
+    void InitInput(EngineSettings* settings); // call to make input available to the GameState
     ~GameStateManager(); // Destructor
 };
 

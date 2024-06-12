@@ -3,6 +3,7 @@
 //
 
 #include "../../../include/Game/Management/GameInputManager.h"
+#include "../../../include/Platform/Engine.h"
 
 void GameInputManager::HandleUserInput() {
     HandlePlayerInput();

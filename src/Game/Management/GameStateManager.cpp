@@ -3,6 +3,7 @@
 //
 
 #include "../../../include/Platform/Renderer.h"
+#include "../../../include/Game/Management/GameInputManager.h"
 #include "../../../include/Game/Management/GameStateManager.h"
 
 
@@ -144,6 +145,6 @@ GameStateManager::~GameStateManager() {
     otherObjects_.clear();
 }
 
-void GameStateManager::InitInput() {
-    inputManager = std::make_unique<GameInputManager>(players_[0].get());
+void GameStateManager::InitInput(EngineSettings* settings) {
+    inputManager = std::make_unique<GameInputManager>(players_[0].get(), &settings);
 }

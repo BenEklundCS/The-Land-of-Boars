@@ -7,7 +7,8 @@
 
 #include <memory>
 #include "../Entities/Player/Player.h"
-#include "../Management/GameStateManager.h"
+
+class GameStateManager;
 
 // A level is really a loader script for a GameStateManager object
 class Level {

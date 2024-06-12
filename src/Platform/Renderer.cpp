@@ -4,6 +4,7 @@
 
 #include "../../include/Platform/Renderer.h"
 #include "raylib.h"
+#include "../../include/Game/Management/GameStateManager.h"
 
 
 Renderer::Renderer() = default;
@@ -28,7 +29,7 @@ void Renderer::RenderFPS(Camera2D camera) {
 #pragma endregion
 
 // Draw all game objects
-void Renderer::Draw(GameStateManager* gameState) {
+void Renderer::Draw(GameStateManager* gameState, bool renderRedBorders) {
 
     Camera2D camera = gameState->GetCamera();
 
@@ -43,12 +44,11 @@ void Renderer::Draw(GameStateManager* gameState) {
     for (const auto& object : gameState->GetAllObjects()) {
         object->Draw(); // <-- All GameObjects implement a Draw call
         // Draw object hitboxes
-
-        Rectangle redBox = object->GetRect();
-        DrawRectangleLines((int)redBox.x, (int)redBox.y, (int)redBox.width, (int)redBox.height, RED);
-
+        if (renderRedBorders) {
+            Rectangle redBox = object->GetRect();
+            DrawRectangleLines((int)redBox.x, (int)redBox.y, (int)redBox.width, (int)redBox.height, RED);
+        }
     }
-
     EndMode2D();
 }
 

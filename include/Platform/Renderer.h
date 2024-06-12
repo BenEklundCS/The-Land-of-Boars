@@ -4,8 +4,10 @@
 
 #include <vector>
 #include "Window.h"
-#include "../Game/Management/GameStateManager.h"
+#include "raylib.h"
 
+
+class GameStateManager;
 
 #ifndef PLATFORMER_RENDERER_H
 #define PLATFORMER_RENDERER_H
@@ -20,7 +22,7 @@ private:
     static void RenderFPS(Camera2D camera);
 public:
     Renderer(); // constructor
-    static void Draw(GameStateManager* gameState); // draw call
+    static void Draw(GameStateManager* gameState, bool renderRedBorders); // draw call
     ~Renderer(); // destructor
 };
 

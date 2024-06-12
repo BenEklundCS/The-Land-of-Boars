@@ -4,6 +4,7 @@
 
 #include "../../../include/Game/Level/LevelOne.h"
 #include "../../../include/Game/Management/TileManager.h"
+#include "../../../include/Game/Management/GameStateManager.h"
 
 std::unique_ptr<GameStateManager> LevelOne::GetGameState() {
 #pragma region main game objects
