@@ -15,7 +15,7 @@ private:
     EngineSettings& settings_;
     void HandlePlayerInput();
     void HandleUIInput();
-    void HandleDebugInput();
+    static void HandleDebugInput();
 public:
     explicit GameInputManager(Player* player, EngineSettings& settings)
     : player_(player), settings_(settings) {}

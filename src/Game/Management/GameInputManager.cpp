@@ -24,6 +24,8 @@ void GameInputManager::HandleUIInput() {
 }
 
 void GameInputManager::HandleDebugInput() {
+    if (IsKeyPressed(KEY_B)) Engine::GetSettings()->renderRedBorders = !Engine::GetSettings()->renderRedBorders;
+    if (IsKeyPressed(KEY_D)) Engine::GetSettings()->displayDebug = !Engine::GetSettings()->displayDebug;
 
 }
 

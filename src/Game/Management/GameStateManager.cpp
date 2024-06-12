@@ -146,5 +146,5 @@ GameStateManager::~GameStateManager() {
 }
 
 void GameStateManager::InitInput(EngineSettings* settings) {
-    inputManager = std::make_unique<GameInputManager>(players_[0].get(), &settings);
+    inputManager = std::make_unique<GameInputManager>(players_[0].get(), *settings);
 }
