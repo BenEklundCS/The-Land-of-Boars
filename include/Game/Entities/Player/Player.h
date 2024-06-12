@@ -73,6 +73,7 @@ public:
     void MoveLeft(); // Move the player to the left
     void MoveRight(); // Move the player to the right
     void Jump(); // Jump (with double jump!)
+    void Attack();
     [[nodiscard]] bool CanJump() const; // Check if the player can jump
     void PlatformCollision(GameObject* obj); // Handle a collision with a platform GameObject
     void AnimatePlayer(); // Animate the player

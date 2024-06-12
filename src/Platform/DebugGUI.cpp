@@ -35,9 +35,11 @@ std::string PlayerStateToString(PlayerState state) {
 void DebugGUI::DrawGui(GameStateManager *gameState) {
     const gameData* gameData = gameState->GetGameData();
     const playerDataStruct* playerData = gameData->playerData;
+
     rlImGuiBegin();
     // show ImGui Content
     ImGui::SetWindowFontScale(2);
+    // Render player data
     ImGui::Text("playerData:");
     ImGui::Text("");
     ImGui::Text("Position: %1.2fx, %1.2fy", gameData->playerPosition.x, gameData->playerPosition.y);
@@ -50,6 +52,7 @@ void DebugGUI::DrawGui(GameStateManager *gameState) {
     ImGui::Text("State: %s", PlayerStateToString(playerData->state_).c_str());
     ImGui::Text("isOnGround: %s", (playerData->isOnGround_) ? "True" : "False");
     ImGui::Text("timeSinceHit: %1.2f", playerData->timeSinceHit_);
+    // Submit ImGui data to Raylib for processing
     rlImGuiEnd();
 
     delete gameData;

@@ -290,4 +290,12 @@ playerDataStruct* Player::GetPlayerData() {
     return &playerData;
 }
 
+void Player::Attack() {
+    // Set the player's state to ATTACKING
+    // Set their animation to the attack animation
+    // Somehow query the GameState's list of monsters, or notify the GameState the player is now attacking
+    // as the GameState owns all GameObjects
+    // This needs to lead to us calling a method on the monster itself, for its health, animations, whatever else
+}
+
 #pragma endregion

@@ -39,7 +39,7 @@ private:
     std::vector<std::unique_ptr<Platform>> platforms_; // platform object vector
     std::vector<std::unique_ptr<GameObject>> otherObjects_; // other object vector
     std::vector<GameObject*> allGameObjects_; // All game object vector
-    Camera2D camera; // Camera
+    Camera2D camera{}; // Camera
     std::unique_ptr<GameInputManager> inputManager;
 public:
     GameStateManager(); // Constructor

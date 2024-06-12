@@ -16,11 +16,12 @@ void GameInputManager::HandleUserInput() {
 void GameInputManager::HandlePlayerInput() {
     if (IsKeyDown(KEY_LEFT)) player_->MoveLeft(); // move left on left keypress
     if (IsKeyDown(KEY_RIGHT)) player_->MoveRight(); // move right on right keypress
+    if (IsKeyDown(KEY_A)) player_->Attack();
     if (player_->CanJump()) player_->Jump(); // make the player jump if can jump
 }
 
 void GameInputManager::HandleUIInput() {
-
+    // ?
 }
 
 void GameInputManager::HandleDebugInput() {

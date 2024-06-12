@@ -5,6 +5,7 @@
 #include "../../../include/Platform/Renderer.h"
 #include "../../../include/Game/Management/GameInputManager.h"
 #include "../../../include/Game/Management/GameStateManager.h"
+#include <stdexcept>
 
 
 GameStateManager::GameStateManager() {
@@ -99,8 +100,8 @@ std::vector<GameObject*> GameStateManager::GetAllObjects() {
 // DO NOT CALL UNLESS players_ HAS AT LEAST ONE PLAYER
 void GameStateManager::InitCamera() {
     Player* player1 = players_.at(0).get();
-    camera.target = (Vector2){ player1->GetPosition().x + 20.0f, player1->GetPosition().y + 20.0f };
-    camera.offset = (Vector2){ (float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
+    camera.target = (Vector2){player1->GetPosition().x + 20.0f, player1->GetPosition().y + 20.0f};
+    camera.offset = (Vector2){(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f};
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
 }
