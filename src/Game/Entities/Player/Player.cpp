@@ -27,9 +27,6 @@ void Player::Draw() {
     playerData.playerAnimation_->FlipX(playerData.movingRight_); // flip x axis based on the movingRight_ flag
     // Draw the player utilizing the currently loaded playerTexture, and rect position
     DrawTexturePro(playerTexture, currentRect, GetRect(), Vector2{0, 0}, 0, playerData.color_);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
-
-    // Debug
-    //DrawRectangle(position_.x, position_.y, GetRect().width, GetRect().height, RED);
 }
 
 void Player::Update() {
@@ -193,9 +190,10 @@ bool Player::CanJump() const {
 }
 
 // If the player is on the ground, reset their jump counter to 0 and set isOnGround_ to false
+// GoIdle() must be called before jumps will be reset, because jumps cannot be reset while JUMPING
 void Player::ResetJumps() {
     // If the player's on the ground, reset jumps
-    if (playerData.isOnGround_) {
+    if (playerData.isOnGround_ && playerData.state_ != JUMPING) {
         playerData.jumps_ = 0;
         playerData.isOnGround_ = false; // reset flag after resetting jumps
     }

@@ -4,8 +4,9 @@
 
 #include "../../include/Platform/Engine.h"
 #include "../../include/Game/Level/LevelOne.h"
-#include <exception>
+#include <stdexcept>
 
+// Declare Engine::settings as a nullptr as it is a static member attribute of Engine
 std::unique_ptr<EngineSettings> Engine::settings = nullptr;
 
 // Load all the levels for the game
@@ -20,6 +21,7 @@ void Engine::LoadLevels() {
 
 // Start the game by loading the levels, then playing them in sequence
 void Engine::StartGame() {
+    // Init settings such that it is not null
     settings = std::make_unique<EngineSettings>();
     TraceLog(LOG_INFO, "Engine starting game...");
     // Get the window
@@ -30,9 +32,14 @@ void Engine::StartGame() {
     DebugGUI::InitGui();
     // Start each level
     for (auto& level : levels) {
+        // Get the level's gameState
         auto gameState = level->GetGameState();
+        // Init the game camera
         gameState->InitCamera();
-        gameState->InitInput(settings.get()); // init ur settings if you don't want them to be null
+        // init the GameInputManager using the Engine settings
+            // This allows the input manager to change settings on the fly.
+        gameState->InitInput(settings.get());
+        // Move the gameState to the ownership of the RenderLevelScene method, which will loop rendering the level
         RenderLevelScene(std::move(gameState));
     }
 }
