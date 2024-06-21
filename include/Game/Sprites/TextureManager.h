@@ -20,6 +20,7 @@
 #define PLAYER_TEXTURE_IDLE_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Character/Idle/Idle-Sheet.png"
 #define PLAYER_TEXTURE_RUNNING_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Character/Run/Run-Sheet.png"
 #define PLAYER_TEXTURE_JUMPING_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Character/Jumlp-All/Jump-All-Sheet.png"
+#define PLAYER_TEXTURE_ATTACKING_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Character/Attack-01/Attack-01-Sheet.png"
 
 // Background path
 #define BACKGROUND_TEXTURE_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Background/Background.png"
@@ -28,6 +29,7 @@
 #define PLAYER_IDLE_TEXTURE "playerIdleTexture"
 #define PLAYER_RUNNING_TEXTURE "playerRunningTexture"
 #define PLAYER_JUMPING_TEXTURE "playerJumpingTexture"
+#define PLAYER_ATTACKING_TEXTURE "playerAttackingTexture"
 
 // Background string
 #define BACKGROUND_TEXTURE "backgroundTexture"
@@ -36,6 +38,7 @@
 #define PLAYER_IDLE_FRAMES 4
 #define PLAYER_RUNNING_FRAMES 8
 #define PLAYER_JUMPING_FRAMES 15
+#define PLAYER_ATTACKING_FRAMES 8
 
 #define BOAR_RUNNING_FRAMES 6
 

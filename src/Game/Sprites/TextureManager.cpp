@@ -30,6 +30,7 @@ void TextureManager::LoadPlayerTextures() {
     TextureManager::LoadAnimatedTexture(PLAYER_TEXTURE_IDLE_PATH, PLAYER_IDLESHEET_OFFSET, PLAYER_IDLE_FRAMES, PLAYER_IDLE_TEXTURE);
     TextureManager::LoadAnimatedTexture(PLAYER_TEXTURE_RUNNING_PATH, PLAYER_RUNSHEET_OFFSET, PLAYER_RUNNING_FRAMES, PLAYER_RUNNING_TEXTURE);
     TextureManager::LoadAnimatedTexture(PLAYER_TEXTURE_JUMPING_PATH, 0, PLAYER_JUMPING_FRAMES, PLAYER_JUMPING_TEXTURE);
+    TextureManager::LoadAnimatedTexture(PLAYER_TEXTURE_ATTACKING_PATH, -16, PLAYER_ATTACKING_FRAMES, PLAYER_ATTACKING_TEXTURE);
 }
 
 void TextureManager::LoadTileTextures() {
@@ -37,9 +38,9 @@ void TextureManager::LoadTileTextures() {
     float tileWidth = 64;
     float tileHeight = 64;
     TextureManager::LoadTexture(texture, TILE_GRASS_TEXTURE,
-                                Rectangle{10, TILE_OFFSET, tileWidth, tileHeight});
+                                Rectangle{TILE_OFFSET, TILE_OFFSET, tileWidth, tileHeight});
     TextureManager::LoadTexture(texture, TILE_DIRT_TEXTURE,
-                                Rectangle{10, TILE_OFFSET + TILE_LENGTH, tileWidth, tileHeight});
+                                Rectangle{TILE_OFFSET, TILE_OFFSET + TILE_LENGTH, tileWidth, tileHeight});
 }
 
 void TextureManager::LoadOtherTextures() {

@@ -33,7 +33,7 @@ void Animation::Reset() {
 void Animation::Animate() {
     frameTime_ += GetFrameTime(); // Accumulate the frame time
     // If replay is off and we're at the last frame, stay at the last frame
-    if (!replay_ && currentFrame_ == frameCount_ - 1) {
+    if (IsDone()) {
         return;
     }
     else if (frameTime_ >= frameDuration_) {
@@ -53,4 +53,8 @@ void Animation::FlipX(bool movingRight) {
             gameTexture_.texture.width *= -1;
         }
     }
+}
+
+bool Animation::IsDone() const {
+    return !replay_ && currentFrame_ == frameCount_ - 1;
 }

@@ -21,7 +21,8 @@
 enum PlayerState {
     IDLE,
     RUNNING,
-    JUMPING
+    JUMPING,
+    ATTACKING
 };
 
 struct playerDataStruct {
@@ -56,13 +57,13 @@ private:
     void UpdatePosition(float deltaTime); // Update the player position based on its velocity
     void ApplyFriction(); // Friction
     void ApplyGravity(); // Gravity
-    void VelocityBound(); // Prevent the players velocity from increasing past the bound
     // Animations
     void UpdateFlashing(float deltaTime); // Handle flashing red of the player
     // Player state
     [[nodiscard]] bool CheckPlayerDeath() const; // Check if the player is dead
     void ResetJumps(); // Reset the player jump counter
     void GoIdle();
+    bool AlreadyAttacking();
     // Attributes
     playerDataStruct playerData;
 public:
