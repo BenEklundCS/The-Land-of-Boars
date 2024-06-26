@@ -40,12 +40,12 @@ void Engine::StartGame() {
             // This allows the input manager to change settings on the fly.
         gameState->InitInput(settings.get());
         // Move the gameState to the ownership of the RenderLevelScene method, which will loop rendering the level
-        RenderLevelScene(std::move(gameState));
+        RenderLevelScene(gameState);
     }
 }
 
 // Take a GameStateManager* as a parameter, initialize a renderer, and then render the scene
-void Engine::RenderLevelScene(std::unique_ptr<GameStateManager> gameState) {
+void Engine::RenderLevelScene(GameStateManager* gameState) {
     TraceLog(LOG_INFO, "Engine rendering a gameState...");
     // Render the level in an infinite loop
     while (!WindowShouldClose() && !gameState->IsLevelOver()) {
@@ -53,9 +53,9 @@ void Engine::RenderLevelScene(std::unique_ptr<GameStateManager> gameState) {
         gameState->Update();        // Update the scene
         // Draw the frame
         BeginDrawing();             // Setup canvas (framebuffer) to start drawing
-            Renderer::Draw(gameState.get(), settings->renderRedBorders);    // Draw the scene using the renderer
+            Renderer::Draw(gameState, settings->renderRedBorders);    // Draw the scene using the renderer
             if (settings->displayDebug) // If the debug display is enabled, display it
-                DebugGUI::DrawGui(gameState.get());// Draw the Debug GUI using the debug gui class
+                DebugGUI::DrawGui(gameState);// Draw the Debug GUI using the debug gui class
         EndDrawing();               // End canvas drawing and swap buffers (double buffering)
         // End frame
     }

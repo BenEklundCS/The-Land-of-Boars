@@ -6,11 +6,11 @@
 #include "../../../include/Game/Management/TileManager.h"
 #include "../../../include/Game/Management/GameStateManager.h"
 
-std::unique_ptr<GameStateManager> LevelOne::GetGameState() {
+GameStateManager* LevelOne::GetGameState() {
+
 #pragma region main game objects
     auto player = std::make_unique<Player>();
-    auto gameState = std::make_unique<GameStateManager>();
-
+    auto gameState = GameStateManager::GetInstance();
     gameState->AddObject(std::move(player));
 #pragma endregion
 
@@ -63,11 +63,12 @@ std::unique_ptr<GameStateManager> LevelOne::GetGameState() {
 
 
 #pragma region monsters
-    auto monster1 = std::make_unique<Boar>(1000, 200, 100, 100, MonsterState::PACING);
+    auto monster1 = std::make_unique<Boar>(1000, 200, 300, 300, MonsterState::PACING);
     auto monster2 = std::make_unique<Boar>(2000, GetScreenHeight() - 200, 100, 100, MonsterState::DEFAULT);
 
     gameState->AddObject(std::move(monster1));
     gameState->AddObject(std::move(monster2));
 #pragma endregion
+
     return gameState;
 }

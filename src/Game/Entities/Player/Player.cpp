@@ -3,6 +3,7 @@
 //
 
 #include "../../../../include/Game/Entities/Player/Player.h"
+#include "../../../../include/Game/Management/GameStateManager.h"
 
 /*
  * Player state management
@@ -134,9 +135,7 @@ void Player::Jump() {
 void Player::Attack() {
     // Set the player's state to ATTACKING
     playerData.state_ = ATTACKING;
-    // Somehow query the GameState's list of monsters, or notify the GameState the player is now attacking
-    // as the GameState owns all GameObjects
-    // This needs to lead to us calling a method on the monster itself, for its health, animations, whatever else
+    GameStateManager::GetInstance()->UpdateAttacks(this);
 }
 
 #pragma endregion

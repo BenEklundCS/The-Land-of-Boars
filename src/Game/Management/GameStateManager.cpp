@@ -7,16 +7,26 @@
 #include "../../../include/Game/Management/GameStateManager.h"
 #include <stdexcept>
 
+std::unique_ptr<GameStateManager> GameStateManager::instance = nullptr;
 
 GameStateManager::GameStateManager() {
     levelOver = false;
+}
+
+// Window Singleton Pattern
+GameStateManager* GameStateManager::GetInstance() {
+    TraceLog(LOG_INFO, "GameStateManager::GetInstance() Invoked."); // Log
+    if (instance == nullptr) {
+        TraceLog(LOG_INFO, "Creating GameStateManager...");
+        instance = std::make_unique<GameStateManager>(); // Typical singleton stuff, but I've implemented the instance as a unique ptr
+    }
+    return instance.get(); // if the window already exists, simply return it
 }
 
 #pragma region update gameState methods
 
 // Update all game objects and handle collisions
 void GameStateManager::Update() {
-
     // Update the camera
     UpdateCamera();
     // Update all game objects and handle collisions
@@ -24,7 +34,6 @@ void GameStateManager::Update() {
     // Handle user input
     inputManager->HandleUserInput();
     UpdateMonsters(); // update Monsters
-
 }
 
 // Update all players in the scene by iterating over the players, calling update, and then checking for collisions
@@ -32,8 +41,8 @@ void GameStateManager::UpdatePlayers() {
 
     for (auto& player : players_) {
         player->Update();
-        // Iterate over the platforms to check for collisions
 
+        // Iterate over the platforms to check for collisions
         for (auto& platform : platforms_) {
             player->PlatformCollision(platform.get());
         }
@@ -43,6 +52,17 @@ void GameStateManager::UpdatePlayers() {
             player->PlatformCollision(other.get());
         }
     }
+}
+
+// Handle player and monster attacks onscreen
+void GameStateManager::UpdateAttacks(Player* player) {
+    float playerPosX = player->GetPosition().x;
+    Rectangle rect = {
+            (player->GetPlayerData()->movingRight_) ? playerPosX + 200 : playerPosX - 200,
+            player->GetPosition().y, 100, 100
+    };
+    auto attackRect = std::make_unique<Platform>(rect.x, rect.y, 100, 100, BLACK);
+    AddObject(std::move(attackRect));
 }
 
 // Update all players in the scene by iterating over the monsters, calling update, and then checking for collisions

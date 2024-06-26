@@ -29,6 +29,7 @@ struct gameData {
 // Multiplayer support is not planned for this project.
 class GameStateManager {
 private:
+    static std::unique_ptr<GameStateManager> instance;
     bool levelOver; // Flag for if the level is over
     void UpdatePlayers(); // Update the player vector
     void UpdateMonsters(); // Update the monster vector
@@ -43,8 +44,11 @@ private:
     std::unique_ptr<GameInputManager> inputManager;
 public:
     GameStateManager(); // Constructor
+    static GameStateManager* GetInstance();
     void InitCamera(); // Initialize the camera - call before rendering
     void Update(); // Update the game state
+    // Call to update attacks, must pass a player
+    void UpdateAttacks(Player* player);
     Camera2D GetCamera(); // Get the Camera2D
     std::vector<GameObject*> GetAllObjects(); // Get all game objects from the GameState
     void SetLevelOver(); // Set levelOver to true

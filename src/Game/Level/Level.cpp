@@ -9,7 +9,7 @@
 
 Level::Level() = default;
 
-std::unique_ptr<GameStateManager> Level::GetGameState() {
+GameStateManager* Level::GetGameState() {
 
 }
 

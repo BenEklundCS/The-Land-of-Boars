@@ -14,7 +14,7 @@ class GameStateManager;
 class Level {
 public:
     Level();
-    virtual std::unique_ptr<GameStateManager> GetGameState(); // Return a unique_ptr to a GameStateManager object loaded by the level
+    virtual GameStateManager* GetGameState(); // Return a unique_ptr to a GameStateManager object loaded by the level
     ~Level();
 };
 

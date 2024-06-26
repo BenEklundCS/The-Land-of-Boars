@@ -32,7 +32,7 @@ private:
     std::vector<std::unique_ptr<Level>> levels;
     int curr = 0;
     static std::unique_ptr<EngineSettings> settings;
-    static void RenderLevelScene(std::unique_ptr<GameStateManager> scene); // Start the render loop
+    static void RenderLevelScene(GameStateManager* scene); // Start the render loop
 public:
     void StartGame(); // Start the game
     void LoadLevels(); // Load all the game levels

@@ -22,6 +22,9 @@ Texture2D Animation::GetTexture() const {
 Rectangle Animation::GetCurrentRect() const {
     Rectangle sourceRec = gameTexture_.rect;
     sourceRec.x = (float)currentFrame_ * sourceRec.width;
+    if (gameTexture_.texture.width < 0) { // If the texture is flipped
+        sourceRec.x = gameTexture_.texture.width - sourceRec.x - sourceRec.width; // Flip the x coordinate of the source rectangle
+    }
     return sourceRec;
 }
 

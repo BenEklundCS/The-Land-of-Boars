@@ -63,7 +63,6 @@ private:
     [[nodiscard]] bool CheckPlayerDeath() const; // Check if the player is dead
     void ResetJumps(); // Reset the player jump counter
     void GoIdle();
-    bool AlreadyAttacking();
     // Attributes
     playerDataStruct playerData;
 public:
@@ -80,6 +79,7 @@ public:
     void AnimatePlayer(); // Animate the player
     playerDataStruct* GetPlayerData();
     void HitPlayer();
+    bool AlreadyAttacking();
 };
 
 #endif //PLATFORMER_PLAYER_H
