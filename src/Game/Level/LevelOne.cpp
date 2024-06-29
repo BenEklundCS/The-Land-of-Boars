@@ -68,6 +68,12 @@ GameStateManager* LevelOne::GetGameState() {
 
     gameState->AddObject(std::move(monster1));
     gameState->AddObject(std::move(monster2));
+
+    for (int i = 0; i < 100; i++) {
+        auto monster3 = std::make_unique<Boar>(2000 + i*10, GetScreenHeight() - 200, 100, 100, MonsterState::DEFAULT);
+
+        gameState->AddObject(std::move(monster3));
+    }
 #pragma endregion
 
     return gameState;

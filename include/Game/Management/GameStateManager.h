@@ -57,6 +57,7 @@ public:
     void AddObject(std::unique_ptr<GameObject> obj); // Add a GameObject to the scene
     void InitInput(EngineSettings* settings); // call to make input available to the GameState
     ~GameStateManager(); // Destructor
+    void RemoveObject(GameObject *obj);
 };
 
 #endif //PLATFORMER_GAMESTATEMANAGER_H

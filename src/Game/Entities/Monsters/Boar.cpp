@@ -10,7 +10,7 @@
 Boar::Boar(float posX, float posY, float dimX, float dimY, MonsterState state)
 : Monster(posX, posY, dimX, dimY, state),
 boarAnimation_(TextureManager::GetInstance()->GetTexture(BOAR_RUNNING_TEXTURE_WHITE), BOAR_RUNNING_FRAMES, 0.1f, true) {
-
+    this->hp_ = BOAR_MAX_HEALTH;
 }
 
 #pragma region render methods

@@ -8,6 +8,7 @@
 #include "Monster.h"
 #include "../../Sprites/Animation.h"
 
+#define BOAR_MAX_HEALTH 3
 
 class Boar : public Monster {
 private:

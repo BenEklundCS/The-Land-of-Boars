@@ -5,7 +5,7 @@
 #include "../../../include/Platform/Renderer.h"
 #include "../../../include/Game/Management/GameInputManager.h"
 #include "../../../include/Game/Management/GameStateManager.h"
-#include <stdexcept>
+#include <algorithm>
 
 std::unique_ptr<GameStateManager> GameStateManager::instance = nullptr;
 
@@ -57,12 +57,29 @@ void GameStateManager::UpdatePlayers() {
 // Handle player and monster attacks onscreen
 void GameStateManager::UpdateAttacks(Player* player) {
     float playerPosX = player->GetPosition().x;
-    Rectangle rect = {
-            (player->GetPlayerData()->movingRight_) ? playerPosX + 200 : playerPosX - 200,
-            player->GetPosition().y, 100, 100
-    };
-    auto attackRect = std::make_unique<Platform>(rect.x, rect.y, 100, 100, BLACK);
-    AddObject(std::move(attackRect));
+    std::vector<GameObject*> toRemove;
+    for (auto& monster : monsters_) {
+        float monsterPosX = monster->GetPosition().x;
+        if (player->GetPlayerData()->movingRight_) {
+            if (monsterPosX > playerPosX && monsterPosX <= playerPosX + 500) {
+                monster->SetHealth(monster->GetHealth() - 1);
+                if (monster->GetHealth() <= 0) {
+                    toRemove.push_back(monster.get());
+                }
+            }
+        }
+        else {
+            if (monsterPosX < playerPosX && monsterPosX >= playerPosX - 500) {
+                monster->SetHealth(monster->GetHealth() - 1);
+                if (monster->GetHealth() <= 0) {
+                    toRemove.push_back(monster.get());
+                }
+            }
+        }
+    }
+    for (auto& obj : toRemove) {
+        RemoveObject(obj);
+    }
 }
 
 // Update all players in the scene by iterating over the monsters, calling update, and then checking for collisions
@@ -102,6 +119,51 @@ void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
     }
     else {
         otherObjects_.push_back(std::move(obj));
+    }
+}
+
+void GameStateManager::RemoveObject(GameObject* obj) {
+    // Find and remove the object from the allGameObjects_ vector
+    allGameObjects_.erase(std::remove(allGameObjects_.begin(), allGameObjects_.end(), obj), allGameObjects_.end());
+
+    // Find and remove the object from the appropriate type-specific vector
+    switch (obj->type_) {
+        case PLAYER: {
+            auto it = std::find_if(players_.begin(), players_.end(), [&obj](const std::unique_ptr<Player>& player) {
+                return player.get() == obj;
+            });
+            if (it != players_.end()) {
+                players_.erase(it);
+            }
+            break;
+        }
+        case MONSTER: {
+            auto it = std::find_if(monsters_.begin(), monsters_.end(), [&obj](const std::unique_ptr<Monster>& monster) {
+                return monster.get() == obj;
+            });
+            if (it != monsters_.end()) {
+                monsters_.erase(it);
+            }
+            break;
+        }
+        case PLATFORM: {
+            auto it = std::find_if(platforms_.begin(), platforms_.end(), [&obj](const std::unique_ptr<Platform>& platform) {
+                return platform.get() == obj;
+            });
+            if (it != platforms_.end()) {
+                platforms_.erase(it);
+            }
+            break;
+        }
+        default: {
+            auto it = std::find_if(otherObjects_.begin(), otherObjects_.end(), [&obj](const std::unique_ptr<GameObject>& other) {
+                return other.get() == obj;
+            });
+            if (it != otherObjects_.end()) {
+                otherObjects_.erase(it);
+            }
+            break;
+        }
     }
 }
 
@@ -158,14 +220,14 @@ const gameData* GameStateManager::GetGameData() {
     return data;
 }
 
+void GameStateManager::InitInput(EngineSettings* settings) {
+    inputManager = std::make_unique<GameInputManager>(players_[0].get(), *settings);
+}
+
 // Cleanup the vectors on destruct
 GameStateManager::~GameStateManager() {
     players_.clear();
     monsters_.clear();
     platforms_.clear();
     otherObjects_.clear();
-}
-
-void GameStateManager::InitInput(EngineSettings* settings) {
-    inputManager = std::make_unique<GameInputManager>(players_[0].get(), *settings);
 }

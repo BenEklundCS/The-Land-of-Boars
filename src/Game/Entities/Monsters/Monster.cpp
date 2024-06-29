@@ -4,6 +4,7 @@
 
 
 #include "../../../../include/Game/Entities/Monsters/Monster.h"
+#include "../../../../include/Game/Management/GameStateManager.h"
 
 
 Monster::Monster(float pos_x, float pos_y, float dim_x, float dim_y, MonsterState state) : GameObject(MONSTER) {
@@ -109,6 +110,14 @@ void Monster::ApplyGravity(float deltaTime) {
     if (velocity_.y <= MAX_VELOCITY) {
         velocity_.y += GRAVITY * deltaTime;
     }
+}
+
+int Monster::GetHealth() const {
+    return this->hp_;
+}
+
+void Monster::SetHealth(int hp) {
+    this->hp_ = hp;
 }
 
 #pragma endregion

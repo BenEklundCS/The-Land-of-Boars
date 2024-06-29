@@ -25,6 +25,7 @@ private:
     Vector2 velocity_{}; // The monster velocity vector
 protected:
     bool movingRight_; // Flag to find x direction
+    int hp_;
 public:
     GameObjectType type_ = MONSTER; // Monster's GameObjectType
     Monster(float pos_x, float pos_y, float dim_x, float dim_y, MonsterState state);
@@ -34,6 +35,8 @@ public:
     void MoveMonster(); // Move the monster based on its velocity
     void PlatformCollision(GameObject* obj); // Handle platform collisions
     void CollideWithPlayer(Player* player) override; // Handle player collisions
+    [[nodiscard]] int GetHealth() const;
+    void SetHealth(int hp);
 };
 
 
