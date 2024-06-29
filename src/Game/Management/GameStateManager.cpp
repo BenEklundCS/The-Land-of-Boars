@@ -56,12 +56,18 @@ void GameStateManager::UpdatePlayers() {
 
 // Handle player and monster attacks onscreen
 void GameStateManager::UpdateAttacks(Player* player) {
+    // Get the current player X position
     float playerPosX = player->GetPosition().x;
+    // Vector to store delayed updates
     std::vector<GameObject*> toRemove;
+    // Iterate over all monsters
     for (auto& monster : monsters_) {
+        // Get monster position
         float monsterPosX = monster->GetPosition().x;
         if (player->GetPlayerData()->movingRight_) {
+            // Hit monsters 0 to 500px in front of the player
             if (monsterPosX > playerPosX && monsterPosX <= playerPosX + 500) {
+                // Handle monster hitting and if they should die!
                 monster->SetHealth(monster->GetHealth() - 1);
                 if (monster->GetHealth() <= 0) {
                     toRemove.push_back(monster.get());
@@ -69,14 +75,17 @@ void GameStateManager::UpdateAttacks(Player* player) {
             }
         }
         else {
+            // Hit monsters 0 to 500px in front of the player
             if (monsterPosX < playerPosX && monsterPosX >= playerPosX - 500) {
                 monster->SetHealth(monster->GetHealth() - 1);
+                // Handle monster hitting and if they should die!
                 if (monster->GetHealth() <= 0) {
                     toRemove.push_back(monster.get());
                 }
             }
         }
     }
+    // Defer deletions of monsters to avoid issues accessing them (memory exceptions!) in the loop above ^
     for (auto& obj : toRemove) {
         RemoveObject(obj);
     }
