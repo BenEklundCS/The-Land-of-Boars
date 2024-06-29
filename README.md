@@ -1,7 +1,7 @@
-# Platformer Game
+# The Land of Boars
 
 ## Overview
-This is a platformer game developed using C++ and Raylib. The project is organized into platform and game folders, attempting to seperate the logic of these systems.
+The Land of Boars is a platformer game developed using C++ and Raylib. The project is organized into platform and game folders, attempting to seperate the logic of these systems.
 The project uses modern C++ features, including `std::unique_ptr` for memory management rather than new/delete.
 
 ## Features
