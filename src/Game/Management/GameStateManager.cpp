@@ -38,6 +38,7 @@ void GameStateManager::Update() {
 }
 
 void GameStateManager::UpdatePlatforms() {
+    #pragma omp parallel for
     for (auto& platform : platforms_) {
         platform->Update();
     }
@@ -50,6 +51,7 @@ void GameStateManager::UpdatePlayers() {
         player->Update();
 
         // Iterate over the platforms to check for collisions
+        #pragma omp parallel for
         for (auto& platform : platforms_) {
             player->PlatformCollision(platform.get());
         }
@@ -68,6 +70,7 @@ void GameStateManager::UpdateAttacks(Player* player) {
     // Vector to store delayed updates
     std::vector<GameObject*> toRemove;
     // Iterate over all monsters
+    #pragma omp parallel for
     for (auto& monster : monsters_) {
         // Get monster position
         float monsterPosX = monster->GetPosition().x;
@@ -93,6 +96,7 @@ void GameStateManager::UpdateAttacks(Player* player) {
         }
     }
     // Defer deletions of monsters to avoid issues accessing them (memory exceptions!) in the loop above ^
+
     for (auto& obj : toRemove) {
         RemoveObject(obj);
     }
@@ -100,6 +104,7 @@ void GameStateManager::UpdateAttacks(Player* player) {
 
 // Update all players in the scene by iterating over the monsters, calling update, and then checking for collisions
 void GameStateManager::UpdateMonsters() {
+    #pragma omp parallel for
     for (auto& monster : monsters_) {
         monster->Update();
         for (auto& player : players_) {
