@@ -58,6 +58,8 @@ set(GAME_ENTITIES_SOURCES
         src/Game/Entities/Objects/Tile.cpp
         src/Game/Entities/Monsters/Monster.cpp
         src/Game/Entities/Monsters/Boar.cpp
+        src/Game/Entities/Objects/MovingPlatform.cpp
+        src/Game/Entities/Objects/MovingPlatform.cpp
 )
 
 set(GAME_LEVEL_SOURCES

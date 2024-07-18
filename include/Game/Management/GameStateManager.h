@@ -33,6 +33,7 @@ private:
     bool levelOver; // Flag for if the level is over
     void UpdatePlayers(); // Update the player vector
     void UpdateMonsters(); // Update the monster vector
+    void UpdatePlatforms();
     // CAMERA/SCENE ONLY SUPPORT ONE PLAYER CURRENTLY, BEWARE
     void UpdateCamera(); // Update the camera
     std::vector<std::unique_ptr<Player>> players_; // player object vector

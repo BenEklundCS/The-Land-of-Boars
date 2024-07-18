@@ -10,8 +10,9 @@
 
 
 class Platform : public GameObject {
-private:
-    Color color_{}; // Platform color
+// Platform color
+protected:
+    Color color_{};
 public:
     Platform(float pos_x, float pos_y, float dim_x, float dim_y, Color color);
     void Update() override; // Update the platform

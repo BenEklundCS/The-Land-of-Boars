@@ -31,9 +31,16 @@ void GameStateManager::Update() {
     UpdateCamera();
     // Update all game objects and handle collisions
     UpdatePlayers(); // update Players
+    UpdatePlatforms(); // update Platforms
     // Handle user input
     inputManager->HandleUserInput();
     UpdateMonsters(); // update Monsters
+}
+
+void GameStateManager::UpdatePlatforms() {
+    for (auto& platform : platforms_) {
+        platform->Update();
+    }
 }
 
 // Update all players in the scene by iterating over the players, calling update, and then checking for collisions

@@ -5,6 +5,7 @@
 #include "../../../include/Game/Level/LevelOne.h"
 #include "../../../include/Game/Management/TileManager.h"
 #include "../../../include/Game/Management/GameStateManager.h"
+#include "../../../include/Game/Entities/Objects/MovingPlatform.h"
 
 GameStateManager* LevelOne::GetGameState() {
 
@@ -16,10 +17,11 @@ GameStateManager* LevelOne::GetGameState() {
 
 
 #pragma region platforms
-    auto platform3 = std::make_unique<Platform>(1300, 300, 500, 50, BLACK);
+    auto platform3 = std::make_unique<Platform>(1300, 300, 500, 500, BLACK);
+    auto moving_platform = std::make_unique<MovingPlatform>(std::move(platform3), Vector2{-200, 200}, Vector2{200, 200}, true, true);
     auto platform4 = std::make_unique<Platform>(550, (float) GetScreenHeight() - 700, 500, 50, BLACK);
 
-    gameState->AddObject(std::move(platform3));
+    gameState->AddObject(std::move(moving_platform));
     gameState->AddObject(std::move(platform4));
 #pragma endregion
 
