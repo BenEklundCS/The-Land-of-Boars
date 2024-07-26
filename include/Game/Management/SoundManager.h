@@ -8,13 +8,16 @@
 #include <map>
 #include <string>
 #include "raylib.h"
+#include <memory>
 
 class SoundManager {
 private:
+    static std::unique_ptr<SoundManager> instance;
     std::map<std::string, Sound> sounds;
-public:
-    void PlaySound(std::string sound_name);
     void LoadSounds();
+public:
+    static SoundManager* getInstance(); // using singleton to avoid loading more sounds than needed into memory
+    void PlaySound(std::string sound_name);
 };
 
 #endif //PLATFORMER_SOUNDMANAGER_H

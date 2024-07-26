@@ -9,6 +9,7 @@ std::unique_ptr<TextureManager> TextureManager::instance = nullptr;
 
 TextureManager::TextureManager() = default;
 
+// Get the TextureManager object
 TextureManager* TextureManager::GetInstance() {
     if (instance == nullptr) {
         instance = std::make_unique<TextureManager>();
@@ -17,6 +18,7 @@ TextureManager* TextureManager::GetInstance() {
     return instance.get();
 }
 
+// Load all textures!
 void TextureManager::LoadTextures() {
     // Load the textures
     LoadPlayerTextures();
@@ -25,6 +27,7 @@ void TextureManager::LoadTextures() {
     LoadMonsterTextures();
 }
 
+// Load player textures
 void TextureManager::LoadPlayerTextures() {
     // Player
     TextureManager::LoadAnimatedTexture(PLAYER_TEXTURE_IDLE_PATH, PLAYER_IDLESHEET_OFFSET, PLAYER_IDLE_FRAMES, PLAYER_IDLE_TEXTURE);
@@ -33,7 +36,9 @@ void TextureManager::LoadPlayerTextures() {
     TextureManager::LoadAnimatedTexture(PLAYER_TEXTURE_ATTACKING_PATH, -16, PLAYER_ATTACKING_FRAMES, PLAYER_ATTACKING_TEXTURE);
 }
 
+// Load game tile textures
 void TextureManager::LoadTileTextures() {
+    // Use raylibs LoadTexture, kinda confusing, but I don't have a better name for loading textures myself
     Texture2D texture = ::LoadTexture(TILE_TEXTURE_PATH);
     float tileWidth = 64;
     float tileHeight = 64;
@@ -43,13 +48,16 @@ void TextureManager::LoadTileTextures() {
                                 Rectangle{TILE_OFFSET, TILE_OFFSET + TILE_LENGTH, tileWidth, tileHeight});
 }
 
+// Load all other textures
 void TextureManager::LoadOtherTextures() {
     // Background
+    // Use raylibs LoadTexture
     Texture2D backgroundTexture = ::LoadTexture(BACKGROUND_TEXTURE_PATH);
     TextureManager::LoadTexture(backgroundTexture, BACKGROUND_TEXTURE,
                                 Rectangle{0, 0, (float)backgroundTexture.width, (float)backgroundTexture.height});
 }
 
+// Load my monster textures
 void TextureManager::LoadMonsterTextures() {
     // Boars
     TextureManager::LoadAnimatedTexture(BOAR_TEXTURE_RUNNING_PATH_WHITE, 0, BOAR_RUNNING_FRAMES, BOAR_RUNNING_TEXTURE_WHITE);
@@ -65,18 +73,15 @@ GameTexture TextureManager::GetTexture(const std::string& texture) {
     }
 }
 
-TextureManager::~TextureManager() {
-    for (const auto& gameTexture : Textures) {
-        UnloadTexture(gameTexture.second.texture);
-    }
-}
-
+// My internal LoadTexture method that assigns a texture, name, and rect to the texture
 void TextureManager::LoadTexture(Texture2D texture, const std::string& textureName, Rectangle rect) {
     GameTexture gameTexture = {texture, rect};
     Emplace(textureName, gameTexture);
 }
 
+// Loads a texture with the frames taken into account
 void TextureManager::LoadAnimatedTexture(const char * filePath, int offset, int frames, const std::string& textureName) {
+    // Use raylibs LoadTexture
     Texture2D texture = ::LoadTexture(filePath);
     GameTexture gameTexture = {texture, Rectangle{0,
                                                  (float)offset,
@@ -85,7 +90,16 @@ void TextureManager::LoadAnimatedTexture(const char * filePath, int offset, int 
     Emplace(textureName, gameTexture);
 }
 
+// Emplace a texture into the TextureManager map
 void TextureManager::Emplace(const std::string &textureName, GameTexture gameTexture) {
+    // emplace ensures the texture is not loaded twice
     Textures.emplace(std::pair<std::string, GameTexture>(textureName, gameTexture));
+}
+
+// Destructor
+TextureManager::~TextureManager() {
+    for (const auto& gameTexture : Textures) {
+        UnloadTexture(gameTexture.second.texture);
+    }
 }
 

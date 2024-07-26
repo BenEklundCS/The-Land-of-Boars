@@ -4,8 +4,6 @@
 
 
 #include "../../../../include/Game/Entities/Monsters/Monster.h"
-#include "../../../../include/Game/Management/GameStateManager.h"
-
 
 Monster::Monster(float pos_x, float pos_y, float dim_x, float dim_y, MonsterState state) : GameObject(MONSTER) {
     this->position_.x = pos_x;

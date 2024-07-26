@@ -5,7 +5,6 @@
 
 
 #include "../../../../include/Game/Entities/Monsters/Boar.h"
-#include "../../../../include/Game/Sprites/TextureManager.h"
 
 Boar::Boar(float posX, float posY, float dimX, float dimY, MonsterState state)
 : Monster(posX, posY, dimX, dimY, state),
