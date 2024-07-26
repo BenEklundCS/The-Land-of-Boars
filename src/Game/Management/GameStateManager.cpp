@@ -65,38 +65,17 @@ void GameStateManager::UpdatePlayers() {
 
 // Handle player and monster attacks onscreen
 void GameStateManager::UpdateAttacks(Player* player) {
-    // Get the current player X position
-    float playerPosX = player->GetPosition().x;
     // Vector to store delayed updates
     std::vector<GameObject*> toRemove;
     // Iterate over all monsters
     #pragma omp parallel for
     for (auto& monster : monsters_) {
-        // Get monster position
-        float monsterPosX = monster->GetPosition().x;
-        if (player->GetPlayerData()->movingRight_) {
-            // Hit monsters 0 to 500px in front of the player
-            if (monsterPosX > playerPosX && monsterPosX <= playerPosX + 500) {
-                // Handle monster hitting and if they should die!
-                monster->SetHealth(monster->GetHealth() - 1);
-                if (monster->GetHealth() <= 0) {
-                    toRemove.push_back(monster.get());
-                }
-            }
-        }
-        else {
-            // Hit monsters 0 to 500px in front of the player
-            if (monsterPosX < playerPosX && monsterPosX >= playerPosX - 500) {
-                monster->SetHealth(monster->GetHealth() - 1);
-                // Handle monster hitting and if they should die!
-                if (monster->GetHealth() <= 0) {
-                    toRemove.push_back(monster.get());
-                }
-            }
+        bool shouldBeRemoved = HandlePlayerAttack(player, monster.get());
+        if (shouldBeRemoved) {
+            toRemove.push_back(monster.get());
         }
     }
     // Defer deletions of monsters to avoid issues accessing them (memory exceptions!) in the loop above ^
-
     for (auto& obj : toRemove) {
         RemoveObject(obj);
     }
@@ -251,4 +230,24 @@ GameStateManager::~GameStateManager() {
     monsters_.clear();
     platforms_.clear();
     otherObjects_.clear();
+}
+
+bool GameStateManager::HandlePlayerAttack(Player* player, Monster* monster) {
+    // Get the current player X position
+    float playerPosX = player->GetPosition().x;
+    // Get the current monster X position
+    float monsterPosX = monster->GetPosition().x;
+    bool movingRight = player->GetPlayerData()->movingRight_;
+    float attackRange = -player->GetPlayerData()->attackRange_;
+    if (monsterPosX < playerPosX && monsterPosX >= playerPosX - attackRange) {
+        monster->SetHealth(monster->GetHealth() - 1);
+        // Handle monster hitting and if they should die!
+        if (monster->GetHealth() <= 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    return false;
 }

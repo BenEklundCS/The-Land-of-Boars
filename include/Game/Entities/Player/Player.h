@@ -46,6 +46,7 @@ struct playerDataStruct {
     Vector2 previousPosition_{0, 0};
     int jumps_ = 0; // Jump counter used to check if we can jump
     bool isOnGround_ = false;
+    float attackRange_ = 500.0f;
 };
 
 // Player is a GameObject with all player logic encapsulated
