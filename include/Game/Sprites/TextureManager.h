@@ -17,13 +17,13 @@
 #include "raylib.h"
 
 // Player paths
-#define PLAYER_TEXTURE_IDLE_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Character/Idle/Idle-Sheet.png"
-#define PLAYER_TEXTURE_RUNNING_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Character/Run/Run-Sheet.png"
-#define PLAYER_TEXTURE_JUMPING_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Character/Jumlp-All/Jump-All-Sheet.png"
-#define PLAYER_TEXTURE_ATTACKING_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Character/Attack-01/Attack-01-Sheet.png"
+#define PLAYER_TEXTURE_IDLE_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Sprites/Character/Idle/Idle-Sheet.png"
+#define PLAYER_TEXTURE_RUNNING_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Sprites/Character/Run/Run-Sheet.png"
+#define PLAYER_TEXTURE_JUMPING_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Sprites/Character/Jumlp-All/Jump-All-Sheet.png"
+#define PLAYER_TEXTURE_ATTACKING_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Sprites/Character/Attack-01/Attack-01-Sheet.png"
 
 // Background path
-#define BACKGROUND_TEXTURE_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Background/Background.png"
+#define BACKGROUND_TEXTURE_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Sprites/Background/Background.png"
 
 // Player strings
 #define PLAYER_IDLE_TEXTURE "playerIdleTexture"
@@ -47,11 +47,11 @@
 #define PLAYER_RUNSHEET_OFFSET (-12)
 
 // Boar stuff
-#define BOAR_TEXTURE_RUNNING_PATH_WHITE "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Mob/Boar/Run/Run-Sheet-White.png"
+#define BOAR_TEXTURE_RUNNING_PATH_WHITE "/home/ben/Programming/Raylib/Platformer/Assets/Sprites/Mob/Boar/Run/Run-Sheet-White.png"
 #define BOAR_RUNNING_TEXTURE_WHITE "boarTextureWhite"
 
 // Tiles
-#define TILE_TEXTURE_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Fantasy/Assets/Tiles.png" // Texture path
+#define TILE_TEXTURE_PATH "/home/ben/Programming/Raylib/Platformer/Assets/Sprites/Assets/Tiles.png" // Texture path
 #define TILE_GRASS_TEXTURE "tileGrassTexture"
 #define TILE_DIRT_TEXTURE "tileDirtTexture"
 
