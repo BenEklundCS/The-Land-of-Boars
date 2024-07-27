@@ -122,48 +122,60 @@ void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
     }
 }
 
+void GameStateManager::RemovePlayer(GameObject* obj) {
+    auto it = std::find_if(players_.begin(), players_.end(), [&obj](const std::unique_ptr<Player>& player) {
+        return player.get() == obj;
+    });
+    if (it != players_.end()) {
+        players_.erase(it);
+    }
+}
+
+void GameStateManager::RemoveMonster(GameObject* obj) {
+    auto it = std::find_if(monsters_.begin(), monsters_.end(), [&obj](const std::unique_ptr<Monster>& monster) {
+        return monster.get() == obj;
+    });
+    if (it != monsters_.end()) {
+        monsters_.erase(it);
+    }
+}
+
+void GameStateManager::RemovePlatform(GameObject* obj) {
+    auto it = std::find_if(platforms_.begin(), platforms_.end(), [&obj](const std::unique_ptr<Platform>& platform) {
+        return platform.get() == obj;
+    });
+    if (it != platforms_.end()) {
+        platforms_.erase(it);
+    }
+}
+
+void GameStateManager::RemoveOtherObject(GameObject* obj) {
+    auto it = std::find_if(otherObjects_.begin(), otherObjects_.end(), [&obj](const std::unique_ptr<GameObject>& other) {
+        return other.get() == obj;
+    });
+    if (it != otherObjects_.end()) {
+        otherObjects_.erase(it);
+    }
+}
+
+// Remove an object from the GameState
 void GameStateManager::RemoveObject(GameObject* obj) {
     // Find and remove the object from the allGameObjects_ vector
     allGameObjects_.erase(std::remove(allGameObjects_.begin(), allGameObjects_.end(), obj), allGameObjects_.end());
-
-    // Find and remove the object from the appropriate type-specific vector
+    // Call the appropriate function based on the object's type
     switch (obj->type_) {
-        case PLAYER: {
-            auto it = std::find_if(players_.begin(), players_.end(), [&obj](const std::unique_ptr<Player>& player) {
-                return player.get() == obj;
-            });
-            if (it != players_.end()) {
-                players_.erase(it);
-            }
+        case PLAYER:
+            RemovePlayer(obj);
             break;
-        }
-        case MONSTER: {
-            auto it = std::find_if(monsters_.begin(), monsters_.end(), [&obj](const std::unique_ptr<Monster>& monster) {
-                return monster.get() == obj;
-            });
-            if (it != monsters_.end()) {
-                monsters_.erase(it);
-            }
+        case MONSTER:
+            RemoveMonster(obj);
             break;
-        }
-        case PLATFORM: {
-            auto it = std::find_if(platforms_.begin(), platforms_.end(), [&obj](const std::unique_ptr<Platform>& platform) {
-                return platform.get() == obj;
-            });
-            if (it != platforms_.end()) {
-                platforms_.erase(it);
-            }
+        case PLATFORM:
+            RemovePlatform(obj);
             break;
-        }
-        default: {
-            auto it = std::find_if(otherObjects_.begin(), otherObjects_.end(), [&obj](const std::unique_ptr<GameObject>& other) {
-                return other.get() == obj;
-            });
-            if (it != otherObjects_.end()) {
-                otherObjects_.erase(it);
-            }
+        default:
+            RemoveOtherObject(obj);
             break;
-        }
     }
 }
 
@@ -237,17 +249,31 @@ bool GameStateManager::HandlePlayerAttack(Player* player, Monster* monster) {
     float playerPosX = player->GetPosition().x;
     // Get the current monster X position
     float monsterPosX = monster->GetPosition().x;
+    // Get attack range and player movement direction
     bool movingRight = player->GetPlayerData()->movingRight_;
-    float attackRange = -player->GetPlayerData()->attackRange_;
-    if (monsterPosX < playerPosX && monsterPosX >= playerPosX - attackRange) {
+    float attackRange = player->GetPlayerData()->attackRange_;
+
+    // Lamdba function to simplify the boolean check
+    // Is the monster in front of the player and player moving right?
+    auto monster_inFront = [=]() {
+        // player.x ------ monster.x --- | attackRange // Hit monsters facing right
+        bool inRange = monsterPosX > playerPosX && monsterPosX <= playerPosX + attackRange;
+        return (inRange && movingRight);
+    };
+
+    auto monster_behind = [=]() {
+        // attackRange | --- monster.x -------- player.x // Hit monsters facing left
+        bool inRange = monsterPosX < playerPosX && monsterPosX >= playerPosX - attackRange;
+        return (inRange && !movingRight);
+    };
+
+    // Hit the monster if either condition is true
+    if (monster_inFront() || monster_behind()) {
         monster->SetHealth(monster->GetHealth() - 1);
         // Handle monster hitting and if they should die!
-        if (monster->GetHealth() <= 0) {
+        if (monster->GetHealth() <= 0)
             return true;
-        }
-        else {
-            return false;
-        }
+        return false;
     }
     return false;
 }

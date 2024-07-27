@@ -34,6 +34,12 @@ private:
     void UpdatePlayers(); // Update the player vector
     void UpdateMonsters(); // Update the monster vector
     void UpdatePlatforms();
+    // Deleters of objects
+    void RemovePlayer(GameObject *obj);
+    void RemoveMonster(GameObject *obj);
+    void RemovePlatform(GameObject *obj);
+    void RemoveObject(GameObject *obj);
+    void RemoveOtherObject(GameObject *obj);
     // CAMERA/SCENE ONLY SUPPORT ONE PLAYER CURRENTLY, BEWARE
     void UpdateCamera(); // Update the camera
     static bool HandlePlayerAttack(Player* player, Monster* monster); // Handle the players attack on the game state, hitting everything within distance
@@ -59,7 +65,6 @@ public:
     void AddObject(std::unique_ptr<GameObject> obj); // Add a GameObject to the scene
     void InitInput(EngineSettings* settings); // call to make input available to the GameState
     ~GameStateManager(); // Destructor
-    void RemoveObject(GameObject *obj);
 };
 
 #endif //PLATFORMER_GAMESTATEMANAGER_H
