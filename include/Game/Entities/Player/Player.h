@@ -64,6 +64,11 @@ private:
     [[nodiscard]] bool CheckPlayerDeath() const; // Check if the player is dead
     void ResetJumps(); // Reset the player jump counter
     void GoIdle();
+    // Collisions
+    void OnAboveCollision(Rectangle plat, Rectangle play);
+    void OnBelowCollision(Rectangle plat, Rectangle play);
+    void OnRightCollision(Rectangle plat, Rectangle play);
+    void OnLeftCollision(Rectangle plat, Rectangle play);
     // Attributes
     playerDataStruct playerData;
 public:

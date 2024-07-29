@@ -241,6 +241,26 @@ bool Player::AlreadyAttacking() {
 
 #pragma region player object interactions
 
+void Player::OnAboveCollision(Rectangle plat, Rectangle play) {
+    position_.y = plat.y - play.height;
+    // Reset Y velocity only if moving downwards
+    if (playerData.velocity_.y > 0) playerData.velocity_.y = 0;
+    // Set the isOnGround flag and call GoIdle to change state to IDLE
+    playerData.isOnGround_ = true;
+    GoIdle();
+}
+void Player::OnBelowCollision(Rectangle plat, Rectangle play) {
+    position_.y = plat.y + plat.height;
+    // Reset Y velocity only if moving upwards
+    if (playerData.velocity_.y < 0) playerData.velocity_.y = 0;
+}
+void Player::OnRightCollision(Rectangle plat, Rectangle play) {
+    position_.x = plat.x + plat.width;
+}
+void Player::OnLeftCollision(Rectangle plat, Rectangle play) {
+    position_.x = plat.x - play.width;
+}
+
 // Handle a Player Platform collision using bounding rectangles and overlapping axis
 void Player::PlatformCollision(GameObject* obj) {
     // Check for collision between the player and the platform
@@ -264,22 +284,15 @@ void Player::PlatformCollision(GameObject* obj) {
         // Revert only the relevant axis position based on the overlap values
         if (overlapX >= overlapY) {
             if (deltaY > 0) { // Collision from below
-                position_.y = platformRect.y + platformRect.height;
-                // Reset Y velocity only if moving upwards
-                if (playerData.velocity_.y < 0) playerData.velocity_.y = 0;
+                OnBelowCollision(platformRect, playerRect);
             } else if (deltaY < 0) { // Collision from above
-                position_.y = platformRect.y - playerRect.height;
-                // Reset Y velocity only if moving downwards
-                if (playerData.velocity_.y > 0) playerData.velocity_.y = 0;
-                // Set the isOnGround flag and call GoIdle to change state to IDLE
-                playerData.isOnGround_ = true;
-                GoIdle();
+                OnAboveCollision(platformRect, playerRect);
             }
         } else {
             if (deltaX > 0) { // Collision from the left
-                position_.x = platformRect.x + platformRect.width;
+                OnLeftCollision(platformRect, playerRect);
             } else if (deltaX < 0) { // Collision from the right
-                position_.x = platformRect.x - playerRect.width;
+                OnRightCollision(platformRect, playerRect);
             }
         }
     }
