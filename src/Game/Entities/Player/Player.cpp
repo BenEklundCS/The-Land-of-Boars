@@ -211,7 +211,7 @@ void Player::GoIdle() {
 
 // Check and return if the player can jump!
 bool Player::CanJump() const {
-    return (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)) && playerData.jumps_ <= MAX_JUMPS;
+    return playerData.jumps_ <= MAX_JUMPS;
 }
 
 // If the player is on the ground, reset their jump counter to 0 and set isOnGround_ to false
