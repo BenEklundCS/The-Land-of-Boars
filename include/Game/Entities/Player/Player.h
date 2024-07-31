@@ -27,7 +27,6 @@ enum PlayerState {
 
 struct playerDataStruct {
     // general properties
-    Color color_ = WHITE;
     int hp_ = PLAYER_MAX_HP; // Current player hp
 
     // animation

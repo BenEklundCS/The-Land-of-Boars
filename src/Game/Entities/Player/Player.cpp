@@ -182,6 +182,30 @@ void Player::AnimatePlayer() {
     }
 }
 
+// Update player flashing behavior
+void Player::UpdateFlashing(float deltaTime) {
+    playerData.timeSinceHit_ += deltaTime;
+    playerData.timeStepForFlash_ += deltaTime;
+
+    if (playerData.hasBeenHit_) {
+
+        if (playerData.timeStepForFlash_ > 0.2f) {
+            playerData.flashToggle_ = !(bool)playerData.flashToggle_;
+            if (playerData.flashToggle_ == false) {
+                playerData.color_ = RED;
+            } else {
+                playerData.color_ = WHITE;
+            }
+            playerData.timeStepForFlash_ = 0.0f;
+        }
+
+        if (playerData.timeSinceHit_ > 1.0f) {
+            playerData.hasBeenHit_ = false;
+            playerData.color_ = WHITE;
+        }
+    }
+}
+
 // Check if the player should go to IDLE state
 // This should be called after resetting x or y velocity to 0, and should NOT be called
 // after the velocities have been increased to ensure proper state transition
@@ -211,7 +235,7 @@ void Player::GoIdle() {
 
 // Check and return if the player can jump!
 bool Player::CanJump() const {
-    return (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)) && playerData.jumps_ <= MAX_JUMPS;
+    return playerData.jumps_ <= MAX_JUMPS;
 }
 
 // If the player is on the ground, reset their jump counter to 0 and set isOnGround_ to false
@@ -307,30 +331,6 @@ void Player::HitPlayer() {
         playerData.hasBeenHit_ = true;
         playerData.timeSinceHit_ = 0.0f;
         playerData.color_ = RED;
-    }
-}
-
-// Update player flashing behavior
-void Player::UpdateFlashing(float deltaTime) {
-    playerData.timeSinceHit_ += deltaTime;
-    playerData.timeStepForFlash_ += deltaTime;
-
-    if (playerData.hasBeenHit_) {
-
-        if (playerData.timeStepForFlash_ > 0.2f) {
-            playerData.flashToggle_ = !(bool)playerData.flashToggle_;
-            if (playerData.flashToggle_ == false) {
-                playerData.color_ = RED;
-            } else {
-                playerData.color_ = WHITE;
-            }
-            playerData.timeStepForFlash_ = 0.0f;
-        }
-
-        if (playerData.timeSinceHit_ > 1.0f) {
-            playerData.hasBeenHit_ = false;
-            playerData.color_ = WHITE;
-        }
     }
 }
 

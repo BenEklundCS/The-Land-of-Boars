@@ -20,7 +20,7 @@ void Boar::Draw() {
     Rectangle currentRect = boarAnimation_.GetCurrentRect();
     boarAnimation_.FlipX(!movingRight_); // flip x axis based on the INVERSE of this flag, because boars face the opposite way in the sprite sheet
     // Draw the boar utilizing the currently loaded boarTexture, and rect position
-    DrawTexturePro(boarTexture, currentRect, GetRect(), Vector2{0, 0}, 0, WHITE);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
+    DrawTexturePro(boarTexture, currentRect, GetRect(), Vector2{0, 0}, 0, color_);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
 }
 
 void Boar::Update() {

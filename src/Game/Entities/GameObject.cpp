@@ -11,6 +11,8 @@ GameObject::GameObject(GameObjectType type)
 
 GameObject::~GameObject() = default;
 
+G
+
 // Returns the Rectangle defined by the GameObjects current position x/y and dimensions x/y
 Rectangle GameObject::GetRect() {
     return Rectangle{position_.x, position_.y, dimensions_.x, dimensions_.y};
@@ -19,6 +21,38 @@ Rectangle GameObject::GetRect() {
 // Each object has its own player collision logic and can override this method
 void GameObject::CollideWithPlayer(Player *player) {
 
+}
+
+void GameObject::ToggleFlashing() {
+    if (!hasBeenToggled_) {
+        hasBeenToggled_ = true;
+        timeSinceToggle_ = 0.0f;
+        color_ = RED;
+    }
+}
+
+// Update player flashing behavior
+void GameObject::UpdateFlashing(float deltaTime) {
+    timeSinceHit_ += deltaTime;
+    timeStepForFlash_ += deltaTime;
+
+    if (hasBeenHit_) {
+
+        if (timeStepForFlash_ > 0.2f) {
+            flashToggle_ = !(bool)flashToggle_;
+            if (!flashToggle_) {
+                color_ = RED;
+            } else {
+                color_ = WHITE;
+            }
+            timeStepForFlash_ = 0.0f;
+        }
+
+        if (timeSinceHit_ > 1.0f) {
+            hasBeenHit_ = false;
+            color_ = WHITE;
+        }
+    }
 }
 
 // Returns the current position of the object

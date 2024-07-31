@@ -22,11 +22,12 @@ void Monster::Update() {
     MoveMonster();
     float deltaTime = GetFrameTime();
     ApplyGravity(deltaTime);
+    UpdateFlashing(deltaTime);
 }
 
 // Draw a rectangle for now
 void Monster::Draw() {
-    DrawRectangle((int)position_.x, (int)position_.y, (int)dimensions_.x, (int)dimensions_.y, RED);
+    DrawRectangle((int)position_.x, (int)position_.y, (int)dimensions_.x, (int)dimensions_.y, color_);
 }
 
 #pragma endregion
