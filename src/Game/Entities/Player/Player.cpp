@@ -254,9 +254,11 @@ void Player::OnBelowCollision(Rectangle plat, Rectangle play) {
     // Reset Y velocity only if moving upwards
     if (playerData.velocity_.y < 0) playerData.velocity_.y = 0;
 }
+
 void Player::OnRightCollision(Rectangle plat, Rectangle play) {
     position_.x = plat.x + plat.width;
 }
+
 void Player::OnLeftCollision(Rectangle plat, Rectangle play) {
     position_.x = plat.x - play.width;
 }
@@ -269,30 +271,31 @@ void Player::PlatformCollision(GameObject* obj) {
         Rectangle playerRect = this->GetRect();
         Rectangle platformRect = obj->GetRect();
 
-        // Calculate the difference in the x and y positions of the centers of the player and the platform
-        float deltaX = (playerRect.x + playerRect.width / 2) - (platformRect.x + platformRect.width / 2);
-        float deltaY = (playerRect.y + playerRect.height / 2) - (platformRect.y + platformRect.height / 2);
+        // Calculate the minimum translation vector
+        float dx = (playerRect.x + playerRect.width / 2) - (platformRect.x + platformRect.width / 2);
+        float dy = (playerRect.y + playerRect.height / 2) - (platformRect.y + platformRect.height / 2);
+        float width = (playerRect.width + platformRect.width) / 2;
+        float height = (playerRect.height + platformRect.height) / 2;
+        float crossWidth = width * dy;
+        float crossHeight = height * dx;
 
-        // Calculate the combined half-widths and half-heights of the player and the platform
-        float combinedHalfWidths = (playerRect.width + platformRect.width) / 2;
-        float combinedHalfHeights = (playerRect.height + platformRect.height) / 2;
-
-        // Determine the overlap on both axes
-        float overlapX = combinedHalfWidths - std::abs(deltaX);
-        float overlapY = combinedHalfHeights - std::abs(deltaY);
-
-        // Revert only the relevant axis position based on the overlap values
-        if (overlapX >= overlapY) {
-            if (deltaY > 0) { // Collision from below
-                OnBelowCollision(platformRect, playerRect);
-            } else if (deltaY < 0) { // Collision from above
-                OnAboveCollision(platformRect, playerRect);
-            }
-        } else {
-            if (deltaX > 0) { // Collision from the left
-                OnLeftCollision(platformRect, playerRect);
-            } else if (deltaX < 0) { // Collision from the right
-                OnRightCollision(platformRect, playerRect);
+        if (std::abs(dx) <= width && std::abs(dy) <= height) {
+            if (crossWidth > crossHeight) {
+                if (crossWidth > -crossHeight) {
+                    // Collision from below
+                    OnBelowCollision(platformRect, playerRect);
+                } else {
+                    // Collision from the left
+                    OnLeftCollision(platformRect, playerRect);
+                }
+            } else {
+                if (crossWidth > -crossHeight) {
+                    // Collision from the right
+                    OnRightCollision(platformRect, playerRect);
+                } else {
+                    // Collision from above
+                    OnAboveCollision(platformRect, playerRect);
+                }
             }
         }
     }

@@ -29,6 +29,11 @@ private:
     void MoveUpDown(float deltaTime);
     void SwapDirection();
     void Draw() override;
+        // Collisions
+    bool HitLeftBound();
+    bool HitRightBound();
+    bool HitTopBound();
+    bool HitBottomBound();
 };
 
 #endif // MOVING_PLATFORM_H

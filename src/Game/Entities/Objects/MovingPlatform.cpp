@@ -14,6 +14,8 @@ MovingPlatform::MovingPlatform(std::unique_ptr<Platform> platform, Vector2 bound
     position_ = platform->GetPosition();
 }
 
+#pragma region main methods
+
 // Update call for the MovingPlatform
 void MovingPlatform::Update() {
     float deltaTime = GetFrameTime();
@@ -30,6 +32,10 @@ void MovingPlatform::Update() {
 void MovingPlatform::Draw() {
     DrawRectangleRec(GetRect(), color_);
 }
+
+#pragma endregion
+
+#pragma region movement
 
 // Move the platform left/right if that flag is set
 void MovingPlatform::MoveLeftRight(float deltaTime) {
@@ -51,15 +57,63 @@ void MovingPlatform::MoveUpDown(float deltaTime) {
     }
 }
 
+#pragma endregion
+
+#pragma region collisions/swapping
+
 // This method swaps the MovingPlatform's X direction if it hits the left or right boundary
 // and swaps the Y direction if it hits the top of bottom boundary
 void MovingPlatform::SwapDirection() {
     // Swap right/left direction if it reaches the edge of the boundary on either side
-    if ((!movingRight && position_.x <= startingXY.x + boundsX.x) || (movingRight && position_.x >= startingXY.x + dimensions_.x + boundsX.y)) {
+    if (HitLeftBound() || HitRightBound()) {
         movingRight = !movingRight;
     }
     // Swap up/down direction if it reaches the edge of the boundary on either side
-    if ((!movingUp && position_.y <= startingXY.y + boundsY.x) || (movingUp && position_.y >= startingXY.y + dimensions_.y + boundsY.y) ) {
+    if ((HitBottomBound()|| HitTopBound())) {
         movingUp = !movingUp;
     }
 }
+
+/*
+ * |------|
+ * | *    |
+ * |------|
+ */
+// returns true if the platform has reached the left boundary
+bool MovingPlatform::HitLeftBound() {
+    return (!movingRight && position_.x <= startingXY.x + boundsX.x);
+}
+
+/*
+ * |------|
+ * |    * |
+ * |------|
+ */
+// returns true if the platform has reached the right boundary
+bool MovingPlatform::HitRightBound() {
+    return (movingRight && position_.x >= startingXY.x + dimensions_.x + boundsX.y);
+}
+
+/*
+ * |- *  -|
+ * |      |
+ * |------|
+ */
+// returns true if the platform has reached the top boundary
+bool MovingPlatform::HitTopBound() {
+    return (!movingUp && position_.y <= startingXY.y + boundsY.x);
+}
+
+/*
+ * |------|
+ * |      |
+ * |-  * -|
+ */
+// returns true if the platform has reached the bottom boundary
+bool MovingPlatform::HitBottomBound() {
+    return (movingUp && position_.y >= startingXY.y + dimensions_.y + boundsY.y);
+}
+
+#pragma endregion
+
+
