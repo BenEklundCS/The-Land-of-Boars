@@ -6,7 +6,7 @@
 #define PLATFORMER_GAMEINPUTMANAGER_H
 
 #include "../Entities/Player/Player.h"
-#include "../../../../include/Game/Events/Commands/PlayerCommands.h"
+#include "../Events/Commands/PlayerCommands.h"
 
 
 class EngineSettings;

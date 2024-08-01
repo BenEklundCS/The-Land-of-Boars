@@ -2,7 +2,7 @@
 // Created by ben on 6/10/24.
 //
 
-#include "../../../include/Game/Events/GameInputManager.h"
+#include "../../../include/Game/Management/GameInputManager.h"
 #include "../../../include/Platform/Engine.h"
 
 
