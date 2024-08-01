@@ -54,8 +54,7 @@ void Player::Update() {
     // Move the player based on their velocity and position
     MovePlayer(deltaTime);
     playerData.last_state_ = playerData.state_;
-    // Update flashing red if hit
-    UpdateFlashing(deltaTime);
+    GameObject::Update();
 }
 
 #pragma endregion

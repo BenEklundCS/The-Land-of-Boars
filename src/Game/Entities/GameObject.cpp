@@ -11,6 +11,11 @@ GameObject::GameObject(GameObjectType type)
 
 GameObject::~GameObject() = default;
 
+void GameObject::Update() {
+    float deltaTime = GetFrameTime();
+    UpdateFlashing(deltaTime);
+}
+
 // Returns the Rectangle defined by the GameObjects current position x/y and dimensions x/y
 Rectangle GameObject::GetRect() {
     return Rectangle{position_.x, position_.y, dimensions_.x, dimensions_.y};
@@ -56,6 +61,10 @@ void GameObject::UpdateFlashing(float deltaTime) {
 // Returns the current position of the object
 Vector2 GameObject::GetPosition() {
     return position_;
+}
+
+Color GameObject::GetColor() {
+    return color_;
 }
 
 

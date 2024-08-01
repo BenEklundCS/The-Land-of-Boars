@@ -2,8 +2,9 @@
 // Created by ben on 6/10/24.
 //
 
-#include "../../../include/Game/Management/GameInputManager.h"
-#include "../../../include/Platform/Engine.h"
+#include "../../../../include/Game/Events/GameInputManager.h"
+#include "../../../../include/Platform/Engine.h"
+
 
 void GameInputManager::HandleUserInput() {
     HandlePlayerInput();
@@ -14,10 +15,10 @@ void GameInputManager::HandleUserInput() {
 #pragma region helper functions
 
 void GameInputManager::HandlePlayerInput() {
-    if (IsKeyDown(KEY_LEFT)) player_->MoveLeft(); // move left on left keypress
-    if (IsKeyDown(KEY_RIGHT)) player_->MoveRight(); // move right on right keypress
-    if (IsKeyPressed(KEY_A)) player_->Attack();
-    if ((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)) && player_->CanJump()) player_->Jump(); // make the player jump if can jump
+    if (IsKeyDown(KEY_LEFT)) playerCommands.leftCommand->execute(player_); // move left on left keypress
+    if (IsKeyDown(KEY_RIGHT)) playerCommands.rightCommand->execute(player_); // move right on right keypress
+    if (IsKeyPressed(KEY_A)) playerCommands.attackCommand->execute(player_);
+    if ((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP) && player_->CanJump())) playerCommands.jumpCommand->execute(player_); // make the player jump if can jump
 }
 
 void GameInputManager::HandleUIInput() {
@@ -29,7 +30,6 @@ void GameInputManager::HandleDebugInput() {
     if (IsKeyPressed(KEY_D)) Engine::GetSettings()->displayDebug = !Engine::GetSettings()->displayDebug;
 
 }
-
 
 #pragma endregion
 

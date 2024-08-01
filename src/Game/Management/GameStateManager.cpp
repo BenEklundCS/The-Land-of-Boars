@@ -3,7 +3,7 @@
 //
 
 #include "../../../include/Platform/Renderer.h"
-#include "../../../include/Game/Management/GameInputManager.h"
+#include "../../../include/Game/Events/GameInputManager.h"
 #include "../../../include/Game/Management/GameStateManager.h"
 #include <algorithm>
 

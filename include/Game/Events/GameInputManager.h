@@ -6,11 +6,21 @@
 #define PLATFORMER_GAMEINPUTMANAGER_H
 
 #include "../Entities/Player/Player.h"
+#include "../../../../include/Game/Events/Commands/PlayerCommands.h"
+
 
 class EngineSettings;
 
+struct PlayerCommands {
+    JumpCommand* jumpCommand;
+    LeftCommand* leftCommand;
+    RightCommand* rightCommand;
+    AttackCommand* attackCommand;
+};
+
 class GameInputManager {
 private:
+    PlayerCommands playerCommands;
     Player* player_;
     EngineSettings& settings_;
     void HandlePlayerInput();

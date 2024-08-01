@@ -23,7 +23,7 @@ void Monster::Update() {
     MoveMonster();
     float deltaTime = GetFrameTime();
     ApplyGravity(deltaTime);
-    UpdateFlashing(deltaTime);
+    GameObject::Update();
 }
 
 // Draw a rectangle for now

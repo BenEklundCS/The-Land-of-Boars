@@ -34,6 +34,7 @@ public:
     GameObjectType type_; // The type of GameObject used for identification in loops
     explicit GameObject(GameObjectType type = OTHER);
     Vector2 GetPosition(); // Get the current position Vector2
+    Color GetColor();
     // Flashing behavior
     void ToggleFlashing();
     virtual void Update() = 0; // Update the GameObject
