@@ -54,6 +54,8 @@ set(GAME_MANAGEMENT_SOURCES
 set(GAME_EVENTS_SOURCES
         src/Game/Events/Commands/PlayerCommands.cpp
         src/Game/Events/Commands/Command.cpp
+        src/Game/Events/Observers/Observer.cpp
+        src/Game/Events/Observers/Subject.cpp
 )
 
 set(GAME_ENTITIES_SOURCES
@@ -86,6 +88,7 @@ set(GAME_HEADERS
         include/Game/Entities/PhysicsConstants.h
         include/Game/Entities/Objects/Tile.h
         include/Game/Management/TileManager.h
+        include/Game/Events/Commands/PlayerCommands.h
 )
 
 # Combine all sources
