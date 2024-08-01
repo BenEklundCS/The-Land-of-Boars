@@ -2,8 +2,8 @@
 // Created by ben on 6/10/24.
 //
 
-#include "../../../../include/Game/Events/GameInputManager.h"
-#include "../../../../include/Platform/Engine.h"
+#include "../../../include/Game/Events/GameInputManager.h"
+#include "../../../include/Platform/Engine.h"
 
 
 void GameInputManager::HandleUserInput() {

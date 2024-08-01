@@ -48,7 +48,7 @@ set(PLATFORM_SOURCES
 set(GAME_MANAGEMENT_SOURCES
         src/Game/Management/GameStateManager.cpp
         src/Game/Management/TileManager.cpp
-        src/Game/Entities/Events/GameInputManager.cpp
+        src/Game/Events/GameInputManager.cpp
 )
 
 set(GAME_ENTITIES_SOURCES
@@ -97,7 +97,7 @@ set(SOURCES
         ${imgui_SOURCE_DIR}/imgui_draw.cpp
         ${imgui_SOURCE_DIR}/imgui_tables.cpp
         ${imgui_SOURCE_DIR}/imgui_widgets.cpp
-        src/Game/Entities/Events/Commands/PlayerCommands.cpp
+        src/Game/Events/Commands/PlayerCommands.cpp
 )
 
 # Define executable
