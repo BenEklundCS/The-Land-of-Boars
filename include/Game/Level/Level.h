@@ -8,13 +8,13 @@
 #include <memory>
 #include "../Entities/Player/Player.h"
 
-class GameStateManager;
+class StateManager;
 
-// A level is really a loader script for a GameStateManager object
+// A level is really a loader script for a StateManager object
 class Level {
 public:
     Level();
-    virtual GameStateManager* GetGameState(); // Return a unique_ptr to a GameStateManager object loaded by the level
+    virtual StateManager* GetGameState(); // Return a unique_ptr to a StateManager object loaded by the level
     ~Level();
 };
 

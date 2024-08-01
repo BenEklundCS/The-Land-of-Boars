@@ -35,7 +35,7 @@ std::string PlayerStateToString(PlayerState state) {
     return stateString;
 }
 
-void DebugGUI::DrawGui(GameStateManager *gameState) {
+void DebugGUI::DrawGui(StateManager *gameState) {
     const gameData* gameData = gameState->GetGameData();
     const playerDataStruct* playerData = gameData->playerData;
 

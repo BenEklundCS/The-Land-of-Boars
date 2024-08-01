@@ -134,7 +134,7 @@ void Player::Jump() {
 void Player::Attack() {
     // Set the player's state to ATTACKING
     playerData.state_ = ATTACKING;
-    GameStateManager::GetInstance()->UpdateAttacks(this);
+    StateManager::GetInstance()->UpdateAttacks(this);
 }
 
 #pragma endregion

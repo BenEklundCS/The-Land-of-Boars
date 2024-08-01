@@ -29,7 +29,7 @@ void Renderer::RenderFPS(Camera2D camera) {
 #pragma endregion
 
 // Draw all game objects
-void Renderer::Draw(GameStateManager* gameState, bool renderRedBorders) {
+void Renderer::Draw(StateManager* gameState, bool renderRedBorders) {
 
     Camera2D camera = gameState->GetCamera();
 

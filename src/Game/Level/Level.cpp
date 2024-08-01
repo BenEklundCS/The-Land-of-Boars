@@ -9,7 +9,7 @@
 
 Level::Level() = default;
 
-GameStateManager* Level::GetGameState() {
+StateManager* Level::GetGameState() {
 
 }
 

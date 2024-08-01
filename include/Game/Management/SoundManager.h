@@ -10,7 +10,9 @@
 #include "raylib.h"
 #include <memory>
 
-class SoundManager {
+#include "../Events/Observers/Observer.h"
+
+class SoundManager : public Observer {
 private:
     static std::unique_ptr<SoundManager> instance;
     std::map<std::string, Sound> sounds;
@@ -18,6 +20,7 @@ private:
 public:
     static SoundManager* getInstance(); // using singleton to avoid loading more sounds than needed into memory
     void PlaySound(std::string sound_name);
+    void onNotify(const GameObject* entity, Event event);
 };
 
 #endif //PLATFORMER_SOUNDMANAGER_H

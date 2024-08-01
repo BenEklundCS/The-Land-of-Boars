@@ -3,22 +3,22 @@
 //
 
 #include "../../../include/Platform/Renderer.h"
-#include "../../../include/Game/Management/GameInputManager.h"
+#include "../../../include/Game/Management/InputManager.h"
 #include "../../../include/Game/Management/GameStateManager.h"
 #include <algorithm>
 
-std::unique_ptr<GameStateManager> GameStateManager::instance = nullptr;
+std::unique_ptr<StateManager> StateManager::instance = nullptr;
 
-GameStateManager::GameStateManager() {
+StateManager::StateManager() {
     levelOver = false;
 }
 
 // Window Singleton Pattern
-GameStateManager* GameStateManager::GetInstance() {
-    TraceLog(LOG_INFO, "GameStateManager::GetInstance() Invoked."); // Log
+StateManager* StateManager::GetInstance() {
+    TraceLog(LOG_INFO, "StateManager::GetInstance() Invoked."); // Log
     if (instance == nullptr) {
-        TraceLog(LOG_INFO, "Creating GameStateManager...");
-        instance = std::make_unique<GameStateManager>(); // Typical singleton stuff, but I've implemented the instance as a unique ptr
+        TraceLog(LOG_INFO, "Creating StateManager...");
+        instance = std::make_unique<StateManager>(); // Typical singleton stuff, but I've implemented the instance as a unique ptr
     }
     return instance.get(); // if the window already exists, simply return it
 }
@@ -26,7 +26,7 @@ GameStateManager* GameStateManager::GetInstance() {
 #pragma region update gameState methods
 
 // Update all game objects and handle collisions
-void GameStateManager::Update() {
+void StateManager::Update() {
     // Update the camera
     UpdateCamera();
     // Update all game objects and handle collisions
@@ -37,7 +37,7 @@ void GameStateManager::Update() {
     UpdateMonsters(); // update Monsters
 }
 
-void GameStateManager::UpdatePlatforms() {
+void StateManager::UpdatePlatforms() {
     #pragma omp parallel for
     for (auto& platform : platforms_) {
         platform->Update();
@@ -45,7 +45,7 @@ void GameStateManager::UpdatePlatforms() {
 }
 
 // Update all players in the scene by iterating over the players, calling update, and then checking for collisions
-void GameStateManager::UpdatePlayers() {
+void StateManager::UpdatePlayers() {
 
     for (auto& player : players_) {
         player->Update();
@@ -64,7 +64,7 @@ void GameStateManager::UpdatePlayers() {
 }
 
 // Handle player and monster attacks onscreen
-void GameStateManager::UpdateAttacks(Player* player) {
+void StateManager::UpdateAttacks(Player* player) {
     // Vector to store delayed updates
     std::vector<GameObject*> toRemove;
     // Iterate over all monsters
@@ -82,7 +82,7 @@ void GameStateManager::UpdateAttacks(Player* player) {
 }
 
 // Update all players in the scene by iterating over the monsters, calling update, and then checking for collisions
-void GameStateManager::UpdateMonsters() {
+void StateManager::UpdateMonsters() {
     #pragma omp parallel for
     for (auto& monster : monsters_) {
         monster->Update();
@@ -103,10 +103,10 @@ void GameStateManager::UpdateMonsters() {
 
 #pragma region object loading/interaction
 
-// Add a game object to the GameStateManager. The GameStateManager maintains unique_ptr ownership over Objects.
+// Add a game object to the StateManager. The StateManager maintains unique_ptr ownership over Objects.
 // Make sure to pass a std::unique_ptr<GameObject> to it using std::move()
 // Do not add nullptr objects, undefined behavior
-void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
+void StateManager::AddObject(std::unique_ptr<GameObject> obj) {
     allGameObjects_.push_back(obj.get());
     if (obj->type_ == PLAYER) {
         players_.push_back(std::unique_ptr<Player>(dynamic_cast<Player*>(obj.release())));
@@ -122,7 +122,7 @@ void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
     }
 }
 
-void GameStateManager::RemovePlayer(GameObject* obj) {
+void StateManager::RemovePlayer(GameObject* obj) {
     auto it = std::find_if(players_.begin(), players_.end(), [&obj](const std::unique_ptr<Player>& player) {
         return player.get() == obj;
     });
@@ -131,7 +131,7 @@ void GameStateManager::RemovePlayer(GameObject* obj) {
     }
 }
 
-void GameStateManager::RemoveMonster(GameObject* obj) {
+void StateManager::RemoveMonster(GameObject* obj) {
     auto it = std::find_if(monsters_.begin(), monsters_.end(), [&obj](const std::unique_ptr<Monster>& monster) {
         return monster.get() == obj;
     });
@@ -140,7 +140,7 @@ void GameStateManager::RemoveMonster(GameObject* obj) {
     }
 }
 
-void GameStateManager::RemovePlatform(GameObject* obj) {
+void StateManager::RemovePlatform(GameObject* obj) {
     auto it = std::find_if(platforms_.begin(), platforms_.end(), [&obj](const std::unique_ptr<Platform>& platform) {
         return platform.get() == obj;
     });
@@ -149,7 +149,7 @@ void GameStateManager::RemovePlatform(GameObject* obj) {
     }
 }
 
-void GameStateManager::RemoveOtherObject(GameObject* obj) {
+void StateManager::RemoveOtherObject(GameObject* obj) {
     auto it = std::find_if(otherObjects_.begin(), otherObjects_.end(), [&obj](const std::unique_ptr<GameObject>& other) {
         return other.get() == obj;
     });
@@ -159,7 +159,7 @@ void GameStateManager::RemoveOtherObject(GameObject* obj) {
 }
 
 // Remove an object from the GameState
-void GameStateManager::RemoveObject(GameObject* obj) {
+void StateManager::RemoveObject(GameObject* obj) {
     // Find and remove the object from the allGameObjects_ vector
     allGameObjects_.erase(std::remove(allGameObjects_.begin(), allGameObjects_.end(), obj), allGameObjects_.end());
     // Call the appropriate function based on the object's type
@@ -180,7 +180,7 @@ void GameStateManager::RemoveObject(GameObject* obj) {
 }
 
 // Return the full GameObject* vector
-std::vector<GameObject*> GameStateManager::GetAllObjects() {
+std::vector<GameObject*> StateManager::GetAllObjects() {
     return allGameObjects_;
 }
 
@@ -192,7 +192,7 @@ std::vector<GameObject*> GameStateManager::GetAllObjects() {
 // Currently, supports only one player.
 // Call this function just before attempting to render the GameState
 // DO NOT CALL UNLESS players_ HAS AT LEAST ONE PLAYER
-void GameStateManager::InitCamera() {
+void StateManager::InitCamera() {
     Player* player1 = players_.at(0).get();
     camera.target = (Vector2){player1->GetPosition().x + 20.0f, player1->GetPosition().y + 20.0f};
     camera.offset = (Vector2){(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f};
@@ -201,50 +201,50 @@ void GameStateManager::InitCamera() {
 }
 
 // Update the camera using the players current position
-void GameStateManager::UpdateCamera() {
+void StateManager::UpdateCamera() {
     Player* player1 = players_.at(0).get();
     camera.target = (Vector2){ player1->GetPosition().x + 20, player1->GetPosition().y + 20 };
 }
 
 // Return the levelOver boolean flag
-bool GameStateManager::IsLevelOver() const {
+bool StateManager::IsLevelOver() const {
     return levelOver;
 }
 
 // Set levelOver to true
-void GameStateManager::SetLevelOver() {
+void StateManager::SetLevelOver() {
     levelOver = true;
 }
 
 // Return the camera
-Camera2D GameStateManager::GetCamera() {
+Camera2D StateManager::GetCamera() {
     return camera;
 }
 
 #pragma endregion
 
-// Retrieve a gameData struct from the GameStateManager, giving the context of the games current state
-const gameData* GameStateManager::GetGameData() {
-    // IMPORTANT: GetPlayerData, and GameStateManager support ONE PLAYER
+// Retrieve a gameData struct from the StateManager, giving the context of the games current state
+const gameData* StateManager::GetGameData() {
+    // IMPORTANT: GetPlayerData, and StateManager support ONE PLAYER
     auto data = new gameData;
     data->playerPosition = players_[0].get()->GetPosition();
     data->playerData =  players_[0].get()->GetPlayerData();
     return data;
 }
 
-void GameStateManager::InitInput(EngineSettings* settings) {
-    inputManager = std::make_unique<GameInputManager>(players_[0].get(), *settings);
+void StateManager::InitInput(EngineSettings* settings) {
+    inputManager = std::make_unique<InputManager>(players_[0].get(), *settings);
 }
 
 // Cleanup the vectors on destruct
-GameStateManager::~GameStateManager() {
+StateManager::~StateManager() {
     players_.clear();
     monsters_.clear();
     platforms_.clear();
     otherObjects_.clear();
 }
 
-bool GameStateManager::HandlePlayerAttack(Player* player, Monster* monster) {
+bool StateManager::HandlePlayerAttack(Player* player, Monster* monster) {
     // Get the current player X position
     float playerPosX = player->GetPosition().x;
     // Get the current monster X position

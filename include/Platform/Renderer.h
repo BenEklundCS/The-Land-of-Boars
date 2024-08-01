@@ -7,13 +7,13 @@
 #include "raylib.h"
 
 
-class GameStateManager;
+class StateManager;
 
 #ifndef PLATFORMER_RENDERER_H
 #define PLATFORMER_RENDERER_H
 
 /*
- * The Renderer takes a pointer to a GameStateManager to draw the gameState
+ * The Renderer takes a pointer to a StateManager to draw the gameState
 */
 
 class Renderer {
@@ -22,7 +22,7 @@ private:
     static void RenderFPS(Camera2D camera);
 public:
     Renderer(); // constructor
-    static void Draw(GameStateManager* gameState, bool renderRedBorders); // draw call
+    static void Draw(StateManager* gameState, bool renderRedBorders); // draw call
     ~Renderer(); // destructor
 };
 

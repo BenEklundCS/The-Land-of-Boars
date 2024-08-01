@@ -36,7 +36,7 @@ void Engine::StartGame() {
         auto gameState = level->GetGameState();
         // Init the game camera
         gameState->InitCamera();
-        // init the GameInputManager using the Engine settings
+        // init the InputManager using the Engine settings
             // This allows the input manager to change settings on the fly.
         gameState->InitInput(settings.get());
         // Move the gameState to the ownership of the RenderLevelScene method, which will loop rendering the level
@@ -44,8 +44,8 @@ void Engine::StartGame() {
     }
 }
 
-// Take a GameStateManager* as a parameter, initialize a renderer, and then render the scene
-void Engine::RenderLevelScene(GameStateManager* gameState) {
+// Take a StateManager* as a parameter, initialize a renderer, and then render the scene
+void Engine::RenderLevelScene(StateManager* gameState) {
     TraceLog(LOG_INFO, "Engine rendering a gameState...");
     // Render the level in an infinite loop
     while (!WindowShouldClose() && !gameState->IsLevelOver()) {

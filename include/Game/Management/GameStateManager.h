@@ -13,7 +13,7 @@
 #include "../Entities/Objects/Platform.h"
 #include "../../Platform/Engine.h"
 
-class GameInputManager;
+class InputManager;
 struct EngineSettings;
 
 struct gameData {
@@ -22,14 +22,14 @@ struct gameData {
 };
 
 /*
- * The GameStateManager is responsible for ownership of GameObjects and updating them,
+ * The StateManager is responsible for ownership of GameObjects and updating them,
  * as well as any other game state items such as the camera, collisions, or other logic
  */
-// IMPORTANT, GameStateManager uses a Vector to store players_, but currently only supports ONE player.
+// IMPORTANT, StateManager uses a Vector to store players_, but currently only supports ONE player.
 // Multiplayer support is not planned for this project.
-class GameStateManager {
+class StateManager {
 private:
-    static std::unique_ptr<GameStateManager> instance;
+    static std::unique_ptr<StateManager> instance;
     bool levelOver; // Flag for if the level is over
     void UpdatePlayers(); // Update the player vector
     void UpdateMonsters(); // Update the monster vector
@@ -49,10 +49,10 @@ private:
     std::vector<std::unique_ptr<GameObject>> otherObjects_; // other object vector
     std::vector<GameObject*> allGameObjects_; // All game object vector
     Camera2D camera{}; // Camera
-    std::unique_ptr<GameInputManager> inputManager;
+    std::unique_ptr<InputManager> inputManager;
 public:
-    GameStateManager(); // Constructor
-    static GameStateManager* GetInstance();
+    StateManager(); // Constructor
+    static StateManager* GetInstance();
     void InitCamera(); // Initialize the camera - call before rendering
     void Update(); // Update the game state
     // Call to update attacks, must pass a player
@@ -64,7 +64,7 @@ public:
     const gameData* GetGameData();
     void AddObject(std::unique_ptr<GameObject> obj); // Add a GameObject to the scene
     void InitInput(EngineSettings* settings); // call to make input available to the GameState
-    ~GameStateManager(); // Destructor
+    ~StateManager(); // Destructor
 };
 
 #endif //PLATFORMER_GAMESTATEMANAGER_H

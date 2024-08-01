@@ -2,8 +2,8 @@
 // Created by ben on 6/10/24.
 //
 
-#ifndef PLATFORMER_GAMEINPUTMANAGER_H
-#define PLATFORMER_GAMEINPUTMANAGER_H
+#ifndef PLATFORMER_INPUTMANAGER_H
+#define PLATFORMER_INPUTMANAGER_H
 
 #include "../Entities/Player/Player.h"
 #include "../Events/Commands/PlayerCommands.h"
@@ -18,7 +18,7 @@ struct PlayerCommands {
     AttackCommand* attackCommand;
 };
 
-class GameInputManager {
+class InputManager {
 private:
     PlayerCommands playerCommands;
     Player* player_;
@@ -27,10 +27,10 @@ private:
     void HandleUIInput();
     static void HandleDebugInput();
 public:
-    explicit GameInputManager(Player* player, EngineSettings& settings)
+    explicit InputManager(Player* player, EngineSettings& settings)
     : player_(player), settings_(settings) {}
     void HandleUserInput();
 };
 
 
-#endif //PLATFORMER_GAMEINPUTMANAGER_H
+#endif //PLATFORMER_INPUTMANAGER_H
