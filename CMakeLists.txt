@@ -51,6 +51,11 @@ set(GAME_MANAGEMENT_SOURCES
         src/Game/Management/GameInputManager.cpp
 )
 
+set(GAME_EVENTS_SOURCES
+        src/Game/Events/Commands/PlayerCommands.cpp
+        src/Game/Events/Commands/Command.cpp
+)
+
 set(GAME_ENTITIES_SOURCES
         src/Game/Entities/Player/Player.cpp
         src/Game/Entities/GameObject.cpp
@@ -91,14 +96,13 @@ set(SOURCES
         ${GAME_LEVEL_SOURCES}
         ${GAME_SPRITES_SOURCES}
         ${GAME_HEADERS}
+        ${GAME_EVENTS_SOURCES}
         ${rlimgui_SOURCE_DIR}/rlImGui.cpp
         ${imgui_SOURCE_DIR}/imgui.cpp
         ${imgui_SOURCE_DIR}/imgui_demo.cpp
         ${imgui_SOURCE_DIR}/imgui_draw.cpp
         ${imgui_SOURCE_DIR}/imgui_tables.cpp
         ${imgui_SOURCE_DIR}/imgui_widgets.cpp
-        src/Game/Events/Commands/PlayerCommands.cpp
-        src/Game/Events/Commands/Command.cpp
 )
 
 # Define executable
