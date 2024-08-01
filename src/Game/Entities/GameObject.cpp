@@ -11,8 +11,6 @@ GameObject::GameObject(GameObjectType type)
 
 GameObject::~GameObject() = default;
 
-G
-
 // Returns the Rectangle defined by the GameObjects current position x/y and dimensions x/y
 Rectangle GameObject::GetRect() {
     return Rectangle{position_.x, position_.y, dimensions_.x, dimensions_.y};
@@ -33,10 +31,10 @@ void GameObject::ToggleFlashing() {
 
 // Update player flashing behavior
 void GameObject::UpdateFlashing(float deltaTime) {
-    timeSinceHit_ += deltaTime;
+    timeSinceToggle_ += deltaTime;
     timeStepForFlash_ += deltaTime;
 
-    if (hasBeenHit_) {
+    if (hasBeenToggled_) {
 
         if (timeStepForFlash_ > 0.2f) {
             flashToggle_ = !(bool)flashToggle_;
@@ -48,8 +46,8 @@ void GameObject::UpdateFlashing(float deltaTime) {
             timeStepForFlash_ = 0.0f;
         }
 
-        if (timeSinceHit_ > 1.0f) {
-            hasBeenHit_ = false;
+        if (timeSinceToggle_ > 1.0f) {
+            hasBeenToggled_ = false;
             color_ = WHITE;
         }
     }

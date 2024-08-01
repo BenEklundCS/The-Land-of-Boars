@@ -28,6 +28,7 @@ enum PlayerState {
 struct playerDataStruct {
     // general properties
     int hp_ = PLAYER_MAX_HP; // Current player hp
+    int damage_ = 1;
 
     // animation
     bool movingRight_ = true; // Flag to check x direction
@@ -57,8 +58,6 @@ private:
     void UpdatePosition(float deltaTime); // Update the player position based on its velocity
     void ApplyFriction(); // Friction
     void ApplyGravity(); // Gravity
-    // Animations
-    void UpdateFlashing(float deltaTime); // Handle flashing red of the player
     // Player state
     [[nodiscard]] bool CheckPlayerDeath() const; // Check if the player is dead
     void ResetJumps(); // Reset the player jump counter

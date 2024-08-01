@@ -38,7 +38,7 @@ public:
     void CollideWithPlayer(Player* player) override; // Handle player collisions
     [[nodiscard]] int GetHealth() const;
     void SetHealth(int hp);
+    bool HitMonster(int damage);
 };
-
 
 #endif //PLATFORMER_MONSTER_H

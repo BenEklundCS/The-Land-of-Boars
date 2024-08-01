@@ -14,6 +14,7 @@ Monster::Monster(float pos_x, float pos_y, float dim_x, float dim_y, MonsterStat
     this->initialPosition_ = position_;
     this->movingRight_ = false;
     this->velocity_ = Vector2{0, 0};
+    this->hp_ = 3;
 }
 
 #pragma region render methods
@@ -117,6 +118,15 @@ int Monster::GetHealth() const {
 
 void Monster::SetHealth(int hp) {
     this->hp_ = hp;
+}
+
+bool Monster::HitMonster(int damage) {
+    GameObject::ToggleFlashing();
+    SetHealth(GetHealth() - damage);
+    // Handle monster hitting and if they should die!
+    if (GetHealth() <= 0)
+        return true;
+    return false;
 }
 
 #pragma endregion

@@ -40,7 +40,7 @@ void Player::Draw() {
 
     playerData.playerAnimation_->FlipX(playerData.movingRight_); // flip x axis based on the movingRight_ flag
     // Draw the player utilizing the currently loaded playerTexture, and rect position
-    DrawTexturePro(playerTexture, currentRect, GetRect(), Vector2{0, 0}, 0, playerData.color_);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
+    DrawTexturePro(playerTexture, currentRect, GetRect(), Vector2{0, 0}, 0, color_);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
 }
 
 void Player::Update() {
@@ -182,30 +182,6 @@ void Player::AnimatePlayer() {
     }
 }
 
-// Update player flashing behavior
-void Player::UpdateFlashing(float deltaTime) {
-    playerData.timeSinceHit_ += deltaTime;
-    playerData.timeStepForFlash_ += deltaTime;
-
-    if (playerData.hasBeenHit_) {
-
-        if (playerData.timeStepForFlash_ > 0.2f) {
-            playerData.flashToggle_ = !(bool)playerData.flashToggle_;
-            if (playerData.flashToggle_ == false) {
-                playerData.color_ = RED;
-            } else {
-                playerData.color_ = WHITE;
-            }
-            playerData.timeStepForFlash_ = 0.0f;
-        }
-
-        if (playerData.timeSinceHit_ > 1.0f) {
-            playerData.hasBeenHit_ = false;
-            playerData.color_ = WHITE;
-        }
-    }
-}
-
 // Check if the player should go to IDLE state
 // This should be called after resetting x or y velocity to 0, and should NOT be called
 // after the velocities have been increased to ensure proper state transition
@@ -327,11 +303,7 @@ void Player::PlatformCollision(GameObject* obj) {
 
 // Hit the player externally
 void Player::HitPlayer() {
-    if (!playerData.hasBeenHit_) {
-        playerData.hasBeenHit_ = true;
-        playerData.timeSinceHit_ = 0.0f;
-        playerData.color_ = RED;
-    }
+    GameObject::ToggleFlashing();
 }
 
 // Return if the player has died

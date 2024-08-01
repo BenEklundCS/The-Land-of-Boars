@@ -28,7 +28,8 @@ protected:
     bool flashToggle_ = false;
     bool hasBeenToggled_ = false;
     float timeSinceToggle_ = 0.0f;
-    Color color_;
+    float timeStepForFlash_ = 0.0f;
+    Color color_ = WHITE;
 public:
     GameObjectType type_; // The type of GameObject used for identification in loops
     explicit GameObject(GameObjectType type = OTHER);

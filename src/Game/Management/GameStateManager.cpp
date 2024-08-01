@@ -269,12 +269,7 @@ bool GameStateManager::HandlePlayerAttack(Player* player, Monster* monster) {
 
     // Hit the monster if either condition is true
     if (monster_inFront() || monster_behind()) {
-        monster->HitMonster();
-        monster->SetHealth(monster->GetHealth() - 1);
-        // Handle monster hitting and if they should die!
-        if (monster->GetHealth() <= 0)
-            return true;
-        return false;
+        return monster->HitMonster(player->GetPlayerData()->damage_);
     }
     return false;
 }
