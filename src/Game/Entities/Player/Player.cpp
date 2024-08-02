@@ -3,7 +3,6 @@
 //
 
 #include "../../../../include/Game/Entities/Player/Player.h"
-#include "../../../../include/Game/Management/GameStateManager.h"
 
 /*
  * Player state management
@@ -126,7 +125,8 @@ void Player::Jump() {
     const float jumpPower = 6.5f;
     playerData.state_ = JUMPING;
     playerData.velocity_.y -= PLAYER_SPEED * jumpPower;
-    // notify(self, EVENT_PLAYER_JUMPED);
+    // Notify of jump event
+    Notify(this, EVENT_PLAYER_JUMPED);
 }
 
 #pragma endregion
@@ -137,7 +137,7 @@ void Player::Jump() {
 void Player::Attack() {
     // Set the player's state to ATTACKING
     playerData.state_ = ATTACKING;
-    GameStateManager::GetInstance()->UpdateAttacks(this); // should be notify(self, EVENT_PLAYER_ATTACK);
+    Notify(this, EVENT_PLAYER_ATTACK);
 }
 
 #pragma endregion

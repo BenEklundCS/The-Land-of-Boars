@@ -101,6 +101,18 @@ void GameStateManager::UpdateMonsters() {
 
 #pragma endregion
 
+#pragma region observer-events
+
+void GameStateManager::OnNotify(const GameObject *entity, Events event) {
+    if (entity->type_ == PLAYER) {
+        if (event == EVENT_PLAYER_ATTACK) {
+            UpdateAttacks((Player *) entity);
+        }
+    }
+}
+
+#pragma endregion
+
 #pragma region object loading/interaction
 
 // Add a game object to the GameStateManager. The GameStateManager maintains unique_ptr ownership over Objects.

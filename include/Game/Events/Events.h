@@ -7,7 +7,7 @@
 
 #endif //PLATFORMER_EVENTS_H
 
-enum Event {
+enum Events {
     EVENT_PLAYER_JUMPED,
     EVENT_PLAYER_ATTACK
 };

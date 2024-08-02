@@ -49,6 +49,7 @@ set(GAME_MANAGEMENT_SOURCES
         src/Game/Management/GameStateManager.cpp
         src/Game/Management/TileManager.cpp
         src/Game/Management/InputManager.cpp
+        src/Game/Management/SoundManager.cpp
 )
 
 set(GAME_EVENTS_SOURCES

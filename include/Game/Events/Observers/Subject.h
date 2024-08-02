@@ -7,19 +7,19 @@
 
 #define MAX_OBSERVERS 4096
 
-#endif //PLATFORMER_SUBJECT_H
-
 #include "Observer.h"
 
 class Subject {
 private:
     // This should be a smarter array in final implementation
     Observer* observers_[MAX_OBSERVERS] = {nullptr};
-    int numObservers_;
+    int numObservers_ = 0;
 public:
-    void addObserver(Observer* observer);
-    void removeObserver(Observer* observer);
+    void AddObserver(Observer* observer);
+    void RemoveObserver(Observer* observer);
     ~Subject();
 protected:
-    void notify(const GameObject* entity, Event event);
+    void Notify(const GameObject* entity, Events event);
 };
+
+#endif //PLATFORMER_SUBJECT_H

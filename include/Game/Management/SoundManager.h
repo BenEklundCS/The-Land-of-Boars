@@ -18,9 +18,9 @@ private:
     std::map<std::string, Sound> sounds;
     void LoadSounds();
 public:
-    static SoundManager* getInstance(); // using singleton to avoid loading more sounds than needed into memory
+    static SoundManager* GetInstance(); // using singleton to avoid loading more sounds than needed into memory
     void PlaySound(std::string sound_name);
-    void onNotify(const GameObject* entity, Event event);
+    void OnNotify(const GameObject* entity, Events event) override;
 };
 
 #endif //PLATFORMER_SOUNDMANAGER_H

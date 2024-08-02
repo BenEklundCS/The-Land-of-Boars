@@ -16,6 +16,7 @@
 #include "../PhysicsConstants.h"
 #include "../../Sprites/Animation.h"
 #include "../../Sprites/TextureManager.h"
+#include "../../Events/Observers/Subject.h"
 
 // Definitions for PlayerState types
 enum PlayerState {
@@ -50,7 +51,7 @@ struct playerDataStruct {
 };
 
 // Player is a GameObject with all player logic encapsulated
-class Player : public GameObject {
+class Player : public GameObject, public Subject {
 private:
     // Methods
     // Movement methods

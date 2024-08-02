@@ -9,8 +9,8 @@
 
 Level::Level() = default;
 
-GameStateManager* Level::GetGameState() {
-
-}
-
 Level::~Level() = default;
+
+GameStateManager *Level::GetGameState() {
+    return nullptr;
+}

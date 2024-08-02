@@ -5,13 +5,14 @@
 #ifndef PLATFORMER_OBSERVER_H
 #define PLATFORMER_OBSERVER_H
 
-#endif //PLATFORMER_OBSERVER_H
-
-#include "../../Entities/GameObject.h"
 #include "../Events.h"
+#include "../../Entities/GameObject.h"
+
 
 class Observer {
 public:
     virtual ~Observer() = default;
-    virtual void onNotify(const GameObject* entity, Event event) = 0;
+    virtual void OnNotify(const GameObject* entity, Events event) = 0;
 };
+
+#endif //PLATFORMER_OBSERVER_H

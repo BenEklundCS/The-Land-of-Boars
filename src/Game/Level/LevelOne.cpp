@@ -6,12 +6,19 @@
 #include "../../../include/Game/Management/TileManager.h"
 #include "../../../include/Game/Management/GameStateManager.h"
 #include "../../../include/Game/Entities/Objects/MovingPlatform.h"
+#include "../../../include/Game/Management/SoundManager.h"
 
 GameStateManager* LevelOne::GetGameState() {
 
 #pragma region main game objects
     auto player = std::make_unique<Player>();
+    // Register observers
     auto gameState = GameStateManager::GetInstance();
+    auto soundManager = SoundManager::GetInstance();
+
+    player->AddObserver(gameState);
+    player->AddObserver(soundManager);
+    // Registration complete
     gameState->AddObject(std::move(player));
 #pragma endregion
 

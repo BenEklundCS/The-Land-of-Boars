@@ -12,22 +12,22 @@
 
 class JumpCommand : public Command {
 public:
-    void execute(Player* player);
+    void Execute(Player* player);
 };
 
 class LeftCommand : public Command {
 public:
-    void execute(Player* player);
+    void Execute(Player* player);
 };
 
 class RightCommand : public Command {
 public:
-    void execute(Player* player);
+    void Execute(Player* player);
 };
 
 class AttackCommand : public Command {
 public:
-    void execute(Player* player);
+    void Execute(Player* player);
 };
 
 

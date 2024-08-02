@@ -4,18 +4,18 @@
 
 #include "../../../../include/Game/Events/Commands/PlayerCommands.h"
 
-void JumpCommand::execute(Player *player) {
+void JumpCommand::Execute(Player *player) {
     player->Jump();
 }
 
-void LeftCommand::execute(Player *player) {
+void LeftCommand::Execute(Player *player) {
     player->MoveLeft();
 }
 
-void RightCommand::execute(Player *player) {
+void RightCommand::Execute(Player *player) {
     player->MoveRight();
 }
 
-void AttackCommand::execute(Player *player) {
+void AttackCommand::Execute(Player *player) {
     player->Attack();
 }

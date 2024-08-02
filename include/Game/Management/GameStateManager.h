@@ -27,7 +27,7 @@ struct gameData {
  */
 // IMPORTANT, GameStateManager uses a Vector to store players_, but currently only supports ONE player.
 // Multiplayer support is not planned for this project.
-class GameStateManager {
+class GameStateManager : public Observer {
 private:
     static std::unique_ptr<GameStateManager> instance;
     bool levelOver; // Flag for if the level is over
@@ -64,6 +64,7 @@ public:
     const gameData* GetGameData();
     void AddObject(std::unique_ptr<GameObject> obj); // Add a GameObject to the scene
     void InitInput(EngineSettings* settings); // call to make input available to the GameState
+    void OnNotify(const GameObject* entity, Events event) override;
     ~GameStateManager(); // Destructor
 };
 
