@@ -13,7 +13,7 @@
 // LevelOne class is a child of Level
 class LevelOne : public Level {
 public:
-    StateManager* GetGameState() override;
+    GameStateManager* GetGameState() override;
 };
 
 #endif //PLATFORMER_LEVELONE_H

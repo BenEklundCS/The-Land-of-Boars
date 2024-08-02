@@ -13,6 +13,7 @@
 
 class Subject {
 private:
+    // This should be a smarter array in final implementation
     Observer* observers_[MAX_OBSERVERS] = {nullptr};
     int numObservers_;
 public:

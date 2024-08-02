@@ -22,14 +22,14 @@ struct gameData {
 };
 
 /*
- * The StateManager is responsible for ownership of GameObjects and updating them,
+ * The GameStateManager is responsible for ownership of GameObjects and updating them,
  * as well as any other game state items such as the camera, collisions, or other logic
  */
-// IMPORTANT, StateManager uses a Vector to store players_, but currently only supports ONE player.
+// IMPORTANT, GameStateManager uses a Vector to store players_, but currently only supports ONE player.
 // Multiplayer support is not planned for this project.
-class StateManager {
+class GameStateManager {
 private:
-    static std::unique_ptr<StateManager> instance;
+    static std::unique_ptr<GameStateManager> instance;
     bool levelOver; // Flag for if the level is over
     void UpdatePlayers(); // Update the player vector
     void UpdateMonsters(); // Update the monster vector
@@ -51,8 +51,8 @@ private:
     Camera2D camera{}; // Camera
     std::unique_ptr<InputManager> inputManager;
 public:
-    StateManager(); // Constructor
-    static StateManager* GetInstance();
+    GameStateManager(); // Constructor
+    static GameStateManager* GetInstance();
     void InitCamera(); // Initialize the camera - call before rendering
     void Update(); // Update the game state
     // Call to update attacks, must pass a player
@@ -64,7 +64,7 @@ public:
     const gameData* GetGameData();
     void AddObject(std::unique_ptr<GameObject> obj); // Add a GameObject to the scene
     void InitInput(EngineSettings* settings); // call to make input available to the GameState
-    ~StateManager(); // Destructor
+    ~GameStateManager(); // Destructor
 };
 
 #endif //PLATFORMER_GAMESTATEMANAGER_H

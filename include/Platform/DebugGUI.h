@@ -6,17 +6,18 @@
 #define PLATFORMER_DEBUGGUI_H
 
 
-#include "../Game/Management/GameStateManager.h"
 #include "raylib.h"
 #include "raymath.h"
 
 #include "imgui.h"
 #include "rlImGui.h"
 
+#include "../Game/Management/GameStateManager.h"
+
 class DebugGUI {
 public:
     static void InitGui();
-    static void DrawGui(StateManager* gameState);
+    static void DrawGui(GameStateManager* gameState);
 };
 
 

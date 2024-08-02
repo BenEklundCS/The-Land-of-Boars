@@ -44,8 +44,8 @@ void Engine::StartGame() {
     }
 }
 
-// Take a StateManager* as a parameter, initialize a renderer, and then render the scene
-void Engine::RenderLevelScene(StateManager* gameState) {
+// Take a GameStateManager* as a parameter, initialize a renderer, and then render the scene
+void Engine::RenderLevelScene(GameStateManager* gameState) {
     TraceLog(LOG_INFO, "Engine rendering a gameState...");
     // Render the level in an infinite loop
     while (!WindowShouldClose() && !gameState->IsLevelOver()) {

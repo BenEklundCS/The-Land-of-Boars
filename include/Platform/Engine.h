@@ -12,7 +12,7 @@
 #include "../Platform/DebugGUI.h"
 #include "../Game/Level/Level.h"
 
-class StateManager;
+class GameStateManager;
 
 // Engine settings dictating the behavior of the PLATFORM.
 struct EngineSettings {
@@ -25,14 +25,14 @@ struct EngineSettings {
 
 /*
  * The Engine class is responsible for starting the game, loading the game levels, and
- * contains the main game loop, which takes ownership of a StateManager to draw the gameState
+ * contains the main game loop, which takes ownership of a GameStateManager to draw the gameState
 */
 class Engine {
 private:
     std::vector<std::unique_ptr<Level>> levels;
     int curr = 0;
     static std::unique_ptr<EngineSettings> settings;
-    static void RenderLevelScene(StateManager* scene); // Start the render loop
+    static void RenderLevelScene(GameStateManager* scene); // Start the render loop
 public:
     void StartGame(); // Start the game
     void LoadLevels(); // Load all the game levels

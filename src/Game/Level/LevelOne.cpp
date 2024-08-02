@@ -7,11 +7,11 @@
 #include "../../../include/Game/Management/GameStateManager.h"
 #include "../../../include/Game/Entities/Objects/MovingPlatform.h"
 
-StateManager* LevelOne::GetGameState() {
+GameStateManager* LevelOne::GetGameState() {
 
 #pragma region main game objects
     auto player = std::make_unique<Player>();
-    auto gameState = StateManager::GetInstance();
+    auto gameState = GameStateManager::GetInstance();
     gameState->AddObject(std::move(player));
 #pragma endregion
 

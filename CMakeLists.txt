@@ -89,6 +89,7 @@ set(GAME_HEADERS
         include/Game/Entities/Objects/Tile.h
         include/Game/Management/TileManager.h
         include/Game/Events/Commands/PlayerCommands.h
+        include/Game/Events/Observers/Subject.h
 )
 
 # Combine all sources
