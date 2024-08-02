@@ -117,6 +117,8 @@ void Player::MoveRight() {
 
 // Make the player jump!
 void Player::Jump() {
+    // Set isOnGround to false if they jump!
+    playerData.isOnGround_ = false;
     // Set jumps and reset player animation
     playerData.jumps_++; // Increment jumps
     playerData.playerAnimation_->Reset(); // Reset the player's animation on Jump (handles double jump animating)
@@ -124,6 +126,7 @@ void Player::Jump() {
     const float jumpPower = 6.5f;
     playerData.state_ = JUMPING;
     playerData.velocity_.y -= PLAYER_SPEED * jumpPower;
+    // notify(self, EVENT_PLAYER_JUMPED);
 }
 
 #pragma endregion
@@ -134,7 +137,7 @@ void Player::Jump() {
 void Player::Attack() {
     // Set the player's state to ATTACKING
     playerData.state_ = ATTACKING;
-    GameStateManager::GetInstance()->UpdateAttacks(this);
+    GameStateManager::GetInstance()->UpdateAttacks(this); // should be notify(self, EVENT_PLAYER_ATTACK);
 }
 
 #pragma endregion

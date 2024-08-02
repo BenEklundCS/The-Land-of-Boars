@@ -69,6 +69,8 @@ private:
     void OnLeftCollision(Rectangle plat, Rectangle play);
     // Attributes
     playerDataStruct playerData;
+    void AnimatePlayer(); // Animate the player
+    bool AlreadyAttacking(); // check if the player is attacking
 public:
     GameObjectType type_ = PLAYER;
     Player();
@@ -80,10 +82,8 @@ public:
     void Attack();
     [[nodiscard]] bool CanJump() const; // Check if the player can jump
     void PlatformCollision(GameObject* obj); // Handle a collision with a platform GameObject
-    void AnimatePlayer(); // Animate the player
     playerDataStruct* GetPlayerData();
     void HitPlayer();
-    bool AlreadyAttacking();
 };
 
 #endif //PLATFORMER_PLAYER_H
