@@ -7,12 +7,14 @@
 
 #define MAX_OBSERVERS 4096
 
+#include <vector>
+#include <memory>
 #include "Observer.h"
 
 class Subject {
 private:
     // This should be a smarter array in final implementation
-    Observer* observers_[MAX_OBSERVERS] = {nullptr};
+    std::vector<std::unique_ptr<Observer>> observers_;
     int numObservers_ = 0;
 public:
     void AddObserver(Observer* observer);

@@ -15,7 +15,7 @@
 class SoundManager : public Observer {
 private:
     static std::unique_ptr<SoundManager> instance;
-    std::map<std::string, Sound> sounds;
+    std::map<std::string, Sound> sounds_;
     void LoadSounds();
 public:
     static SoundManager* GetInstance(); // using singleton to avoid loading more sounds than needed into memory

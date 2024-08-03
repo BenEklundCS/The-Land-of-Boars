@@ -3,3 +3,7 @@
 //
 
 #include "../../../../include/Game/Events/Commands/Command.h"
+
+void Command::Execute() {
+
+}

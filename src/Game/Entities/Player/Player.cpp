@@ -222,7 +222,6 @@ void Player::ResetJumps() {
     // If the player's on the ground, reset jumps
     if (playerData.isOnGround_ && playerData.state_ != JUMPING) {
         playerData.jumps_ = 0;
-        playerData.isOnGround_ = false; // reset flag after resetting jumps
     }
 }
 
@@ -248,6 +247,9 @@ void Player::OnAboveCollision(Rectangle plat, Rectangle play) {
     // Reset Y velocity only if moving downwards
     if (playerData.velocity_.y > 0) playerData.velocity_.y = 0;
     // Set the isOnGround flag and call GoIdle to change state to IDLE
+    if (!playerData.isOnGround_) {
+        Notify(this, EVENT_PLAYER_LANDED);
+    }
     playerData.isOnGround_ = true;
     GoIdle();
 }

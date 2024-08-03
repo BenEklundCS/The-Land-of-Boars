@@ -2,6 +2,7 @@
 // Created by ben on 8/1/24.
 //
 
+#include <algorithm>
 #include "../../../../include/Game/Events/Observers/Subject.h"
 
 void Subject::Notify(const GameObject *entity, Events event) {
@@ -14,28 +15,17 @@ void Subject::Notify(const GameObject *entity, Events event) {
     }
 }
 
-void Subject::AddObserver(Observer *observer) {
-    for (auto & i : observers_) {
-        if (i == nullptr) {
-            i = observer;
-            numObservers_++;
-            return; // observer has been added successfully
-        }
-    }
-    // We made it to the end of the array, and it's full
-    TraceLog(LOG_ERROR, "Failed to add observer: Observer array has reached max size %i / %i", numObservers_, MAX_OBSERVERS);
+void Subject::AddObserver(Observer* observer) {
+    observers_.push_back(std::unique_ptr<Observer>(observer));
+    numObservers_++;
 }
 
-void Subject::RemoveObserver(Observer *observer) {
-    for (auto & i : observers_) {
-        if (i == observer) {
-            i = nullptr;
-            numObservers_--;
-            return; // Observer has been removed successfully
-        }
-    }
-    // If we reach here, the observer was not found in the array
-    TraceLog(LOG_ERROR, "Failed to remove observer: Observer not found");
+void Subject::RemoveObserver(Observer* observer) {
+    observers_.erase(std::remove_if(observers_.begin(), observers_.end(),
+                                    [&observer](const std::unique_ptr<Observer>& o) {
+                                        return o.get() == observer;
+                                    }),
+                     observers_.end());
 }
 
 Subject::~Subject() = default;
