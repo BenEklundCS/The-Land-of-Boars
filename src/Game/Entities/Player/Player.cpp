@@ -137,7 +137,7 @@ void Player::Jump() {
 void Player::Attack() {
     // Set the player's state to ATTACKING
     playerData.state_ = ATTACKING;
-    Notify(this, EVENT_PLAYER_ATTACK);
+    Notify(this, EVENT_PLAYER_ATTACK); // Notify relevant observers the player has attacked
 }
 
 #pragma endregion

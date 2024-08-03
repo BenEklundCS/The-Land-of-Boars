@@ -46,10 +46,8 @@ void GameStateManager::UpdatePlatforms() {
 
 // Update all players in the scene by iterating over the players, calling update, and then checking for collisions
 void GameStateManager::UpdatePlayers() {
-
     for (auto& player : players_) {
         player->Update();
-
         // Iterate over the platforms to check for collisions
         #pragma omp parallel for
         for (auto& platform : platforms_) {
@@ -103,7 +101,9 @@ void GameStateManager::UpdateMonsters() {
 
 #pragma region observer-events
 
+// GameStateManager OnNotify from Observer Pattern
 void GameStateManager::OnNotify(const GameObject *entity, Events event) {
+    // Player events!
     if (entity->type_ == PLAYER) {
         if (event == EVENT_PLAYER_ATTACK) {
             UpdateAttacks((Player *) entity);
@@ -136,6 +136,7 @@ void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
     }
 }
 
+// Remove player from the players array
 void GameStateManager::RemovePlayer(GameObject* obj) {
     auto it = std::find_if(players_.begin(), players_.end(), [&obj](const std::unique_ptr<Player>& player) {
         return player.get() == obj;
@@ -145,6 +146,7 @@ void GameStateManager::RemovePlayer(GameObject* obj) {
     }
 }
 
+// Remove monster from the monsters array
 void GameStateManager::RemoveMonster(GameObject* obj) {
     auto it = std::find_if(monsters_.begin(), monsters_.end(), [&obj](const std::unique_ptr<Monster>& monster) {
         return monster.get() == obj;
@@ -154,6 +156,7 @@ void GameStateManager::RemoveMonster(GameObject* obj) {
     }
 }
 
+// Remove a platform from the platform array
 void GameStateManager::RemovePlatform(GameObject* obj) {
     auto it = std::find_if(platforms_.begin(), platforms_.end(), [&obj](const std::unique_ptr<Platform>& platform) {
         return platform.get() == obj;
@@ -163,6 +166,7 @@ void GameStateManager::RemovePlatform(GameObject* obj) {
     }
 }
 
+// Remove "Other" objects from the scene
 void GameStateManager::RemoveOtherObject(GameObject* obj) {
     auto it = std::find_if(otherObjects_.begin(), otherObjects_.end(), [&obj](const std::unique_ptr<GameObject>& other) {
         return other.get() == obj;
@@ -238,14 +242,16 @@ Camera2D GameStateManager::GetCamera() {
 #pragma endregion
 
 // Retrieve a gameData struct from the GameStateManager, giving the context of the games current state
-const gameData* GameStateManager::GetGameData() {
+// Retrieve a gameData struct from the GameStateManager, giving the context of the games current state
+gameData GameStateManager::GetGameData() {
     // IMPORTANT: GetPlayerData, and GameStateManager support ONE PLAYER
-    auto data = new gameData;
-    data->playerPosition = players_[0].get()->GetPosition();
-    data->playerData =  players_[0].get()->GetPlayerData();
+    gameData data{};
+    data.playerPosition = players_[0].get()->GetPosition();
+    data.playerData = players_[0].get()->GetPlayerData();
     return data;
 }
 
+// Create the InputManager
 void GameStateManager::InitInput(EngineSettings* settings) {
     inputManager_ = std::make_unique<InputManager>(players_[0].get(), *settings);
 }
@@ -258,37 +264,39 @@ GameStateManager::~GameStateManager() {
     otherObjects_.clear();
 }
 
+// Checks if the player hit the monster, and then return if the monster should die
 bool GameStateManager::HandlePlayerAttack(Player* player, Monster* monster) {
-    // Get the current player X position
-    float playerPosX = player->GetPosition().x;
-    // Get the current monster X position
-    float monsterPosX = monster->GetPosition().x;
+    Vector2 playerPos = player->GetPosition();
+    Vector2 monsterPos = monster->GetPosition();
     // Get attack range and player movement direction
     bool movingRight = player->GetPlayerData()->movingRight_;
     float attackRange = player->GetPlayerData()->attackRange_;
+    float playerHeight = player->GetRect().height;
 
     // Lambda function to simplify the boolean check
     // Is the monster in front of the player and player moving right?
     auto monster_inFront = [=]() {
         // player.x ------ monster.x --- | attackRange // Hit monsters facing right
-        bool inRange = monsterPosX > playerPosX && monsterPosX <= playerPosX + attackRange;
-        return (inRange && movingRight);
+        bool inRangeX = monsterPos.x > playerPos.x && monsterPos.x <= playerPos.x + attackRange;
+        bool inRangeY = (monsterPos.y >= playerPos.y - playerHeight) && (monsterPos.y <= playerPos.y + playerHeight);
+        return (inRangeX && inRangeY && movingRight);
     };
 
     auto monster_behind = [=]() {
         // attackRange | --- monster.x -------- player.x // Hit monsters facing left
-        bool inRange = monsterPosX < playerPosX && monsterPosX >= playerPosX - attackRange;
-        return (inRange && !movingRight);
+        bool inRangeX = monsterPos.x < playerPos.x && monsterPos.x >= playerPos.x - attackRange;
+        bool inRangeY = (monsterPos.y >= playerPos.y - playerHeight) && (monsterPos.y <= playerPos.y + playerHeight);
+        return (inRangeX && inRangeY && !movingRight);
     };
 
     // Hit the monster if either condition is true
     if (monster_inFront() || monster_behind()) {
         return monster->HitMonster(player->GetPlayerData()->damage_);
     }
-
     return false;
 }
 
+// Initialize player observers - the player must be initialized before attaching observers
 void GameStateManager::InitPlayerObservers() {
     auto playerOne = players_.at(0).get();
     playerOne->AddObserver(this);

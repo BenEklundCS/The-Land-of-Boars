@@ -11,8 +11,8 @@
 
 class Observer {
 public:
-    virtual ~Observer() = default;
-    virtual void OnNotify(const GameObject* entity, Events event) = 0;
+    virtual ~Observer();
+    virtual void OnNotify(const GameObject* entity, Events event);
 };
 
 #endif //PLATFORMER_OBSERVER_H

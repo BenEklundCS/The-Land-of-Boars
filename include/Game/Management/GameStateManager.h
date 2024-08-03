@@ -64,11 +64,11 @@ public:
     std::vector<GameObject*> GetAllObjects(); // Get all game objects from the GameState
     void SetLevelOver(); // Set levelOver to true
     [[nodiscard]] bool IsLevelOver() const; // Return the levelOver flag
-    const gameData* GetGameData();
+    gameData GetGameData();
     void AddObject(std::unique_ptr<GameObject> obj); // Add a GameObject to the scene
     void InitInput(EngineSettings* settings); // call to make input available to the GameState
     void OnNotify(const GameObject* entity, Events event) override;
-    ~GameStateManager(); // Destructor
+    ~GameStateManager() override; // Destructor
 };
 
 #endif //PLATFORMER_GAMESTATEMANAGER_H

@@ -3,3 +3,8 @@
 //
 
 #include "../../../../include/Game/Events/Observers/Observer.h"
+
+void Observer::OnNotify(const GameObject *entity, Events event) {
+
+}
+Observer::~Observer() = default;

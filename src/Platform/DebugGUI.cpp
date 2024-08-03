@@ -36,8 +36,8 @@ std::string PlayerStateToString(PlayerState state) {
 }
 
 void DebugGUI::DrawGui(GameStateManager *gameState) {
-    const gameData* gameData = gameState->GetGameData();
-    const playerDataStruct* playerData = gameData->playerData;
+    gameData gameData = gameState->GetGameData();
+    const playerDataStruct* playerData = gameData.playerData;
 
     rlImGuiBegin();
     // show ImGui Content
@@ -45,7 +45,7 @@ void DebugGUI::DrawGui(GameStateManager *gameState) {
     // Render player data
     ImGui::Text("playerData:");
     ImGui::Text("");
-    ImGui::Text("Position: %1.2fx, %1.2fy", gameData->playerPosition.x, gameData->playerPosition.y);
+    ImGui::Text("Position: %1.2fx, %1.2fy", gameData.playerPosition.x, gameData.playerPosition.y);
     ImGui::Text("Velocity: %1.2fx, %1.2fy", playerData->velocity_.x, playerData->velocity_.y);
     // Render player data
     ImGui::Text("Health: %d", playerData->hp_);
@@ -56,7 +56,4 @@ void DebugGUI::DrawGui(GameStateManager *gameState) {
     ImGui::Text("timeSinceHit: %1.2f", playerData->timeSinceHit_);
     // Submit ImGui data to Raylib for processing
     rlImGuiEnd();
-
-    delete gameData;
-
 }
