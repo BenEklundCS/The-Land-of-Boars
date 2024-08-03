@@ -19,7 +19,7 @@ void Renderer::RenderBackground(Camera2D camera) {
     // Render the background.texture across the full screen's dimensions
     DrawTexturePro(background.texture, background.rect,
                    Rectangle{backgroundPosition.x, backgroundPosition.y,(float)GetScreenWidth(), (float)GetScreenHeight()},
-                   Vector2{0, 0}, 0, PURPLE);
+                   Vector2{0, 0}, 0, PINK);
 }
 
 void Renderer::RenderFPS(Camera2D camera) {

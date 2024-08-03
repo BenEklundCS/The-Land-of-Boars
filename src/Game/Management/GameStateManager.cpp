@@ -33,7 +33,7 @@ void GameStateManager::Update() {
     UpdatePlayers(); // update Players
     UpdatePlatforms(); // update Platforms
     // Handle user input
-    inputManager->HandleUserInput();
+    inputManager_->HandleUserInput();
     UpdateMonsters(); // update Monsters
 }
 
@@ -122,6 +122,8 @@ void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
     allGameObjects_.push_back(obj.get());
     if (obj->type_ == PLAYER) {
         players_.push_back(std::unique_ptr<Player>(dynamic_cast<Player*>(obj.release())));
+        // When the player is added we need to observe it
+        InitPlayerObservers();
     }
     else if (obj->type_ == MONSTER) {
         monsters_.push_back(std::unique_ptr<Monster>(dynamic_cast<Monster*>(obj.release())));
@@ -206,16 +208,16 @@ std::vector<GameObject*> GameStateManager::GetAllObjects() {
 // DO NOT CALL UNLESS players_ HAS AT LEAST ONE PLAYER
 void GameStateManager::InitCamera() {
     Player* player1 = players_.at(0).get();
-    camera.target = (Vector2){player1->GetPosition().x + 20.0f, player1->GetPosition().y + 20.0f};
-    camera.offset = (Vector2){(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f};
-    camera.rotation = 0.0f;
-    camera.zoom = 1.0f;
+    camera_.target = (Vector2){player1->GetPosition().x + 20.0f, player1->GetPosition().y + 20.0f};
+    camera_.offset = (Vector2){(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f};
+    camera_.rotation = 0.0f;
+    camera_.zoom = 1.0f;
 }
 
 // Update the camera using the players current position
 void GameStateManager::UpdateCamera() {
     Player* player1 = players_.at(0).get();
-    camera.target = (Vector2){ player1->GetPosition().x + 20, player1->GetPosition().y + 20 };
+    camera_.target = (Vector2){ player1->GetPosition().x + 20, player1->GetPosition().y + 20 };
 }
 
 // Return the levelOver boolean flag
@@ -230,7 +232,7 @@ void GameStateManager::SetLevelOver() {
 
 // Return the camera
 Camera2D GameStateManager::GetCamera() {
-    return camera;
+    return camera_;
 }
 
 #pragma endregion
@@ -245,7 +247,7 @@ const gameData* GameStateManager::GetGameData() {
 }
 
 void GameStateManager::InitInput(EngineSettings* settings) {
-    inputManager = std::make_unique<InputManager>(players_[0].get(), *settings);
+    inputManager_ = std::make_unique<InputManager>(players_[0].get(), *settings);
 }
 
 // Cleanup the vectors on destruct
@@ -265,7 +267,7 @@ bool GameStateManager::HandlePlayerAttack(Player* player, Monster* monster) {
     bool movingRight = player->GetPlayerData()->movingRight_;
     float attackRange = player->GetPlayerData()->attackRange_;
 
-    // Lamdba function to simplify the boolean check
+    // Lambda function to simplify the boolean check
     // Is the monster in front of the player and player moving right?
     auto monster_inFront = [=]() {
         // player.x ------ monster.x --- | attackRange // Hit monsters facing right
@@ -283,5 +285,12 @@ bool GameStateManager::HandlePlayerAttack(Player* player, Monster* monster) {
     if (monster_inFront() || monster_behind()) {
         return monster->HitMonster(player->GetPlayerData()->damage_);
     }
+
     return false;
+}
+
+void GameStateManager::InitPlayerObservers() {
+    auto playerOne = players_.at(0).get();
+    playerOne->AddObserver(this);
+    playerOne->AddObserver(SoundManager::GetInstance());
 }

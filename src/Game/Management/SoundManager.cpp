@@ -23,6 +23,9 @@ void SoundManager::OnNotify(const GameObject *entity, Events event) {
         case EVENT_PLAYER_ATTACK:
             TraceLog(LOG_INFO, "SoundManager notified of EVENT_PLAYER_ATTACK");
             return;
+        default:
+            TraceLog(LOG_INFO, "SoundManager notified of unknown event: %d", event);
+            break;
     }
 }
 
@@ -33,3 +36,4 @@ void SoundManager::LoadSounds() {
 void SoundManager::PlaySound(std::string sound_name) {
 
 }
+

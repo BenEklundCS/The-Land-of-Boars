@@ -12,6 +12,7 @@
 #include "../Entities/Monsters/Monster.h"
 #include "../Entities/Objects/Platform.h"
 #include "../../Platform/Engine.h"
+#include "SoundManager.h"
 
 class InputManager;
 struct EngineSettings;
@@ -35,6 +36,7 @@ private:
     void UpdateMonsters(); // Update the monster vector
     void UpdatePlatforms();
     // Deleters of objects
+    void InitPlayerObservers();
     void RemovePlayer(GameObject *obj);
     void RemoveMonster(GameObject *obj);
     void RemovePlatform(GameObject *obj);
@@ -48,8 +50,9 @@ private:
     std::vector<std::unique_ptr<Platform>> platforms_; // platform object vector
     std::vector<std::unique_ptr<GameObject>> otherObjects_; // other object vector
     std::vector<GameObject*> allGameObjects_; // All game object vector
-    Camera2D camera{}; // Camera
-    std::unique_ptr<InputManager> inputManager;
+    Camera2D camera_{}; // Camera
+    std::unique_ptr<InputManager> inputManager_;
+    std::unique_ptr<SoundManager> soundManager_;
 public:
     GameStateManager(); // Constructor
     static GameStateManager* GetInstance();

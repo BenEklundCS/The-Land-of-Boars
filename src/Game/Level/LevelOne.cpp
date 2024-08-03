@@ -14,11 +14,9 @@ GameStateManager* LevelOne::GetGameState() {
     auto player = std::make_unique<Player>();
     // Register observers
     auto gameState = GameStateManager::GetInstance();
-    auto soundManager = SoundManager::GetInstance();
 
-    player->AddObserver(gameState);
-    player->AddObserver(soundManager);
-    // Registration complete
+
+
     gameState->AddObject(std::move(player));
 #pragma endregion
 
