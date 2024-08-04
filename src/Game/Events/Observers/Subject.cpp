@@ -6,26 +6,21 @@
 #include "../../../../include/Game/Events/Observers/Subject.h"
 
 void Subject::Notify(const GameObject *entity, Events event) {
-    for (int i = 0; i < numObservers_; i++)
-    {
-        if (observers_[i] != nullptr) {
-            TraceLog(LOG_INFO, "%i", i);
-            observers_[i]->OnNotify(entity, event);
+    for (Observer* o : observers_) {
+        if (o != nullptr) {
+            o->OnNotify(entity, event);
         }
     }
 }
 
 void Subject::AddObserver(Observer* observer) {
-    observers_.push_back(std::unique_ptr<Observer>(observer));
+    observers_.push_back(observer);
     numObservers_++;
 }
 
 void Subject::RemoveObserver(Observer* observer) {
-    observers_.erase(std::remove_if(observers_.begin(), observers_.end(),
-                                    [&observer](const std::unique_ptr<Observer>& o) {
-                                        return o.get() == observer;
-                                    }),
-                     observers_.end());
+    observers_.erase(std::remove(observers_.begin(), observers_.end(), observer), observers_.end());
+    numObservers_--;
 }
 
 Subject::~Subject() = default;

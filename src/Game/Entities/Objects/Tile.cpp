@@ -18,6 +18,6 @@ void Tile::Update() {
 
 }
 
-void Tile::SetTexture(GameTexture texture) {
+[[maybe_unused]] void Tile::SetTexture(GameTexture texture) {
     texture_ = texture;
 }

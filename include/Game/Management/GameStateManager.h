@@ -20,6 +20,10 @@ struct EngineSettings;
 struct gameData {
     Vector2 playerPosition;
     const playerDataStruct* playerData;
+    size_t numPlayers;
+    size_t numMonsters;
+    size_t numPlatforms;
+    size_t numOther;
 };
 
 /*

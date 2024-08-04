@@ -248,6 +248,11 @@ gameData GameStateManager::GetGameData() {
     gameData data{};
     data.playerPosition = players_[0].get()->GetPosition();
     data.playerData = players_[0].get()->GetPlayerData();
+    // Get sizes
+    data.numMonsters = monsters_.size();
+    data.numPlayers = players_.size();
+    data.numPlatforms = platforms_.size();
+    data.numOther = otherObjects_.size();
     return data;
 }
 

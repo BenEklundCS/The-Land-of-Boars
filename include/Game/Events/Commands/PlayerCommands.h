@@ -5,8 +5,6 @@
 #ifndef PLATFORMER_PLAYERCOMMANDS_H
 #define PLATFORMER_PLAYERCOMMANDS_H
 
-#endif //PLATFORMER_PLAYERCOMMANDS_H
-
 #include "Command.h"
 #include "../../Entities/Player/Player.h"
 
@@ -29,5 +27,7 @@ class AttackCommand : public Command {
 public:
     void Execute(Player* player);
 };
+
+#endif //PLATFORMER_PLAYERCOMMANDS_H
 
 

@@ -15,6 +15,7 @@ enum GameObjectType {
     PLATFORM,
     MONSTER,
     TILE,
+    TREE,
     OTHER
 };
 

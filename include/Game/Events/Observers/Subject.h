@@ -14,7 +14,7 @@
 class Subject {
 private:
     // This should be a smarter array in final implementation
-    std::vector<std::unique_ptr<Observer>> observers_;
+    std::vector<Observer*> observers_;
     int numObservers_ = 0;
 public:
     void AddObserver(Observer* observer);

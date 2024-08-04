@@ -68,11 +68,13 @@ set(GAME_ENTITIES_SOURCES
         src/Game/Entities/Monsters/Boar.cpp
         src/Game/Entities/Objects/MovingPlatform.cpp
         src/Game/Entities/Objects/MovingPlatform.cpp
+        src/Game/Entities/Objects/Tree.cpp
 )
 
 set(GAME_LEVEL_SOURCES
         src/Game/Level/LevelOne.cpp
         src/Game/Level/Level.cpp
+        src/Game/Level/LevelLoader.cpp
 )
 
 set(GAME_SPRITES_SOURCES
@@ -91,6 +93,8 @@ set(GAME_HEADERS
         include/Game/Management/TileManager.h
         include/Game/Events/Commands/PlayerCommands.h
         include/Game/Events/Observers/Subject.h
+        include/Game/Entities/Objects/Tree.h
+        include/Game/Level/LevelLoader.h
 )
 
 # Combine all sources

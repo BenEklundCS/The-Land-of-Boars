@@ -54,6 +54,11 @@ void DebugGUI::DrawGui(GameStateManager *gameState) {
     ImGui::Text("State: %s", PlayerStateToString(playerData->state_).c_str());
     ImGui::Text("isOnGround: %s", (playerData->isOnGround_) ? "True" : "False");
     ImGui::Text("timeSinceHit: %1.2f", playerData->timeSinceHit_);
+    // Number of objects
+    ImGui::Text("Player count: %zu", gameData.numPlayers);
+    ImGui::Text("Monsters count: %zu", gameData.numMonsters);
+    ImGui::Text("Platforms count: %zu", gameData.numPlatforms);
+    ImGui::Text("Other count: %zu", gameData.numOther);
     // Submit ImGui data to Raylib for processing
     rlImGuiEnd();
 }

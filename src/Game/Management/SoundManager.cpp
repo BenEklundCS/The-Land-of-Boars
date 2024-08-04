@@ -19,15 +19,14 @@ void SoundManager::OnNotify(const GameObject *entity, Events event) {
     TraceLog(LOG_INFO, "SoundManager got a notification!");
     switch (event) {
         case EVENT_PLAYER_JUMPED:
-            TraceLog(LOG_INFO, "SoundManager notified of EVENT_PLAYER_JUMPED");
             PlaySound("jump");
             break;
         case EVENT_PLAYER_ATTACK:
-            TraceLog(LOG_INFO, "SoundManager notified of EVENT_PLAYER_ATTACK");
             PlaySound("attack");
             break;
         case EVENT_PLAYER_LANDED:
             PlaySound("landingSound");
+            break;
         default:
             TraceLog(LOG_INFO, "SoundManager notified of unknown event: %d", event);
             break;

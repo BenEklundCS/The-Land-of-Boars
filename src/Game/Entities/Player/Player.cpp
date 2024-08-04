@@ -317,6 +317,7 @@ bool Player::CheckPlayerDeath() const {
 
 // Return a ptr to the playerData struct stored in memory
 playerDataStruct* Player::GetPlayerData() {
+    playerData.timeSinceHit_ = timeSinceToggle_;
     return &playerData;
 }
 
