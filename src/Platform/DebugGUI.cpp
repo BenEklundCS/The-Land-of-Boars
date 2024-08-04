@@ -43,8 +43,7 @@ void DebugGUI::DrawGui(GameStateManager *gameState) {
     // show ImGui Content
     ImGui::SetWindowFontScale(2);
     // Render player data
-    ImGui::Text("playerData:");
-    ImGui::Text("");
+    ImGui::Text("Player data:");
     ImGui::Text("Position: %1.2fx, %1.2fy", gameData.playerPosition.x, gameData.playerPosition.y);
     ImGui::Text("Velocity: %1.2fx, %1.2fy", playerData->velocity_.x, playerData->velocity_.y);
     // Render player data
@@ -54,7 +53,9 @@ void DebugGUI::DrawGui(GameStateManager *gameState) {
     ImGui::Text("State: %s", PlayerStateToString(playerData->state_).c_str());
     ImGui::Text("isOnGround: %s", (playerData->isOnGround_) ? "True" : "False");
     ImGui::Text("timeSinceHit: %1.2f", playerData->timeSinceHit_);
+    ImGui::Text("");
     // Number of objects
+    ImGui::Text("Object counts:");
     ImGui::Text("Player count: %zu", gameData.numPlayers);
     ImGui::Text("Monsters count: %zu", gameData.numMonsters);
     ImGui::Text("Platforms count: %zu", gameData.numPlatforms);

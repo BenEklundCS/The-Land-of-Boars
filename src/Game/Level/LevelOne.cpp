@@ -24,9 +24,14 @@ GameStateManager* LevelOne::GetGameState() {
 
 #pragma region platforms
     // Spawn platforms into the gameState
-    auto platform3 = std::make_unique<Platform>(1300, 300, 500, 500, BLACK);
-    auto moving_platform = std::make_unique<MovingPlatform>(std::move(platform3), Vector2{-200, 200}, Vector2{0, 0}, 100.0f, true, false);
+    auto platform3 = std::make_unique<Platform>(3200, 700, 500, 25, BLACK);
+    auto moving_platform = std::make_unique<MovingPlatform>(std::move(platform3), Vector2{0, 0}, Vector2{-700, 700}, 500.0f, false, true);
     auto platform4 = std::make_unique<Platform>(550, (float) GetScreenHeight() - 700, 500, 50, BLACK);
+
+    for (int i = 0; i < 4; i++) {
+        auto p = std::make_unique<Platform>(550 + i*1000, (float) GetScreenHeight() - 700-i*300, 500, 50, BLACK);
+        gameState->AddObject(std::move(p));
+    }
 
     gameState->AddObject(std::move(moving_platform));
     gameState->AddObject(std::move(platform4));
@@ -60,7 +65,7 @@ GameStateManager* LevelOne::GetGameState() {
     gameState->AddObject(std::move(monster2));
 
     for (int i = 0; i < 10; i++) {
-        auto monster3 = std::make_unique<Boar>(2000 + i*10, GetScreenHeight() - 200, 100, 100, MonsterState::DEFAULT);
+        auto monster3 = std::make_unique<Boar>(2000 + i*50, GetScreenHeight() - 200, 100, 100, MonsterState::DEFAULT);
 
         gameState->AddObject(std::move(monster3));
     }

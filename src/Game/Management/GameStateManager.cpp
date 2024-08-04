@@ -128,7 +128,7 @@ void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
     else if (obj->type_ == MONSTER) {
         monsters_.push_back(std::unique_ptr<Monster>(dynamic_cast<Monster*>(obj.release())));
     }
-    else if (obj->type_ == PLATFORM) {
+    else if (obj->type_ == PLATFORM || obj->type_ == MOVING_PLATFORM) {
         platforms_.push_back(std::unique_ptr<Platform>(dynamic_cast<Platform*>(obj.release())));
     }
     else {

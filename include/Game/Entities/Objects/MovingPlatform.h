@@ -11,6 +11,7 @@ class MovingPlatform : public Platform {
 public:
     MovingPlatform(std::unique_ptr<Platform> platform, Vector2 boundsX, Vector2 boundsY, float speed, bool LR, bool UD);
     void Update() override;
+    float GetSpeed();
 private:
     // Position and bounderies
     Vector2 startingXY;

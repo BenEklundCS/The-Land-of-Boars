@@ -68,6 +68,7 @@ private:
     void OnBelowCollision(Rectangle plat, Rectangle play);
     void OnRightCollision(Rectangle plat, Rectangle play);
     void OnLeftCollision(Rectangle plat, Rectangle play);
+    void MovingPlatformSpeedAdjustment(GameObject* obj);
     // Attributes
     playerDataStruct playerData;
     void AnimatePlayer(); // Animate the player

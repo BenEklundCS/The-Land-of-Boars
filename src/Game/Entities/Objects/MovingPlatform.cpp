@@ -12,6 +12,7 @@ MovingPlatform::MovingPlatform(std::unique_ptr<Platform> platform, Vector2 bound
           startingXY(Vector2{platform->GetPosition().x, platform->GetPosition().y}) {
     speed_ = speed;
     position_ = platform->GetPosition();
+    type_ = MOVING_PLATFORM;
 }
 
 #pragma region main methods
@@ -40,20 +41,20 @@ void MovingPlatform::Draw() {
 // Move the platform left/right if that flag is set
 void MovingPlatform::MoveLeftRight(float deltaTime) {
     if (movingRight) {
-        position_.x += 100 * deltaTime;
+        position_.x += speed_ * deltaTime;
     }
     else {
-        position_.x -= 100 * deltaTime;
+        position_.x -= speed_ * deltaTime;
     }
 }
 
 // Move the platform up/down if that flag is set
 void MovingPlatform::MoveUpDown(float deltaTime) {
     if (movingUp) {
-        position_.y += 100 * deltaTime;
+        position_.y += speed_ * deltaTime;
     }
     else {
-        position_.y -= 100 * deltaTime;
+        position_.y -= speed_ * deltaTime;
     }
 }
 
@@ -112,6 +113,10 @@ bool MovingPlatform::HitTopBound() {
 // returns true if the platform has reached the bottom boundary
 bool MovingPlatform::HitBottomBound() {
     return (movingUp && position_.y >= startingXY.y + dimensions_.y + boundsY.y);
+}
+
+float MovingPlatform::GetSpeed() {
+    return speed_;
 }
 
 #pragma endregion

@@ -3,6 +3,7 @@
 //
 
 #include "../../../../include/Game/Entities/Player/Player.h"
+#include "../../../../include/Game/Entities/Objects/MovingPlatform.h"
 
 /*
  * Player state management
@@ -319,6 +320,14 @@ bool Player::CheckPlayerDeath() const {
 playerDataStruct* Player::GetPlayerData() {
     playerData.timeSinceHit_ = timeSinceToggle_;
     return &playerData;
+}
+
+void Player::MovingPlatformSpeedAdjustment(GameObject* obj) {
+    auto* movingPlatform = dynamic_cast<MovingPlatform*>(obj);
+    if (movingPlatform != nullptr) {
+        playerData.velocity_.x = movingPlatform->GetSpeed();
+        TraceLog(LOG_INFO, "Called");
+    }
 }
 
 #pragma endregion

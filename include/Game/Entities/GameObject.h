@@ -13,6 +13,7 @@ class Player; // forward declaration, as Player is an instance of GameObject
 enum GameObjectType {
     PLAYER,
     PLATFORM,
+    MOVING_PLATFORM,
     MONSTER,
     TILE,
     TREE,
