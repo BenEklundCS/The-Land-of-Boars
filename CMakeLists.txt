@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.11)
 
-project(Platformer) # Define the project name
+project(The_Land_of_Boars) # Define the project name
 
 # Find raylib
 find_package(raylib 3.0 QUIET)

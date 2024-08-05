@@ -7,7 +7,7 @@
 
 #define DEFAULT_WINDOW_WIDTH 2560
 #define DEFAULT_WINDOW_HEIGHT 1440
-#define WINDOW_NAME "Platformer"
+#define WINDOW_NAME "The Land of Boars"
 
 #include <memory>
 

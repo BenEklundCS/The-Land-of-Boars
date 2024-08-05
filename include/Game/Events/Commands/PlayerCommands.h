@@ -10,22 +10,22 @@
 
 class JumpCommand : public Command {
 public:
-    void Execute(Player* player);
+    static void Execute(Player* player);
 };
 
 class LeftCommand : public Command {
 public:
-    void Execute(Player* player);
+    static void Execute(Player* player);
 };
 
 class RightCommand : public Command {
 public:
-    void Execute(Player* player);
+    static void Execute(Player* player);
 };
 
 class AttackCommand : public Command {
 public:
-    void Execute(Player* player);
+    static void Execute(Player* player);
 };
 
 #endif //PLATFORMER_PLAYERCOMMANDS_H

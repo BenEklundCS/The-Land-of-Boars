@@ -16,7 +16,6 @@ SoundManager *SoundManager::GetInstance() {
 }
 
 void SoundManager::OnNotify(const GameObject *entity, Events event) {
-    TraceLog(LOG_INFO, "SoundManager got a notification!");
     switch (event) {
         case EVENT_PLAYER_JUMPED:
             PlaySound("jump");

@@ -11,8 +11,8 @@
 
 class Observer {
 public:
-    virtual ~Observer();
-    virtual void OnNotify(const GameObject* entity, Events event);
+    virtual ~Observer(); // Destructor
+    virtual void OnNotify(const GameObject* entity, Events event); // Logic for handling notifications sent to this observer
 };
 
 #endif //PLATFORMER_OBSERVER_H

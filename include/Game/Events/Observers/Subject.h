@@ -13,15 +13,14 @@
 
 class Subject {
 private:
-    // This should be a smarter array in final implementation
-    std::vector<Observer*> observers_;
-    int numObservers_ = 0;
+    std::vector<Observer*> observers_; // _observers array
+    int numObservers_ = 0; // number of observers
 public:
-    void AddObserver(Observer* observer);
-    void RemoveObserver(Observer* observer);
+    void AddObserver(Observer* observer); // Add an Observer to the Subject, allowing the Subject to Notify observers
+    void RemoveObserver(Observer* observer); // Removes an Observer from the Subject.
     ~Subject();
 protected:
-    void Notify(const GameObject* entity, Events event);
+    void Notify(const GameObject* entity, Events event); // Notifies all observers of the object's event
 };
 
 #endif //PLATFORMER_SUBJECT_H
