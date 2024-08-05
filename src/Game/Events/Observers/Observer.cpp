@@ -7,4 +7,5 @@
 void Observer::OnNotify(const GameObject *entity, Events event) {
 
 }
+
 Observer::~Observer() = default;

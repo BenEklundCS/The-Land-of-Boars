@@ -2,6 +2,7 @@
 // Created by ben on 8/4/24.
 //
 #include "../../../include/Game/Level/LevelLoader.h"
+#include "raylib.h"
 
 std::vector<std::vector<int>> LevelLoader::LoadLevel(const std::string &filePath) {
     std::vector<std::vector<int>> tileMap;
@@ -18,6 +19,9 @@ std::vector<std::vector<int>> LevelLoader::LoadLevel(const std::string &filePath
             tileMap.push_back(row);
         }
         file.close();
+    }
+    else {
+        TraceLog(LOG_ERROR, "Unable to open file: %s", filePath.c_str());
     }
 
     return tileMap;
