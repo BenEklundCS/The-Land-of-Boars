@@ -56,7 +56,9 @@ void GameStateManager::UpdatePlayers() {
         // Iterate over any other objects to check for collisions (especially TILEs)
         #pragma omp parallel for // update the other objects in parallel using threads
         for (auto& other : otherObjects_) {
-            player->PlatformCollision(other.get());
+            if (other->type_ == TILE)
+                player->PlatformCollision(other.get()); // Trees are also otherObjects, and I don't want to collide with them
+
         }
     }
 }
@@ -92,7 +94,8 @@ void GameStateManager::UpdateMonsters() {
         }
         #pragma omp parallel for // update the other objects in parallel using threads
         for (auto& other : otherObjects_) {
-            monster->PlatformCollision(other.get());
+            if (other->type_ == TILE)
+                monster->PlatformCollision(other.get()); // Trees are also otherObjects, and I don't want to collide with them
         }
     }
 }

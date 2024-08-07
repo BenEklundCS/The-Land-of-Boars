@@ -50,11 +50,16 @@ void TextureManager::LoadTileTextures() {
 
 // Load all other textures
 void TextureManager::LoadOtherTextures() {
+    float treeWidth = 100;
+    float treeHeight = 370;
     // Background
-    // Use raylibs LoadTexture
     Texture2D backgroundTexture = ::LoadTexture(BACKGROUND_TEXTURE_PATH);
     TextureManager::LoadTexture(backgroundTexture, BACKGROUND_TEXTURE,
                                 Rectangle{0, 0, (float)backgroundTexture.width, (float)backgroundTexture.height});
+    // Trees
+    Texture2D greenTreeTexture = ::LoadTexture(GREEN_TREE_TEXTURE_PATH);
+    TextureManager::LoadTexture(greenTreeTexture, GREEN_TREE_TEXTURE,
+                                Rectangle{0, 0, treeWidth, treeHeight});
 }
 
 // Load my monster textures

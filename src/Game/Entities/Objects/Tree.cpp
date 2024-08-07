@@ -3,9 +3,10 @@
 //
 #include "../../../../include/Game/Entities/Objects/Tree.h"
 
-Tree::Tree(float x, float y, std::string treeTexture) : GameObject(TREE), texture_(TextureManager::GetInstance()->GetTexture(treeTexture))
+Tree::Tree(float x, float y, const std::string& treeTexture) : GameObject(TREE),
+                                                        texture_(TextureManager::GetInstance()->GetTexture(treeTexture))
 { // Ensure to instantiate the GameObject!
-    dimensions_ = Vector2{TILE_LENGTH, TILE_LENGTH};
+    dimensions_ = Vector2{TREE_WIDTH, TREE_HEIGHT};
     position_ = Vector2{x, y};
 }
 

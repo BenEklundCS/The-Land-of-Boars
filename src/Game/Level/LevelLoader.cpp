@@ -8,8 +8,10 @@ std::vector<std::vector<int>> LevelLoader::LoadLevel(const std::string &filePath
     std::vector<std::vector<int>> tileMap;
     std::ifstream file(filePath);
 
+    // Check if file is open
     if (file.is_open()) {
         std::string line;
+        // Read each line of the file
         while (std::getline(file, line)) {
             std::vector<int> row;
             for (char c : line) {
@@ -20,6 +22,7 @@ std::vector<std::vector<int>> LevelLoader::LoadLevel(const std::string &filePath
         }
         file.close();
     }
+    // If file is not open, log an error
     else {
         TraceLog(LOG_ERROR, "Unable to open file: %s", filePath.c_str());
     }

@@ -58,6 +58,13 @@
 #define TILE_LENGTH 80 // size of a tile
 #define TILE_OFFSET 10 // starting offset to get tile from spritesheet
 
+// Trees
+#define TREE_WIDTH 400
+#define TREE_HEIGHT 1000
+
+#define GREEN_TREE_TEXTURE_PATH "../Assets/Sprites/Trees/Green-Tree.png"
+#define GREEN_TREE_TEXTURE "greenTreeTexture"
+
 struct GameTexture {
     Texture2D texture;
     Rectangle rect;
