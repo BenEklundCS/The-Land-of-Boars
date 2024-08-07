@@ -67,6 +67,7 @@ void Monster::PlatformCollision(GameObject* obj) {
                 velocity_.y = 0;
             }
         } else {
+            movingRight_ = !movingRight_;
             if (deltaX > 0) { // Collision from the left
                 position_.x = platformRect.x + platformRect.width;
                 velocity_.x = 0;
