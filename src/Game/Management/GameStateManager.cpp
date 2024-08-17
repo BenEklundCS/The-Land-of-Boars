@@ -5,6 +5,7 @@
 #include "../../../include/Platform/Renderer.h"
 #include "../../../include/Game/Management/InputManager.h"
 #include "../../../include/Game/Management/GameStateManager.h"
+#include "../../../include/Game/Entities/Effects/ParticleCone.h"
 #include <algorithm>
 
 std::unique_ptr<GameStateManager> GameStateManager::instance = nullptr;
@@ -35,6 +36,7 @@ void GameStateManager::Update() {
     // Handle user input
     inputManager_->HandleUserInput();
     UpdateMonsters(); // update Monsters
+    UpdateOthers();
 }
 
 void GameStateManager::UpdatePlatforms() {
@@ -65,6 +67,7 @@ void GameStateManager::UpdatePlayers() {
 
 // Handle player and monster attacks onscreen
 void GameStateManager::UpdateAttacks(Player* player) {
+    PlayerAttackEffect();
     // Vector to store delayed updates
     std::vector<GameObject*> toRemove;
     // Iterate over all monsters
@@ -97,6 +100,12 @@ void GameStateManager::UpdateMonsters() {
             if (other->type_ == TILE)
                 monster->PlatformCollision(other.get()); // Trees are also otherObjects, and I don't want to collide with them
         }
+    }
+}
+
+void GameStateManager::UpdateOthers() {
+    for (auto& other : otherObjects_) {
+        other->Update();
     }
 }
 
@@ -309,4 +318,10 @@ void GameStateManager::InitPlayerObservers() {
     auto playerOne = players_.at(0).get();
     playerOne->AddObserver(this);
     playerOne->AddObserver(SoundManager::GetInstance());
+}
+
+void GameStateManager::PlayerAttackEffect() {
+    // Attack effect
+    auto effect = std::make_unique<ParticleCone>(players_.at(0)->GetPlayerData()->movingRight_, 100);
+    AddObject(std::move(effect));
 }

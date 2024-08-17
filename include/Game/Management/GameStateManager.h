@@ -73,6 +73,9 @@ public:
     void InitInput(EngineSettings* settings); // call to make input available to the GameState
     void OnNotify(const GameObject* entity, Events event) override;
     ~GameStateManager() override; // Destructor
+    void PlayerAttackEffect();
+
+    void UpdateOthers();
 };
 
 #endif //PLATFORMER_GAMESTATEMANAGER_H

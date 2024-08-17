@@ -69,6 +69,7 @@ set(GAME_ENTITIES_SOURCES
         src/Game/Entities/Objects/MovingPlatform.cpp
         src/Game/Entities/Objects/MovingPlatform.cpp
         src/Game/Entities/Objects/Tree.cpp
+        src/Game/Entities/Effects/ParticleCone.cpp
 )
 
 set(GAME_LEVEL_SOURCES

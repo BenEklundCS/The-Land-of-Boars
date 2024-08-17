@@ -65,6 +65,11 @@
 #define GREEN_TREE_TEXTURE_PATH "../Assets/Sprites/Trees/Green-Tree.png"
 #define GREEN_TREE_TEXTURE "greenTreeTexture"
 
+// Player attack effect
+#define ATTACK_EFFECT_TEXTURE ""
+#define ATTACK_EFFECT_FRAMES 10
+#define ATTACK_EFFECT_FRAME_DURATION 10
+
 struct GameTexture {
     Texture2D texture;
     Rectangle rect;
