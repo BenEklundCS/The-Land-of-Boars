@@ -49,7 +49,7 @@ void SoundManager::LoadSounds() {
     // Player sounds
     sounds_.emplace(std::pair<SoundKey, Sound>(HERO_LANDING, LoadSound("../Assets/Sounds/jumpland.wav")));
     sounds_.emplace(std::pair<SoundKey, Sound>(HERO_JUMP, LoadSound("../Assets/Sounds/jumpSound.mp3")));
-    sounds_.emplace(std::pair<SoundKey, Sound>(HERO_ATTACK, LoadSound("../Assets/Sounds/rpg_sound_pack/RPG Sound Pack/battle/swing.wav")));
+    sounds_.emplace(std::pair<SoundKey, Sound>(HERO_ATTACK, LoadSound("../Assets/Sounds/swing.wav")));
     // Boar sounds
     sounds_.emplace(std::pair<SoundKey, Sound>(BOAR_HIT, LoadSound("../Assets/Sounds/boarHit.wav")));
     sounds_.emplace(std::pair<SoundKey, Sound>(BOAR_OINK, LoadSound("../Assets/Sounds/boarOink.wav")));
