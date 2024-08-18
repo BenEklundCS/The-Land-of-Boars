@@ -15,7 +15,8 @@
 enum SoundKey {
     HERO_THEME,
     HERO_LANDING,
-    HERO_JUMP,
+    HERO_JUMP1,
+    HERO_JUMP2,
     HERO_ATTACK,
     BOAR_HIT,
     BOAR_OINK,

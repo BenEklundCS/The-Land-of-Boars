@@ -18,7 +18,12 @@ SoundManager *SoundManager::GetInstance() {
 void SoundManager::OnNotify(const GameObject *entity, Events event) {
     switch (event) {
         case EVENT_PLAYER_JUMPED:
-            PlaySound(HERO_JUMP);
+            // Play jump2 more rarely as it's a grunt/more annoying sound
+            if ((rand() % 4) + 1 == 1) {
+                PlaySound(HERO_JUMP2);
+            } else { // play the basic jump sound if the rand doesn't hit
+                PlaySound(HERO_JUMP1);
+            }
             break;
         case EVENT_PLAYER_ATTACK:
             PlaySound(HERO_ATTACK);
@@ -30,7 +35,6 @@ void SoundManager::OnNotify(const GameObject *entity, Events event) {
             PlaySound(BOAR_HIT);
             break;
         case EVENT_BOAR_OINKED:
-            TraceLog(LOG_INFO, "OINKED");
             PlaySound(BOAR_OINK);
             break;
         case EVENT_BOAR_DIED:
@@ -48,7 +52,8 @@ void SoundManager::LoadSounds() {
     sounds_.emplace(std::pair<SoundKey, Sound>(HERO_THEME, LoadSound("../Assets/Sounds/heroTheme.wav")));
     // Player sounds
     sounds_.emplace(std::pair<SoundKey, Sound>(HERO_LANDING, LoadSound("../Assets/Sounds/jumpland.wav")));
-    sounds_.emplace(std::pair<SoundKey, Sound>(HERO_JUMP, LoadSound("../Assets/Sounds/jumpSound.mp3")));
+    sounds_.emplace(std::pair<SoundKey, Sound>(HERO_JUMP1, LoadSound("../Assets/Sounds/jumpSound1.wav")));
+    sounds_.emplace(std::pair<SoundKey, Sound>(HERO_JUMP2, LoadSound("../Assets/Sounds/jumpSound2.mp3")));
     sounds_.emplace(std::pair<SoundKey, Sound>(HERO_ATTACK, LoadSound("../Assets/Sounds/swing.wav")));
     // Boar sounds
     sounds_.emplace(std::pair<SoundKey, Sound>(BOAR_HIT, LoadSound("../Assets/Sounds/boarHit.wav")));
