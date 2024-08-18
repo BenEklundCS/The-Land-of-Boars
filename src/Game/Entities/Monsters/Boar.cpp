@@ -5,6 +5,7 @@
 
 
 #include "../../../../include/Game/Entities/Monsters/Boar.h"
+#include <stdlib.h>     /* srand, rand */
 
 Boar::Boar(float posX, float posY, float dimX, float dimY, MonsterState state)
 : Monster(posX, posY, dimX, dimY, state),
@@ -26,6 +27,27 @@ void Boar::Draw() {
 void Boar::Update() {
     boarAnimation_.Animate();
     Monster::Update();
+    timeSinceLastOink_ += GetFrameTime();
+    MaybeOink();
+}
+
+bool Boar::HitMonster(int damage) {
+    // Notify the boar has been hit, observers can listen for this event
+    Notify(this, EVENT_BOAR_HIT);
+    // Run the base class code that's reusable
+    Monster::HitMonster(damage);
+}
+
+void Boar::MaybeOink() {
+    if (timeSinceLastOink_ >= nextOinkTime_) { // Check if the time for the next oink has passed
+        Notify(this, EVENT_BOAR_OINKED);
+        timeSinceLastOink_ = 0.0f; // Reset the timer
+        nextOinkTime_ = (rand() % 30) + 1; // Set the time for the next oink to a random value between 1 and 30 seconds
+    }
+}
+
+void Boar::Died() {
+    Notify(this, EVENT_BOAR_DIED);
 }
 
 #pragma endregion

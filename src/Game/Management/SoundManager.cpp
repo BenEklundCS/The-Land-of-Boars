@@ -26,6 +26,16 @@ void SoundManager::OnNotify(const GameObject *entity, Events event) {
         case EVENT_PLAYER_LANDED:
             PlaySound(HERO_LANDING);
             break;
+        case EVENT_BOAR_HIT:
+            PlaySound(BOAR_HIT);
+            break;
+        case EVENT_BOAR_OINKED:
+            TraceLog(LOG_INFO, "OINKED");
+            PlaySound(BOAR_OINK);
+            break;
+        case EVENT_BOAR_DIED:
+            PlaySound(BOAR_DEATH);
+            break;
         default:
             TraceLog(LOG_INFO, "SoundManager notified of unknown event: %d", event);
             break;
@@ -34,12 +44,16 @@ void SoundManager::OnNotify(const GameObject *entity, Events event) {
 
 void SoundManager::LoadSounds() {
     // Load a sound and store it in the sounds_ map with its name as the key
-    //sounds.at("jump") = LoadSound("path_to_your_jump_sound.wav");
-    //sounds.at("attack") = LoadSound("path_to_your_attack_sound.wav");
+    // Main theme
     sounds_.emplace(std::pair<SoundKey, Sound>(HERO_THEME, LoadSound("../Assets/Sounds/heroTheme.wav")));
+    // Player sounds
     sounds_.emplace(std::pair<SoundKey, Sound>(HERO_LANDING, LoadSound("../Assets/Sounds/jumpland.wav")));
     sounds_.emplace(std::pair<SoundKey, Sound>(HERO_JUMP, LoadSound("../Assets/Sounds/jumpSound.mp3")));
     sounds_.emplace(std::pair<SoundKey, Sound>(HERO_ATTACK, LoadSound("../Assets/Sounds/rpg_sound_pack/RPG Sound Pack/battle/swing.wav")));
+    // Boar sounds
+    sounds_.emplace(std::pair<SoundKey, Sound>(BOAR_HIT, LoadSound("../Assets/Sounds/boarHit.wav")));
+    sounds_.emplace(std::pair<SoundKey, Sound>(BOAR_OINK, LoadSound("../Assets/Sounds/boarOink.wav")));
+    sounds_.emplace(std::pair<SoundKey, Sound>(BOAR_DEATH, LoadSound("../Assets/Sounds/boarDeath.wav")));
 }
 
 void SoundManager::PlaySound(SoundKey sound) {

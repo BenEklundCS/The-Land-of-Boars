@@ -74,7 +74,9 @@ void GameStateManager::UpdateAttacks(Player* player) {
     #pragma omp parallel for
     for (auto& monster : monsters_) {
         bool shouldBeRemoved = HandlePlayerAttack(player, monster.get());
+        // If shouldBeRemoved, the monster has died.
         if (shouldBeRemoved) {
+            monster->Died();
             toRemove.push_back(monster.get());
         }
     }
@@ -133,11 +135,11 @@ void GameStateManager::OnNotify(const GameObject *entity, Events event) {
 void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
     allGameObjects_.push_back(obj.get());
     if (obj->type_ == PLAYER) {
+        InitObservers(dynamic_cast<Subject*>(obj.get())); // PLAYER is a subject, init observers
         players_.push_back(std::unique_ptr<Player>(dynamic_cast<Player*>(obj.release())));
-        // When the player is added we need to observe it
-        InitPlayerObservers();
     }
     else if (obj->type_ == MONSTER) {
+        InitObservers(dynamic_cast<Subject*>(obj.get())); // MONSTER is a subject, init observers
         monsters_.push_back(std::unique_ptr<Monster>(dynamic_cast<Monster*>(obj.release())));
     }
     else if (obj->type_ == PLATFORM || obj->type_ == MOVING_PLATFORM) {
@@ -313,11 +315,11 @@ bool GameStateManager::HandlePlayerAttack(Player* player, Monster* monster) {
     return false;
 }
 
-// Initialize player observers - the player must be initialized before attaching observers
-void GameStateManager::InitPlayerObservers() {
-    auto playerOne = players_.at(0).get();
-    playerOne->AddObserver(this);
-    playerOne->AddObserver(SoundManager::GetInstance());
+// Initialize the observers on a subject
+// Should be called whenever a subject is added to the GameState that game systems need to observe
+void GameStateManager::InitObservers(Subject* subject) {
+    subject->AddObserver(this);
+    subject->AddObserver(SoundManager::GetInstance());
 }
 
 void GameStateManager::PlayerAttackEffect(Player* player) {

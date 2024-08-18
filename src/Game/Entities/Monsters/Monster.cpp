@@ -130,4 +130,8 @@ bool Monster::HitMonster(int damage) {
     return false;
 }
 
+void Monster::Died() {
+
+}
+
 #pragma endregion

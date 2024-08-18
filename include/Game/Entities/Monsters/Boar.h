@@ -13,10 +13,15 @@
 class Boar : public Monster {
 private:
     Animation boarAnimation_; // Boar animation
+    void MaybeOink();
+    float timeSinceLastOink_ = 0.0f; // Add this member variable
+    float nextOinkTime_ = 0.0f; // Time until the next oink
 public:
     Boar(float posX, float posY, float dimX, float dimY, MonsterState state);
     void Draw() override; // Draw the boar
     void Update() override; // Update the boar
+    bool HitMonster(int damage) override; // override the HitMonster function
+    void Died() override;
 };
 
 

@@ -39,13 +39,16 @@ private:
     void UpdatePlayers(); // Update the player vector
     void UpdateMonsters(); // Update the monster vector
     void UpdatePlatforms();
-    // Deleters of objects
-    void InitPlayerObservers();
+    // Effects
+    void PlayerAttackEffect(Player* player);
+    // Object deleters
     void RemovePlayer(GameObject *obj);
     void RemoveMonster(GameObject *obj);
     void RemovePlatform(GameObject *obj);
     void RemoveObject(GameObject *obj);
     void RemoveOtherObject(GameObject *obj);
+    // Observer stuff
+    void InitObservers(Subject *subject);
     // CAMERA/SCENE ONLY SUPPORT ONE PLAYER CURRENTLY, BEWARE
     void UpdateCamera(); // Update the camera
     static bool HandlePlayerAttack(Player* player, Monster* monster); // Handle the players attack on the game state, hitting everything within distance
@@ -55,9 +58,9 @@ private:
     std::vector<std::unique_ptr<GameObject>> otherObjects_; // other object vector
     std::vector<GameObject*> allGameObjects_; // All game object vector
     Camera2D camera_{}; // Camera
+    // Game systems
     std::unique_ptr<InputManager> inputManager_;
     std::unique_ptr<SoundManager> soundManager_;
-    void PlayerAttackEffect(Player* player);
 public:
     GameStateManager(); // Constructor
     static GameStateManager* GetInstance();

@@ -18,7 +18,7 @@ enum MonsterState {
     DEFAULT
 };
 
-class Monster : public GameObject {
+class Monster : public GameObject, public Subject {
 private:
     MonsterState state_; // Current monster state
     Vector2 initialPosition_{}; // The monster's initialPosition vector
@@ -38,7 +38,8 @@ public:
     void CollideWithPlayer(Player* player) override; // Handle player collisions
     [[nodiscard]] int GetHealth() const;
     void SetHealth(int hp);
-    bool HitMonster(int damage);
+    virtual bool HitMonster(int damage);
+    virtual void Died();
 };
 
 #endif //PLATFORMER_MONSTER_H

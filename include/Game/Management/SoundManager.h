@@ -16,7 +16,10 @@ enum SoundKey {
     HERO_THEME,
     HERO_LANDING,
     HERO_JUMP,
-    HERO_ATTACK
+    HERO_ATTACK,
+    BOAR_HIT,
+    BOAR_OINK,
+    BOAR_DEATH
 };
 
 class SoundManager : public Observer {
