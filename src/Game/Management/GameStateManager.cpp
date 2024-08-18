@@ -67,7 +67,7 @@ void GameStateManager::UpdatePlayers() {
 
 // Handle player and monster attacks onscreen
 void GameStateManager::UpdateAttacks(Player* player) {
-    PlayerAttackEffect();
+    PlayerAttackEffect(player);
     // Vector to store delayed updates
     std::vector<GameObject*> toRemove;
     // Iterate over all monsters
@@ -320,8 +320,9 @@ void GameStateManager::InitPlayerObservers() {
     playerOne->AddObserver(SoundManager::GetInstance());
 }
 
-void GameStateManager::PlayerAttackEffect() {
+void GameStateManager::PlayerAttackEffect(Player* player) {
     // Attack effect
-    auto effect = std::make_unique<ParticleCone>(players_.at(0)->GetPlayerData()->movingRight_, 100);
+    auto effect = std::make_unique<ParticleCone>(player->GetPosition(),
+    Vector2{player->GetRect().width, player->GetRect().height}, player->GetPlayerData()->movingRight_ , 1000);
     AddObject(std::move(effect));
 }
