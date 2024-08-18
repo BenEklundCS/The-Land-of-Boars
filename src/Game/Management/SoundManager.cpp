@@ -10,7 +10,7 @@ SoundManager *SoundManager::GetInstance() {
     if (instance == nullptr) {
         instance = std::make_unique<SoundManager>();
         instance->LoadSounds();
-        instance->PlaySound("heroTheme"); // start main game theme!
+        instance->PlaySound(HERO_THEME); // start main game theme!
     }
     return instance.get();
 }
@@ -18,13 +18,13 @@ SoundManager *SoundManager::GetInstance() {
 void SoundManager::OnNotify(const GameObject *entity, Events event) {
     switch (event) {
         case EVENT_PLAYER_JUMPED:
-            PlaySound("jump");
+            PlaySound(HERO_JUMP);
             break;
         case EVENT_PLAYER_ATTACK:
-            PlaySound("attack");
+            PlaySound(HERO_ATTACK);
             break;
         case EVENT_PLAYER_LANDED:
-            PlaySound("landingSound");
+            PlaySound(HERO_LANDING);
             break;
         default:
             TraceLog(LOG_INFO, "SoundManager notified of unknown event: %d", event);
@@ -36,13 +36,14 @@ void SoundManager::LoadSounds() {
     // Load a sound and store it in the sounds_ map with its name as the key
     //sounds.at("jump") = LoadSound("path_to_your_jump_sound.wav");
     //sounds.at("attack") = LoadSound("path_to_your_attack_sound.wav");
-    sounds_.emplace(std::pair<std::string, Sound>("heroTheme", LoadSound("../Assets/Sounds/heroTheme.wav")));
-    sounds_.emplace(std::pair<std::string, Sound>("landingSound", LoadSound("../Assets/Sounds/jumpland.wav")));
-    sounds_.emplace(std::pair<std::string, Sound>("jump", LoadSound("../Assets/Sounds/jumpSound.mp3")));
+    sounds_.emplace(std::pair<SoundKey, Sound>(HERO_THEME, LoadSound("../Assets/Sounds/heroTheme.wav")));
+    sounds_.emplace(std::pair<SoundKey, Sound>(HERO_LANDING, LoadSound("../Assets/Sounds/jumpland.wav")));
+    sounds_.emplace(std::pair<SoundKey, Sound>(HERO_JUMP, LoadSound("../Assets/Sounds/jumpSound.mp3")));
+    sounds_.emplace(std::pair<SoundKey, Sound>(HERO_ATTACK, LoadSound("../Assets/Sounds/rpg_sound_pack/RPG Sound Pack/battle/swing.wav")));
 }
 
-void SoundManager::PlaySound(std::string sound_name) {
-    if (sounds_.find(sound_name) != sounds_.end())
-        ::PlaySound(sounds_.at(sound_name));
+void SoundManager::PlaySound(SoundKey sound) {
+    if (sounds_.find(sound) != sounds_.end())
+        ::PlaySound(sounds_.at(sound));
 }
 
