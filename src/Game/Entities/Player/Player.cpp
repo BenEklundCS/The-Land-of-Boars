@@ -207,9 +207,13 @@ void Player::AnimatePlayer() {
  * We also cannot go IDLE if the player is currently ATTACKING
  */
 void Player::GoIdle() {
-    if (playerData.velocity_.x == 0 && playerData.velocity_.y == 0 && playerData.state_ != ATTACKING) {
+    if (ZeroVelocity() && (playerData.state_ != ATTACKING)) {
         playerData.state_ = IDLE;
     }
+}
+
+bool Player::ZeroVelocity() const {
+    return (playerData.velocity_.x == 0 && playerData.velocity_.y == 0);
 }
 
 // Check and return if the player can jump!

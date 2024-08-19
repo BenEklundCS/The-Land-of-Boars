@@ -32,6 +32,7 @@ protected:
     float timeSinceToggle_ = 0.0f;
     float timeStepForFlash_ = 0.0f;
     Color color_ = WHITE;
+    bool shouldRemove_ = false;
 public:
     GameObjectType type_; // The type of GameObject used for identification in loops
     explicit GameObject(GameObjectType type = OTHER);
@@ -43,7 +44,9 @@ public:
     virtual void Draw() = 0; // Draw the GameObject
     virtual void CollideWithPlayer(Player* player);
     virtual Rectangle GetRect(); // Get the current GameObject rect
+    virtual bool ShouldRemove() const; // Method to check if the object should be removed from the scene
     virtual ~GameObject(); // Destructor
+
 };
 
 #endif //PLATFORMER_GAMEOBJECT_H

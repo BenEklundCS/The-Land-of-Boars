@@ -20,7 +20,7 @@ public:
     Boar(float posX, float posY, float dimX, float dimY, MonsterState state);
     void Draw() override; // Draw the boar
     void Update() override; // Update the boar
-    bool HitMonster(int damage) override; // override the HitMonster function
+    void HitMonster(int damage) override; // override the HitMonster function
     void Died() override;
 };
 

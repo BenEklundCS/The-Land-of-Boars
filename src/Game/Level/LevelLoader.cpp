@@ -4,6 +4,7 @@
 #include "../../../include/Game/Level/LevelLoader.h"
 #include "raylib.h"
 
+// Load a level from a file
 std::vector<std::vector<int>> LevelLoader::LoadLevel(const std::string &filePath) {
     std::vector<std::vector<int>> tileMap;
     std::ifstream file(filePath);

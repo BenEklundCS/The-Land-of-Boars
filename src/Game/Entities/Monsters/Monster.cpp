@@ -121,13 +121,12 @@ void Monster::SetHealth(int hp) {
     this->hp_ = hp;
 }
 
-bool Monster::HitMonster(int damage) {
+void Monster::HitMonster(int damage) {
     GameObject::ToggleFlashing();
     SetHealth(GetHealth() - damage);
     // Handle monster hitting and if they should die!
     if (GetHealth() <= 0)
-        return true;
-    return false;
+        shouldRemove_ = true;
 }
 
 void Monster::Died() {

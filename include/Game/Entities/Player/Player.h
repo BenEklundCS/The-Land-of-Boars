@@ -86,6 +86,8 @@ public:
     void PlatformCollision(GameObject* obj); // Handle a collision with a platform GameObject
     playerDataStruct* GetPlayerData();
     void HitPlayer();
+
+    bool ZeroVelocity() const;
 };
 
 #endif //PLATFORMER_PLAYER_H

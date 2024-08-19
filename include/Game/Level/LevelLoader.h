@@ -11,7 +11,7 @@
 
 class LevelLoader {
 public:
-    std::vector<std::vector<int>> LoadLevel(const std::string& filePath);
+    static std::vector<std::vector<int>> LoadLevel(const std::string& filePath);
 };
 
 #endif //PLATFORMER_LEVELLOADER_H

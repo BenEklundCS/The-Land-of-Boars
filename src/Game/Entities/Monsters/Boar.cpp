@@ -31,7 +31,7 @@ void Boar::Update() {
     MaybeOink();
 }
 
-bool Boar::HitMonster(int damage) {
+void Boar::HitMonster(int damage) {
     // Notify the boar has been hit, observers can listen for this event
     Notify(this, EVENT_BOAR_HIT);
     // Run the base class code that's reusable

@@ -68,21 +68,16 @@ void GameStateManager::UpdatePlayers() {
 // Handle player and monster attacks onscreen
 void GameStateManager::UpdateAttacks(Player* player) {
     PlayerAttackEffect(player);
-    // Vector to store delayed updates
-    std::vector<GameObject*> toRemove;
     // Iterate over all monsters
     #pragma omp parallel for
-    for (auto& monster : monsters_) {
-        bool shouldBeRemoved = HandlePlayerAttack(player, monster.get());
-        // If shouldBeRemoved, the monster has died.
-        if (shouldBeRemoved) {
-            monster->Died();
-            toRemove.push_back(monster.get());
+    for (auto it = monsters_.begin(); it != monsters_.end(); ) {
+        (*it)->HitMonster(player->GetPlayerData()->damage_);
+        // If ShouldRemove is true, the monster has died.
+        if ((*it)->ShouldRemove()) {
+            it = monsters_.erase(it);
+        } else {
+            ++it;
         }
-    }
-    // Defer deletions of monsters to avoid issues accessing them (memory exceptions!) in the loop above ^
-    for (auto& obj : toRemove) {
-        RemoveObject(obj);
     }
 }
 
@@ -106,8 +101,13 @@ void GameStateManager::UpdateMonsters() {
 }
 
 void GameStateManager::UpdateOthers() {
-    for (auto& other : otherObjects_) {
-        other->Update();
+    for (auto it = otherObjects_.begin(); it != otherObjects_.end(); ) {
+        (*it)->Update();
+        if ((*it)->ShouldRemove()) {
+            it = otherObjects_.erase(it);
+        } else {
+            ++it;
+        }
     }
 }
 
@@ -284,7 +284,7 @@ GameStateManager::~GameStateManager() {
 }
 
 // Checks if the player hit the monster, and then return if the monster should die
-bool GameStateManager::HandlePlayerAttack(Player* player, Monster* monster) {
+void GameStateManager::HandlePlayerAttack(Player* player, Monster* monster) {
     Vector2 playerPos = player->GetPosition();
     Vector2 monsterPos = monster->GetPosition();
     // Get attack range and player movement direction
@@ -310,9 +310,8 @@ bool GameStateManager::HandlePlayerAttack(Player* player, Monster* monster) {
 
     // Hit the monster if either condition is true
     if (monster_inFront() || monster_behind()) {
-        return monster->HitMonster(player->GetPlayerData()->damage_);
+        monster->HitMonster(player->GetPlayerData()->damage_);
     }
-    return false;
 }
 
 // Initialize the observers on a subject

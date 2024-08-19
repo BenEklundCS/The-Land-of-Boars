@@ -26,6 +26,10 @@ void GameObject::CollideWithPlayer(Player *player) {
 
 }
 
+bool GameObject::ShouldRemove() const {
+    return shouldRemove_;
+}
+
 void GameObject::ToggleFlashing() {
     if (!hasBeenToggled_) {
         hasBeenToggled_ = true;

@@ -38,7 +38,7 @@ public:
     void CollideWithPlayer(Player* player) override; // Handle player collisions
     [[nodiscard]] int GetHealth() const;
     void SetHealth(int hp);
-    virtual bool HitMonster(int damage);
+    virtual void HitMonster(int damage);
     virtual void Died();
 };
 
