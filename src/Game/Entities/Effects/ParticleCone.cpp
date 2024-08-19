@@ -48,7 +48,7 @@ void ParticleCone::Draw() {
 void ParticleCone::Update() {
     // Decrease the particle count over time
     particleCount_ -= particleCount_/5; // Decrease particle count proportionally to the frame rate
-    if (particleCount_ <= 0) {
+    if (particleCount_ <= 5) {
         // Mark the effect for removal
         shouldRemove_ = true;
     }

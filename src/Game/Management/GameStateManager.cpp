@@ -68,16 +68,20 @@ void GameStateManager::UpdatePlayers() {
 // Handle player and monster attacks onscreen
 void GameStateManager::UpdateAttacks(Player* player) {
     PlayerAttackEffect(player);
+    // Vector to store delayed updates
+    std::vector<GameObject*> toRemove;
     // Iterate over all monsters
     #pragma omp parallel for
-    for (auto it = monsters_.begin(); it != monsters_.end(); ) {
-        (*it)->HitMonster(player->GetPlayerData()->damage_);
+    for (auto& monster : monsters_) {
+        HandlePlayerAttack(player, monster.get());
         // If ShouldRemove is true, the monster has died.
-        if ((*it)->ShouldRemove()) {
-            it = monsters_.erase(it);
-        } else {
-            ++it;
+        if (monster->ShouldRemove()) {
+            toRemove.push_back(monster.get());
         }
+    }
+    // Defer deletions of monsters to avoid issues accessing them (memory exceptions!) in the loop above ^
+    for (auto& obj : toRemove) {
+        RemoveObject(obj);
     }
 }
 
@@ -104,7 +108,7 @@ void GameStateManager::UpdateOthers() {
     for (auto it = otherObjects_.begin(); it != otherObjects_.end(); ) {
         (*it)->Update();
         if ((*it)->ShouldRemove()) {
-            it = otherObjects_.erase(it);
+            RemoveObject(it->get());
         } else {
             ++it;
         }
