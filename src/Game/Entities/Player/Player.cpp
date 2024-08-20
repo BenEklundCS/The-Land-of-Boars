@@ -19,7 +19,6 @@ Player::Player() : GameObject(PLAYER) {
                                                               PLAYER_IDLE_FRAMES, 0.2f, true);
     // Construct the primitive GameObject attributes
     position_ = Vector2{100, 100};
-    playerData.previousPosition_ = position_;
     dimensions_ = Vector2{PLAYER_LENGTH, PLAYER_LENGTH};
 }
 
@@ -64,7 +63,6 @@ void Player::MovePlayer(float deltaTime) {
 }
 
 void Player::UpdatePosition(float deltaTime) {
-    playerData.previousPosition_ = position_;
     position_.x += velocity_.x * deltaTime;
     position_.y += velocity_.y * deltaTime;
 }
