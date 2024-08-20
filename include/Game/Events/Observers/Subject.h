@@ -14,7 +14,6 @@
 class Subject {
 private:
     std::vector<Observer*> observers_; // _observers array
-    int numObservers_ = 0; // number of observers
 public:
     void AddObserver(Observer* observer); // Add an Observer to the Subject, allowing the Subject to Notify observers
     void RemoveObserver(Observer* observer); // Removes an Observer from the Subject.

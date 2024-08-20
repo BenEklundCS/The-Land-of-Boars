@@ -15,12 +15,10 @@ void Subject::Notify(const GameObject *entity, Events event) {
 
 void Subject::AddObserver(Observer* observer) {
     observers_.push_back(observer);
-    numObservers_++;
 }
 
 void Subject::RemoveObserver(Observer* observer) {
     observers_.erase(std::remove(observers_.begin(), observers_.end(), observer), observers_.end());
-    numObservers_--;
 }
 
 Subject::~Subject() = default;
