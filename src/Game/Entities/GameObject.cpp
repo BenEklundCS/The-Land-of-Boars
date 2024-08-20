@@ -67,8 +67,30 @@ Vector2 GameObject::GetPosition() {
     return position_;
 }
 
+Vector2 GameObject::GetVelocity() {
+    return velocity_;
+}
+
 Color GameObject::GetColor() {
     return color_;
 }
+
+void GameObject::SetPosition(Vector2 newPosition) {
+    position_ = newPosition;
+}
+
+void GameObject::SetVelocity(Vector2 newVelocity) {
+    velocity_ = newVelocity;
+}
+
+void GameObject::ToggleMovingRight() {
+    movingRight_ = !movingRight_;
+}
+
+bool GameObject::GetMovingRight() {
+    return movingRight_;
+}
+
+
 
 

@@ -115,8 +115,12 @@ bool MovingPlatform::HitBottomBound() {
     return (movingUp && position_.y >= startingXY.y + dimensions_.y + boundsY.y);
 }
 
-float MovingPlatform::GetSpeed() {
+float MovingPlatform::GetSpeed() const {
     return speed_;
+}
+
+Vector2 MovingPlatform::GetMovement() const {
+    return Vector2{speed_ * (float)(movingRight ? 1 : -1), speed_ * (float)(movingUp ? 1 : -1)};
 }
 
 #pragma endregion

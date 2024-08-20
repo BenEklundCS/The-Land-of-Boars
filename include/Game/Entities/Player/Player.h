@@ -32,7 +32,6 @@ struct playerDataStruct {
     int damage_ = 1;
 
     // animation
-    bool movingRight_ = true; // Flag to check x direction
     bool hasBeenHit_ = false;
     float timeSinceHit_ = 0.0f;
     float timeStepForFlash_ = 0.0f;
@@ -43,7 +42,6 @@ struct playerDataStruct {
     PlayerState last_state_ = IDLE; // Previous player state
 
     // movement
-    Vector2 velocity_{0, 15}; // Player velocity vector
     Vector2 previousPosition_{0, 0};
     int jumps_ = 0; // Jump counter used to check if we can jump
     bool isOnGround_ = false;
@@ -63,11 +61,6 @@ private:
     [[nodiscard]] bool CheckPlayerDeath() const; // Check if the player is dead
     void ResetJumps(); // Reset the player jump counter
     void GoIdle();
-    // Collisions
-    void OnAboveCollision(Rectangle plat, Rectangle play);
-    void OnBelowCollision(Rectangle plat, Rectangle play);
-    void OnRightCollision(Rectangle plat, Rectangle play);
-    void OnLeftCollision(Rectangle plat, Rectangle play);
     void MovingPlatformSpeedAdjustment(GameObject* obj);
     // Attributes
     playerDataStruct playerData;
@@ -83,11 +76,11 @@ public:
     void Jump(); // Jump (with double jump!)
     void Attack();
     [[nodiscard]] bool CanJump() const; // Check if the player can jump
-    void PlatformCollision(GameObject* obj); // Handle a collision with a platform GameObject
     playerDataStruct* GetPlayerData();
     void HitPlayer();
-
     bool ZeroVelocity() const;
+
+    void StateTransition();
 };
 
 #endif //PLATFORMER_PLAYER_H

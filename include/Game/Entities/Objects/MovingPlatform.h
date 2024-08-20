@@ -11,7 +11,7 @@ class MovingPlatform : public Platform {
 public:
     MovingPlatform(std::unique_ptr<Platform> platform, Vector2 boundsX, Vector2 boundsY, float speed, bool LR, bool UD);
     void Update() override;
-    float GetSpeed();
+    float GetSpeed() const;
 private:
     // Position and bounderies
     Vector2 startingXY;
@@ -35,6 +35,8 @@ private:
     bool HitRightBound();
     bool HitTopBound();
     bool HitBottomBound();
+
+    Vector2 GetMovement() const;
 };
 
 #endif // MOVING_PLATFORM_H

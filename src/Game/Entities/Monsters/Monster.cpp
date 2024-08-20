@@ -43,42 +43,6 @@ void Monster::CollideWithPlayer(Player* player) {
     }
 }
 
-void Monster::PlatformCollision(GameObject* obj) {
-    if (CheckCollisionRecs(GetRect(), obj->GetRect())) {
-        Rectangle monsterRect = GetRect();
-        Rectangle platformRect = obj->GetRect();
-
-        float deltaX = (monsterRect.x + monsterRect.width / 2) - (platformRect.x + platformRect.width / 2);
-        float deltaY = (monsterRect.y + monsterRect.height / 2) - (platformRect.y + platformRect.height / 2);
-
-        float combinedHalfWidths = (monsterRect.width + platformRect.width) / 2;
-        float combinedHalfHeights = (monsterRect.height + platformRect.height) / 2;
-
-        // Determine the overlap on both axes
-        float overlapX = combinedHalfWidths - std::abs(deltaX);
-        float overlapY = combinedHalfHeights - std::abs(deltaY);
-
-        if (overlapX >= overlapY) {
-            if (deltaY > 0) { // Collision from above
-                position_.y = platformRect.y + platformRect.height;
-                velocity_.y = 0;
-            } else { // Collision from below
-                position_.y = platformRect.y - monsterRect.height;
-                velocity_.y = 0;
-            }
-        } else {
-            movingRight_ = !movingRight_;
-            if (deltaX > 0) { // Collision from the left
-                position_.x = platformRect.x + platformRect.width;
-                velocity_.x = 0;
-            } else { // Collision from the right
-                position_.x = platformRect.x - monsterRect.width;
-                velocity_.x = 0;
-            }
-        }
-    }
-}
-
 #pragma endregion
 
 #pragma region update methods

@@ -37,22 +37,21 @@ std::string PlayerStateToString(PlayerState state) {
 
 void DebugGUI::DrawGui(GameStateManager *gameState) {
     gameData gameData = gameState->GetGameData();
-    const playerDataStruct* playerData = gameData.playerData;
 
     rlImGuiBegin();
     // show ImGui Content
     ImGui::SetWindowFontScale(2);
     // Render player data
     ImGui::Text("Player data:");
-    ImGui::Text("Position: %1.2fx, %1.2fy", gameData.playerPosition.x, gameData.playerPosition.y);
-    ImGui::Text("Velocity: %1.2fx, %1.2fy", playerData->velocity_.x, playerData->velocity_.y);
+    ImGui::Text("Position: %1.2fx, %1.2fy", gameData.player->GetPosition().x, gameData.player->GetPosition().y);
+    ImGui::Text("Velocity: %1.2fx, %1.2fy", gameData.player->GetVelocity().x, gameData.player->GetVelocity().y);
     // Render player data
-    ImGui::Text("Health: %d", playerData->hp_);
-    ImGui::Text("Jumps: %d", playerData->jumps_);
+    ImGui::Text("Health: %d", gameData.player->GetPlayerData()->hp_);
+    ImGui::Text("Jumps: %d", gameData.player->GetPlayerData()->jumps_);
     // Render player state
-    ImGui::Text("State: %s", PlayerStateToString(playerData->state_).c_str());
-    ImGui::Text("isOnGround: %s", (playerData->isOnGround_) ? "True" : "False");
-    ImGui::Text("timeSinceHit: %1.2f", playerData->timeSinceHit_);
+    ImGui::Text("State: %s", PlayerStateToString(gameData.player->GetPlayerData()->state_).c_str());
+    ImGui::Text("isOnGround: %s", (gameData.player->GetPlayerData()->isOnGround_) ? "True" : "False");
+    ImGui::Text("timeSinceHit: %1.2f", gameData.player->GetPlayerData()->timeSinceHit_);
     ImGui::Text("");
     // Number of objects
     ImGui::Text("Object counts:");

@@ -53,14 +53,13 @@ void GameStateManager::UpdatePlayers() {
         // Iterate over the platforms to check for collisions
         #pragma omp parallel for
         for (auto& platform : platforms_) {
-            player->PlatformCollision(platform.get());
+            CollisionHandler::HandlePlatformCollision(player.get(), platform.get());
         }
         // Iterate over any other objects to check for collisions (especially TILEs)
         #pragma omp parallel for // update the other objects in parallel using threads
         for (auto& other : otherObjects_) {
             if (other->type_ == TILE)
-                player->PlatformCollision(other.get()); // Trees are also otherObjects, and I don't want to collide with them
-
+                CollisionHandler::HandlePlatformCollision(player.get(), other.get()); // Trees are also otherObjects, and I don't want to collide with them
         }
     }
 }
@@ -94,12 +93,12 @@ void GameStateManager::UpdateMonsters() {
             monster->CollideWithPlayer(player.get());
         }
         for (auto& platform : platforms_) {
-            monster->PlatformCollision(platform.get());
+            CollisionHandler::HandlePlatformCollision(monster.get(), platform.get());
         }
         #pragma omp parallel for // update the other objects in parallel using threads
         for (auto& other : otherObjects_) {
             if (other->type_ == TILE)
-                monster->PlatformCollision(other.get()); // Trees are also otherObjects, and I don't want to collide with them
+                CollisionHandler::HandlePlatformCollision(monster.get(), other.get()); // Trees are also otherObjects, and I don't want to collide with them
         }
     }
 }
@@ -264,8 +263,7 @@ Camera2D GameStateManager::GetCamera() {
 gameData GameStateManager::GetGameData() {
     // IMPORTANT: GetPlayerData, and GameStateManager support ONE PLAYER
     gameData data{};
-    data.playerPosition = players_[0].get()->GetPosition();
-    data.playerData = players_[0].get()->GetPlayerData();
+    data.player = players_.at(0).get();
     // Get sizes
     data.numMonsters = monsters_.size();
     data.numPlayers = players_.size();
@@ -292,7 +290,7 @@ void GameStateManager::HandlePlayerAttack(Player* player, Monster* monster) {
     Vector2 playerPos = player->GetPosition();
     Vector2 monsterPos = monster->GetPosition();
     // Get attack range and player movement direction
-    bool movingRight = player->GetPlayerData()->movingRight_;
+    bool movingRight = player->GetMovingRight();
     float attackRange = player->GetPlayerData()->attackRange_;
     float playerHeight = player->GetRect().height;
 
@@ -328,6 +326,6 @@ void GameStateManager::InitObservers(Subject* subject) {
 void GameStateManager::PlayerAttackEffect(Player* player) {
     // Attack effect
     auto effect = std::make_unique<ParticleCone>(player->GetPosition(),
-    Vector2{player->GetRect().width, player->GetRect().height}, player->GetPlayerData()->movingRight_ , 1000);
+    Vector2{player->GetRect().width, player->GetRect().height}, player->GetMovingRight(), 1000);
     AddObject(std::move(effect));
 }

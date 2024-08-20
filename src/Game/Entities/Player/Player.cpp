@@ -5,18 +5,13 @@
 #include "../../../../include/Game/Entities/Player/Player.h"
 #include "../../../../include/Game/Entities/Objects/MovingPlatform.h"
 
-/*
- * Player state management
- * For each state, there is an associated animation
- *
- * States: IDLE, RUNNING, JUMPING, ATTACKING
- *
- * Player is IDLE at the start of the game
- * Player becomes RUNNING if they move left or right, and are not JUMPING
- * Player becomes JUMPING when a Jump method is called, they should remain in a JUMPING state until they hit the ground again
- * Player becomes ATTACKING when an Attack method is called, no matter what they should remain attacking until the
- *      attack method finishes
- */
+// Player state management
+// Each state has an associated animation
+// States: IDLE, RUNNING, JUMPING, ATTACKING
+// Player is IDLE at the start of the game
+// Player becomes RUNNING if they move left or right, and are not JUMPING
+// Player becomes JUMPING when a Jump method is called, they should remain in a JUMPING state until they hit the ground again
+// Player becomes ATTACKING when an Attack method is called, no matter what they should remain attacking until the attack method finishes
 
 Player::Player() : GameObject(PLAYER) {
     // Load it here to ensure the TextureManager is queried after the player object is created
@@ -31,14 +26,13 @@ Player::Player() : GameObject(PLAYER) {
 #pragma region render methods
 
 // Overridden render methods from the GameObject parent class
-
 void Player::Draw() {
     // Get the playerTexture sheet and currentRect from the Animation object
 
     Texture2D playerTexture = playerData.playerAnimation_->GetTexture();
     Rectangle currentRect = playerData.playerAnimation_->GetCurrentRect();
 
-    playerData.playerAnimation_->FlipX(playerData.movingRight_); // flip x axis based on the movingRight_ flag
+    playerData.playerAnimation_->FlipX(movingRight_); // flip x axis based on the movingRight_ flag
     // Draw the player utilizing the currently loaded playerTexture, and rect position
     DrawTexturePro(playerTexture, currentRect, GetRect(), Vector2{0, 0}, 0, color_);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
 }
@@ -52,8 +46,8 @@ void Player::Update() {
     // Reset Jumps
     ResetJumps();
     // Move the player based on their velocity and position
+    StateTransition();
     MovePlayer(deltaTime);
-    playerData.last_state_ = playerData.state_;
     GameObject::Update();
 }
 
@@ -70,48 +64,48 @@ void Player::MovePlayer(float deltaTime) {
 
 void Player::UpdatePosition(float deltaTime) {
     playerData.previousPosition_ = position_;
-    position_.x += playerData.velocity_.x * deltaTime;
-    position_.y += playerData.velocity_.y * deltaTime;
+    position_.x += velocity_.x * deltaTime;
+    position_.y += velocity_.y * deltaTime;
 }
 
 void Player::ApplyFriction() {
     const int minVelocity = 50;
-    if (playerData.velocity_.x > minVelocity) {
-        playerData.velocity_.x -= FRICTION;
-    } else if (playerData.velocity_.x < -minVelocity) {
-        playerData.velocity_.x += FRICTION;
+    if (velocity_.x > minVelocity) {
+        velocity_.x -= FRICTION;
+    } else if (velocity_.x < -minVelocity) {
+        velocity_.x += FRICTION;
     } else {
-        playerData.velocity_.x = 0;
+        velocity_.x = 0;
     }
 }
 
 void Player::ApplyGravity() {
-    playerData.velocity_.y += GRAVITY;
+    velocity_.y += GRAVITY;
 }
 
 void Player::MoveLeft() {
     // If the player is not also jumping, we'll display the RUNNING animation
-    if (playerData.velocity_.y == 0 && playerData.state_ != ATTACKING) {
+    if (velocity_.y == 0 && playerData.state_ != ATTACKING) {
         playerData.state_ = RUNNING;
     }
     // Flip the animation across the X axis - feed the "moving right" boolean value
-    playerData.movingRight_ = false;
+    movingRight_ = false;
     // Set the player's X velocity
-    if (playerData.velocity_.x >= -MAX_VELOCITY) {
-        playerData.velocity_.x -= PLAYER_SPEED;
+    if (velocity_.x >= -MAX_VELOCITY) {
+        velocity_.x -= PLAYER_SPEED;
     }
 }
 
 void Player::MoveRight() {
     // If the player is not also jumping, we'll display the RUNNING animation
-    if (playerData.velocity_.y == 0 && playerData.state_ != ATTACKING) {
+    if (velocity_.y == 0 && playerData.state_ != ATTACKING) {
         playerData.state_ = RUNNING;
     }
     // Flip the animation across the X axis - feed the "moving right" boolean value
-    playerData.movingRight_ = true;
+    movingRight_ = true;
     // Set the player's X velocity
-    if (playerData.velocity_.x <= MAX_VELOCITY) {
-        playerData.velocity_.x += PLAYER_SPEED;
+    if (velocity_.x <= MAX_VELOCITY) {
+        velocity_.x += PLAYER_SPEED;
     }
 }
 
@@ -125,7 +119,7 @@ void Player::Jump() {
     // Make the player jump!
     const float jumpPower = 6.5f;
     playerData.state_ = JUMPING;
-    playerData.velocity_.y -= PLAYER_SPEED * jumpPower;
+    velocity_.y -= PLAYER_SPEED * jumpPower;
     // Notify of jump event
     Notify(this, EVENT_PLAYER_JUMPED);
 }
@@ -206,14 +200,15 @@ void Player::AnimatePlayer() {
  *
  * We also cannot go IDLE if the player is currently ATTACKING
  */
-void Player::GoIdle() {
+void Player::StateTransition() {
     if (ZeroVelocity() && (playerData.state_ != ATTACKING)) {
         playerData.state_ = IDLE;
     }
+    playerData.last_state_ = playerData.state_;
 }
 
 bool Player::ZeroVelocity() const {
-    return (playerData.velocity_.x == 0 && playerData.velocity_.y == 0);
+    return (velocity_.x == 0 && velocity_.y == 0);
 }
 
 // Check and return if the player can jump!
@@ -227,6 +222,9 @@ void Player::ResetJumps() {
     // If the player's on the ground, reset jumps
     if (playerData.isOnGround_ && playerData.state_ != JUMPING) {
         playerData.jumps_ = 0;
+    }
+    if (velocity_.y == 0) {
+        playerData.isOnGround_ = true;
     }
 }
 
@@ -247,69 +245,6 @@ bool Player::AlreadyAttacking() {
 
 #pragma region player object interactions
 
-void Player::OnAboveCollision(Rectangle plat, Rectangle play) {
-    position_.y = plat.y - play.height;
-    // Reset Y velocity only if moving downwards
-    if (playerData.velocity_.y > 0) playerData.velocity_.y = 0;
-    // Set the isOnGround flag and call GoIdle to change state to IDLE
-    if (!playerData.isOnGround_) {
-        Notify(this, EVENT_PLAYER_LANDED);
-    }
-    playerData.isOnGround_ = true;
-    GoIdle();
-}
-void Player::OnBelowCollision(Rectangle plat, Rectangle play) {
-    position_.y = plat.y + plat.height;
-    // Reset Y velocity only if moving upwards
-    if (playerData.velocity_.y < 0) playerData.velocity_.y = 0;
-}
-
-void Player::OnRightCollision(Rectangle plat, Rectangle play) {
-    position_.x = plat.x + plat.width;
-}
-
-void Player::OnLeftCollision(Rectangle plat, Rectangle play) {
-    position_.x = plat.x - play.width;
-}
-
-// Handle a Player Platform collision using bounding rectangles and overlapping axis
-void Player::PlatformCollision(GameObject* obj) {
-    // Check for collision between the player and the platform
-    if (CheckCollisionRecs(GetRect(), obj->GetRect())) {
-        // Get the bounding rectangles of the player and the platform
-        Rectangle playerRect = this->GetRect();
-        Rectangle platformRect = obj->GetRect();
-
-        // Calculate the minimum translation vector
-        float dx = (playerRect.x + playerRect.width / 2) - (platformRect.x + platformRect.width / 2);
-        float dy = (playerRect.y + playerRect.height / 2) - (platformRect.y + platformRect.height / 2);
-        float width = (playerRect.width + platformRect.width) / 2;
-        float height = (playerRect.height + platformRect.height) / 2;
-        float crossWidth = width * dy;
-        float crossHeight = height * dx;
-
-        if (std::abs(dx) <= width && std::abs(dy) <= height) {
-            if (crossWidth > crossHeight) {
-                if (crossWidth > -crossHeight) {
-                    // Collision from below
-                    OnBelowCollision(platformRect, playerRect);
-                } else {
-                    // Collision from the left
-                    OnLeftCollision(platformRect, playerRect);
-                }
-            } else {
-                if (crossWidth > -crossHeight) {
-                    // Collision from the right
-                    OnRightCollision(platformRect, playerRect);
-                } else {
-                    // Collision from above
-                    OnAboveCollision(platformRect, playerRect);
-                }
-            }
-        }
-    }
-}
-
 // Hit the player externally
 void Player::HitPlayer() {
     GameObject::ToggleFlashing();
@@ -329,7 +264,7 @@ playerDataStruct* Player::GetPlayerData() {
 void Player::MovingPlatformSpeedAdjustment(GameObject* obj) {
     auto* movingPlatform = dynamic_cast<MovingPlatform*>(obj);
     if (movingPlatform != nullptr) {
-        playerData.velocity_.x = movingPlatform->GetSpeed();
+        velocity_.x = movingPlatform->GetSpeed();
         TraceLog(LOG_INFO, "Called");
     }
 }

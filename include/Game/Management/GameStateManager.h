@@ -13,13 +13,13 @@
 #include "../Entities/Objects/Platform.h"
 #include "../../Platform/Engine.h"
 #include "SoundManager.h"
+#include "../Entities/CollisionHandler.h"
 
 class InputManager;
 struct EngineSettings;
 
 struct gameData {
-    Vector2 playerPosition;
-    const playerDataStruct* playerData;
+    Player* player;
     size_t numPlayers;
     size_t numMonsters;
     size_t numPlatforms;
