@@ -28,7 +28,10 @@ void CollisionHandler::HandlePlatformCollision(GameObject *obj, GameObject *plat
                 obj->SetVelocity(Vector2{obj->GetVelocity().x, 0});
             }
         } else {
-            obj->ToggleMovingRight();
+            // Toggle direction for MONSTER collisions that occur on the X-axis
+            if (obj->type_ == MONSTER) {
+                obj->ToggleMovingRight();
+            }
             if (deltaX > 0) { // Collision from the left
                 obj->SetPosition(Vector2{platformRect.x + platformRect.width, obj->GetPosition().y});
                 obj->SetVelocity(Vector2{0, obj->GetVelocity().y});
