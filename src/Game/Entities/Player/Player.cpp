@@ -41,14 +41,15 @@ void Player::Update() {
     // Get deltaTime
     float deltaTime = GetFrameTime();
     // State
+    StateTransition();
     // Check to see if we need to update the displayed animation
     AnimatePlayer();
     // Reset Jumps
     ResetJumps();
     // Move the player based on their velocity and position
-    StateTransition();
     MovePlayer(deltaTime);
     GameObject::Update();
+    playerData.last_state_ = playerData.state_;
 }
 
 #pragma endregion
@@ -164,15 +165,19 @@ void Player::AnimatePlayer() {
             // Invoke the Animation constructor to load a new animation with the desired state, and properties
             // replay the idle animation (replay == true) or false if you do not want replay
             case IDLE:
+                TraceLog(LOG_INFO, "Transitioned to IDLE");
                 playerData.playerAnimation_ = std::make_unique<Animation>(textureManager->GetTexture(PLAYER_IDLE_TEXTURE), PLAYER_IDLE_FRAMES, idleAnimationSpeed, true);
                 break;
             case RUNNING:
+                TraceLog(LOG_INFO, "Transitioned to RUNNING");
                 playerData.playerAnimation_ = std::make_unique<Animation>(textureManager->GetTexture(PLAYER_RUNNING_TEXTURE), PLAYER_RUNNING_FRAMES, runningAnimationSpeed, true);
                 break;
             case JUMPING:
+                TraceLog(LOG_INFO, "Transitioned to JUMPING");
                 playerData.playerAnimation_ = std::make_unique<Animation>(textureManager->GetTexture(PLAYER_JUMPING_TEXTURE), PLAYER_JUMPING_FRAMES, jumpingAnimationSpeed, false);
                 break;
             case ATTACKING:
+                TraceLog(LOG_INFO, "Transitioned to ATTACKING");
                 playerData.playerAnimation_ = std::make_unique<Animation>(textureManager->GetTexture(PLAYER_ATTACKING_TEXTURE), PLAYER_ATTACKING_FRAMES, playerAttackingSpeed, false);
                 break;
         }
@@ -204,7 +209,6 @@ void Player::StateTransition() {
     if (ZeroVelocity() && (playerData.state_ != ATTACKING)) {
         playerData.state_ = IDLE;
     }
-    playerData.last_state_ = playerData.state_;
 }
 
 bool Player::ZeroVelocity() const {
