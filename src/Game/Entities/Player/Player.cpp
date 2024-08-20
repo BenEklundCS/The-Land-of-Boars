@@ -265,12 +265,4 @@ playerDataStruct* Player::GetPlayerData() {
     return &playerData;
 }
 
-void Player::MovingPlatformSpeedAdjustment(GameObject* obj) {
-    auto* movingPlatform = dynamic_cast<MovingPlatform*>(obj);
-    if (movingPlatform != nullptr) {
-        velocity_.x = movingPlatform->GetSpeed();
-        TraceLog(LOG_INFO, "Called");
-    }
-}
-
 #pragma endregion

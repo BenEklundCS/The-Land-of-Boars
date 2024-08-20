@@ -32,17 +32,13 @@ struct playerDataStruct {
     int damage_ = 1;
 
     // animation
-    bool hasBeenHit_ = false;
     float timeSinceHit_ = 0.0f;
-    float timeStepForFlash_ = 0.0f;
-    float flashToggle_ = false;
 
     std::unique_ptr<Animation> playerAnimation_; // player animation
     PlayerState state_ = IDLE; // Player state
     PlayerState last_state_ = IDLE; // Previous player state
 
     // movement
-    Vector2 previousPosition_{0, 0};
     int jumps_ = 0; // Jump counter used to check if we can jump
     bool isOnGround_ = false;
     float attackRange_ = 500.0f;
@@ -60,8 +56,6 @@ private:
     // Player state
     [[nodiscard]] bool CheckPlayerDeath() const; // Check if the player is dead
     void ResetJumps(); // Reset the player jump counter
-    void GoIdle();
-    void MovingPlatformSpeedAdjustment(GameObject* obj);
     // Attributes
     playerDataStruct playerData;
     void AnimatePlayer(); // Animate the player
