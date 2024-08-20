@@ -163,19 +163,15 @@ void Player::AnimatePlayer() {
             // Invoke the Animation constructor to load a new animation with the desired state, and properties
             // replay the idle animation (replay == true) or false if you do not want replay
             case IDLE:
-                TraceLog(LOG_INFO, "Transitioned to IDLE");
                 playerData.playerAnimation_ = std::make_unique<Animation>(textureManager->GetTexture(PLAYER_IDLE_TEXTURE), PLAYER_IDLE_FRAMES, idleAnimationSpeed, true);
                 break;
             case RUNNING:
-                TraceLog(LOG_INFO, "Transitioned to RUNNING");
                 playerData.playerAnimation_ = std::make_unique<Animation>(textureManager->GetTexture(PLAYER_RUNNING_TEXTURE), PLAYER_RUNNING_FRAMES, runningAnimationSpeed, true);
                 break;
             case JUMPING:
-                TraceLog(LOG_INFO, "Transitioned to JUMPING");
                 playerData.playerAnimation_ = std::make_unique<Animation>(textureManager->GetTexture(PLAYER_JUMPING_TEXTURE), PLAYER_JUMPING_FRAMES, jumpingAnimationSpeed, false);
                 break;
             case ATTACKING:
-                TraceLog(LOG_INFO, "Transitioned to ATTACKING");
                 playerData.playerAnimation_ = std::make_unique<Animation>(textureManager->GetTexture(PLAYER_ATTACKING_TEXTURE), PLAYER_ATTACKING_FRAMES, playerAttackingSpeed, false);
                 break;
         }
