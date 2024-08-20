@@ -32,10 +32,14 @@ void Boar::Update() {
 }
 
 void Boar::HitMonster(int damage) {
-    // Notify the boar has been hit, observers can listen for this event
-    Notify(this, EVENT_BOAR_HIT);
     // Run the base class code that's reusable
     Monster::HitMonster(damage);
+    if (GetHealth() <= 0) {
+        Notify(this, EVENT_BOAR_DIED); // Notify the boar has died, observers can listen for this event
+    }
+    else {
+        Notify(this, EVENT_BOAR_HIT); // Notify the boar has been hit, but didn't die
+    }
 }
 
 void Boar::MaybeOink() {
@@ -44,10 +48,6 @@ void Boar::MaybeOink() {
         timeSinceLastOink_ = 0.0f; // Reset the timer
         nextOinkTime_ = (rand() % 30) + 1; // Set the time for the next oink to a random value between 1 and 30 seconds
     }
-}
-
-void Boar::Died() {
-    Notify(this, EVENT_BOAR_DIED);
 }
 
 #pragma endregion

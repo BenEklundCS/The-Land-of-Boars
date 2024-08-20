@@ -23,7 +23,6 @@ private:
     MonsterState state_; // Current monster state
     Vector2 initialPosition_{}; // The monster's initialPosition vector
     Vector2 velocity_{}; // The monster velocity vector
-    float timeStepForFlash_ = 0.0f;
 protected:
     bool movingRight_; // Flag to find x direction
     int hp_;
@@ -39,7 +38,6 @@ public:
     [[nodiscard]] int GetHealth() const;
     void SetHealth(int hp);
     virtual void HitMonster(int damage);
-    virtual void Died();
 };
 
 #endif //PLATFORMER_MONSTER_H

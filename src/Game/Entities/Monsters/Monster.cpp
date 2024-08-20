@@ -129,8 +129,4 @@ void Monster::HitMonster(int damage) {
         shouldRemove_ = true;
 }
 
-void Monster::Died() {
-
-}
-
 #pragma endregion
