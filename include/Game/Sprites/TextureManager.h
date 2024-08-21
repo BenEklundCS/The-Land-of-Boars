@@ -4,7 +4,6 @@
 
 /*
  * The following is essentially a hardcoded texture loader with hardcoded paths to my development directory
- * This must be refactored to find resources dynamically on the target machine at some point
  *
  */
 
@@ -16,6 +15,8 @@
 #include <string>
 #include "raylib.h"
 
+#pragma region path_definitions
+
 // Player paths
 #define PLAYER_TEXTURE_IDLE_PATH "../Assets/Sprites/Character/Idle/Idle-Sheet.png"
 #define PLAYER_TEXTURE_RUNNING_PATH "../Assets/Sprites/Character/Run/Run-Sheet.png"
@@ -25,14 +26,15 @@
 // Background path
 #define BACKGROUND_TEXTURE_PATH "../Assets/Sprites/Background/Background.png"
 
-// Player strings
-#define PLAYER_IDLE_TEXTURE "playerIdleTexture"
-#define PLAYER_RUNNING_TEXTURE "playerRunningTexture"
-#define PLAYER_JUMPING_TEXTURE "playerJumpingTexture"
-#define PLAYER_ATTACKING_TEXTURE "playerAttackingTexture"
+#define TILE_TEXTURE_PATH "../Assets/Sprites/Assets/Tiles.png" // Texture path
 
-// Background string
-#define BACKGROUND_TEXTURE "backgroundTexture"
+#define GREEN_TREE_TEXTURE_PATH "../Assets/Sprites/Trees/Green-Tree.png"
+
+#define BOAR_TEXTURE_RUNNING_PATH_WHITE "../Assets/Sprites/Mob/Boar/Run/Run-Sheet-White.png"
+
+#pragma endregion
+
+#pragma constants
 
 // Player frame counts
 #define PLAYER_IDLE_FRAMES 4
@@ -40,21 +42,14 @@
 #define PLAYER_JUMPING_FRAMES 15
 #define PLAYER_ATTACKING_FRAMES 8
 
-#define BOAR_RUNNING_FRAMES 6
-
 // Player Spritesheet offsets
 #define PLAYER_IDLESHEET_OFFSET (-16)
 #define PLAYER_RUNSHEET_OFFSET (-12)
 
-// Boar stuff
-#define BOAR_TEXTURE_RUNNING_PATH_WHITE "../Assets/Sprites/Mob/Boar/Run/Run-Sheet-White.png"
-#define BOAR_RUNNING_TEXTURE_WHITE "boarTextureWhite"
+// Boars
+#define BOAR_RUNNING_FRAMES 6
 
 // Tiles
-#define TILE_TEXTURE_PATH "../Assets/Sprites/Assets/Tiles.png" // Texture path
-#define TILE_GRASS_TEXTURE "tileGrassTexture"
-#define TILE_DIRT_TEXTURE "tileDirtTexture"
-
 #define TILE_LENGTH 80 // size of a tile
 #define TILE_OFFSET 10 // starting offset to get tile from spritesheet
 
@@ -62,13 +57,32 @@
 #define TREE_WIDTH 400
 #define TREE_HEIGHT 1000
 
-#define GREEN_TREE_TEXTURE_PATH "../Assets/Sprites/Trees/Green-Tree.png"
-#define GREEN_TREE_TEXTURE "greenTreeTexture"
+#pragma endregion
 
-// Player attack effect
-#define ATTACK_EFFECT_TEXTURE ""
-#define ATTACK_EFFECT_FRAMES 10
-#define ATTACK_EFFECT_FRAME_DURATION 10
+#pragma region texturename
+
+// Macro to automate the string conversion
+#define ENUM_TO_STRING_CASE(name) case name: return #name;
+
+enum TextureName {
+    // Player
+    PLAYER_IDLE_TEXTURE,
+    PLAYER_RUNNING_TEXTURE,
+    PLAYER_JUMPING_TEXTURE,
+    PLAYER_ATTACKING_TEXTURE,
+    // Monsters
+    BOAR_RUNNING_TEXTURE_WHITE,
+    // Background
+    BACKGROUND_TEXTURE,
+    // Trees
+    GREEN_TREE_TEXTURE,
+    // Tiles
+    TILE_GRASS_TEXTURE,
+    TILE_DIRT_TEXTURE
+
+};
+
+#pragma endregion
 
 struct GameTexture {
     Texture2D texture;
@@ -79,19 +93,20 @@ struct GameTexture {
 class TextureManager {
 private:
     static std::unique_ptr<TextureManager> instance; // Instance of texture manager
-    std::map<std::string, GameTexture> Textures; // Map of textures
-    void LoadAnimatedTexture(const char * filePath, int offset, int frames, const std::string& textureName);
-    void LoadTexture(Texture2D texture, const std::string& textureName, Rectangle rect); // Load a texture
-    void Emplace(const std::string& textureName, GameTexture gameTexture); // Emplace a texture into the texture map
+    std::map<TextureName, GameTexture> Textures; // Map of textures
+    void LoadAnimatedTexture(const char * filePath, int offset, int frames, TextureName textureName);
+    void LoadTexture(Texture2D texture, TextureName textureName, Rectangle rect); // Load a texture
+    void Emplace(TextureName textureName, GameTexture gameTexture); // Emplace a texture into the texture map
     void LoadPlayerTextures(); // Load player textures
     void LoadTileTextures(); // Load tile textures
     void LoadMonsterTextures(); // Load monster textures
     void LoadOtherTextures(); // Load all other textures
+    static std::string TextureNameToString(TextureName name);
 public:
     TextureManager();
     static TextureManager* GetInstance(); // Get the TextureManager instance
     void LoadTextures(); // Load all textures
-    GameTexture GetTexture(const std::string& texture); // Get a texture by name
+    GameTexture GetTexture(TextureName textureName); // Get a texture by name
     ~TextureManager();
 };
 

@@ -88,9 +88,6 @@ void Monster::SetHealth(int hp) {
 void Monster::HitMonster(int damage) {
     GameObject::ToggleFlashing();
     SetHealth(GetHealth() - damage);
-    // Handle monster hitting and if they should die!
-    if (GetHealth() <= 0)
-        shouldRemove_ = true;
 }
 
 #pragma endregion

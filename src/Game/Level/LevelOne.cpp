@@ -60,7 +60,7 @@ GameStateManager* LevelOne::GetGameState() {
 
 #pragma region monsters
     // Spawn in and add monsters to the game
-    auto monster1 = std::make_unique<Boar>(1000 - origin.x, 200 - origin.y, 300, 300, MonsterState::PACING);
+    auto monster1 = std::make_unique<Boar>(1000 - origin.x, 200 - origin.y, 300, 300, MonsterState::DEFAULT);
     auto monster2 = std::make_unique<Boar>(2000 - origin.x, GetScreenHeight() - 200 - origin.y, 100, 100, MonsterState::DEFAULT);
 
     gameState->AddObject(std::move(monster1));

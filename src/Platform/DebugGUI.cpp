@@ -26,7 +26,7 @@ std::string PlayerStateToString(PlayerState state) {
     else if (state == RUNNING) {
         stateString = "RUNNING";
     }
-    else if (state == JUMPING ){
+    else if (state == JUMPING){
         stateString = "JUMPING";
     }
     else {

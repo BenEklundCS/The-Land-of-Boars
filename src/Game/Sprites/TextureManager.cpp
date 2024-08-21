@@ -66,26 +66,28 @@ void TextureManager::LoadOtherTextures() {
 void TextureManager::LoadMonsterTextures() {
     // Boars
     TextureManager::LoadAnimatedTexture(BOAR_TEXTURE_RUNNING_PATH_WHITE, 0, BOAR_RUNNING_FRAMES, BOAR_RUNNING_TEXTURE_WHITE);
+    //TextureManager::LoadAnimatedTexture(BOAR_TEXTURE_DEATH_PATH_WHITE, 0, BOAR_DYING_FRAMES, BOAR_DYING_TEXTURE_WHITE);
 }
 
-GameTexture TextureManager::GetTexture(const std::string& texture) {
-    if (Textures.find(texture) != Textures.end()) {
-        return Textures.at(texture);
+GameTexture TextureManager::GetTexture(TextureName textureName) {
+    auto it = Textures.find(textureName);
+    if (it != Textures.end()) {
+        return it->second;
     }
     else {
-        TraceLog(LOG_ERROR, "Failed to load texture %s", texture.c_str());
+        TraceLog(LOG_ERROR, "Failed to load texture %s", TextureNameToString(textureName).c_str());
         throw std::invalid_argument("Texture not found.");
     }
 }
 
 // My internal LoadTexture method that assigns a texture, name, and rect to the texture
-void TextureManager::LoadTexture(Texture2D texture, const std::string& textureName, Rectangle rect) {
+void TextureManager::LoadTexture(Texture2D texture, TextureName textureName, Rectangle rect) {
     GameTexture gameTexture = {texture, rect};
     Emplace(textureName, gameTexture);
 }
 
 // Loads a texture with the frames taken into account
-void TextureManager::LoadAnimatedTexture(const char * filePath, int offset, int frames, const std::string& textureName) {
+void TextureManager::LoadAnimatedTexture(const char * filePath, int offset, int frames, const TextureName textureName) {
     // Use raylibs LoadTexture
     Texture2D texture = ::LoadTexture(filePath);
     GameTexture gameTexture = {texture, Rectangle{0,
@@ -96,9 +98,9 @@ void TextureManager::LoadAnimatedTexture(const char * filePath, int offset, int 
 }
 
 // Emplace a texture into the TextureManager map
-void TextureManager::Emplace(const std::string &textureName, GameTexture gameTexture) {
+void TextureManager::Emplace(TextureName textureName, GameTexture gameTexture) {
     // emplace ensures the texture is not loaded twice
-    Textures.emplace(std::pair<std::string, GameTexture>(textureName, gameTexture));
+    Textures.emplace(std::pair<TextureName, GameTexture>(textureName, gameTexture));
 }
 
 // Destructor
@@ -106,5 +108,21 @@ TextureManager::~TextureManager() {
     for (const auto& gameTexture : Textures) {
         UnloadTexture(gameTexture.second.texture);
     }
+}
+
+std::string TextureManager::TextureNameToString(TextureName name) {
+    switch (name) {
+        ENUM_TO_STRING_CASE(PLAYER_IDLE_TEXTURE)
+        ENUM_TO_STRING_CASE(PLAYER_RUNNING_TEXTURE)
+        ENUM_TO_STRING_CASE(PLAYER_JUMPING_TEXTURE)
+        ENUM_TO_STRING_CASE(PLAYER_ATTACKING_TEXTURE)
+        ENUM_TO_STRING_CASE(BOAR_RUNNING_TEXTURE_WHITE)
+        ENUM_TO_STRING_CASE(BACKGROUND_TEXTURE)
+        ENUM_TO_STRING_CASE(GREEN_TREE_TEXTURE)
+        ENUM_TO_STRING_CASE(TILE_GRASS_TEXTURE)
+        ENUM_TO_STRING_CASE(TILE_DIRT_TEXTURE)
+        default: return "UNKNOWN_TEXTURE";
+    }
+
 }
 

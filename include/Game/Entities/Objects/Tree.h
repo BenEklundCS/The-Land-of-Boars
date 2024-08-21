@@ -12,7 +12,7 @@ class Tree : public GameObject {
 private:
     GameTexture texture_;
 public:
-    Tree(float x, float y, const std::string& treeTexture);
+    Tree(float x, float y, TextureName treeTexture);
     void Draw() override;
     void Update() override;
 };

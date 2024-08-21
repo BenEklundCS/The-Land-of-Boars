@@ -34,12 +34,19 @@ void Boar::Update() {
 void Boar::HitMonster(int damage) {
     // Run the base class code that's reusable
     Monster::HitMonster(damage);
+    // Boar has died
     if (GetHealth() <= 0) {
         Notify(this, EVENT_BOAR_DIED); // Notify the boar has died, observers can listen for this event
+        // DeathAnimation() // play the death animation, then set shouldRemove_ to true after it fully plays
+        shouldRemove_ = true;
     }
     else {
         Notify(this, EVENT_BOAR_HIT); // Notify the boar has been hit, but didn't die
     }
+}
+
+void Boar::DeathAnimation() {
+
 }
 
 void Boar::MaybeOink() {

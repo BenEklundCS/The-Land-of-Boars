@@ -21,6 +21,7 @@ public:
     void Draw() override; // Draw the boar
     void Update() override; // Update the boar
     void HitMonster(int damage) override; // override the HitMonster function
+    void DeathAnimation();
 };
 
 
