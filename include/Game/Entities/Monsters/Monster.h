@@ -15,15 +15,17 @@
 // Definition for MonsterState
 enum MonsterState {
     PACING,
+    DYING,
     DEFAULT
 };
 
 class Monster : public GameObject, public Subject {
 private:
-    MonsterState state_; // Current monster state
+    // Current monster state
     Vector2 initialPosition_{}; // The monster's initialPosition vector
 protected:
     int hp_;
+    MonsterState state_;
 public:
     GameObjectType type_ = MONSTER; // Monster's GameObjectType
     Monster(float pos_x, float pos_y, float dim_x, float dim_y, MonsterState state);

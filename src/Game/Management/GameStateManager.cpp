@@ -67,25 +67,16 @@ void GameStateManager::UpdatePlayers() {
 // Handle player and monster attacks onscreen
 void GameStateManager::UpdateAttacks(Player* player) {
     PlayerAttackEffect(player);
-    // Vector to store delayed updates
-    std::vector<GameObject*> toRemove;
     // Iterate over all monsters
     #pragma omp parallel for
     for (auto& monster : monsters_) {
         HandlePlayerAttack(player, monster.get());
-        // If ShouldRemove is true, the monster has died.
-        if (monster->ShouldRemove()) {
-            toRemove.push_back(monster.get());
-        }
-    }
-    // Defer deletions of monsters to avoid issues accessing them (memory exceptions!) in the loop above ^
-    for (auto& obj : toRemove) {
-        RemoveObject(obj);
     }
 }
 
 // Update all players in the scene by iterating over the monsters, calling update, and then checking for collisions
 void GameStateManager::UpdateMonsters() {
+    std::vector<GameObject*> toRemove;
     #pragma omp parallel for
     for (auto& monster : monsters_) {
         monster->Update();
@@ -100,6 +91,12 @@ void GameStateManager::UpdateMonsters() {
             if (other->type_ == TILE)
                 CollisionHandler::HandlePlatformCollision(monster.get(), other.get()); // Trees are also otherObjects, and I don't want to collide with them
         }
+        if (monster->ShouldRemove()) {
+            toRemove.push_back(monster.get());
+        }
+    }
+    for (auto& monster : toRemove) {
+        RemoveObject(monster);
     }
 }
 
@@ -126,6 +123,7 @@ void GameStateManager::OnNotify(const GameObject *entity, Events event) {
             UpdateAttacks((Player *) entity);
         }
     }
+
 }
 
 #pragma endregion
@@ -164,11 +162,13 @@ void GameStateManager::RemovePlayer(GameObject* obj) {
 }
 
 // Remove monster from the monsters array
+// Remove monster from the monsters array
 void GameStateManager::RemoveMonster(GameObject* obj) {
     auto it = std::find_if(monsters_.begin(), monsters_.end(), [&obj](const std::unique_ptr<Monster>& monster) {
         return monster.get() == obj;
     });
     if (it != monsters_.end()) {
+        // Remove from monsters_
         monsters_.erase(it);
     }
 }

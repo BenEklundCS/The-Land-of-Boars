@@ -71,6 +71,7 @@ GameStateManager* LevelOne::GetGameState() {
 
         gameState->AddObject(std::move(monster3));
     }
+
 #pragma endregion
 
 #pragma region trees

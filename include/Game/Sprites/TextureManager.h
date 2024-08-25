@@ -31,6 +31,7 @@
 #define GREEN_TREE_TEXTURE_PATH "../Assets/Sprites/Trees/Green-Tree.png"
 
 #define BOAR_TEXTURE_RUNNING_PATH_WHITE "../Assets/Sprites/Mob/Boar/Run/Run-Sheet-White.png"
+#define BOAR_TEXTURE_DYING_PATH_WHITE "../Assets/Sprites/Mob/Boar/Hit-Vanish/Hit-Sheet-White.png"
 
 #pragma endregion
 
@@ -48,6 +49,7 @@
 
 // Boars
 #define BOAR_RUNNING_FRAMES 6
+#define BOAR_DYING_FRAMES 4
 
 // Tiles
 #define TILE_LENGTH 80 // size of a tile
@@ -72,6 +74,7 @@ enum TextureName {
     PLAYER_ATTACKING_TEXTURE,
     // Monsters
     BOAR_RUNNING_TEXTURE_WHITE,
+    BOAR_DYING_TEXTURE_WHITE,
     // Background
     BACKGROUND_TEXTURE,
     // Trees

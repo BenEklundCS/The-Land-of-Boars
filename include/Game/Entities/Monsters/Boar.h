@@ -12,16 +12,18 @@
 
 class Boar : public Monster {
 private:
-    Animation boarAnimation_; // Boar animation
+    std::unique_ptr<Animation> boarAnimation_; // Boar animation
     void MaybeOink();
     float timeSinceLastOink_ = 0.0f; // Add this member variable
     float nextOinkTime_ = 0.0f; // Time until the next oink
+    void Died();
+    void AnimateBoar();
 public:
     Boar(float posX, float posY, float dimX, float dimY, MonsterState state);
     void Draw() override; // Draw the boar
     void Update() override; // Update the boar
     void HitMonster(int damage) override; // override the HitMonster function
-    void DeathAnimation();
+    void BeginDeathAnimation();
 };
 
 

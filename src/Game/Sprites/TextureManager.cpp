@@ -66,7 +66,7 @@ void TextureManager::LoadOtherTextures() {
 void TextureManager::LoadMonsterTextures() {
     // Boars
     TextureManager::LoadAnimatedTexture(BOAR_TEXTURE_RUNNING_PATH_WHITE, 0, BOAR_RUNNING_FRAMES, BOAR_RUNNING_TEXTURE_WHITE);
-    //TextureManager::LoadAnimatedTexture(BOAR_TEXTURE_DEATH_PATH_WHITE, 0, BOAR_DYING_FRAMES, BOAR_DYING_TEXTURE_WHITE);
+    TextureManager::LoadAnimatedTexture(BOAR_TEXTURE_DYING_PATH_WHITE, 0, BOAR_DYING_FRAMES, BOAR_DYING_TEXTURE_WHITE);
 }
 
 GameTexture TextureManager::GetTexture(TextureName textureName) {
@@ -117,6 +117,7 @@ std::string TextureManager::TextureNameToString(TextureName name) {
         ENUM_TO_STRING_CASE(PLAYER_JUMPING_TEXTURE)
         ENUM_TO_STRING_CASE(PLAYER_ATTACKING_TEXTURE)
         ENUM_TO_STRING_CASE(BOAR_RUNNING_TEXTURE_WHITE)
+        ENUM_TO_STRING_CASE(BOAR_DYING_TEXTURE_WHITE)
         ENUM_TO_STRING_CASE(BACKGROUND_TEXTURE)
         ENUM_TO_STRING_CASE(GREEN_TREE_TEXTURE)
         ENUM_TO_STRING_CASE(TILE_GRASS_TEXTURE)
