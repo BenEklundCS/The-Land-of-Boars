@@ -52,6 +52,7 @@ private:
     // CAMERA/SCENE ONLY SUPPORT ONE PLAYER CURRENTLY, BEWARE
     void UpdateCamera(); // Update the camera
     static void HandlePlayerAttack(Player* player, Monster* monster); // Handle the players attack on the game state, hitting everything within distance
+    void HandleCollisions(GameObject *obj);
     std::vector<std::unique_ptr<Player>> players_; // player object vector
     std::vector<std::unique_ptr<Monster>> monsters_; // monster object vector
     std::vector<std::unique_ptr<Platform>> platforms_; // platform object vector

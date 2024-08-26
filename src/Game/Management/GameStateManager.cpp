@@ -50,17 +50,7 @@ void GameStateManager::UpdatePlatforms() {
 void GameStateManager::UpdatePlayers() {
     for (auto& player : players_) {
         player->Update();
-        // Iterate over the platforms to check for collisions
-        #pragma omp parallel for
-        for (auto& platform : platforms_) {
-            CollisionHandler::HandlePlatformCollision(player.get(), platform.get());
-        }
-        // Iterate over any other objects to check for collisions (especially TILEs)
-        #pragma omp parallel for // update the other objects in parallel using threads
-        for (auto& other : otherObjects_) {
-            if (other->type_ == TILE)
-                CollisionHandler::HandlePlatformCollision(player.get(), other.get()); // Trees are also otherObjects, and I don't want to collide with them
-        }
+        HandleCollisions(player.get());
     }
 }
 
@@ -76,6 +66,7 @@ void GameStateManager::UpdateAttacks(Player* player) {
 
 // Update all players in the scene by iterating over the monsters, calling update, and then checking for collisions
 void GameStateManager::UpdateMonsters() {
+    // Create an array to defer monster removals
     std::vector<GameObject*> toRemove;
     #pragma omp parallel for
     for (auto& monster : monsters_) {
@@ -83,20 +74,27 @@ void GameStateManager::UpdateMonsters() {
         for (auto& player : players_) {
             monster->CollideWithPlayer(player.get());
         }
-        for (auto& platform : platforms_) {
-            CollisionHandler::HandlePlatformCollision(monster.get(), platform.get());
-        }
-        #pragma omp parallel for // update the other objects in parallel using threads
-        for (auto& other : otherObjects_) {
-            if (other->type_ == TILE)
-                CollisionHandler::HandlePlatformCollision(monster.get(), other.get()); // Trees are also otherObjects, and I don't want to collide with them
-        }
+        // Handle collisions with platforms and tiles
+        HandleCollisions(monster.get());
+        // Check if we need to remove the monster from the GameState
         if (monster->ShouldRemove()) {
             toRemove.push_back(monster.get());
         }
     }
+    // Remove monsters
     for (auto& monster : toRemove) {
         RemoveObject(monster);
+    }
+}
+
+void GameStateManager::HandleCollisions(GameObject* obj) {
+    for (auto& platform : platforms_) {
+        CollisionHandler::HandlePlatformCollision(obj, platform.get());
+    }
+    #pragma omp parallel for // update the other objects in parallel using threads
+    for (auto& other : otherObjects_) {
+        if (other->type_ == TILE)
+            CollisionHandler::HandlePlatformCollision(obj, other.get()); // Trees are also otherObjects, and I don't want to collide with them
     }
 }
 

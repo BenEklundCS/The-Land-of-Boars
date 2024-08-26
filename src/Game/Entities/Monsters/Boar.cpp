@@ -37,10 +37,11 @@ void Boar::HitMonster(int damage) {
     // Boar has died
     if (GetHealth() <= 0) {
         BeginDeathAnimation(); // play the death animation, then set shouldRemove_ to true after it fully plays
+        Notify(this, EVENT_BOAR_DIED);
     }
-
-    Notify(this, EVENT_BOAR_HIT); // Notify the boar has been hit, but didn't die
-
+    else {
+        Notify(this, EVENT_BOAR_HIT); // Notify the boar has been hit, but didn't die
+    }
 }
 
 void Boar::BeginDeathAnimation() {
@@ -50,8 +51,7 @@ void Boar::BeginDeathAnimation() {
 }
 
 void Boar::Died() {
-    shouldRemove_ = true;
-    Notify(this, EVENT_BOAR_DIED); // Notify the boar has died, observers can listen for this event
+    shouldRemove_ = true; // set shouldRemove
 }
 
 void Boar::AnimateBoar() {
