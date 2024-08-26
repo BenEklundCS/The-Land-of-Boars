@@ -53,7 +53,7 @@ void Engine::RenderLevelScene(GameStateManager* gameState) {
         gameState->Update();        // Update the scene
         // Draw the frame
         BeginDrawing();             // Setup canvas (framebuffer) to start drawing
-            Renderer::Draw(gameState, settings->renderRedBorders);    // Draw the scene using the renderer
+            Renderer::Draw(gameState, settings.get());    // Draw the scene using the renderer
             if (settings->displayDebug) // If the debug display is enabled, display it
                 DebugGUI::DrawGui(gameState);// Draw the Debug GUI using the debug gui class
         EndDrawing();               // End canvas drawing and swap buffers (double buffering)

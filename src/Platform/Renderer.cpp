@@ -29,7 +29,7 @@ void Renderer::RenderFPS(Camera2D camera) {
 #pragma endregion
 
 // Draw all game objects
-void Renderer::Draw(GameStateManager* gameState, bool renderRedBorders) {
+void Renderer::Draw(GameStateManager* gameState, EngineSettings* settings) {
     // Get the camera
     Camera2D camera = gameState->GetCamera();
     // Begin 2D rendering mode
@@ -43,7 +43,7 @@ void Renderer::Draw(GameStateManager* gameState, bool renderRedBorders) {
     for (const auto& object : gameState->GetAllObjects()) {
         object->Draw(); // <-- All GameObjects implement a Draw call
         // Draw object hitboxes
-        if (renderRedBorders) {
+        if (settings->renderRedBorders) {
             Rectangle redBox = object->GetRect();
             DrawRectangleLines((int)redBox.x, (int)redBox.y, (int)redBox.width, (int)redBox.height, RED);
         }
