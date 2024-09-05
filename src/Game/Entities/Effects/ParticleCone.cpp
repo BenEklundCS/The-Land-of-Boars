@@ -26,11 +26,11 @@ void ParticleCone::Draw() {
     // Loop through each particle
     for (int i = 0; i < particles; i++) {
         // Randomize the spread within the cone
-        float spread = GetRandomValue(-15, 15) * DEG2RAD;
+        auto spread = (float)GetRandomValue(-15, 15) * DEG2RAD;
         float angle = baseAngle + spread;
 
         // Randomize the distance of the particle from the origin
-        float distance = GetRandomValue(0, 300);  // Adjusted distance for particles
+        auto distance = (float)GetRandomValue(0, 300);  // Adjusted distance for particles
 
         // Calculate the particle's position
         Vector2 particlePosition = {

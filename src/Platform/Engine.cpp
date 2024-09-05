@@ -50,16 +50,13 @@ void Engine::RenderLevelScene(GameStateManager* gameState) {
     // Render the level in an infinite loop
     while (!WindowShouldClose() && !gameState->IsLevelOver()) {
         // Update the game
-        gameState->Update();        // Update the scene
+        gameState->Update();
         // Draw the frame
-        BeginDrawing();             // Setup canvas (framebuffer) to start drawing
-            Renderer::Draw(gameState, settings.get());    // Draw the scene using the renderer
-            if (settings->displayDebug) // If the debug display is enabled, display it
-                DebugGUI::DrawGui(gameState);// Draw the Debug GUI using the debug gui class
-        EndDrawing();               // End canvas drawing and swap buffers (double buffering)
+        BeginDrawing();                            // Setup canvas (framebuffer) to start drawing
+        Renderer::Draw(gameState, settings.get()); // Draw the scene using the renderer
+        if (settings->displayDebug)                // If the debug display is enabled, display it
+            DebugGUI::DrawGui(gameState);          // Draw the Debug GUI using the debug gui class
+        EndDrawing();                              // End canvas drawing and swap buffers (double buffering)
         // End frame
     }
 }
-
-
-
