@@ -60,6 +60,8 @@ private:
     playerDataStruct playerData;
     void AnimatePlayer(); // Animate the player
     bool AlreadyAttacking(); // check if the player is attacking
+    void LoadNewAnimation();
+    void StateTransition();
 public:
     GameObjectType type_ = PLAYER;
     Player();
@@ -73,8 +75,6 @@ public:
     playerDataStruct* GetPlayerData();
     void HitPlayer();
     bool ZeroVelocity() const;
-
-    void StateTransition();
 };
 
 #endif //PLATFORMER_PLAYER_H

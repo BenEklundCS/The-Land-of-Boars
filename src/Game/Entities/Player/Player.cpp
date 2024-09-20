@@ -31,7 +31,6 @@ void Player::Draw() {
     Texture2D playerTexture = playerData.playerAnimation_->GetTexture();
     Rectangle currentRect = playerData.playerAnimation_->GetCurrentRect();
 
-    playerData.playerAnimation_->FlipX(movingRight_); // flip x axis based on the movingRight_ flag
     // Draw the player utilizing the currently loaded playerTexture, and rect position
     DrawTexturePro(playerTexture, currentRect, GetRect(), Vector2{0, 0}, 0, color_);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
 }
@@ -141,7 +140,6 @@ void Player::Attack() {
 void Player::AnimatePlayer() {
     // Call Animate to get the next rect
     playerData.playerAnimation_->Animate();
-
     // If we're currently attacking, don't transition in the code below until the attack is over
     if (AlreadyAttacking()) {
         return;
@@ -150,31 +148,37 @@ void Player::AnimatePlayer() {
     // Check to see if we need to load a new animation to playerAnimation_
     // We need to load a new animation if state_ != last_state_
     if (playerData.state_ != playerData.last_state_) {
+        LoadNewAnimation();
+    }
 
-        // Changing state, so get the TextureManager so we can load the next animation
-        TextureManager* textureManager = TextureManager::GetInstance();
+    // Flip animation after loading based on the movingRight_ flag
+    playerData.playerAnimation_->FlipX(movingRight_);
+}
 
-        float idleAnimationSpeed = 0.2f;
-        float runningAnimationSpeed = 0.2f;
-        float jumpingAnimationSpeed = 0.075f;
-        float playerAttackingSpeed = 0.05f;
+void Player::LoadNewAnimation() {
+    // Changing state, so get the TextureManager so we can load the next animation
+    TextureManager* textureManager = TextureManager::GetInstance();
 
-        switch (playerData.state_) {
-            // Invoke the Animation constructor to load a new animation with the desired state, and properties
-            // replay the idle animation (replay == true) or false if you do not want replay
-            case IDLE:
-                playerData.playerAnimation_ = std::make_unique<Animation>(textureManager->GetTexture(PLAYER_IDLE_TEXTURE), PLAYER_IDLE_FRAMES, idleAnimationSpeed, true);
-                break;
-            case RUNNING:
-                playerData.playerAnimation_ = std::make_unique<Animation>(textureManager->GetTexture(PLAYER_RUNNING_TEXTURE), PLAYER_RUNNING_FRAMES, runningAnimationSpeed, true);
-                break;
-            case JUMPING:
-                playerData.playerAnimation_ = std::make_unique<Animation>(textureManager->GetTexture(PLAYER_JUMPING_TEXTURE), PLAYER_JUMPING_FRAMES, jumpingAnimationSpeed, false);
-                break;
-            case ATTACKING:
-                playerData.playerAnimation_ = std::make_unique<Animation>(textureManager->GetTexture(PLAYER_ATTACKING_TEXTURE), PLAYER_ATTACKING_FRAMES, playerAttackingSpeed, false);
-                break;
-        }
+    float idleAnimationSpeed = 0.2f;
+    float runningAnimationSpeed = 0.2f;
+    float jumpingAnimationSpeed = 0.075f;
+    float playerAttackingSpeed = 0.05f;
+
+    switch (playerData.state_) {
+        // Invoke the Animation constructor to load a new animation with the desired state, and properties
+        // replay the idle animation (replay == true) or false if you do not want replay
+        case IDLE:
+            playerData.playerAnimation_ = std::make_unique<Animation>(textureManager->GetTexture(PLAYER_IDLE_TEXTURE), PLAYER_IDLE_FRAMES, idleAnimationSpeed, true);
+            break;
+        case RUNNING:
+            playerData.playerAnimation_ = std::make_unique<Animation>(textureManager->GetTexture(PLAYER_RUNNING_TEXTURE), PLAYER_RUNNING_FRAMES, runningAnimationSpeed, true);
+            break;
+        case JUMPING:
+            playerData.playerAnimation_ = std::make_unique<Animation>(textureManager->GetTexture(PLAYER_JUMPING_TEXTURE), PLAYER_JUMPING_FRAMES, jumpingAnimationSpeed, false);
+            break;
+        case ATTACKING:
+            playerData.playerAnimation_ = std::make_unique<Animation>(textureManager->GetTexture(PLAYER_ATTACKING_TEXTURE), PLAYER_ATTACKING_FRAMES, playerAttackingSpeed, false);
+            break;
     }
 }
 
