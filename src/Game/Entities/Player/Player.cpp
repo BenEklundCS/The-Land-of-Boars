@@ -47,6 +47,8 @@ void Player::Update() {
     // Move the player based on their velocity and position
     MovePlayer(deltaTime);
     GameObject::Update();
+
+    playerData.timeSinceLastAttack_ += deltaTime;
     playerData.last_state_ = playerData.state_;
 }
 
@@ -128,9 +130,13 @@ void Player::Jump() {
 
 // Make the player attack!
 void Player::Attack() {
-    // Set the player's state to ATTACKING
-    playerData.state_ = ATTACKING;
-    Notify(this, EVENT_PLAYER_ATTACK); // Notify relevant observers the player has attacked
+    // Set the player's state to ATTACKING if enough time has elapsed
+    if (playerData.timeSinceLastAttack_ > PLAYER_ATTACK_DELAY) {
+        playerData.state_ = ATTACKING;
+        playerData.timeSinceLastAttack_ = 0.0f;
+        Notify(this, EVENT_PLAYER_ATTACK); // Notify relevant observers the player has attacked
+    }
+    // Else maybe we notify of a failed attack to play a sound
 }
 
 #pragma endregion
@@ -215,7 +221,7 @@ bool Player::ZeroVelocity() const {
 
 // Check and return if the player can jump!
 bool Player::CanJump() const {
-    return playerData.jumps_ <= MAX_JUMPS;
+    return playerData.jumps_ <= PLAYER_MAX_JUMPS;
 }
 
 // If the player is on the ground, reset their jump counter to 0 and set isOnGround_ to false

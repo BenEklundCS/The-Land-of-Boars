@@ -6,9 +6,10 @@
 #define PLATFORMER_PLAYER_H
 
 #define PLAYER_SPEED 200
-#define MAX_JUMPS 1
+#define PLAYER_MAX_JUMPS 1
 #define PLAYER_MAX_HP 3
 #define PLAYER_LENGTH 150
+#define PLAYER_ATTACK_DELAY 0.5f
 
 #include <memory>
 #include "raylib.h"
@@ -33,6 +34,7 @@ struct playerDataStruct {
 
     // animation
     float timeSinceHit_ = 0.0f;
+    float timeSinceLastAttack_ = 0.0f;
 
     std::unique_ptr<Animation> playerAnimation_; // player animation
     PlayerState state_ = IDLE; // Player state
