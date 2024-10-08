@@ -8,6 +8,7 @@
 #include "../../../include/Game/Entities/Objects/MovingPlatform.h"
 #include "../../../include/Game/Level/LevelLoader.h"
 #include "../../../include/Game/Entities/Objects/Tree.h"
+#include "../../../include/Game/Entities/Monsters/Bee.h"
 
 GameStateManager* LevelOne::GetGameState() {
 
@@ -71,6 +72,10 @@ GameStateManager* LevelOne::GetGameState() {
 
         gameState->AddObject(std::move(monster3));
     }
+
+    // Bee experiments
+    auto bee = std::make_unique<Bee>(100, 100, 300, 300, MonsterState::DEFAULT);
+    gameState->AddObject(std::move(bee));
 
 #pragma endregion
 

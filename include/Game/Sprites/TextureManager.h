@@ -33,6 +33,8 @@
 #define BOAR_TEXTURE_RUNNING_PATH_WHITE "../Assets/Sprites/Mob/Boar/Run/Run-Sheet-White.png"
 #define BOAR_TEXTURE_DYING_PATH_WHITE "../Assets/Sprites/Mob/Boar/Hit-Vanish/Hit-Sheet-White.png"
 
+#define BEE_TEXTURE_FLYING_PATH "../Assets/Sprites/Mob/Small Bee/Fly/Fly-Sheet.png"
+
 #pragma endregion
 
 #pragma constants
@@ -50,6 +52,9 @@
 // Boars
 #define BOAR_RUNNING_FRAMES 6
 #define BOAR_DYING_FRAMES 4
+
+// Bees
+#define BEE_FLYING_FRAMES 4
 
 // Tiles
 #define TILE_LENGTH 80 // size of a tile
@@ -73,8 +78,11 @@ enum TextureName {
     PLAYER_JUMPING_TEXTURE,
     PLAYER_ATTACKING_TEXTURE,
     // Monsters
+        // Boars
     BOAR_RUNNING_TEXTURE_WHITE,
     BOAR_DYING_TEXTURE_WHITE,
+        // Bees
+    BEE_FLYING_TEXTURE,
     // Background
     BACKGROUND_TEXTURE,
     // Trees
