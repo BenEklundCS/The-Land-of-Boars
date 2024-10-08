@@ -19,8 +19,8 @@ include(FetchContent)
 FetchContent_Declare(
         imgui
         GIT_REPOSITORY https://github.com/ocornut/imgui.git
-        GIT_TAG v1.89.1
 )
+
 FetchContent_MakeAvailable(imgui)
 
 # FetchContent for rlImGui
@@ -70,6 +70,8 @@ set(GAME_ENTITIES_SOURCES
         src/Game/Entities/Objects/MovingPlatform.cpp
         src/Game/Entities/Objects/Tree.cpp
         src/Game/Entities/Effects/ParticleCone.cpp
+        src/Game/Entities/Monsters/Bee.cpp
+        src/Game/Entities/Monsters/Bee.cpp
 )
 
 set(GAME_LEVEL_SOURCES
