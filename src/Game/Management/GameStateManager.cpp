@@ -132,20 +132,23 @@ void GameStateManager::OnNotify(const GameObject *entity, Events event) {
 // Make sure to pass a std::unique_ptr<GameObject> to it using std::move()
 // Do not add nullptr objects, undefined behavior
 void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
-    allGameObjects_.push_back(obj.get());
     if (obj->type_ == PLAYER) {
         InitObservers(dynamic_cast<Subject*>(obj.get())); // PLAYER is a subject, init observers
         players_.push_back(std::unique_ptr<Player>(dynamic_cast<Player*>(obj.release())));
+        allGameObjects_.push_back(players_.back().get()); // Insert at the end
     }
     else if (obj->type_ == MONSTER) {
         InitObservers(dynamic_cast<Subject*>(obj.get())); // MONSTER is a subject, init observers
         monsters_.push_back(std::unique_ptr<Monster>(dynamic_cast<Monster*>(obj.release())));
+        allGameObjects_.insert(allGameObjects_.begin(), monsters_.back().get()); // Insert at the beginning
     }
     else if (obj->type_ == PLATFORM || obj->type_ == MOVING_PLATFORM) {
         platforms_.push_back(std::unique_ptr<Platform>(dynamic_cast<Platform*>(obj.release())));
+        allGameObjects_.insert(allGameObjects_.begin() + monsters_.size(), platforms_.back().get()); // Insert after monsters
     }
     else {
         otherObjects_.push_back(std::move(obj));
+        allGameObjects_.insert(allGameObjects_.begin() + monsters_.size() + platforms_.size(), otherObjects_.back().get()); // Insert after monsters and platforms
     }
 }
 
@@ -217,7 +220,7 @@ std::vector<GameObject*> GameStateManager::GetAllObjects() {
     return allGameObjects_;
 }
 
-#pragma endregion
+#pragma endregio
 
 #pragma region game state methods
 
