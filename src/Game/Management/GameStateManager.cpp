@@ -144,11 +144,11 @@ void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
     }
     else if (obj->type_ == PLATFORM || obj->type_ == MOVING_PLATFORM) {
         platforms_.push_back(std::unique_ptr<Platform>(dynamic_cast<Platform*>(obj.release())));
-        allGameObjects_.insert(allGameObjects_.begin() + monsters_.size(), platforms_.back().get()); // Insert after monsters
+        allGameObjects_.insert(allGameObjects_.begin() + (long)monsters_.size(), platforms_.back().get()); // Insert after monsters
     }
     else {
         otherObjects_.push_back(std::move(obj));
-        allGameObjects_.insert(allGameObjects_.begin() + monsters_.size() + platforms_.size(), otherObjects_.back().get()); // Insert after monsters and platforms
+        allGameObjects_.insert(allGameObjects_.begin() + (long)monsters_.size() + (long)platforms_.size(), otherObjects_.back().get()); // Insert after monsters and platforms
     }
 }
 
