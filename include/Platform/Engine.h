@@ -47,6 +47,7 @@ private:
     void RenderGameScreen();
     void RenderGameOverScreen();
     static void IfEscapeExitGame();
+    static bool shouldExit;
 public:
     void StartGame(); // Start the game
     static EngineSettings* GetSettings() {

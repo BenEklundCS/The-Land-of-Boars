@@ -8,6 +8,7 @@
 
 // Declare Engine::settings as a nullptr as it is a static member attribute of Engine
 std::unique_ptr<EngineSettings> Engine::settings = nullptr;
+bool Engine::shouldExit = false;
 
 // Load all the levels for the game
 void Engine::LoadLevels() {
@@ -55,8 +56,12 @@ void Engine::RenderTitleScreen() {
 
         IfEscapeExitGame();
 
-        TraceLog(LOG_INFO, "%d", WindowShouldClose());
         EndDrawing();
+
+        if (shouldExit) {
+            CloseWindow();
+            exit(0);
+        }
     }
 }
 
@@ -83,8 +88,7 @@ void Engine::RenderGameOverScreen() {
 void Engine::IfEscapeExitGame() {
     if (IsKeyPressed(KEY_ESCAPE)) {
         TraceLog(LOG_INFO, "Escape pressed, forcefully closing application...");
-        CloseWindow(); // Attempt to close gracefully
-        exit(0);  // Forcefully terminate the application
+        shouldExit = true;
     }
 }
 
@@ -106,5 +110,10 @@ void Engine::RenderLevelScene(GameStateManager* gameState) {
         IfEscapeExitGame();
 
         EndDrawing();
+
+        if (shouldExit) {
+            CloseWindow();
+            exit(0);
+        }
     }
 }
