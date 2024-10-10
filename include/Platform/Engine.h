@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <memory>
+#include <raylib.h>
 #include "Renderer.h"
 #include "../Platform/DebugGUI.h"
 #include "../Game/Level/Level.h"
@@ -22,6 +23,12 @@ struct EngineSettings {
     bool displayDebug = false;
 };
 
+enum GameScreen {
+    TITLE,
+    GAME,
+    GAMEOVER
+};
+
 
 /*
  * The Engine class is responsible for starting the game, loading the game levels, and
@@ -34,6 +41,13 @@ private:
     static std::unique_ptr<EngineSettings> settings;
     static void RenderLevelScene(GameStateManager* scene); // Start the render loop
     void LoadLevels(); // Load all the game levels
+    // screens
+    GameScreen currentScreen = TITLE;
+    void RenderTitleScreen();
+    void RenderGameScreen();
+    void RenderGameOverScreen();
+    // main loop
+    void MainGameLoop();
 public:
     void StartGame(); // Start the game
     static EngineSettings* GetSettings() {

@@ -30,19 +30,49 @@ void Engine::StartGame() {
     LoadLevels();
     // Start ImGUI
     DebugGUI::InitGui();
-    // Start each level
-    for (auto& level : levels) {
-        // Get the level's gameState
-        auto gameState = level->GetGameState();
-        // Init the game camera
-        gameState->InitCamera();
-        // init the InputManager using the Engine settings
-            // This allows the input manager to change settings on the fly.
-        gameState->InitInput(settings.get());
-        // Move the gameState to the ownership of the RenderLevelScene method, which will loop rendering the level
-        RenderLevelScene(gameState);
+    // Start the main game loop
+    MainGameLoop();
+}
+
+void Engine::RenderTitleScreen() {
+    // Remove the while loop; the main loop handles it
+    Renderer::DrawTitleScreen();
+    if (IsKeyPressed(KEY_SPACE)) {
+        currentScreen = GAME; // Change the screen to GAME
     }
 }
+
+
+void Engine::RenderGameScreen() {
+    // Assume only one level for simplicity
+    auto& level = levels[0];
+    auto gameState = level->GetGameState();
+    gameState->InitCamera();
+    gameState->InitInput(settings.get());
+    RenderLevelScene(gameState);
+}
+
+
+void Engine::RenderGameOverScreen() {
+
+}
+
+void Engine::MainGameLoop() {
+    while (!WindowShouldClose()) {
+        switch (currentScreen) {
+            case TITLE:
+                RenderTitleScreen();
+                break;
+            case GAME:
+                RenderGameScreen();
+                break;
+            case GAMEOVER:
+                RenderGameOverScreen();
+                break;
+        }
+    }
+}
+
 
 // Take a GameStateManager* as a parameter, initialize a renderer, and then render the scene
 void Engine::RenderLevelScene(GameStateManager* gameState) {

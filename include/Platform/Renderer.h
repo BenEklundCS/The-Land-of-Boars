@@ -25,6 +25,7 @@ public:
     Renderer(); // constructor
     static void Draw(GameStateManager* gameState, EngineSettings* settings); // draw call
     ~Renderer(); // destructor
+    static void DrawTitleScreen();
 };
 
 
