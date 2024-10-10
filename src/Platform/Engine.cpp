@@ -24,31 +24,54 @@ void Engine::StartGame() {
     // Init settings such that it is not null
     settings = std::make_unique<EngineSettings>();
     TraceLog(LOG_INFO, "Engine starting game...");
+
     // Get the window
     Window* window = Window::GetInstance();
+
     // Load all the levels
     LoadLevels();
+
     // Start ImGUI
     DebugGUI::InitGui();
-    // Start the main game loop
-    MainGameLoop();
+
+    // Call screens sequentially
+    RenderTitleScreen();  // Title screen
+    RenderGameScreen();  // Game screen
+    RenderGameOverScreen();  // Game over screen if necessary
 }
 
 void Engine::RenderTitleScreen() {
-    // Remove the while loop; the main loop handles it
-    Renderer::DrawTitleScreen();
-    if (IsKeyPressed(KEY_SPACE)) {
-        currentScreen = GAME; // Change the screen to GAME
+    TraceLog(LOG_INFO, "Rendering Title Screen...");
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        Renderer::DrawTitleScreen(); // Assuming this draws the title screen
+
+        // Check for key press to exit title screen and start the game
+        if (IsKeyPressed(KEY_SPACE)) {
+            currentScreen = GAME;
+            break; // Exit loop and return to StartGame
+        }
+
+        IfEscapeExitGame();
+
+        TraceLog(LOG_INFO, "%d", WindowShouldClose());
+        EndDrawing();
     }
 }
 
 
+
 void Engine::RenderGameScreen() {
+    TraceLog(LOG_INFO, "Rendering Game Screen...");
+
     // Assume only one level for simplicity
     auto& level = levels[0];
     auto gameState = level->GetGameState();
     gameState->InitCamera();
     gameState->InitInput(settings.get());
+
+    // Render the level
     RenderLevelScene(gameState);
 }
 
@@ -57,36 +80,31 @@ void Engine::RenderGameOverScreen() {
 
 }
 
-void Engine::MainGameLoop() {
-    while (!WindowShouldClose()) {
-        switch (currentScreen) {
-            case TITLE:
-                RenderTitleScreen();
-                break;
-            case GAME:
-                RenderGameScreen();
-                break;
-            case GAMEOVER:
-                RenderGameOverScreen();
-                break;
-        }
+void Engine::IfEscapeExitGame() {
+    if (IsKeyPressed(KEY_ESCAPE)) {
+        TraceLog(LOG_INFO, "Escape pressed, forcefully closing application...");
+        CloseWindow(); // Attempt to close gracefully
+        exit(0);  // Forcefully terminate the application
     }
 }
 
-
 // Take a GameStateManager* as a parameter, initialize a renderer, and then render the scene
 void Engine::RenderLevelScene(GameStateManager* gameState) {
-    TraceLog(LOG_INFO, "Engine rendering a gameState...");
-    // Render the level in an infinite loop
+    TraceLog(LOG_INFO, "Rendering Level Scene...");
+
+    // Render the level until it's over or the window should close
     while (!WindowShouldClose() && !gameState->IsLevelOver()) {
         // Update the game
         gameState->Update();
+
         // Draw the frame
-        BeginDrawing();                            // Setup canvas (framebuffer) to start drawing
-        Renderer::Draw(gameState, settings.get()); // Draw the scene using the renderer
-        if (settings->displayDebug)                // If the debug display is enabled, display it
-            DebugGUI::DrawGui(gameState);          // Draw the Debug GUI using the debug gui class
-        EndDrawing();                              // End canvas drawing and swap buffers (double buffering)
-        // End frame
+        BeginDrawing();
+        Renderer::Draw(gameState, settings.get()); // Draw the scene
+        if (settings->displayDebug)
+            DebugGUI::DrawGui(gameState); // Draw the debug GUI if necessary
+
+        IfEscapeExitGame();
+
+        EndDrawing();
     }
 }

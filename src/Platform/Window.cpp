@@ -12,6 +12,7 @@ Window::Window() {
     InitAudioDevice();
     SetConfigFlags(FLAG_WINDOW_RESIZABLE); // set window resizable such that Window::Resize is callable later on
     SetTargetFPS(60); // Set the desired frames per second
+    SetExitKey(0);  // Disable default ESC behavior
     TraceLog(LOG_INFO, "Window::Window() Started successfully."); // Log Window started successfully
 }
 

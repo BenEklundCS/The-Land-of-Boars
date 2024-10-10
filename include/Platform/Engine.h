@@ -46,8 +46,7 @@ private:
     void RenderTitleScreen();
     void RenderGameScreen();
     void RenderGameOverScreen();
-    // main loop
-    void MainGameLoop();
+    static void IfEscapeExitGame();
 public:
     void StartGame(); // Start the game
     static EngineSettings* GetSettings() {

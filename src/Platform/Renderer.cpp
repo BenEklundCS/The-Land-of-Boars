@@ -53,7 +53,6 @@ void Renderer::Draw(GameStateManager* gameState, EngineSettings* settings) {
 }
 
 void Renderer::DrawTitleScreen() {
-    BeginDrawing();
     Camera2D titleCamera = { 0 };
     // Target the center of the screen
     titleCamera.target = (Vector2){ (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f };
@@ -65,7 +64,6 @@ void Renderer::DrawTitleScreen() {
     RenderBackground(titleCamera);
     DrawText("Welcome to The Land of Boars!", GetScreenWidth() / 4, GetScreenHeight() / 2, 75, WHITE);
     DrawText("Press SPACEBAR to begin", GetScreenWidth() / 4, GetScreenHeight() - 500, 40, WHITE);
-    EndDrawing();
 }
 
 Renderer::~Renderer() = default;
