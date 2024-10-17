@@ -54,14 +54,12 @@ void Engine::RenderTitleScreen() {
             break; // Exit loop and return to StartGame
         }
 
+        // Check inputs inside drawing
         IfEscapeExitGame();
-
+        // End drawing
         EndDrawing();
-
-        if (shouldExit) {
-            CloseWindow();
-            exit(0);
-        }
+        // Exit game if set
+        MaybeExitGame();
     }
 }
 
@@ -92,6 +90,13 @@ void Engine::IfEscapeExitGame() {
     }
 }
 
+void Engine::MaybeExitGame() {
+    if (shouldExit) {
+        CloseWindow();
+        exit(0);
+    }
+}
+
 // Take a GameStateManager* as a parameter, initialize a renderer, and then render the scene
 void Engine::RenderLevelScene(GameStateManager* gameState) {
     TraceLog(LOG_INFO, "Rendering Level Scene...");
@@ -106,14 +111,11 @@ void Engine::RenderLevelScene(GameStateManager* gameState) {
         Renderer::Draw(gameState, settings.get()); // Draw the scene
         if (settings->displayDebug)
             DebugGUI::DrawGui(gameState); // Draw the debug GUI if necessary
-
+        // Check inputs inside drawing
         IfEscapeExitGame();
-
+        // End drawing
         EndDrawing();
-
-        if (shouldExit) {
-            CloseWindow();
-            exit(0);
-        }
+        // Exit game if set
+        MaybeExitGame();
     }
 }
