@@ -8,5 +8,4 @@ int main() {
     gameEngine.StartGame();
     // Exit the program successfully
     exit(EXIT_SUCCESS);
-
 }

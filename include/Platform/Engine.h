@@ -54,6 +54,8 @@ public:
     static EngineSettings* GetSettings() {
         return settings.get();
     }
+
+    static void Shutdown();
 };
 
 
