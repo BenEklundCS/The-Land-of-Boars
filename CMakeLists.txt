@@ -1,40 +1,59 @@
 cmake_minimum_required(VERSION 3.11)
+project(The_Land_of_Boars)
 
-project(The_Land_of_Boars) # Define the project name
+# Set C++ standard and debugging flags
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Find raylib
-find_package(raylib 3.0 QUIET)
-
-if (NOT raylib_FOUND)
-    include(FetchContent)
-    FetchContent_Declare(
-            raylib
-            URL https://github.com/raysan5/raylib/archive/refs/tags/3.7.0.tar.gz
-    )
-    FetchContent_MakeAvailable(raylib)
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
 endif()
 
-# FetchContent for ImGUI
+# Platform-specific configuration
+if (WIN32)
+    # Windows configuration: Raylib 4.5 and custom DLL handling
+    find_package(raylib 4.5 QUIET)
+    if (NOT raylib_FOUND)
+        include(FetchContent)
+        FetchContent_Declare(
+                raylib
+                URL https://github.com/raysan5/raylib/archive/refs/tags/4.5.0.tar.gz
+                DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+        )
+        FetchContent_MakeAvailable(raylib)
+    endif()
+elseif (UNIX)
+    # Linux configuration: Raylib 3.7 with debugging flags
+    find_package(raylib 3.0 QUIET)
+    if (NOT raylib_FOUND)
+        include(FetchContent)
+        FetchContent_Declare(
+                raylib
+                URL https://github.com/raysan5/raylib/archive/refs/tags/3.7.0.tar.gz
+        )
+        FetchContent_MakeAvailable(raylib)
+    endif()
+endif()
+
+# FetchContent for ImGUI (same for both platforms)
 include(FetchContent)
 FetchContent_Declare(
         imgui
         GIT_REPOSITORY https://github.com/ocornut/imgui.git
+        GIT_TAG master
+        GIT_PROGRESS TRUE
 )
-
 FetchContent_MakeAvailable(imgui)
 
-# FetchContent for rlImGui
+# FetchContent for rlImGui (same for both platforms)
 FetchContent_Declare(
         rlimgui
         GIT_REPOSITORY https://github.com/raylib-extras/rlImGui.git
         GIT_TAG main
+        GIT_PROGRESS TRUE
 )
 FetchContent_MakeAvailable(rlimgui)
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
 
 # Group related files into variables
 set(PLATFORM_SOURCES
@@ -67,10 +86,8 @@ set(GAME_ENTITIES_SOURCES
         src/Game/Entities/Monsters/Monster.cpp
         src/Game/Entities/Monsters/Boar.cpp
         src/Game/Entities/Objects/MovingPlatform.cpp
-        src/Game/Entities/Objects/MovingPlatform.cpp
         src/Game/Entities/Objects/Tree.cpp
         src/Game/Entities/Effects/ParticleCone.cpp
-        src/Game/Entities/Monsters/Bee.cpp
         src/Game/Entities/Monsters/Bee.cpp
 )
 
@@ -121,15 +138,32 @@ set(SOURCES
 # Define executable
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-# Include directories for ImGUI and rlImGui
+# Windows-specific settings for executable, now below target definition
+if (WIN32)
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+            WIN32_EXECUTABLE YES
+            #LINK_FLAGS "/ENTRY:mainCRTStartup"
+    )
+
+    # Post-build DLL handling for Windows in Debug mode
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                $<TARGET_FILE:raylib>
+                $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}>
+                $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        )
+    endif()
+endif()
+
+# Include directories for ImGui and rlImGui
 target_include_directories(${PROJECT_NAME} PRIVATE ${imgui_SOURCE_DIR} ${rlimgui_SOURCE_DIR})
 
 # Link libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
 
-if(MSVC)
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-            WIN32_EXECUTABLE YES
-            LINK_FLAGS "/ENTRY:mainCRTStartup"
-    )
-endif()
+# Set policy to avoid warnings
+cmake_policy(SET CMP0135 NEW)
+
+# Include directories for rlImGui configurations
+include_directories(${rlimgui_SOURCE_DIR}/include)

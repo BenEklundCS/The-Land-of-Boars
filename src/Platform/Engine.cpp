@@ -105,7 +105,6 @@ void Engine::RenderLevelScene(GameStateManager* gameState) {
     while (!WindowShouldClose() && !gameState->IsLevelOver()) {
         // Update the game
         gameState->Update();
-
         // Draw the frame
         BeginDrawing();
         Renderer::Draw(gameState, settings.get()); // Draw the scene
