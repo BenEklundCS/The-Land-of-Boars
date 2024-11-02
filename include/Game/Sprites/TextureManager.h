@@ -35,6 +35,8 @@
 
 #define BEE_TEXTURE_FLYING_PATH "../Assets/Sprites/Mob/Small Bee/Fly/Fly-Sheet.png"
 
+#define SNAIL_TEXTURE_PATH "../Assets/Sprites/Mob/Snail/walk-Sheet.png"
+
 #pragma endregion
 
 #pragma constants
@@ -55,6 +57,9 @@
 
 // Bees
 #define BEE_FLYING_FRAMES 4
+
+// Snails
+#define SNAIL_FRAMES 8
 
 // Tiles
 #define TILE_LENGTH 80 // size of a tile
@@ -78,11 +83,13 @@ enum TextureName {
     PLAYER_JUMPING_TEXTURE,
     PLAYER_ATTACKING_TEXTURE,
     // Monsters
-        // Boars
+    // Boars
     BOAR_RUNNING_TEXTURE_WHITE,
     BOAR_DYING_TEXTURE_WHITE,
-        // Bees
+    // Bees
     BEE_FLYING_TEXTURE,
+    // Snails
+    SNAIL_TEXTURE,
     // Background
     BACKGROUND_TEXTURE,
     // Trees

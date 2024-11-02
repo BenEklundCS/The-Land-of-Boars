@@ -9,6 +9,7 @@
 #include "../../../include/Game/Level/LevelLoader.h"
 #include "../../../include/Game/Entities/Objects/Tree.h"
 #include "../../../include/Game/Entities/Monsters/Bee.h"
+#include "../../../include/Game/Entities/Monsters/Snail.h"
 
 GameStateManager* LevelOne::GetGameState() {
 
@@ -76,6 +77,10 @@ GameStateManager* LevelOne::GetGameState() {
     // Bee experiments
     auto bee = std::make_unique<Bee>(100, 100, 300, 300, MonsterState::DEFAULT);
     gameState->AddObject(std::move(bee));
+
+    // Snail
+    auto snail = std::make_unique<Snail>(1500 - origin.x, 300 - origin.y, 100, 100, MonsterState::DEFAULT);
+    gameState->AddObject(std::move(snail));
 
 #pragma endregion
 

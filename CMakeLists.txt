@@ -133,6 +133,8 @@ set(SOURCES
         ${imgui_SOURCE_DIR}/imgui_tables.cpp
         ${imgui_SOURCE_DIR}/imgui_widgets.cpp
         src/Game/Entities/CollisionHandler.cpp
+        include/Game/Entities/Monsters/Snail.h
+        src/Game/Entities/Monsters/Snail.cpp
 )
 
 # Define executable
