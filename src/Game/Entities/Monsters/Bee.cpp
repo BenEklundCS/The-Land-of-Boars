@@ -3,6 +3,7 @@
 //
 
 #include "../../../../include/Game/Entities/Monsters/Bee.h"
+#include "../../../../include/Game/Management/GameStateManager.h"
 
 
 // Bee constructor
@@ -36,8 +37,22 @@ void Bee::Died() {
 
 }
 
+bool Bee::InAttackRange() {
+    // Get players from the GameStateManager
+    auto players = GameStateManager::GetInstance()->GetPlayers();
+    // Get relevant object positions
+    std::vector<Vector2> playerPositions;
+    playerPositions.reserve(players.size());
+    for (auto player : players) {
+        playerPositions.push_back(player->GetPosition());
+    }
+    Vector2 beePosition = position_;
+    // Use the distance formula to get the Bees distance to each player, and keep track of the closest player
+    float closest = 500.0f; // arbitrary value larger than Bee max range.
+}
+
 // Animate the bee
-void Bee::AnimateBee() {
+void Bee::AnimateBee() const {
     beeAnimation_->Animate();
 }
 

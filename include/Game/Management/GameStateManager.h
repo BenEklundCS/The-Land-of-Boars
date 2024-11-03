@@ -38,7 +38,8 @@ private:
     bool levelOver; // Flag for if the level is over
     void UpdatePlayers(); // Update the player vector
     void UpdateMonsters(); // Update the monster vector
-    void UpdatePlatforms();
+    void UpdatePlatforms(); // Update the platform vector
+    void UpdateOthers(); // Update the other object vector
     // Effects
     void PlayerAttackEffect(Player* player);
     // Object deleters
@@ -69,16 +70,16 @@ public:
     void Update(); // Update the game state
     // Call to update attacks, must pass a player
     void UpdateAttacks(Player* player);
-    Camera2D GetCamera() const; // Get the Camera2D
+    [[nodiscard]] Camera2D GetCamera() const; // Get the Camera2D
     std::vector<GameObject*> GetAllObjects(); // Get all game objects from the GameState
     void SetLevelOver(); // Set levelOver to true
     [[nodiscard]] bool IsLevelOver() const; // Return the levelOver flag
-    gameData GetGameData() const;
+    [[nodiscard]] gameData GetGameData() const;
+    [[nodiscard]] std::vector<Player *> GetPlayers() const;
     void AddObject(std::unique_ptr<GameObject> obj); // Add a GameObject to the scene
     void InitInput(EngineSettings* settings); // call to make input available to the GameState
     void OnNotify(const GameObject* entity, Events event) override;
     ~GameStateManager() override; // Destructor
-    void UpdateOthers();
 };
 
 #endif //PLATFORMER_GAMESTATEMANAGER_H

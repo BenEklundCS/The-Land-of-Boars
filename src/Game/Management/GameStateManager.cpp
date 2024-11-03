@@ -273,6 +273,16 @@ gameData GameStateManager::GetGameData() const {
     return data;
 }
 
+// Get all players
+std::vector<Player*> GameStateManager::GetPlayers() const {
+    std::vector<Player*> players;
+    players.reserve(players_.size());
+    for (auto& player : players_) {
+        players.push_back(player.get());
+    }
+    return players;
+}
+
 // Create the InputManager
 void GameStateManager::InitInput(EngineSettings* settings) {
     inputManager_ = std::make_unique<InputManager>(players_[0].get(), *settings);

@@ -7,10 +7,9 @@
 
 #include "../GameObject.h"
 #include "../Player/Player.h"
-#include "../PhysicsConstants.h"
 
-#define PACING_WINDOW 800
-#define MONSTER_SPEED 3
+#define PACING_WINDOW (800 * WINDOW_SCALE_FACTOR_X) // Scale pacing window to the screen size
+#define MONSTER_SPEED (3 * WINDOW_SCALE_FACTOR_X)
 
 // Definition for MonsterState
 enum MonsterState {

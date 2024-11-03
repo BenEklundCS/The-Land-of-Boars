@@ -119,9 +119,8 @@ void Player::Jump() {
     playerData.jumps_++; // Increment jumps
     playerData.playerAnimation_->Reset(); // Reset the player's animation on Jump (handles double jump animating)
     // Make the player jump!
-    const float jumpPower = 6.5f;
     playerData.state_ = JUMPING;
-    velocity_.y -= PLAYER_SPEED * jumpPower;
+    velocity_.y -= PLAYER_SPEED * PLAYER_JUMP_POWER;
     // Notify of jump event
     Notify(this, EVENT_PLAYER_JUMPED);
 }

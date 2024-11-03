@@ -5,10 +5,14 @@
 #ifndef PLATFORMER_PLAYER_H
 #define PLATFORMER_PLAYER_H
 
-#define PLAYER_SPEED 200
+#include <cmath>
+
+#define PLAYER_SPEED (200 * WINDOW_SCALE_FACTOR_X)
+#define PLAYER_JUMP_HEIGHT (1.0f * WINDOW_SCALE_FACTOR_Y)
+#define PLAYER_JUMP_POWER (sqrt(GRAVITY * PLAYER_JUMP_HEIGHT))
 #define PLAYER_MAX_JUMPS 1
 #define PLAYER_MAX_HP 3
-#define PLAYER_LENGTH 150
+#define PLAYER_LENGTH 150 // DO NOT SCALE LENGTHS AND POSITIONS, THIS IS HANDLED BY SCALE() AND INHERITENCE FROM GAMEOBJECT
 #define PLAYER_ATTACK_DELAY 0.5f
 
 #include <memory>
@@ -43,7 +47,7 @@ struct playerDataStruct {
     // movement
     int jumps_ = 0; // Jump counter used to check if we can jump
     bool isOnGround_ = false;
-    float attackRange_ = 500.0f;
+    float attackRange_ = 500.0f * WINDOW_SCALE_FACTOR_X;
 };
 
 // Player is a GameObject with all player logic encapsulated

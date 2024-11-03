@@ -10,6 +10,7 @@ Monster::Monster(float pos_x, float pos_y, float dim_x, float dim_y, MonsterStat
     this->position_.y = pos_y;
     this->dimensions_.x = dim_x;
     this->dimensions_.y = dim_y;
+
     this->state_ = state;
     this->initialPosition_ = position_;
     this->movingRight_ = false;
