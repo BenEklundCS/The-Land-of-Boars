@@ -14,12 +14,14 @@
 // Player becomes ATTACKING when an Attack method is called, no matter what they should remain attacking until the attack method finishes
 
 Player::Player() : GameObject(PLAYER) {
-    // Load it here to ensure the TextureManager is queried after the player object is created
-    playerData.playerAnimation_ = std::make_unique<Animation>(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE),
-                                                              PLAYER_IDLE_FRAMES, 0.2f, true);
     // Construct the primitive GameObject attributes
     position_ = Vector2{100, 100};
     dimensions_ = Vector2{PLAYER_LENGTH, PLAYER_LENGTH};
+    // Scale the object
+    Scale();
+    // Load it here to ensure the TextureManager is queried after the player object is created
+    playerData.playerAnimation_ = std::make_unique<Animation>(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE),
+                                                              PLAYER_IDLE_FRAMES, 0.2f, true);
 }
 
 #pragma region render methods

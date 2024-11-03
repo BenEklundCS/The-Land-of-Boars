@@ -35,11 +35,12 @@ protected:
     Color color_ = WHITE;
     bool shouldRemove_ = false;
     bool movingRight_ = true;
+    void Scale();
 public:
     void SetPosition(Vector2 newPosition);
     void SetVelocity(Vector2 newVelocity);
     void ToggleMovingRight();
-    bool GetMovingRight();
+    bool GetMovingRight() const;
     GameObjectType type_; // The type of GameObject used for identification in loops
     explicit GameObject(GameObjectType type = OTHER);
     Vector2 GetPosition(); // Get the current position Vector2

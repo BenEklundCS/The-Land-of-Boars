@@ -13,7 +13,7 @@
 class Snail : public Monster {
 private:
     std::unique_ptr<Animation> snailAnimation_;
-    void Died();
+    static void Died();
     void AnimateSnail();
 public:
     Snail(float posX, float posY, float dimX, float dimY, MonsterState state);

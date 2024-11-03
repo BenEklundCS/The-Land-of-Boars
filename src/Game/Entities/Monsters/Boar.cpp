@@ -7,8 +7,11 @@
 #include <chrono>
 
 Boar::Boar(float posX, float posY, float dimX, float dimY, MonsterState state)
-: Monster(posX, posY, dimX, dimY, state),
-boarAnimation_(std::make_unique<Animation>(TextureManager::GetInstance()->GetTexture(BOAR_RUNNING_TEXTURE_WHITE), BOAR_RUNNING_FRAMES, 0.1f, true)) {
+: Monster(posX, posY, dimX, dimY, state) {
+    // Scale the boar
+    Scale();
+    // Load the boar animation
+    boarAnimation_ = std::make_unique<Animation>(TextureManager::GetInstance()->GetTexture(BOAR_RUNNING_TEXTURE_WHITE), BOAR_RUNNING_FRAMES, 0.1f, true);
     this->hp_ = BOAR_MAX_HEALTH;
 }
 

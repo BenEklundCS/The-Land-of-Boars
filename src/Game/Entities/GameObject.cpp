@@ -3,10 +3,12 @@
 //
 
 #include "../../../include/Game/Entities/GameObject.h"
+#include "../../../include/Platform/Globals.h"
 
 // Construct a GameObject using the type
 GameObject::GameObject(GameObjectType type)
         : type_(type), position_{0.0f, 0.0f}, dimensions_{0.0f, 0.0f} {
+    Scale();
 }
 
 GameObject::~GameObject() = default;
@@ -87,8 +89,18 @@ void GameObject::ToggleMovingRight() {
     movingRight_ = !movingRight_;
 }
 
-bool GameObject::GetMovingRight() {
+bool GameObject::GetMovingRight() const {
     return movingRight_;
+}
+
+void GameObject::Scale() {
+    TraceLog(LOG_INFO, "Scaling object to %d %d", WINDOW_SCALE_FACTOR_X, WINDOW_SCALE_FACTOR_Y);
+    // Adjust the dimensions of the object based on the window scale factor
+    dimensions_.x *= WINDOW_SCALE_FACTOR_X;
+    dimensions_.y *= WINDOW_SCALE_FACTOR_Y;
+    // Adjust the position of the object based on the window scale factor
+    position_.x *= WINDOW_SCALE_FACTOR_X;
+    position_.y *= WINDOW_SCALE_FACTOR_Y;
 }
 
 

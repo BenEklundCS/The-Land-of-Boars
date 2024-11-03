@@ -4,10 +4,12 @@
 #include "../../../../include/Game/Entities/Objects/Tree.h"
 
 Tree::Tree(float x, float y, TextureName treeTexture) : GameObject(TREE),
-                                                        texture_(TextureManager::GetInstance()->GetTexture(treeTexture))
-{ // Ensure to instantiate the GameObject!
+    texture_(TextureManager::GetInstance()->GetTexture(treeTexture)) {
+    // Ensure to instantiate the GameObject!
     dimensions_ = Vector2{TREE_WIDTH, TREE_HEIGHT};
     position_ = Vector2{x, y};
+    // Scale the game object
+    Scale();
 }
 
 void Tree::Update() {

@@ -89,6 +89,7 @@ set(GAME_ENTITIES_SOURCES
         src/Game/Entities/Objects/Tree.cpp
         src/Game/Entities/Effects/ParticleCone.cpp
         src/Game/Entities/Monsters/Bee.cpp
+        src/Game/Entities/Monsters/Snail.cpp
 )
 
 set(GAME_LEVEL_SOURCES
@@ -108,6 +109,7 @@ set(GAME_HEADERS
         include/Game/Level/Level.h
         include/Game/Level/LevelOne.h
         include/Game/Entities/Monsters/Boar.h
+        include/Game/Entities/Monsters/Snail.h
         include/Game/Entities/PhysicsConstants.h
         include/Game/Entities/Objects/Tile.h
         include/Game/Management/TileManager.h
@@ -133,8 +135,7 @@ set(SOURCES
         ${imgui_SOURCE_DIR}/imgui_tables.cpp
         ${imgui_SOURCE_DIR}/imgui_widgets.cpp
         src/Game/Entities/CollisionHandler.cpp
-        include/Game/Entities/Monsters/Snail.h
-        src/Game/Entities/Monsters/Snail.cpp
+        include/Platform/Globals.h
 )
 
 # Define executable

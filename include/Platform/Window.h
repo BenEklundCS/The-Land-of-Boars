@@ -20,6 +20,8 @@ private:
     // windowWidth and windowHeight are set by DEFAULT macros
     int windowWidth_ = DEFAULT_WINDOW_WIDTH;
     int windowHeight_ = DEFAULT_WINDOW_HEIGHT;
+    // scaling (tied to Platform/Globals.h)
+    static void InitScaling();
     // std::unique_ptr for memory management
     static std::unique_ptr<Window> instance;
 public:

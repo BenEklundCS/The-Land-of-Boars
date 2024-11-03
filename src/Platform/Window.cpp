@@ -4,6 +4,7 @@
 
 #include "../../include/Platform/Window.h"
 #include "raylib.h"
+#include "../../include/Platform/Globals.h"
 
 std::unique_ptr<Window> Window::instance = nullptr;
 
@@ -13,6 +14,7 @@ Window::Window() {
     SetConfigFlags(FLAG_WINDOW_RESIZABLE); // set window resizable such that Window::Resize is callable later on
     SetTargetFPS(60); // Set the desired frames per second
     SetExitKey(0);  // Disable default ESC behavior
+    InitScaling(); // Initialize the scaling factors
     TraceLog(LOG_INFO, "Window::Window() Started successfully."); // Log Window started successfully
 }
 
@@ -22,6 +24,7 @@ void Window::Resize(int window_width, int window_height) {
     this->windowWidth_ = window_width;
     this->windowHeight_ = window_height;
     SetWindowSize(windowWidth_, windowHeight_); // call SetWindowSize
+    InitScaling(); // Initialize the scaling factors
     TraceLog(LOG_INFO, "Window::Resize() Resized."); // Log the window resize
 }
 
@@ -33,6 +36,12 @@ Window* Window::GetInstance() {
         instance = std::make_unique<Window>(); // Typical singleton stuff, but I've implemented the instance as a unique ptr
     }
     return instance.get(); // if the window already exists, simply return it
+}
+
+void Window::InitScaling() {
+    // Initialize the scaling factors
+    WINDOW_SCALE_FACTOR_X = static_cast<float>(GetScreenWidth()) / BASE_SCREEN_WIDTH; // Set the window scale factor x
+    WINDOW_SCALE_FACTOR_Y = static_cast<float>(GetScreenHeight()) / BASE_SCREEN_HEIGHT; // Set the window scale factor y
 }
 
 // On a Window destructor call, close the window

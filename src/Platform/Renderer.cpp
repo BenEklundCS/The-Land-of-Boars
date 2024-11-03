@@ -5,6 +5,7 @@
 #include "../../include/Platform/Renderer.h"
 #include "raylib.h"
 #include "../../include/Game/Management/GameStateManager.h"
+#include "../../include/Platform/Globals.h"
 
 
 Renderer::Renderer() = default;
@@ -54,16 +55,33 @@ void Renderer::Draw(GameStateManager* gameState, EngineSettings* settings) {
 
 void Renderer::DrawTitleScreen() {
     Camera2D titleCamera = { 0 };
-    // Target the center of the screen
-    titleCamera.target = (Vector2){ (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f };
-    titleCamera.offset = (Vector2){ (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f };
-    // Normal rotation and zoom
+    titleCamera.target = (Vector2){ static_cast<float>(GetScreenWidth()) / 2.0f, static_cast<float>(GetScreenHeight()) / 2.0f };
+    titleCamera.offset = (Vector2){ static_cast<float>(GetScreenWidth()) / 2.0f, static_cast<float>(GetScreenHeight()) / 2.0f };
     titleCamera.rotation = 0.0f;
     titleCamera.zoom = 1.0f;
-    // Draw the background
+
+    // Draw the background with camera
     RenderBackground(titleCamera);
-    DrawText("Welcome to The Land of Boars!", GetScreenWidth() / 4, GetScreenHeight() / 2, 75, WHITE);
-    DrawText("Press SPACEBAR to begin", GetScreenWidth() / 4, GetScreenHeight() - 500, 40, WHITE);
+
+    // Scale font sizes
+    int titleFontSize = static_cast<int>(75 * WINDOW_SCALE_FACTOR_Y);
+    int subtitleFontSize = static_cast<int>(40 * WINDOW_SCALE_FACTOR_Y);
+
+    // Measure text width to centralize it
+    int titleTextWidth = MeasureText("Welcome to The Land of Boars!", titleFontSize);
+    int subtitleTextWidth = MeasureText("Press SPACEBAR to begin", subtitleFontSize);
+
+    // Center the title and subtitle
+    float titlePosX = (GetScreenWidth() - titleTextWidth) / 2.0f;
+    float titlePosY = (GetScreenHeight() / 2.0f) - (titleFontSize * 1.5f); // Slightly above center
+    float subtitlePosX = (GetScreenWidth() - subtitleTextWidth) / 2.0f;
+    float subtitlePosY = (GetScreenHeight() / 2.0f) + (subtitleFontSize * 1.5f); // Slightly below center
+
+    // Draw the title and subtitle text with centralized positions and scaled font sizes
+    DrawText("Welcome to The Land of Boars!", titlePosX, titlePosY, titleFontSize, WHITE);
+    DrawText("Press SPACEBAR to begin", subtitlePosX, subtitlePosY, subtitleFontSize, WHITE);
 }
+
+
 
 Renderer::~Renderer() = default;

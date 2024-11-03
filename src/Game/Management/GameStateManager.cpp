@@ -231,7 +231,7 @@ std::vector<GameObject*> GameStateManager::GetAllObjects() {
 void GameStateManager::InitCamera() {
     Player* player1 = players_.at(0).get();
     camera_.target = (Vector2){player1->GetPosition().x + 20.0f, player1->GetPosition().y + 20.0f};
-    camera_.offset = (Vector2){(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f};
+    camera_.offset = (Vector2){static_cast<float>(GetScreenWidth()) / 2.0f, static_cast<float>(GetScreenHeight()) / 2.0f};
     camera_.rotation = 0.0f;
     camera_.zoom = 1.0f;
 }
@@ -253,7 +253,7 @@ void GameStateManager::SetLevelOver() {
 }
 
 // Return the camera
-Camera2D GameStateManager::GetCamera() {
+Camera2D GameStateManager::GetCamera() const {
     return camera_;
 }
 
@@ -261,7 +261,7 @@ Camera2D GameStateManager::GetCamera() {
 
 // Retrieve a gameData struct from the GameStateManager, giving the context of the games current state
 // Retrieve a gameData struct from the GameStateManager, giving the context of the games current state
-gameData GameStateManager::GetGameData() {
+gameData GameStateManager::GetGameData() const {
     // IMPORTANT: GetPlayerData, and GameStateManager support ONE PLAYER
     gameData data{};
     data.player = players_.at(0).get();

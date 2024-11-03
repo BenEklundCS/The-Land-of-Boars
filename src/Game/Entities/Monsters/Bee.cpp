@@ -7,8 +7,11 @@
 
 // Bee constructor
 Bee::Bee(float posX, float posY, float dimX, float dimY, MonsterState state)
-: Monster(posX, posY, dimX, dimY, state),
-beeAnimation_(std::make_unique<Animation>(TextureManager::GetInstance()->GetTexture(BEE_FLYING_TEXTURE), BEE_FLYING_FRAMES, 0.1f, true)) {
+: Monster(posX, posY, dimX, dimY, state) {
+    // Scale the bee
+    Scale();
+    // Load the bee animation
+    beeAnimation_ = std::make_unique<Animation>(TextureManager::GetInstance()->GetTexture(BEE_FLYING_TEXTURE), BEE_FLYING_FRAMES, 0.1f, true);
     this->hp_ = BEE_MAX_HEALTH;
 }
 

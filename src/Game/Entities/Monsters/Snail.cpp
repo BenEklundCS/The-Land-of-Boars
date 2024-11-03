@@ -5,8 +5,11 @@
 #include "../../../include/Game/Entities/Monsters/Snail.h"
 
 Snail::Snail(float posX, float posY, float dimX, float dimY, MonsterState state)
-        : Monster(posX, posY, dimX, dimY, state),
-          snailAnimation_(std::make_unique<Animation>(TextureManager::GetInstance()->GetTexture(SNAIL_TEXTURE), SNAIL_FRAMES, 0.1f, true)) {
+        : Monster(posX, posY, dimX, dimY, state) {
+    // Scale the snail before loading the animation
+    Scale();
+    // Load the snail animation
+    snailAnimation_ = std::make_unique<Animation>(TextureManager::GetInstance()->GetTexture(SNAIL_TEXTURE), SNAIL_FRAMES, 0.1f, true);
     this->hp_ = SNAIL_MAX_HEALTH;
 }
 
