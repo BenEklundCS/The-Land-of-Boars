@@ -3,6 +3,7 @@
 //
 
 #include "../../../include/Game/Management/TileManager.h"
+#include "../../../include/Platform/Globals.h"
 
 // Create tiles creates a tilemap given a 2d vector of integers
 // - 0 for GRASS

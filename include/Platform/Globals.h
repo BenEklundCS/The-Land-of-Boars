@@ -18,4 +18,7 @@
 inline float WINDOW_SCALE_FACTOR_X;
 inline float WINDOW_SCALE_FACTOR_Y;
 
+inline float INVERSE_WINDOW_SCALE_FACTOR_X;
+inline float INVERSE_WINDOW_SCALE_FACTOR_Y;
+
 #endif //GLOBALS_H

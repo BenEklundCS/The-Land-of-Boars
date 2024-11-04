@@ -42,6 +42,9 @@ void Window::InitScaling() {
     // Initialize the scaling factors
     WINDOW_SCALE_FACTOR_X = static_cast<float>(GetScreenWidth()) / BASE_SCREEN_WIDTH; // Set the window scale factor x
     WINDOW_SCALE_FACTOR_Y = static_cast<float>(GetScreenHeight()) / BASE_SCREEN_HEIGHT; // Set the window scale factor y
+    // Inverses
+    INVERSE_WINDOW_SCALE_FACTOR_X = BASE_SCREEN_WIDTH / static_cast<float>(GetScreenWidth()); // Set the window scale factor x
+    INVERSE_WINDOW_SCALE_FACTOR_Y = BASE_SCREEN_HEIGHT / static_cast<float>(GetScreenHeight()); // Set the window scale factor y
 }
 
 // On a Window destructor call, close the window

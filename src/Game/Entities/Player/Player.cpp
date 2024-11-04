@@ -94,7 +94,7 @@ void Player::MoveLeft() {
     movingRight_ = false;
     // Set the player's X velocity
     if (velocity_.x >= -MAX_VELOCITY) {
-        velocity_.x -= PLAYER_SPEED;
+        velocity_.x -= PLAYER_SPEED_X;
     }
 }
 
@@ -107,7 +107,7 @@ void Player::MoveRight() {
     movingRight_ = true;
     // Set the player's X velocity
     if (velocity_.x <= MAX_VELOCITY) {
-        velocity_.x += PLAYER_SPEED;
+        velocity_.x += PLAYER_SPEED_X;
     }
 }
 
@@ -120,7 +120,7 @@ void Player::Jump() {
     playerData.playerAnimation_->Reset(); // Reset the player's animation on Jump (handles double jump animating)
     // Make the player jump!
     playerData.state_ = JUMPING;
-    velocity_.y -= PLAYER_SPEED * PLAYER_JUMP_POWER;
+    velocity_.y -= PLAYER_SPEED_Y * PLAYER_JUMP_POWER;
     // Notify of jump event
     Notify(this, EVENT_PLAYER_JUMPED);
 }
