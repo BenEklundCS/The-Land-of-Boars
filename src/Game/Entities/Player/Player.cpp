@@ -58,21 +58,20 @@ void Player::Update() {
 
 #pragma region movement methods
 
-void Player::MovePlayer(float deltaTime) {
+void Player::MovePlayer(const float deltaTime) {
     // Call the updatePosition and velocity changing functions
     ApplyFriction();
     ApplyGravity();
     UpdatePosition(deltaTime);
 }
 
-void Player::UpdatePosition(float deltaTime) {
+void Player::UpdatePosition(const float deltaTime) {
     position_.x += velocity_.x * deltaTime;
     position_.y += velocity_.y * deltaTime;
 }
 
 void Player::ApplyFriction() {
-    const int minVelocity = 50;
-    if (velocity_.x > minVelocity) {
+    if (constexpr int minVelocity = 50; velocity_.x > minVelocity) {
         velocity_.x -= FRICTION;
     } else if (velocity_.x < -minVelocity) {
         velocity_.x += FRICTION;

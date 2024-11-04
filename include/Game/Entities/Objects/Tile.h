@@ -10,12 +10,12 @@
 
 class Tile : public GameObject {
 private:
-    GameTexture texture_;
+    GameTexture texture_{};
 public:
     Tile(float x, float y, TextureName tileTexture);
     void Draw() override; // Draw the tile
     void Update() override; // Update the tile
-    [[maybe_unused]] void SetTexture(GameTexture texture);
+    [[maybe_unused]] void SetTexture(const GameTexture &texture);
 };
 
 

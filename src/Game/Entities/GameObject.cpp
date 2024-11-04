@@ -6,15 +6,15 @@
 #include "../../../include/Platform/Globals.h"
 
 // Construct a GameObject using the type
-GameObject::GameObject(GameObjectType type)
-        : type_(type), position_{0.0f, 0.0f}, dimensions_{0.0f, 0.0f} {
+GameObject::GameObject(const GameObjectType type)
+        : position_{0.0f, 0.0f}, dimensions_{0.0f, 0.0f}, type_(type) {
     Scale();
 }
 
 GameObject::~GameObject() = default;
 
 void GameObject::Update() {
-    float deltaTime = GetFrameTime();
+    const float deltaTime = GetFrameTime();
     UpdateFlashing(deltaTime);
 }
 
@@ -65,23 +65,23 @@ void GameObject::UpdateFlashing(float deltaTime) {
 }
 
 // Returns the current position of the object
-Vector2 GameObject::GetPosition() {
+Vector2 GameObject::GetPosition() const {
     return position_;
 }
 
-Vector2 GameObject::GetVelocity() {
+Vector2 GameObject::GetVelocity() const {
     return velocity_;
 }
 
-Color GameObject::GetColor() {
+Color GameObject::GetColor() const {
     return color_;
 }
 
-void GameObject::SetPosition(Vector2 newPosition) {
+void GameObject::SetPosition(const Vector2 newPosition) {
     position_ = newPosition;
 }
 
-void GameObject::SetVelocity(Vector2 newVelocity) {
+void GameObject::SetVelocity(const Vector2 newVelocity) {
     velocity_ = newVelocity;
 }
 

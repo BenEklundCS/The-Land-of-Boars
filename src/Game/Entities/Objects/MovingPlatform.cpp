@@ -6,7 +6,7 @@
 #include "raylib.h"
 
 // Constructor for MovingPlatform, initializing the base Platform class using an existing Platform object
-MovingPlatform::MovingPlatform(std::unique_ptr<Platform> platform, Vector2 boundsX, Vector2 boundsY, float speed, bool LR, bool UD)
+MovingPlatform::MovingPlatform(const std::unique_ptr<Platform> &platform, const Vector2 boundsX, const Vector2 boundsY, const float speed, const bool LR, const bool UD)
         : Platform(*platform), boundsX(boundsX), boundsY(boundsY),
           moveLeftRight(LR), moveUpDown(UD),
           startingXY(Vector2{platform->GetPosition().x, platform->GetPosition().y}) {
@@ -19,7 +19,7 @@ MovingPlatform::MovingPlatform(std::unique_ptr<Platform> platform, Vector2 bound
 
 // Update call for the MovingPlatform
 void MovingPlatform::Update() {
-    float deltaTime = GetFrameTime();
+    const float deltaTime = GetFrameTime();
     if (moveLeftRight) {
         MoveLeftRight(deltaTime);
     }
@@ -39,7 +39,7 @@ void MovingPlatform::Draw() {
 #pragma region movement
 
 // Move the platform left/right if that flag is set
-void MovingPlatform::MoveLeftRight(float deltaTime) {
+void MovingPlatform::MoveLeftRight(const float deltaTime) {
     if (movingRight) {
         position_.x += speed_ * deltaTime;
     }
@@ -49,7 +49,7 @@ void MovingPlatform::MoveLeftRight(float deltaTime) {
 }
 
 // Move the platform up/down if that flag is set
-void MovingPlatform::MoveUpDown(float deltaTime) {
+void MovingPlatform::MoveUpDown(const float deltaTime) {
     if (movingUp) {
         position_.y += speed_ * deltaTime;
     }
@@ -81,7 +81,7 @@ void MovingPlatform::SwapDirection() {
  * |------|
  */
 // returns true if the platform has reached the left boundary
-bool MovingPlatform::HitLeftBound() {
+bool MovingPlatform::HitLeftBound() const {
     return (!movingRight && position_.x <= startingXY.x + boundsX.x);
 }
 
@@ -91,7 +91,7 @@ bool MovingPlatform::HitLeftBound() {
  * |------|
  */
 // returns true if the platform has reached the right boundary
-bool MovingPlatform::HitRightBound() {
+bool MovingPlatform::HitRightBound() const {
     return (movingRight && position_.x >= startingXY.x + dimensions_.x + boundsX.y);
 }
 
@@ -101,7 +101,7 @@ bool MovingPlatform::HitRightBound() {
  * |------|
  */
 // returns true if the platform has reached the top boundary
-bool MovingPlatform::HitTopBound() {
+bool MovingPlatform::HitTopBound() const {
     return (!movingUp && position_.y <= startingXY.y + boundsY.x);
 }
 
@@ -111,7 +111,7 @@ bool MovingPlatform::HitTopBound() {
  * |-  * -|
  */
 // returns true if the platform has reached the bottom boundary
-bool MovingPlatform::HitBottomBound() {
+bool MovingPlatform::HitBottomBound() const {
     return (movingUp && position_.y >= startingXY.y + dimensions_.y + boundsY.y);
 }
 
@@ -120,7 +120,7 @@ float MovingPlatform::GetSpeed() const {
 }
 
 Vector2 MovingPlatform::GetMovement() const {
-    return Vector2{speed_ * (float)(movingRight ? 1 : -1), speed_ * (float)(movingUp ? 1 : -1)};
+    return Vector2{speed_ * static_cast<float>(movingRight ? 1 : -1), speed_ * static_cast<float>(movingUp ? 1 : -1)};
 }
 
 #pragma endregion

@@ -9,7 +9,7 @@
 
 class MovingPlatform : public Platform {
 public:
-    MovingPlatform(std::unique_ptr<Platform> platform, Vector2 boundsX, Vector2 boundsY, float speed, bool LR, bool UD);
+    MovingPlatform(const std::unique_ptr<Platform> &platform, Vector2 boundsX, Vector2 boundsY, float speed, bool LR, bool UD);
     void Update() override;
     float GetSpeed() const;
 private:
@@ -31,10 +31,10 @@ private:
     void SwapDirection();
     void Draw() override;
         // Collisions
-    bool HitLeftBound();
-    bool HitRightBound();
-    bool HitTopBound();
-    bool HitBottomBound();
+    bool HitLeftBound() const;
+    bool HitRightBound() const;
+    bool HitTopBound() const;
+    bool HitBottomBound() const;
 
     Vector2 GetMovement() const;
 };

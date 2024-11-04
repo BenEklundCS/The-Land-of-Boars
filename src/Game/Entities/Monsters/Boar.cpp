@@ -6,7 +6,7 @@
 #include <random>
 #include <chrono>
 
-Boar::Boar(float posX, float posY, float dimX, float dimY, MonsterState state)
+Boar::Boar(const float posX, const float posY, const float dimX, const float dimY, const MonsterState state)
 : Monster(posX, posY, dimX, dimY, state) {
     // Scale the boar
     Scale();

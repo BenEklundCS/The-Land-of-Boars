@@ -23,13 +23,13 @@ private:
     PlayerCommands playerCommands;
     Player* player_;
     EngineSettings& settings_;
-    void HandlePlayerInput();
-    void HandleUIInput();
+    void HandlePlayerInput() const;
+    static void HandleUIInput();
     static void HandleDebugInput();
 public:
     explicit InputManager(Player* player, EngineSettings& settings)
     : player_(player), settings_(settings) {}
-    void HandleUserInput();
+    void HandleUserInput() const;
 };
 
 

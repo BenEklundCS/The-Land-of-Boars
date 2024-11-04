@@ -1,19 +1,19 @@
 #include "../../../include/Game/Entities/Effects/ParticleCone.h"
 #include "cmath"
 
-ParticleCone::ParticleCone(Vector2 position, Vector2 playerDimensions, bool movingRight, float particleCount) {
+ParticleCone::ParticleCone(const Vector2 position, const Vector2 playerDimensions, const bool facingRight, const float particleCount) {
     position_ = position;
     playerDimensions_ = playerDimensions;
-    facingRight_ = movingRight;
+    facingRight_ = facingRight;
     particleCount_ = particleCount;
 }
 
 void ParticleCone::Draw() {
     // Number of particles to draw
-    int particles = static_cast<int>(particleCount_);
+    const int particles = static_cast<int>(particleCount_);
 
     // Determine the direction based on whether the object is facing right or left
-    float baseAngle = facingRight_ ? 0.0f : PI;
+    const float baseAngle = facingRight_ ? 0.0f : PI;
 
     // Adjust the initial position based on the player's direction and dimensions
     Vector2 initialPosition = position_;
@@ -26,14 +26,14 @@ void ParticleCone::Draw() {
     // Loop through each particle
     for (int i = 0; i < particles; i++) {
         // Randomize the spread within the cone
-        auto spread = (float)GetRandomValue(-15, 15) * DEG2RAD;
-        float angle = baseAngle + spread;
+        const float spread = static_cast<float>(GetRandomValue(-15, 15)) * DEG2RAD;
+        const float angle = baseAngle + spread;
 
         // Randomize the distance of the particle from the origin
-        auto distance = (float)GetRandomValue(0, 300);  // Adjusted distance for particles
+        const auto distance = static_cast<float>(GetRandomValue(0, 300));  // Adjusted distance for particles
 
         // Calculate the particle's position
-        Vector2 particlePosition = {
+        const Vector2 particlePosition = {
                 initialPosition.x + cosf(angle) * distance + 60,
                 initialPosition.y + sinf(angle) * distance + 100
         };

@@ -20,7 +20,7 @@ private:
     float frameDuration_;
     bool replay_;
 public:
-    Animation(GameTexture gameTexture, int frameCount, float frameDuration, bool replay);
+    Animation(const GameTexture &gameTexture, int frameCount, float frameDuration, bool replay);
     [[nodiscard]] Texture2D GetTexture() const; // Get the current Texture2D
     [[nodiscard]] Rectangle GetCurrentRect() const; // Get the current animation rect
     void Animate(); // Get the next frame of the animation

@@ -7,7 +7,7 @@
 
 
 // Bee constructor
-Bee::Bee(float posX, float posY, float dimX, float dimY, MonsterState state)
+Bee::Bee(const float posX, const float posY, const float dimX, const float dimY, const MonsterState state)
 : Monster(posX, posY, dimX, dimY, state) {
     // Scale the bee
     Scale();
@@ -19,8 +19,8 @@ Bee::Bee(float posX, float posY, float dimX, float dimY, MonsterState state)
 // Draw the bee
 void Bee::Draw() {
     // Get the playerTexture sheet and currentRect from the Animation object
-    Texture2D beeTexture = beeAnimation_->GetTexture();
-    Rectangle currentRect = beeAnimation_->GetCurrentRect();
+    const Texture2D beeTexture = beeAnimation_->GetTexture();
+    const Rectangle currentRect = beeAnimation_->GetCurrentRect();
     beeAnimation_->FlipX(!movingRight_);
     // Draw the boar utilizing the currently loaded boarTexture, and rect position
     DrawTexturePro(beeTexture, currentRect, GetRect(), Vector2{0, 0}, 0, color_);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
@@ -39,16 +39,19 @@ void Bee::Died() {
 
 bool Bee::InAttackRange() {
     // Get players from the GameStateManager
+    /*
     auto players = GameStateManager::GetInstance()->GetPlayers();
     // Get relevant object positions
     std::vector<Vector2> playerPositions;
     playerPositions.reserve(players.size());
-    for (auto player : players) {
+    for (const auto player : players) {
         playerPositions.push_back(player->GetPosition());
     }
     Vector2 beePosition = position_;
     // Use the distance formula to get the Bees distance to each player, and keep track of the closest player
     float closest = 500.0f; // arbitrary value larger than Bee max range.
+    */
+    return false; // dummy return for now
 }
 
 // Animate the bee
@@ -57,6 +60,6 @@ void Bee::AnimateBee() const {
 }
 
 // Override of hit monster
-void Bee::HitMonster(int damage) {
+void Bee::HitMonster(const int damage) {
     Monster::HitMonster(damage);
 }

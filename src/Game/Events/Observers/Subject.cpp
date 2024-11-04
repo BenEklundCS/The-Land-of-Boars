@@ -5,7 +5,7 @@
 #include <algorithm>
 #include "../../../../include/Game/Events/Observers/Subject.h"
 
-void Subject::Notify(const GameObject *entity, Events event) {
+void Subject::Notify(const GameObject *entity, const Events event) {
     for (Observer* o : observers_) {
         if (o != nullptr) {
             o->OnNotify(entity, event);

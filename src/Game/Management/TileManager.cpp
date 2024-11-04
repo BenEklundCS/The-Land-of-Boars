@@ -17,22 +17,23 @@ void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
         tiles_[i].resize(tileMap[i].size());
     }
 
-    int tile_overlap = 6;
-
     for (int i = 0; i < tileMap.size(); ++i) {
         for (int j = 0; j < tileMap[i].size(); ++j) {
+            constexpr int tile_overlap = 6;
             switch (tileMap[i][j]) {
                 case 0:
                     tiles_[i][j] = nullptr;
                     break;
                 case 1:
-                    tiles_[i][j] = std::make_unique<Tile>(position_.x + (float)(j * (TILE_LENGTH - tile_overlap)),
-                                                          position_.y + (float)(i * (TILE_LENGTH - tile_overlap)), TILE_DIRT_TEXTURE);
+                    tiles_[i][j] = std::make_unique<Tile>(position_.x + static_cast<float>(j * (TILE_LENGTH - tile_overlap)),
+                                                          position_.y + static_cast<float>(i * (TILE_LENGTH - tile_overlap)), TILE_DIRT_TEXTURE);
                     break;
                 case 2:
-                    tiles_[i][j] = std::make_unique<Tile>(position_.x + (float)(j * (TILE_LENGTH - tile_overlap)),
-                                                          position_.y + (float)(i * (TILE_LENGTH - tile_overlap)), TILE_GRASS_TEXTURE);
+                    tiles_[i][j] = std::make_unique<Tile>(position_.x + static_cast<float>(j * (TILE_LENGTH - tile_overlap)),
+                                                          position_.y + static_cast<float>(i * (TILE_LENGTH - tile_overlap)), TILE_GRASS_TEXTURE);
                     break;
+                default:
+                    TraceLog(LOG_FATAL, "Unknown tile type was passed to TileManager::CreateTiles()");
             }
         }
     }

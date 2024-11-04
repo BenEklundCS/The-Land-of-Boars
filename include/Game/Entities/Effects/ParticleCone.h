@@ -19,8 +19,8 @@ private:
     bool facingRight_;
     float particleCount_;
     bool shouldRemove_ = false;
-    Vector2 playerDimensions_;
-    Vector2 position_;
+    Vector2 playerDimensions_{};
+    Vector2 position_{};
 };
 
 #endif //THE_LAND_OF_BOARS_EFFECT_H

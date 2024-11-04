@@ -38,7 +38,7 @@ void TextureManager::LoadPlayerTextures() {
 
 // Load game tile textures
 void TextureManager::LoadTileTextures() {
-    // Use raylibs LoadTexture, kinda confusing, but I don't have a better name for loading textures myself
+    // Use Raylib's LoadTexture, kinda confusing, but I don't have a better name for loading textures myself
     Texture2D texture = ::LoadTexture(TILE_TEXTURE_PATH);
     float tileWidth = 64;
     float tileHeight = 64;
@@ -50,14 +50,14 @@ void TextureManager::LoadTileTextures() {
 
 // Load all other textures
 void TextureManager::LoadOtherTextures() {
-    float treeWidth = 100;
-    float treeHeight = 370;
+    constexpr float treeWidth = 100;
+    constexpr float treeHeight = 370;
     // Background
-    Texture2D backgroundTexture = ::LoadTexture(BACKGROUND_TEXTURE_PATH);
+    const Texture2D backgroundTexture = ::LoadTexture(BACKGROUND_TEXTURE_PATH);
     TextureManager::LoadTexture(backgroundTexture, BACKGROUND_TEXTURE,
-                                Rectangle{0, 0, (float)backgroundTexture.width, (float)backgroundTexture.height});
+                                Rectangle{0, 0, static_cast<float>(backgroundTexture.width), static_cast<float>(backgroundTexture.height)});
     // Trees
-    Texture2D greenTreeTexture = ::LoadTexture(GREEN_TREE_TEXTURE_PATH);
+    const Texture2D greenTreeTexture = ::LoadTexture(GREEN_TREE_TEXTURE_PATH);
     TextureManager::LoadTexture(greenTreeTexture, GREEN_TREE_TEXTURE,
                                 Rectangle{0, 0, treeWidth, treeHeight});
 }
@@ -71,31 +71,29 @@ void TextureManager::LoadMonsterTextures() {
     TextureManager::LoadAnimatedTexture(SNAIL_TEXTURE_PATH, 0, SNAIL_FRAMES, SNAIL_TEXTURE);
 }
 
-GameTexture TextureManager::GetTexture(TextureName textureName) {
-    auto it = Textures.find(textureName);
-    if (it != Textures.end()) {
+GameTexture TextureManager::GetTexture(const TextureName textureName) {
+    if (const auto it = Textures.find(textureName); it != Textures.end()) {
         return it->second;
     }
-    else {
-        TraceLog(LOG_ERROR, "Failed to load texture %s", TextureNameToString(textureName).c_str());
-        throw std::invalid_argument("Texture not found.");
-    }
+    // If texture not found
+    TraceLog(LOG_ERROR, "Failed to load texture %s", TextureNameToString(textureName).c_str());
+    throw std::invalid_argument("Texture not found.");
 }
 
 // My internal LoadTexture method that assigns a texture, name, and rect to the texture
-void TextureManager::LoadTexture(Texture2D texture, TextureName textureName, Rectangle rect) {
+void TextureManager::LoadTexture(const Texture2D &texture, const TextureName textureName, const Rectangle rect) {
     GameTexture gameTexture = {texture, rect};
     Emplace(textureName, gameTexture);
 }
 
 // Loads a texture with the frames taken into account
-void TextureManager::LoadAnimatedTexture(const char * filePath, int offset, int frames, const TextureName textureName) {
+void TextureManager::LoadAnimatedTexture(const char * filePath, const int offset, const int frames, const TextureName textureName) {
     // Use raylibs LoadTexture
-    Texture2D texture = ::LoadTexture(filePath);
-    GameTexture gameTexture = {texture, Rectangle{0,
-                                                 (float)offset,
-                                                 (float)texture.width/(float)frames,
-                                                 (float)texture.height}};
+    const Texture2D texture = ::LoadTexture(filePath);
+    const GameTexture gameTexture = {texture, Rectangle{0,
+                                                 static_cast<float>(offset),
+                                                 static_cast<float>(texture.width)/static_cast<float>(frames),
+                                                 static_cast<float>(texture.height)}};
     Emplace(textureName, gameTexture);
 }
 
@@ -112,7 +110,7 @@ TextureManager::~TextureManager() {
     }
 }
 
-std::string TextureManager::TextureNameToString(TextureName name) {
+std::string TextureManager::TextureNameToString(const TextureName name) {
     switch (name) {
         ENUM_TO_STRING_CASE(PLAYER_IDLE_TEXTURE)
         ENUM_TO_STRING_CASE(PLAYER_RUNNING_TEXTURE)

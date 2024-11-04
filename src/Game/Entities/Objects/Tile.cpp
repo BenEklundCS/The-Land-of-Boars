@@ -4,7 +4,7 @@
 
 #include "../../../../include/Game/Entities/Objects/Tile.h"
 
-Tile::Tile(float x, float y, TextureName tileTexture) : GameObject(TILE) {
+Tile::Tile(const float x, const float y, const TextureName tileTexture) : GameObject(TILE) {
     // Ensure to instantiate the GameObject!
     dimensions_ = Vector2{TILE_LENGTH, TILE_LENGTH};
     position_ = Vector2{x, y};
@@ -22,6 +22,6 @@ void Tile::Update() {
 
 }
 
-[[maybe_unused]] void Tile::SetTexture(GameTexture texture) {
+[[maybe_unused]] void Tile::SetTexture(const GameTexture &texture) {
     texture_ = texture;
 }

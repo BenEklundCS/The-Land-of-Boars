@@ -40,12 +40,12 @@ public:
     void SetPosition(Vector2 newPosition);
     void SetVelocity(Vector2 newVelocity);
     void ToggleMovingRight();
-    bool GetMovingRight() const;
+    [[nodiscard]] bool GetMovingRight() const;
     GameObjectType type_; // The type of GameObject used for identification in loops
     explicit GameObject(GameObjectType type = OTHER);
-    Vector2 GetPosition(); // Get the current position Vector2
-    Vector2 GetVelocity(); // Get the current velocity Vector2
-    Color GetColor();
+    [[nodiscard]] Vector2 GetPosition() const; // Get the current position Vector2
+    [[nodiscard]] Vector2 GetVelocity() const; // Get the current velocity Vector2
+    [[nodiscard]] Color GetColor() const;
     // Flashing behavior
     void ToggleFlashing();
     virtual void Update() = 0; // Update the GameObject

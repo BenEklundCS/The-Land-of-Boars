@@ -113,7 +113,7 @@ private:
     static std::unique_ptr<TextureManager> instance; // Instance of texture manager
     std::map<TextureName, GameTexture> Textures; // Map of textures
     void LoadAnimatedTexture(const char * filePath, int offset, int frames, TextureName textureName);
-    void LoadTexture(Texture2D texture, TextureName textureName, Rectangle rect); // Load a texture
+    void LoadTexture(const Texture2D &texture, TextureName textureName, Rectangle rect); // Load a texture
     void Emplace(TextureName textureName, GameTexture gameTexture); // Emplace a texture into the texture map
     void LoadPlayerTextures(); // Load player textures
     void LoadTileTextures(); // Load tile textures

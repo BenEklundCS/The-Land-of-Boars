@@ -5,7 +5,7 @@
 
 #include "../../../../include/Game/Entities/Monsters/Monster.h"
 
-Monster::Monster(float pos_x, float pos_y, float dim_x, float dim_y, MonsterState state) : GameObject(MONSTER) {
+Monster::Monster(const float pos_x, const float pos_y, const float dim_x, const float dim_y, const MonsterState state) : GameObject(MONSTER) {
     this->position_.x = pos_x;
     this->position_.y = pos_y;
     this->dimensions_.x = dim_x;
@@ -72,7 +72,7 @@ void Monster::MoveMonster() {
     position_.y += velocity_.y;
 }
 
-void Monster::ApplyGravity(float deltaTime) {
+void Monster::ApplyGravity(const float deltaTime) {
     if (velocity_.y <= MAX_VELOCITY) {
         velocity_.y += GRAVITY * deltaTime;
     }
@@ -82,11 +82,11 @@ int Monster::GetHealth() const {
     return this->hp_;
 }
 
-void Monster::SetHealth(int hp) {
+void Monster::SetHealth(const int hp) {
     this->hp_ = hp;
 }
 
-void Monster::HitMonster(int damage) {
+void Monster::HitMonster(const int damage) {
     GameObject::ToggleFlashing();
     SetHealth(GetHealth() - damage);
 }

@@ -4,7 +4,7 @@
 
 #include "../../../include/Game/Entities/Monsters/Snail.h"
 
-Snail::Snail(float posX, float posY, float dimX, float dimY, MonsterState state)
+Snail::Snail(const float posX, const float posY, const float dimX, const float dimY, const MonsterState state)
         : Monster(posX, posY, dimX, dimY, state) {
     // Scale the snail before loading the animation
     Scale();
@@ -14,8 +14,8 @@ Snail::Snail(float posX, float posY, float dimX, float dimY, MonsterState state)
 }
 
 void Snail::Draw() {
-    Texture2D snailTexture = snailAnimation_->GetTexture();
-    Rectangle currentRect = snailAnimation_->GetCurrentRect();
+    const Texture2D snailTexture = snailAnimation_->GetTexture();
+    const Rectangle currentRect = snailAnimation_->GetCurrentRect();
     snailAnimation_->FlipX(!movingRight_);
     DrawTexturePro(snailTexture, currentRect, GetRect(), Vector2{0, 0}, 0, color_);
 }
@@ -29,10 +29,10 @@ void Snail::Died() {
     // Implementation for when Snail dies
 }
 
-void Snail::AnimateSnail() {
+void Snail::AnimateSnail() const {
     snailAnimation_->Animate();
 }
 
-void Snail::HitMonster(int damage) {
+void Snail::HitMonster(const int damage) {
     Monster::HitMonster(damage);
 }

@@ -220,7 +220,7 @@ std::vector<GameObject*> GameStateManager::GetAllObjects() {
     return allGameObjects_;
 }
 
-#pragma endregio
+#pragma endregion
 
 #pragma region game state methods
 

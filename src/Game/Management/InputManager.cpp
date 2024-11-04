@@ -6,7 +6,7 @@
 #include "../../../include/Platform/Engine.h"
 
 
-void InputManager::HandleUserInput() {
+void InputManager::HandleUserInput() const {
     HandlePlayerInput();
     HandleUIInput();
     HandleDebugInput();
@@ -14,7 +14,7 @@ void InputManager::HandleUserInput() {
 
 #pragma region helper functions
 
-void InputManager::HandlePlayerInput() {
+void InputManager::HandlePlayerInput() const {
     if (IsKeyDown(KEY_LEFT)) LeftCommand::Execute(player_); // move left on left keypress
     if (IsKeyDown(KEY_RIGHT)) RightCommand::Execute(player_); // move right on right keypress
     if (IsKeyPressed(KEY_A)) AttackCommand::Execute(player_);
