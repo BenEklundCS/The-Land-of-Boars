@@ -44,8 +44,8 @@ private:
     // screens
     GameScreen currentScreen = TITLE;
     void RenderTitleScreen();
-    void RenderGameScreen();
-    void RenderGameOverScreen();
+    void RenderGameScreen() const;
+    static void RenderGameOverScreen();
     static void IfEscapeExitGame();
     static void MaybeExitGame();
     static bool shouldExit;

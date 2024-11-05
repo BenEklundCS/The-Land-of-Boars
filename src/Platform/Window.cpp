@@ -19,7 +19,7 @@ Window::Window() {
 }
 
 // Window::Resize requires the FLAG_WINDOW_RESIZABLE ConfigFlag is set
-void Window::Resize(int window_width, int window_height) {
+void Window::Resize(const int window_width, const int window_height) {
     // Update windowWidth and windowHeight with the passed params
     this->windowWidth_ = window_width;
     this->windowHeight_ = window_height;

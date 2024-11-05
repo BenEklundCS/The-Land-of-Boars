@@ -3,7 +3,7 @@
 
 int main() {
     // Create an instance of the game engine
-    Engine gameEngine = Engine();
+    auto gameEngine = Engine();
     // Start the game
     gameEngine.StartGame();
     // Exit the program successfully

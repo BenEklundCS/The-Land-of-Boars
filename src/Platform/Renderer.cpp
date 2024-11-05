@@ -30,9 +30,9 @@ void Renderer::RenderFPS(Camera2D camera) {
 #pragma endregion
 
 // Draw all game objects
-void Renderer::Draw(GameStateManager* gameState, EngineSettings* settings) {
+void Renderer::Draw(GameStateManager* gameState, const EngineSettings* settings) {
     // Get the camera
-    Camera2D camera = gameState->GetCamera();
+    const Camera2D camera = gameState->GetCamera();
     // Begin 2D rendering mode
     BeginMode2D(camera);
     // Render the background
@@ -45,8 +45,14 @@ void Renderer::Draw(GameStateManager* gameState, EngineSettings* settings) {
         object->Draw(); // <-- All GameObjects implement a Draw call
         // Draw object hitboxes
         if (settings->renderRedBorders) {
-            Rectangle redBox = object->GetRect();
-            DrawRectangleLines((int)redBox.x, (int)redBox.y, (int)redBox.width, (int)redBox.height, RED);
+            auto [x, y, width, height] = object->GetRect();
+            DrawRectangleLines(
+                static_cast<int>(x),
+                static_cast<int>(y),
+                static_cast<int>(width),
+                static_cast<int>(height),
+                RED
+            );
         }
     }
     // End rendering
@@ -64,18 +70,18 @@ void Renderer::DrawTitleScreen() {
     RenderBackground(titleCamera);
 
     // Scale font sizes
-    int titleFontSize = static_cast<int>(75 * WINDOW_SCALE_FACTOR_Y);
-    int subtitleFontSize = static_cast<int>(40 * WINDOW_SCALE_FACTOR_Y);
+    const int titleFontSize = static_cast<int>(75 * WINDOW_SCALE_FACTOR_Y);
+    const int subtitleFontSize = static_cast<int>(40 * WINDOW_SCALE_FACTOR_Y);
 
     // Measure text width to centralize it
-    int titleTextWidth = MeasureText("Welcome to The Land of Boars!", titleFontSize);
-    int subtitleTextWidth = MeasureText("Press SPACEBAR to begin", subtitleFontSize);
+    const int titleTextWidth = MeasureText("Welcome to The Land of Boars!", titleFontSize);
+    const int subtitleTextWidth = MeasureText("Press SPACEBAR to begin", subtitleFontSize);
 
     // Center the title and subtitle
-    float titlePosX = (GetScreenWidth() - titleTextWidth) / 2.0f;
-    float titlePosY = (GetScreenHeight() / 2.0f) - (titleFontSize * 1.5f); // Slightly above center
-    float subtitlePosX = (GetScreenWidth() - subtitleTextWidth) / 2.0f;
-    float subtitlePosY = (GetScreenHeight() / 2.0f) + (subtitleFontSize * 1.5f); // Slightly below center
+    const int titlePosX = (GetScreenWidth() - titleTextWidth) / 2;
+    const int titlePosY = GetScreenHeight() / 2 - titleFontSize; // Slightly above center
+    const int subtitlePosX = (GetScreenWidth() - subtitleTextWidth) / 2;
+    const int subtitlePosY = (GetScreenHeight() / 2) + subtitleFontSize; // Slightly below center
 
     // Draw the title and subtitle text with centralized positions and scaled font sizes
     DrawText("Welcome to The Land of Boars!", titlePosX, titlePosY, titleFontSize, WHITE);

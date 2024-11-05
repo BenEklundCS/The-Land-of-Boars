@@ -27,7 +27,7 @@ void Engine::StartGame() {
     TraceLog(LOG_INFO, "Engine starting game...");
 
     // Get the window
-    Window* window = Window::GetInstance();
+    Window::GetInstance();
 
     // Load all the levels
     LoadLevels();
@@ -64,7 +64,7 @@ void Engine::RenderTitleScreen() {
     }
 }
 
-void Engine::RenderGameScreen() {
+void Engine::RenderGameScreen() const {
     if (!shouldExit) {
         TraceLog(LOG_INFO, "Rendering Game Screen...");
 
@@ -94,20 +94,20 @@ void Engine::IfEscapeExitGame() {
 }
 
 // Take a GameStateManager* as a parameter, initialize a renderer, and then render the scene
-void Engine::RenderLevelScene(GameStateManager* gameState) {
+void Engine::RenderLevelScene(GameStateManager* scene) {
     if (!shouldExit) {
         TraceLog(LOG_INFO, "Rendering Level Scene...");
 
         // Render the level until it's over or the window should close
-        while (!WindowShouldClose() && !gameState->IsLevelOver()) {
+        while (!WindowShouldClose() && !scene->IsLevelOver()) {
             // Update the game
-            gameState->Update();
+            scene->Update();
 
             // Draw the frame
             BeginDrawing();
-            Renderer::Draw(gameState, settings.get()); // Draw the scene
+            Renderer::Draw(scene, settings.get()); // Draw the scene
             if (settings->displayDebug)
-                DebugGUI::DrawGui(gameState); // Draw the debug GUI if necessary
+                DebugGUI::DrawGui(scene); // Draw the debug GUI if necessary
 
             IfEscapeExitGame();
 

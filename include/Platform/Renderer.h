@@ -23,7 +23,7 @@ private:
     static void RenderFPS(Camera2D camera);
 public:
     Renderer(); // constructor
-    static void Draw(GameStateManager* gameState, EngineSettings* settings); // draw call
+    static void Draw(GameStateManager* gameState, const EngineSettings* settings); // draw call
     ~Renderer(); // destructor
     static void DrawTitleScreen();
 };
