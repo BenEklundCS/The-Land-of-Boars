@@ -164,7 +164,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${imgui_SOURCE_DIR} ${rlimgui
 
 # Link libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
-
 # Set policy to avoid warnings
 cmake_policy(SET CMP0135 NEW)
 

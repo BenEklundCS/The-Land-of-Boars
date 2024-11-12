@@ -4,13 +4,13 @@
 
 
 #include "../../../../include/Game/Entities/Monsters/Monster.h"
+#include "../../../../include/Game/Management/GameStateManager.h"
 
 Monster::Monster(const float pos_x, const float pos_y, const float dim_x, const float dim_y, const MonsterState state) : GameObject(MONSTER) {
     this->position_.x = pos_x;
     this->position_.y = pos_y;
     this->dimensions_.x = dim_x;
     this->dimensions_.y = dim_y;
-
     this->state_ = state;
     this->initialPosition_ = position_;
     this->movingRight_ = false;
@@ -61,6 +61,31 @@ void Monster::MoveMonster() {
             movingRight_ = false;
         }
     }
+    else if (this->state_ == MOVE_TO_FLYING) {
+        Vector2 player1_position = GameStateManager::GetInstance()->GetPlayers().at(0)->GetPosition();
+        if (player1_position.x > position_.x) {
+            position_.x += MONSTER_SPEED * 2;
+            movingRight_ = true;
+        }
+        else {
+            position_.x -= MONSTER_SPEED * 2;
+            movingRight_ = false;
+        }
+        if (player1_position.y > position_.y) {
+            position_.y += MONSTER_SPEED * 2;
+        }
+        else {
+            position_.y -= MONSTER_SPEED * 2;
+        }
+    }
+    // Default
+    else {
+        // Otherwise just update the position based on the speed
+        MoveDefault();
+    }
+}
+
+void Monster::MoveDefault() {
     // Otherwise just update the position based on the speed
     if (movingRight_) {
         position_.x += MONSTER_SPEED;

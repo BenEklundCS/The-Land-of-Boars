@@ -94,7 +94,7 @@ bool GameObject::GetMovingRight() const {
 }
 
 void GameObject::Scale() {
-    TraceLog(LOG_INFO, "Scaling object to %d %d", WINDOW_SCALE_FACTOR_X, WINDOW_SCALE_FACTOR_Y);
+    //TraceLog(LOG_INFO, "Scaling object to %d %d", WINDOW_SCALE_FACTOR_X, WINDOW_SCALE_FACTOR_Y);
     // Adjust the dimensions of the object based on the window scale factor
     dimensions_.x *= WINDOW_SCALE_FACTOR_X;
     dimensions_.y *= WINDOW_SCALE_FACTOR_Y;

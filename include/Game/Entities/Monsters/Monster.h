@@ -14,6 +14,8 @@
 // Definition for MonsterState
 enum MonsterState {
     PACING,
+    MOVE_TO_GROUNDED,
+    MOVE_TO_FLYING,
     DYING,
     DEFAULT
 };
@@ -36,6 +38,8 @@ public:
     [[nodiscard]] int GetHealth() const;
     void SetHealth(int hp);
     virtual void HitMonster(int damage);
+
+    void MoveDefault();
 };
 
 #endif //PLATFORMER_MONSTER_H

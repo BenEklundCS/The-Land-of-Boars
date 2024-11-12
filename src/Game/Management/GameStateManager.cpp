@@ -16,7 +16,7 @@ GameStateManager::GameStateManager() {
 
 // Window Singleton Pattern
 GameStateManager* GameStateManager::GetInstance() {
-    TraceLog(LOG_INFO, "GameStateManager::GetInstance() Invoked."); // Log
+    TraceLog(LOG_DEBUG, "GameStateManager::GetInstance() Invoked."); // Log
     if (instance == nullptr) {
         TraceLog(LOG_INFO, "Creating GameStateManager...");
         instance = std::make_unique<GameStateManager>(); // Typical singleton stuff, but I've implemented the instance as a unique ptr
