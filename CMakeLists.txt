@@ -136,6 +136,16 @@ set(SOURCES
         ${imgui_SOURCE_DIR}/imgui_widgets.cpp
         src/Game/Entities/CollisionHandler.cpp
         include/Platform/Globals.h
+        include/Platform/LevelEditor/LevelEditor.h
+        include/Platform/LevelEditor/Grid.h
+        src/Platform/LevelEditor/Grid.cpp
+        src/Platform/LevelEditor/LevelEditor.cpp
+        include/Game/Events/Commands/EngineCommands.h
+        src/Game/Events/Commands/EngineCommands.cpp
+        include/Platform/LevelEditor/EditorInputManager.h
+        src/Platform/LevelEditor/EditorInputManager.cpp
+        include/Game/Entities/uiElements/HealthBar.h
+        src/Game/Entities/uiElements/HealthBar.cpp
 )
 
 # Define executable

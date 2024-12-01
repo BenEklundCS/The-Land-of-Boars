@@ -6,6 +6,9 @@
 #include "../../include/Game/Level/LevelOne.h"
 #include <stdexcept>
 
+Engine::Engine() = default;
+
+
 // Declare Engine::settings as a nullptr as it is a static member attribute of Engine
 std::unique_ptr<EngineSettings> Engine::settings = nullptr;
 bool Engine::shouldExit = false;
@@ -34,7 +37,8 @@ void Engine::StartGame() {
 
     // Start ImGUI
     DebugGUI::InitGui();
-
+    // Debug mode enabled
+    SetTraceLogLevel(LOG_DEBUG);
     // Call screens sequentially
     RenderTitleScreen();  // Title screen
     RenderGameScreen();   // Game screen
@@ -72,7 +76,9 @@ void Engine::RenderGameScreen() const {
         auto& level = levels[0];
         auto gameState = level->GetGameState();
         gameState->InitCamera();
-        gameState->InitInput(settings.get());
+        // Create level editor
+        auto levelEditor = new LevelEditor();
+        gameState->InitInput(settings.get(), levelEditor);
 
         // Render the level
         RenderLevelScene(gameState);
@@ -119,3 +125,5 @@ void Engine::RenderLevelScene(GameStateManager* scene) {
         }
     }
 }
+
+Engine::~Engine() = default;

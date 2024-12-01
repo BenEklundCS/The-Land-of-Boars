@@ -9,6 +9,10 @@
 // - 0 for GRASS
 // - 1 for DIRT
 // - 2 for EMPTY (nullptr)
+
+// TileManager will need to implement or use a Grid Structure that is easily loadable from .json
+
+
 void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
     // Resize tiles_ to match the size of tileMap
     tiles_.resize(tileMap.size());

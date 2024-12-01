@@ -16,7 +16,7 @@ GameStateManager::GameStateManager() {
 
 // Window Singleton Pattern
 GameStateManager* GameStateManager::GetInstance() {
-    TraceLog(LOG_DEBUG, "GameStateManager::GetInstance() Invoked."); // Log
+    //TraceLog(LOG_DEBUG, "GameStateManager::GetInstance() Invoked."); // Log
     if (instance == nullptr) {
         TraceLog(LOG_INFO, "Creating GameStateManager...");
         instance = std::make_unique<GameStateManager>(); // Typical singleton stuff, but I've implemented the instance as a unique ptr
@@ -283,9 +283,14 @@ std::vector<Player*> GameStateManager::GetPlayers() const {
     return players;
 }
 
+InputManager *GameStateManager::GetInputManager() const {
+    return inputManager_.get();
+}
+
+
 // Create the InputManager
-void GameStateManager::InitInput(EngineSettings* settings) {
-    inputManager_ = std::make_unique<InputManager>(players_[0].get(), *settings);
+void GameStateManager::InitInput(EngineSettings* settings, LevelEditor* levelEditor) {
+    inputManager_ = std::make_unique<InputManager>(players_[0].get(), *settings, levelEditor);
 }
 
 // Cleanup the vectors on destruct

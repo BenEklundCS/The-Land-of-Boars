@@ -30,7 +30,6 @@ void Bee::Draw() {
 void Bee::Update() {
     AnimateBee();
     if (InAttackRange()) {
-        TraceLog(LOG_INFO, "In attack range.");
         state_ = MOVE_TO_FLYING;
     }
     else {
@@ -54,7 +53,6 @@ bool Bee::InAttackRange() {
     Vector2 playerPosition = players.at(0)->GetPosition(); // get player1's position
     Vector2 beePosition = position_;
     if (std::abs(playerPosition.x - beePosition.x) < 50.0f || std::abs(playerPosition.y - beePosition.y) < 50.0f) {
-        TraceLog(LOG_INFO, "Player is within 50 units of the bee! %d", counter++);
         return true;
     }
     return false; // dummy return for now

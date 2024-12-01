@@ -4,6 +4,7 @@
 
 #include "../../../../include/Game/Entities/Player/Player.h"
 #include "../../../../include/Game/Entities/Objects/MovingPlatform.h"
+#include "../../../../include/Game/Management/GameStateManager.h"
 
 // Player state management
 // Each state has an associated animation
@@ -22,6 +23,7 @@ Player::Player() : GameObject(PLAYER) {
     // Load it here to ensure the TextureManager is queried after the player object is created
     playerData.playerAnimation_ = std::make_unique<Animation>(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE),
                                                               PLAYER_IDLE_FRAMES, 0.2f, true);
+    health_bar_ = std::make_unique<HealthBar>(150, 150, 100);
 }
 
 #pragma region render methods
@@ -32,7 +34,7 @@ void Player::Draw() {
 
     Texture2D playerTexture = playerData.playerAnimation_->GetTexture();
     Rectangle currentRect = playerData.playerAnimation_->GetCurrentRect();
-
+    health_bar_->Draw();
     // Draw the player utilizing the currently loaded playerTexture, and rect position
     DrawTexturePro(playerTexture, currentRect, GetRect(), Vector2{0, 0}, 0, color_);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
 }
@@ -49,6 +51,8 @@ void Player::Update() {
     // Move the player based on their velocity and position
     MovePlayer(deltaTime);
     GameObject::Update();
+    // Update healthbar
+    health_bar_->Update();
 
     playerData.timeSinceLastAttack_ += deltaTime;
     playerData.last_state_ = playerData.state_;
@@ -255,7 +259,13 @@ bool Player::AlreadyAttacking() {
 
 // Hit the player externally
 void Player::HitPlayer() {
-    GameObject::ToggleFlashing();
+    if (playerData.timeSinceHit_ > 1.0f) {
+        GameObject::ToggleFlashing();
+        playerData.hp_ -= 1;
+        if (playerData.hp_ <= 0) {
+            GameStateManager::GetInstance()->SetLevelOver(); // Sets level over to True, ending the game
+        }
+    }
 }
 
 // Return if the player has died

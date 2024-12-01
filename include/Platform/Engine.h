@@ -50,12 +50,14 @@ private:
     static void MaybeExitGame();
     static bool shouldExit;
 public:
+    Engine();
     void StartGame(); // Start the game
     static EngineSettings* GetSettings() {
         return settings.get();
     }
 
     static void Shutdown();
+    ~Engine();
 };
 
 

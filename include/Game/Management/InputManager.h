@@ -6,6 +6,7 @@
 #define PLATFORMER_INPUTMANAGER_H
 
 #include "../Entities/Player/Player.h"
+#include "../../Platform/LevelEditor/LevelEditor.h"
 #include "../Events/Commands/PlayerCommands.h"
 
 
@@ -20,15 +21,16 @@ struct PlayerCommands {
 
 class InputManager {
 private:
-    PlayerCommands playerCommands;
+    PlayerCommands playerCommands{};
     Player* player_;
+    LevelEditor* levelEditor_;
     EngineSettings& settings_;
     void HandlePlayerInput() const;
-    static void HandleUIInput();
-    static void HandleDebugInput();
+    void HandleUIInput() const;
+    void HandleDebugInput() const;
 public:
-    explicit InputManager(Player* player, EngineSettings& settings)
-    : player_(player), settings_(settings) {}
+    explicit InputManager(Player* player, EngineSettings& settings, LevelEditor* levelEditor)
+    : player_(player), settings_(settings), levelEditor_(levelEditor) {}
     void HandleUserInput() const;
 };
 

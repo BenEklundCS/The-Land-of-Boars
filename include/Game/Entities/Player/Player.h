@@ -12,7 +12,7 @@
 #define PLAYER_JUMP_HEIGHT (INVERSE_WINDOW_SCALE_FACTOR_Y)
 #define PLAYER_JUMP_POWER (sqrt(2 * GRAVITY * PLAYER_JUMP_HEIGHT))
 #define PLAYER_MAX_JUMPS 1
-#define PLAYER_MAX_HP 3
+#define PLAYER_MAX_HP 7
 #define PLAYER_LENGTH 150 // DO NOT SCALE LENGTHS OR POSITIONS, THIS IS HANDLED BY SCALE() AND INHERITANCE FROM GAMEOBJECT
 #define PLAYER_ATTACK_DELAY 0.5f
 
@@ -23,6 +23,7 @@
 #include "../../Sprites/Animation.h"
 #include "../../Sprites/TextureManager.h"
 #include "../../Events/Observers/Subject.h"
+#include "../uiElements/HealthBar.h"
 
 // Definitions for PlayerState types
 enum PlayerState {
@@ -69,6 +70,9 @@ private:
     bool AlreadyAttacking(); // check if the player is attacking
     void LoadNewAnimation();
     void StateTransition();
+    // UI
+    std::unique_ptr<HealthBar> health_bar_;
+
 public:
     GameObjectType type_ = PLAYER;
     Player();

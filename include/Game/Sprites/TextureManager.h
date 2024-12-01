@@ -37,6 +37,9 @@
 
 #define SNAIL_TEXTURE_PATH "../Assets/Sprites/Mob/Snail/walk-Sheet.png"
 
+// Health icon
+#define HEALTH_GLOBE_TEXTURE_PATH "../Assets/Sprites/HUD/Base.png"
+
 #pragma endregion
 
 #pragma constants
@@ -96,8 +99,9 @@ enum TextureName {
     GREEN_TREE_TEXTURE,
     // Tiles
     TILE_GRASS_TEXTURE,
-    TILE_DIRT_TEXTURE
-
+    TILE_DIRT_TEXTURE,
+    // Health
+    HEALTH_GLOBE_TEXTURE
 };
 
 #pragma endregion

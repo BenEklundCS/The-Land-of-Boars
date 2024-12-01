@@ -11,9 +11,10 @@
 #include "../Entities/Player/Player.h"
 #include "../Entities/Monsters/Monster.h"
 #include "../Entities/Objects/Platform.h"
-#include "../../Platform/Engine.h"
+#include "../../Platform/LevelEditor/LevelEditor.h"
 #include "SoundManager.h"
 #include "../Entities/CollisionHandler.h"
+
 
 class InputManager;
 struct EngineSettings;
@@ -77,8 +78,9 @@ public:
     [[nodiscard]] gameData GetGameData() const;
     [[nodiscard]] std::vector<Player *> GetPlayers() const;
     void AddObject(std::unique_ptr<GameObject> obj); // Add a GameObject to the scene
-    void InitInput(EngineSettings* settings); // call to make input available to the GameState
+    void InitInput(EngineSettings* settings, LevelEditor* levelEditor); // call to make input available to the GameState
     void OnNotify(const GameObject* entity, Events event) override;
+    InputManager* GetInputManager() const;
     ~GameStateManager() override; // Destructor
 };
 

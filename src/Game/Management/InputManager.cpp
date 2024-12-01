@@ -3,7 +3,10 @@
 //
 
 #include "../../../include/Game/Management/InputManager.h"
+
+#include "../../../include/Game/Events/Commands/EngineCommands.h"
 #include "../../../include/Platform/Engine.h"
+#include "../../../include/Platform/LevelEditor/LevelEditor.h"
 
 
 void InputManager::HandleUserInput() const {
@@ -22,14 +25,14 @@ void InputManager::HandlePlayerInput() const {
         JumpCommand::Execute(player_); // make the player jump if can jump
 }
 
-void InputManager::HandleUIInput() {
+void InputManager::HandleUIInput() const {
     // ?
+    if (IsKeyPressed(KEY_L)) EditLevelCommand::Execute(levelEditor_);
 }
 
-void InputManager::HandleDebugInput() {
+void InputManager::HandleDebugInput() const {
     if (IsKeyPressed(KEY_B)) Engine::GetSettings()->renderRedBorders = !Engine::GetSettings()->renderRedBorders;
     if (IsKeyPressed(KEY_D)) Engine::GetSettings()->displayDebug = !Engine::GetSettings()->displayDebug;
-
 }
 
 #pragma endregion

@@ -60,6 +60,18 @@ void TextureManager::LoadOtherTextures() {
     const Texture2D greenTreeTexture = ::LoadTexture(GREEN_TREE_TEXTURE_PATH);
     TextureManager::LoadTexture(greenTreeTexture, GREEN_TREE_TEXTURE,
                                 Rectangle{0, 0, treeWidth, treeHeight});
+    // Health Globe sprite sheet
+    const Texture2D healthGlobeTexture = ::LoadTexture(HEALTH_GLOBE_TEXTURE_PATH);
+
+    // Define the red square's portion of the sprite sheet
+    constexpr float redSquareX = 95.0f;  // Fourth column
+    constexpr float redSquareY = 255.0f;   // Second row
+    constexpr float redSquareWidth = 25.0f;
+    constexpr float redSquareHeight = 25.0f;
+
+    // Add the red square texture using its rectangle
+    TextureManager::LoadTexture(healthGlobeTexture, HEALTH_GLOBE_TEXTURE,
+                                Rectangle{redSquareX, redSquareY, redSquareWidth, redSquareHeight});
 }
 
 // Load my monster textures
