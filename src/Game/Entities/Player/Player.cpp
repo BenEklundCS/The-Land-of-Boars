@@ -5,6 +5,8 @@
 #include "../../../../include/Game/Entities/Player/Player.h"
 #include "../../../../include/Game/Entities/Objects/MovingPlatform.h"
 #include "../../../../include/Game/Management/GameStateManager.h"
+#include <chrono>
+#include <thread>
 
 // Player state management
 // Each state has an associated animation
@@ -259,11 +261,17 @@ bool Player::AlreadyAttacking() {
 
 // Hit the player externally
 void Player::HitPlayer() {
+    // 1 second safety window
     if (playerData.timeSinceHit_ > 1.0f) {
         GameObject::ToggleFlashing();
         playerData.hp_ -= 1;
-        if (playerData.hp_ <= 0) {
+        if (CheckPlayerDeath()) {
+            Notify(this, EVENT_PLAYER_DIED);
+            std::this_thread::sleep_for(std::chrono::seconds(2)); // Pause for 5 seconds
             GameStateManager::GetInstance()->SetLevelOver(); // Sets level over to True, ending the game
+        }
+        else {
+            Notify(this, EVENT_PLAYER_HIT);
         }
     }
 }

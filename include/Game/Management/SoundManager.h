@@ -18,6 +18,8 @@ enum SoundKey {
     HERO_JUMP1,
     HERO_JUMP2,
     HERO_ATTACK,
+    HERO_HIT,
+    HERO_DIED,
     BOAR_HIT,
     BOAR_OINK,
     BOAR_DEATH

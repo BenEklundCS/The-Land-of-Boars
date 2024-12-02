@@ -31,6 +31,12 @@ void SoundManager::OnNotify(const GameObject *entity, Events event) {
         case EVENT_PLAYER_LANDED:
             PlaySound(HERO_LANDING);
             break;
+        case EVENT_PLAYER_HIT:
+            PlaySound(HERO_HIT);
+            break;
+        case EVENT_PLAYER_DIED:
+            PlaySound(HERO_DIED);
+            break;
         case EVENT_BOAR_HIT:
             PlaySound(BOAR_HIT);
             break;
@@ -55,6 +61,8 @@ void SoundManager::LoadSounds() {
     sounds_.emplace(std::pair<SoundKey, Sound>(HERO_JUMP1, LoadSound("../Assets/Sounds/jumpSound1.wav")));
     sounds_.emplace(std::pair<SoundKey, Sound>(HERO_JUMP2, LoadSound("../Assets/Sounds/jumpSound2.mp3")));
     sounds_.emplace(std::pair<SoundKey, Sound>(HERO_ATTACK, LoadSound("../Assets/Sounds/swing.wav")));
+    sounds_.emplace(std::pair<SoundKey, Sound>(HERO_HIT, LoadSound("../Assets/Sounds/impact-of-blow.wav")));
+    sounds_.emplace(std::pair<SoundKey, Sound>(HERO_DIED, LoadSound("../Assets/Sounds/player-death.mp3")));
     // Boar sounds
     sounds_.emplace(std::pair<SoundKey, Sound>(BOAR_HIT, LoadSound("../Assets/Sounds/boarHit.wav")));
     sounds_.emplace(std::pair<SoundKey, Sound>(BOAR_OINK, LoadSound("../Assets/Sounds/boarOink.wav")));
