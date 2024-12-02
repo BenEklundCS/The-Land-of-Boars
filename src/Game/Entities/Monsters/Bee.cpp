@@ -29,18 +29,19 @@ void Bee::Draw() {
 // Update the bee
 void Bee::Update() {
     AnimateBee();
-    if (InAttackRange()) {
-        state_ = MOVE_TO_FLYING;
-    }
-    else {
-        state_ = MOVE_TO_FLYING;
+    if (state_ != DYING) { // do not allow state transition if dying
+        if (InAttackRange()) {
+            state_ = MOVE_TO_FLYING;
+        } else {
+            state_ = MOVE_TO_FLYING;
+        }
     }
     Monster::Update();
 }
 
 // Logic to call when the bee dies
 void Bee::Died() {
-
+    shouldRemove_ = true;
 }
 
 int counter = 0;
@@ -59,11 +60,29 @@ bool Bee::InAttackRange() {
 }
 
 // Animate the bee
-void Bee::AnimateBee() const {
+void Bee::AnimateBee() {
     beeAnimation_->Animate();
+    if (state_ == DYING && beeAnimation_->IsDone()) {
+        TraceLog(LOG_INFO, "BEE HAS DIED");
+        Died();
+    }
 }
 
 // Override of hit monster
 void Bee::HitMonster(const int damage) {
     Monster::HitMonster(damage);
+    if (GetHealth() <= 0) {
+        BeginDeathAnimation(); // play the death animation, then set shouldRemove_ to true after it fully plays
+        Notify(this, EVENT_BEE_DIED);
+    }
+    else {
+        Notify(this, EVENT_BEE_HIT); // Notify the boar has been hit, but didn't die
+    }
+}
+
+void Bee::BeginDeathAnimation() {
+    if (state_ != DYING) {
+        state_ = DYING;
+        beeAnimation_ = std::make_unique<Animation>(TextureManager::GetInstance()->GetTexture(BEE_DYING_TEXTURE), BEE_DYING_FRAMES, 0.10f, false);
+    }
 }

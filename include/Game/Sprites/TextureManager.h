@@ -34,8 +34,10 @@
 #define BOAR_TEXTURE_DYING_PATH_WHITE "../Assets/Sprites/Mob/Boar/Hit-Vanish/Hit-Sheet-White.png"
 
 #define BEE_TEXTURE_FLYING_PATH "../Assets/Sprites/Mob/Small Bee/Fly/Fly-Sheet.png"
+#define BEE_DYING_TEXTURE_PATH "../Assets/Sprites/Mob/Small Bee/Hit/Hit-Sheet.png"
 
 #define SNAIL_TEXTURE_PATH "../Assets/Sprites/Mob/Snail/walk-Sheet.png"
+#define SNAIL_DYING_TEXTURE_PATH "../Assets/Sprites/Mob/Snail/Dead-Sheet.png"
 
 // Health icon
 #define HEALTH_GLOBE_TEXTURE_PATH "../Assets/Sprites/HUD/Base.png"
@@ -60,9 +62,12 @@
 
 // Bees
 #define BEE_FLYING_FRAMES 4
+#define BEE_DYING_FRAMES 4
 
 // Snails
 #define SNAIL_FRAMES 8
+#define SNAIL_DYING_FRAMES 8
+
 
 // Tiles
 #define TILE_LENGTH 80 // size of a tile
@@ -91,8 +96,10 @@ enum TextureName {
     BOAR_DYING_TEXTURE_WHITE,
     // Bees
     BEE_FLYING_TEXTURE,
+    BEE_DYING_TEXTURE,
     // Snails
     SNAIL_TEXTURE,
+    SNAIL_DYING_TEXTURE,
     // Background
     BACKGROUND_TEXTURE,
     // Trees

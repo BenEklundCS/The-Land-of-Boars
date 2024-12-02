@@ -266,11 +266,13 @@ void Player::HitPlayer() {
         GameObject::ToggleFlashing();
         playerData.hp_ -= 1;
         if (CheckPlayerDeath()) {
+            // Player has died
             Notify(this, EVENT_PLAYER_DIED);
             std::this_thread::sleep_for(std::chrono::seconds(2)); // Pause for 5 seconds
             GameStateManager::GetInstance()->SetLevelOver(); // Sets level over to True, ending the game
         }
         else {
+            // Player was hit but has not died
             Notify(this, EVENT_PLAYER_HIT);
         }
     }

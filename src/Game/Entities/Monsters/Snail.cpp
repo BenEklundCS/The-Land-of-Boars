@@ -27,12 +27,30 @@ void Snail::Update() {
 
 void Snail::Died() {
     // Implementation for when Snail dies
+    shouldRemove_ = true;
 }
 
-void Snail::AnimateSnail() const {
+void Snail::BeginDeathAnimation() {
+    if (state_ != DYING) {
+        state_ = DYING;
+        snailAnimation_ = std::make_unique<Animation>(TextureManager::GetInstance()->GetTexture(SNAIL_DYING_TEXTURE), SNAIL_DYING_FRAMES, 0.10f, false);
+    }
+}
+
+void Snail::AnimateSnail() {
     snailAnimation_->Animate();
+    if (state_ == DYING && snailAnimation_->IsDone()) {
+        Died();
+    }
 }
 
 void Snail::HitMonster(const int damage) {
     Monster::HitMonster(damage);
+    if (GetHealth() <= 0) {
+        BeginDeathAnimation(); // play the death animation, then set shouldRemove_ to true after it fully plays
+        Notify(this, EVENT_SNAIL_DIED);
+    }
+    else {
+        Notify(this, EVENT_SNAIL_HIT); // Notify the boar has been hit, but didn't die
+    }
 }

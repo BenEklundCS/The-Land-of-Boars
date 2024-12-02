@@ -47,9 +47,11 @@ void Boar::HitMonster(int damage) {
 }
 
 void Boar::BeginDeathAnimation() {
-    state_ = DYING;
-    // load boar dying animation here
-    boarAnimation_ = std::make_unique<Animation>(TextureManager::GetInstance()->GetTexture(BOAR_DYING_TEXTURE_WHITE), BOAR_DYING_FRAMES, 0.10f, false);
+    if (state_ != DYING) {
+        state_ = DYING;
+        // load boar dying animation here
+        boarAnimation_ = std::make_unique<Animation>(TextureManager::GetInstance()->GetTexture(BOAR_DYING_TEXTURE_WHITE), BOAR_DYING_FRAMES, 0.10f, false);
+    }
 }
 
 void Boar::Died() {

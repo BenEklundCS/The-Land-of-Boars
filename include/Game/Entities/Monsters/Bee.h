@@ -14,14 +14,15 @@
 class Bee : public Monster {
 private:
     std::unique_ptr<Animation> beeAnimation_; // Boar animation
-    static void Died();
+    void Died();
     bool InAttackRange();
-    void AnimateBee() const;
+    void AnimateBee();
 public:
     Bee(float posX, float posY, float dimX, float dimY, MonsterState state);
     void Draw() override; // Draw the boar
     void Update() override; // Update the boar
     void HitMonster(int damage) override; // override the HitMonster function
+    void BeginDeathAnimation();
 };
 
 #endif //THE_LAND_OF_BOARS_BEE_H

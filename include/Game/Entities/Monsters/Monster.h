@@ -38,7 +38,6 @@ public:
     [[nodiscard]] int GetHealth() const;
     void SetHealth(int hp);
     virtual void HitMonster(int damage);
-
     void MoveDefault();
 };
 

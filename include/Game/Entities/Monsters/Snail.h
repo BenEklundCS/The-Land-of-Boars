@@ -13,8 +13,9 @@
 class Snail : public Monster {
 private:
     std::unique_ptr<Animation> snailAnimation_;
-    static void Died();
-    void AnimateSnail() const;
+    void Died();
+    void BeginDeathAnimation();
+    void AnimateSnail();
 public:
     Snail(float posX, float posY, float dimX, float dimY, MonsterState state);
     void Draw() override;
