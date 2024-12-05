@@ -34,9 +34,10 @@ Player::Player() : GameObject(PLAYER) {
 void Player::Draw() {
     // Get the playerTexture sheet and currentRect from the Animation object
 
-    Texture2D playerTexture = playerData.playerAnimation_->GetTexture();
-    Rectangle currentRect = playerData.playerAnimation_->GetCurrentRect();
-    health_bar_->Draw();
+    const Texture2D playerTexture = playerData.playerAnimation_->GetTexture();
+    const Rectangle currentRect = playerData.playerAnimation_->GetCurrentRect();
+    if (GameStateManager::GetInstance()->GetMode() == MODE_GAME)
+        health_bar_->Draw();
     // Draw the player utilizing the currently loaded playerTexture, and rect position
     DrawTexturePro(playerTexture, currentRect, GetRect(), Vector2{0, 0}, 0, color_);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
 }
@@ -55,7 +56,6 @@ void Player::Update() {
     GameObject::Update();
     // Update healthbar
     health_bar_->Update();
-
     playerData.timeSinceLastAttack_ += deltaTime;
     playerData.last_state_ = playerData.state_;
 }

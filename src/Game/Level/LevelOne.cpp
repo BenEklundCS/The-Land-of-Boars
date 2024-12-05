@@ -48,11 +48,7 @@ GameStateManager* LevelOne::GetGameState() {
     auto levelLoader = std::make_unique<LevelLoader>();
     auto tileMap = levelLoader->LoadLevel("../Levels/map_level_one.txt");
     tileManager->CreateTiles(tileMap);
-    std::vector<std::unique_ptr<Tile>> tiles = tileManager->GetTiles();
-    // Add those tiles to the game
-    for (auto& tile : tiles) {
-        gameState->AddObject(std::move(tile));
-    }
+    gameState->SetTileManager(std::move(tileManager));
 #pragma endregion
 
 #pragma region monsters

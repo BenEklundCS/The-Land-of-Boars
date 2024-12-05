@@ -3,11 +3,7 @@
 //
 
 #include "../../../include/Game/Management/InputManager.h"
-
-#include "../../../include/Game/Events/Commands/EngineCommands.h"
 #include "../../../include/Platform/Engine.h"
-#include "../../../include/Platform/LevelEditor/LevelEditor.h"
-
 
 void InputManager::HandleUserInput() const {
     HandlePlayerInput();
@@ -26,14 +22,58 @@ void InputManager::HandlePlayerInput() const {
 }
 
 void InputManager::HandleUIInput() const {
-    // ?
-    if (IsKeyPressed(KEY_L)) EditLevelCommand::Execute(levelEditor_);
+    auto gameState = GameStateManager::GetInstance();
+    if (IsKeyPressed(KEY_L)) {
+        gameState->SetMode(MODE_EDITOR);
+        gameState->InitCamera(); // reset the camera
+    }
 }
 
-void InputManager::HandleDebugInput() const {
+void InputManager::HandleDebugInput() {
     if (IsKeyPressed(KEY_B)) Engine::GetSettings()->renderRedBorders = !Engine::GetSettings()->renderRedBorders;
     if (IsKeyPressed(KEY_D)) Engine::GetSettings()->displayDebug = !Engine::GetSettings()->displayDebug;
 }
+
+void InputManager::HandleEditorInput(Camera2D& camera) const {
+
+    auto gameState = GameStateManager::GetInstance();
+
+    if (IsKeyPressed(KEY_L)) {
+        gameState->SetMode(MODE_GAME);
+        gameState->InitCamera(); // reset the camera
+    }
+
+    if (IsKeyDown(KEY_UP)) {
+        camera.target.y -= 10;
+    }
+    if (IsKeyDown(KEY_DOWN)) {
+        camera.target.y += 10;
+    }
+    if (IsKeyDown(KEY_LEFT)) {
+        camera.target.x -= 10;
+    }
+    if (IsKeyDown(KEY_RIGHT)) {
+        camera.target.x += 10;
+    }
+    HandleDebugInput();
+
+    try {
+        TileManager& tileManager = gameState->GetTileManager();
+
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            auto mousePos = GetMousePosition();
+            tileManager.SetTileAt(mousePos.x, mousePos.y, 1);
+        }
+        if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
+            auto mousePos = GetMousePosition();
+            tileManager.SetTileAt(mousePos.x, mousePos.y, 0);
+        }
+    } catch (const std::exception& e) {
+        TraceLog(LOG_ERROR, "Error accessing TileManager: %s", e.what());
+    }
+
+}
+
 
 #pragma endregion
 

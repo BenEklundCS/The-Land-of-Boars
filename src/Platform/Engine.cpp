@@ -76,9 +76,9 @@ void Engine::RenderGameScreen() const {
         auto& level = levels[0];
         auto gameState = level->GetGameState();
         gameState->InitCamera();
-        // Create level editor
-        auto levelEditor = new LevelEditor();
-        gameState->InitInput(settings.get(), levelEditor);
+
+        // Initialize game input
+        gameState->InitInput(settings.get());
 
         // Render the level
         RenderLevelScene(gameState);

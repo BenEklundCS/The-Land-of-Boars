@@ -19,6 +19,8 @@ public:
     explicit TileManager(Vector2 position);
     void CreateTiles(std::vector<std::vector<int>> tileMap_);
     std::vector<std::unique_ptr<Tile>> GetTiles();
+    [[nodiscard]] std::unique_ptr<Tile> GetTileAt(float x, float y) const;
+    void SetTileAt(float x, float y, int tile);
 };
 
 

@@ -7,11 +7,13 @@
 #include "../../../include/Game/Management/GameStateManager.h"
 #include "../../../include/Game/Entities/Effects/ParticleCone.h"
 #include <algorithm>
+#include <stdexcept>
 
 std::unique_ptr<GameStateManager> GameStateManager::instance = nullptr;
 
 GameStateManager::GameStateManager() {
     levelOver = false;
+    mode_ = MODE_GAME;
 }
 
 // Window Singleton Pattern
@@ -28,6 +30,15 @@ GameStateManager* GameStateManager::GetInstance() {
 
 // Update all game objects and handle collisions
 void GameStateManager::Update() {
+    if (mode_ == MODE_GAME) {
+        UpdateGame();
+    }
+    else { // mode_ == MODE_LEVEL
+        UpdateLevel();
+    }
+}
+
+void GameStateManager::UpdateGame() {
     // Update the camera
     UpdateCamera();
     // Update all game objects and handle collisions
@@ -37,12 +48,38 @@ void GameStateManager::Update() {
     inputManager_->HandleUserInput();
     UpdateMonsters(); // update Monsters
     UpdateOthers();
+    // Transition to edit mode
+    if (IsKeyPressed(KEY_L)) {
+        mode_ = MODE_EDITOR;
+    }
+}
+
+void GameStateManager::UpdateLevel() {
+    inputManager_->HandleEditorInput(camera_);
+    // Transition to game mode
 }
 
 void GameStateManager::UpdatePlatforms() {
     #pragma omp parallel for
-    for (auto& platform : platforms_) {
+    for (const auto& platform : platforms_) {
         platform->Update();
+    }
+}
+
+TileManager& GameStateManager::GetTileManager() const {
+    if (!tileManager_) {
+        TraceLog(LOG_FATAL, "TileManager is not initialized!");
+        throw std::runtime_error("TileManager is null");
+    }
+    return *tileManager_;
+}
+
+void GameStateManager::SetTileManager(std::unique_ptr<TileManager> tileManager) {
+    tileManager_ = std::move(tileManager); // Transfer ownership
+    std::vector<std::unique_ptr<Tile>> tiles = tileManager_->GetTiles();
+    // Add those tiles to the game
+    for (auto& tile : tiles) {
+        AddObject(std::move(tile));
     }
 }
 
@@ -87,14 +124,13 @@ void GameStateManager::UpdateMonsters() {
     }
 }
 
-void GameStateManager::HandleCollisions(GameObject* obj) {
+void GameStateManager::HandleCollisions(GameObject* obj) const {
     for (auto& platform : platforms_) {
         CollisionHandler::HandlePlatformCollision(obj, platform.get());
     }
     #pragma omp parallel for // update the other objects in parallel using threads
-    for (auto& other : otherObjects_) {
-        if (other->type_ == TILE)
-            CollisionHandler::HandlePlatformCollision(obj, other.get()); // Trees are also otherObjects, and I don't want to collide with them
+    for (auto& tile : tiles_) {
+        CollisionHandler::HandlePlatformCollision(obj, tile.get()); // Trees are also otherObjects, and I don't want to collide with them
     }
 }
 
@@ -146,11 +182,16 @@ void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
         platforms_.push_back(std::unique_ptr<Platform>(dynamic_cast<Platform*>(obj.release())));
         allGameObjects_.insert(allGameObjects_.begin() + (long)monsters_.size(), platforms_.back().get()); // Insert after monsters
     }
+    else if (obj->type_ == TILE) {
+        tiles_.push_back(std::unique_ptr<Tile>(dynamic_cast<Tile*>(obj.release())));
+        allGameObjects_.insert(allGameObjects_.begin() + (long)monsters_.size() + (long)platforms_.size(), tiles_.back().get());
+    }
     else {
         otherObjects_.push_back(std::move(obj));
-        allGameObjects_.insert(allGameObjects_.begin() + (long)monsters_.size() + (long)platforms_.size(), otherObjects_.back().get()); // Insert after monsters and platforms
+        allGameObjects_.insert(allGameObjects_.begin() + (long)monsters_.size() + (long)platforms_.size() + tiles_.size(), otherObjects_.back().get());
     }
 }
+
 
 // Remove player from the players array
 void GameStateManager::RemovePlayer(GameObject* obj) {
@@ -289,8 +330,8 @@ InputManager *GameStateManager::GetInputManager() const {
 
 
 // Create the InputManager
-void GameStateManager::InitInput(EngineSettings* settings, LevelEditor* levelEditor) {
-    inputManager_ = std::make_unique<InputManager>(players_[0].get(), *settings, levelEditor);
+void GameStateManager::InitInput(EngineSettings* settings) {
+    inputManager_ = std::make_unique<InputManager>(players_[0].get(), *settings);
 }
 
 // Cleanup the vectors on destruct
@@ -345,3 +386,13 @@ void GameStateManager::PlayerAttackEffect(Player* player) {
     Vector2{player->GetRect().width, player->GetRect().height}, player->GetMovingRight(), 1000);
     AddObject(std::move(effect));
 }
+
+void GameStateManager::SetMode(const Mode mode) {
+    mode_ = mode;
+}
+
+Mode GameStateManager::GetMode() const {
+    return mode_;
+}
+
+
