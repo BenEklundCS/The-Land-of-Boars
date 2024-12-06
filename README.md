@@ -85,11 +85,6 @@ Development is progressing at a slower pace due to the school semester. New feat
 
 ---
 
-## Screenshots (WIP)
-*Add screenshots or GIFs showcasing the game in action!*
-
----
-
 ## Contributions
 Contributions are welcome! If you'd like to add new features or fix bugs, feel free to fork the repository and submit a pull request.
 
