@@ -90,11 +90,6 @@ Contributions are welcome! If you'd like to add new features or fix bugs, feel f
 
 ---
 
-## License
-This project is licensed under the [MIT License](LICENSE).
-
----
-
 **Stay tuned for updates!** 🚀  
 Want to discuss or collaborate? Feel free to reach out or open an issue on [GitHub](https://github.com/BenEklundCS/The-Land-of-Boars/issues).
 
