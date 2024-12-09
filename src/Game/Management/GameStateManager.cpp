@@ -56,7 +56,6 @@ void GameStateManager::UpdateGame() {
 
 void GameStateManager::UpdateLevel() {
     inputManager_->HandleEditorInput(camera_);
-    // Transition to game mode
 }
 
 void GameStateManager::UpdatePlatforms() {
@@ -75,13 +74,20 @@ TileManager& GameStateManager::GetTileManager() const {
 }
 
 void GameStateManager::SetTileManager(std::unique_ptr<TileManager> tileManager) {
-    tileManager_ = std::move(tileManager); // Transfer ownership
-    std::vector<std::unique_ptr<Tile>> tiles = tileManager_->GetTiles();
-    // Add those tiles to the game
-    for (auto& tile : tiles) {
-        AddObject(std::move(tile));
+    // Transfer ownership of TileManager
+    tileManager_ = std::move(tileManager);
+
+    // Get the tiles and move them into the game objects
+    auto tiles = tileManager_->GetTiles();
+    for (auto& row : tiles) {
+        for (auto& tile : row) {
+            if (tile)
+                AddObject(std::move(tile)); // Move tile ownership
+        }
     }
 }
+
+
 
 // Update all players in the scene by iterating over the players, calling update, and then checking for collisions
 void GameStateManager::UpdatePlayers() {
@@ -119,7 +125,7 @@ void GameStateManager::UpdateMonsters() {
         }
     }
     // Remove monsters
-    for (auto& monster : toRemove) {
+    for (const auto& monster : toRemove) {
         RemoveObject(monster);
     }
 }
@@ -128,9 +134,11 @@ void GameStateManager::HandleCollisions(GameObject* obj) const {
     for (auto& platform : platforms_) {
         CollisionHandler::HandlePlatformCollision(obj, platform.get());
     }
-    #pragma omp parallel for // update the other objects in parallel using threads
-    for (auto& tile : tiles_) {
-        CollisionHandler::HandlePlatformCollision(obj, tile.get()); // Trees are also otherObjects, and I don't want to collide with them
+#pragma omp parallel for // update the other objects in parallel using threads
+    for (const auto& row : tiles_) {
+        for (const auto& tile : row) {
+            CollisionHandler::HandlePlatformCollision(obj, tile.get()); // Trees are also otherObjects, and I don't want to collide with them
+        }
     }
 }
 
@@ -183,8 +191,14 @@ void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
         allGameObjects_.insert(allGameObjects_.begin() + (long)monsters_.size(), platforms_.back().get()); // Insert after monsters
     }
     else if (obj->type_ == TILE) {
-        tiles_.push_back(std::unique_ptr<Tile>(dynamic_cast<Tile*>(obj.release())));
-        allGameObjects_.insert(allGameObjects_.begin() + (long)monsters_.size() + (long)platforms_.size(), tiles_.back().get());
+        auto tile = std::unique_ptr<Tile>(dynamic_cast<Tile*>(obj.release()));
+        if (!tiles_.empty()) {
+            tiles_.back().push_back(std::move(tile));
+        } else {
+            tiles_.emplace_back();
+            tiles_.back().push_back(std::move(tile));
+        }
+        allGameObjects_.insert(allGameObjects_.begin() + (long)monsters_.size() + (long)platforms_.size() + tiles_.back().size() - 1, tiles_.back().back().get());
     }
     else {
         otherObjects_.push_back(std::move(obj));

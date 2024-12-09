@@ -91,13 +91,8 @@ void TileManager::SetTileAt(const float x, const float y, const int tile) {
 
 // GetTiles returns a flattened Vector representing the tile objects
 // Handles the nullptrs and does not return them to the outside
-std::vector<std::unique_ptr<Tile>> TileManager::GetTiles() {
-    std::vector<std::unique_ptr<Tile>> tiles;
-    for (auto & tile_vector : tiles_)
-        for (auto & tile : tile_vector)
-            if (tile != nullptr)
-                tiles.push_back(std::move(tile));
-    return tiles;
+std::vector<std::vector<std::unique_ptr<Tile>>> TileManager::GetTiles() {
+    return std::move(tiles_);
 }
 
 // Constructor

@@ -54,10 +54,60 @@ void Renderer::Draw(GameStateManager* gameState, const EngineSettings* settings)
                 RED
             );
         }
+        // Draw level editor stuff in level editor mode
+        if (gameState->GetMode() == MODE_EDITOR)
+            DrawLevelEditor();
     }
     // End rendering
     EndMode2D();
 }
+
+void Renderer::DrawLevelEditor() {
+    // Get the camera
+    const Camera2D camera = GameStateManager::GetInstance()->GetCamera();
+
+    // Access the TileManager position and tile dimensions
+    const auto& tiles = GameStateManager::GetInstance()->GetTiles();
+    constexpr Vector2 tileManagerPosition = {0, 0};
+
+    if (tiles.empty() || tiles[0].empty()) return; // Ensure tiles are valid
+
+    // Tile dimensions
+    constexpr float baseTileWidth = TILE_LENGTH - 6; // Adjust for tile_overlap
+    constexpr float baseTileHeight = TILE_LENGTH - 6;
+
+    // Scale dimensions
+    const float tileWidth = baseTileWidth * WINDOW_SCALE_FACTOR_X;
+    const float tileHeight = baseTileHeight * WINDOW_SCALE_FACTOR_Y;
+
+    // Starting position (scaled)
+    const Vector2 scaledStartPos = {
+        tileManagerPosition.x * WINDOW_SCALE_FACTOR_X,
+        tileManagerPosition.y * WINDOW_SCALE_FACTOR_Y
+    };
+
+    // Calculate the visible area in world coordinates
+    const float startX = camera.target.x - (GetScreenWidth() / 2 / camera.zoom);
+    const float startY = camera.target.y - (GetScreenHeight() / 2 / camera.zoom);
+    const float endX = camera.target.x + (GetScreenWidth() / 2 / camera.zoom);
+    const float endY = camera.target.y + (GetScreenHeight() / 2 / camera.zoom);
+
+    // Snap to the nearest tile grid
+    const float gridStartX = scaledStartPos.x + std::floor((startX - scaledStartPos.x) / tileWidth) * tileWidth;
+    const float gridStartY = (scaledStartPos.y + std::floor((startY - scaledStartPos.y) / tileHeight) * tileHeight) - tileHeight/2;
+
+    // Draw vertical grid lines
+    for (float x = gridStartX; x <= endX; x += tileWidth) {
+        DrawLine(x, startY, x, endY, SKYBLUE);
+    }
+
+    // Draw horizontal grid lines
+    for (float y = gridStartY; y <= endY; y += tileHeight) {
+        DrawLine(startX, y, endX, y, SKYBLUE);
+    }
+}
+
+
 
 void Renderer::DrawTitleScreen() {
     Camera2D titleCamera = { 0 };

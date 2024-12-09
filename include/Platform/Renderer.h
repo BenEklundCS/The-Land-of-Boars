@@ -21,6 +21,7 @@ class Renderer {
 private:
     static void RenderBackground(Camera2D camera);
     static void RenderFPS(Camera2D camera);
+    static void DrawLevelEditor();
 public:
     Renderer(); // constructor
     static void Draw(GameStateManager* gameState, const EngineSettings* settings); // draw call

@@ -67,7 +67,7 @@ private:
     std::vector<std::unique_ptr<Monster>> monsters_; // monster object vector
     std::vector<std::unique_ptr<Platform>> platforms_; // platform object vector
     std::vector<std::unique_ptr<GameObject>> otherObjects_; // other object vector
-    std::vector<std::unique_ptr<Tile>> tiles_;
+    std::vector<std::vector<std::unique_ptr<Tile>>> tiles_;
     std::vector<GameObject*> allGameObjects_; // All game object vector
     Camera2D camera_{}; // Camera
     // Game systems
@@ -95,6 +95,9 @@ public:
     [[nodiscard]] TileManager& GetTileManager() const;
     void SetTileManager(std::unique_ptr<TileManager> tileManager);
     InputManager* GetInputManager() const;
+    [[nodiscard]] const std::vector<std::vector<std::unique_ptr<Tile>>>& GetTiles() const {
+        return tiles_;
+    }
     // Mode
     [[nodiscard]] Mode GetMode() const;
     void SetMode(Mode mode);
