@@ -43,8 +43,6 @@
 ---
 
 ## Development Roadmap
-📆 **Current Status (Fall 2024):**  
-Development is progressing at a slower pace due to the school semester. New features and improvements will resume after the term concludes.
 
 ### Upcoming Features:
 1. **Level Editor:**
@@ -53,6 +51,8 @@ Development is progressing at a slower pace due to the school semester. New feat
    - Smarter and more dynamic behaviors for enemies.
 3. **Additional Gameplay Mechanics:**
    - Power-ups, collectibles, and more!
+4. **Game UI:**
+   - Full game UI and start menu.
 
 ---
 
