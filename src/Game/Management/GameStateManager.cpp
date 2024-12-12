@@ -87,8 +87,6 @@ void GameStateManager::SetTileManager(std::unique_ptr<TileManager> tileManager) 
     }
 }
 
-
-
 // Update all players in the scene by iterating over the players, calling update, and then checking for collisions
 void GameStateManager::UpdatePlayers() {
     for (auto& player : players_) {

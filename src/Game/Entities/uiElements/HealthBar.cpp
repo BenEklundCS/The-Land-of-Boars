@@ -19,9 +19,6 @@ HealthBar::HealthBar(float pos_x, float pos_y, int hp) {
     gameTexture_ = TextureManager::GetInstance()->GetTexture(HEALTH_GLOBE_TEXTURE);
 }
 
-
-
-
 void HealthBar::Update() {
     auto camera = GameStateManager::GetInstance()->GetCamera();
     // Anchor to the top-left corner of the screen relative to the camera
@@ -29,7 +26,6 @@ void HealthBar::Update() {
     position_.y = camera.target.y - camera.offset.y + 5;
     hp_ = GameStateManager::GetInstance()->GetPlayers().at(0)->GetPlayerData()->hp_; // update hp
 }
-
 
 void HealthBar::Draw() {
     // Use the loaded texture and rectangles for rendering

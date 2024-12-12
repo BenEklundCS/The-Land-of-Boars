@@ -63,6 +63,8 @@ void Renderer::Draw(GameStateManager* gameState, const EngineSettings* settings)
 }
 
 void Renderer::DrawLevelEditor() {
+    // BELOW CODE IS VERY PERFORMANCE INTENSIVE
+    /*
     // Get the camera
     const Camera2D camera = GameStateManager::GetInstance()->GetCamera();
 
@@ -105,6 +107,7 @@ void Renderer::DrawLevelEditor() {
     for (float y = gridStartY; y <= endY; y += tileHeight) {
         DrawLine(startX, y, endX, y, SKYBLUE);
     }
+    */
 }
 
 

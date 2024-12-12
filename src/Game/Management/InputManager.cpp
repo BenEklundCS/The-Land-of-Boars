@@ -44,27 +44,47 @@ void InputManager::HandleEditorInput(Camera2D& camera) const {
     }
 
     if (IsKeyDown(KEY_UP)) {
-        camera.target.y -= 10;
+        if (IsKeyDown(KEY_LEFT_SHIFT)) {
+            camera.target.y -= 30;
+        }
+        else {
+            camera.target.y -= 10;
+        }
     }
     if (IsKeyDown(KEY_DOWN)) {
-        camera.target.y += 10;
+        if (IsKeyDown(KEY_LEFT_SHIFT)) {
+            camera.target.y += 30;
+        }
+        else {
+            camera.target.y += 10;
+        }
     }
     if (IsKeyDown(KEY_LEFT)) {
-        camera.target.x -= 10;
+        if (IsKeyDown(KEY_LEFT_SHIFT)) {
+            camera.target.x -= 30;
+        }
+        else {
+            camera.target.x -= 10;
+        }
     }
     if (IsKeyDown(KEY_RIGHT)) {
-        camera.target.x += 10;
+        if (IsKeyDown(KEY_LEFT_SHIFT)) {
+            camera.target.x += 30;
+        }
+        else {
+            camera.target.x += 10;
+        }
     }
     HandleDebugInput();
 
     try {
         TileManager& tileManager = gameState->GetTileManager();
 
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             auto mousePos = GetMousePosition();
             tileManager.SetTileAt(mousePos.x, mousePos.y, 1);
         }
-        if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
+        if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
             auto mousePos = GetMousePosition();
             tileManager.SetTileAt(mousePos.x, mousePos.y, 0);
         }
