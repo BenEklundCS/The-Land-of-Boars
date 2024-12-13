@@ -5,8 +5,8 @@
 #ifndef PLATFORMER_WINDOW_H
 #define PLATFORMER_WINDOW_H
 
-#define DEFAULT_WINDOW_WIDTH 1920 /**< Default width for the game window. */
-#define DEFAULT_WINDOW_HEIGHT 1080 /**< Default height for the game window. */
+#define DEFAULT_WINDOW_WIDTH 2560 /**< Default width for the game window. */
+#define DEFAULT_WINDOW_HEIGHT 1440 /**< Default height for the game window. */
 #define WINDOW_NAME "The Land of Boars" /**< The title displayed on the game window. */
 
 #include <memory>

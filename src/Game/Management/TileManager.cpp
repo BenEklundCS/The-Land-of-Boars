@@ -62,34 +62,63 @@ void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
  * @return Vector2 The grid position of the tile as {tileX, tileY}, or {-1, -1} if out of bounds.
  */
 Vector2 TileManager::GetTileAt(float x, float y) const {
-    constexpr int tile_overlap = 6;
+    auto tilePos = WorldToTile(x, y);
+    int tileX = static_cast<int>(tilePos.x);
+    int tileY = static_cast<int>(tilePos.y);
 
-    // Calculate the effective tile dimensions (accounting for overlap and scaling)
-    float tileWidth = (TILE_LENGTH - tile_overlap) * WINDOW_SCALE_FACTOR_X;
-    float tileHeight = (TILE_LENGTH - tile_overlap) * WINDOW_SCALE_FACTOR_Y;
-
-    // Adjust mouse coordinates for scaling (convert to world space if needed)
-    float scaledX = x;
-    float scaledY = y;
-
-    // Calculate grid indices (center the calculation to the nearest tile)
-    int tileX = static_cast<int>((scaledX + tileWidth / 2) / tileWidth);
-    int tileY = static_cast<int>((scaledY + tileHeight / 2) / tileHeight);
-
-    // Validate indices to ensure they're within bounds
     if (tileY >= 0 && tileY < tiles_.size() && tileX >= 0 && tileX < tiles_[tileY].size()) {
-        // Log for debugging purposes
-        TraceLog(LOG_INFO, "Mouse (%f, %f) -> Scaled Mouse (%f, %f) -> Tile Grid Pos: (%d, %d)",
-                 x, y, scaledX, scaledY, tileX, tileY);
-
-        // Return the tile indices as a Vector2
-        return Vector2{static_cast<float>(tileX), static_cast<float>(tileY)};
+        TraceLog(LOG_INFO, "Mouse (%f, %f) -> Tile Grid Pos: (%d, %d)", x, y, tileX, tileY);
+        return tilePos;
     }
 
-    // Handle out-of-bounds mouse positions
     TraceLog(LOG_WARNING, "Mouse position (%f, %f) is out of bounds", x, y);
-    return Vector2{-1, -1}; // Return invalid vector for out-of-bounds
+    return Vector2{-1, -1};
 }
+
+/**
+ * @brief Retrieves the current tile width, accounting for scale and overlap in the grid.
+ *
+ * @return Float, the width of the tile.
+ */
+float TileManager::GetTileWidth() {
+    return (TILE_LENGTH - TILE_OVERLAP) * WINDOW_SCALE_FACTOR_X;
+}
+
+/**
+ * @brief Retrieves the current tile height, accounting for scale and overlap in the grid.
+ *
+ * @return Float, the height of the tile.
+ */
+float TileManager::GetTileHeight() {
+    return (TILE_LENGTH - TILE_OVERLAP) * WINDOW_SCALE_FACTOR_Y;
+}
+
+/**
+ * @brief Retrieves a tile given world coordinates as input.
+ * @param worldX, the input X coordinate
+ * @param worldY, the input Y coordinate
+ * @return Vector2, the position of the tile in the grid.
+ */
+Vector2 TileManager::WorldToTile(float worldX, float worldY) {
+    return {
+            (worldX + GetTileWidth() / 2) / GetTileWidth(),
+            (worldY + GetTileHeight() / 2) / GetTileHeight()
+    };
+}
+
+/**
+ * @brief Retrieves a tile position given its indices.
+ * @param tileX, the input X index
+ * @param tileY, the input Y index
+ * @return Vector2, the position of the tile in the world.
+ */
+Vector2 TileManager::TileToWorld(int tileX, int tileY) {
+    return {
+            tileX * GetTileWidth(),
+            tileY * GetTileHeight()
+    };
+}
+
 
 /**
  * @brief Updates or removes a tile at the specified grid position.

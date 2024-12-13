@@ -9,6 +9,8 @@
 #include <unordered_map>
 #include "../Entities/Objects/Tile.h"
 
+constexpr float TILE_OVERLAP = 6.0f;
+
 /**
  * @file TileManager.h
  * @brief Manages and creates tiles for the game world.
@@ -93,6 +95,36 @@ public:
      * This is primarily used for rendering or external inspection of the tile grid.
      */
     const std::vector<std::vector<std::unique_ptr<Tile>>>& GetTiles() const;
+
+    /**
+    * @brief Retrieves a tile given world coordinates as input.
+    * @param worldX, the input X coordinate
+    * @param worldY, the input Y coordinate
+    * @return Vector2, the position of the tile in the grid.
+    */
+    static Vector2 WorldToTile(float worldX, float worldY) ;
+
+    /**
+    * @brief Retrieves a tile position given its indices.
+    * @param tileX, the input X index
+    * @param tileY, the input Y index
+    * @return Vector2, the position of the tile in the world.
+    */
+    static Vector2 TileToWorld(int tileX, int tileY) ;
+
+    /**
+    * @brief Retrieves the current tile width, accounting for scale and overlap in the grid.
+    *
+    * @return Float, the width of the tile.
+    */
+    static float GetTileWidth() ;
+
+    /**
+    * @brief Retrieves the current tile height, accounting for scale and overlap in the grid.
+    *
+    * @return Float, the height of the tile.
+    */
+    static float GetTileHeight() ;
 };
 
 #endif //PLATFORMER_TILEMANAGER_H
