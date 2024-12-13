@@ -2,12 +2,15 @@
 // Created by ben on 6/4/24.
 //
 
-#include "../../include/Platform/DebugGUI.h"
+#include "../../include/Platform/GUI.h"
+
+// Initialize static members
+int GUI::blockSelection_ = 0;
 
 /**
  * @brief Initialize ImGui for debugging purposes.
  */
-void DebugGUI::InitGui() {
+void GUI::InitGui() {
     TraceLog(LOG_INFO, "Setting up ImGui");
     rlImGuiSetup(true);
     TraceLog(LOG_INFO, "ImGui setup complete");
@@ -57,7 +60,10 @@ std::string PlayerStateToString(PlayerState state) {
  *
  * @param gameState The current game state manager instance.
  */
-void DebugGUI::DrawGui(GameStateManager *gameState) {
+void GUI::DrawDebugGUI(GameStateManager *gameState) {
+    ImGuiIO& io = ImGui::GetIO();
+    io.DisplaySize = ImVec2((float)GetScreenWidth(), (float)GetScreenHeight());
+
     gameData gameData = gameState->GetGameData();
 
     rlImGuiBegin();
@@ -83,4 +89,34 @@ void DebugGUI::DrawGui(GameStateManager *gameState) {
     ImGui::Text("Other count: %zu", gameData.numOther);
     // Submit ImGui data to Raylib for processing
     rlImGuiEnd();
+}
+
+/**
+ * @brief Renders the level editor GUI giving the user tools to edit the level.
+ *
+ * The GUI displays:
+ * - A block selector, for selecting between air, dirt, and grass blocks for placement in the level.
+ */
+void GUI::DrawEditorGUI() {
+    rlImGuiBegin();
+    // show ImGui Content
+    ImGui::SetWindowFontScale(2);
+    // ImGUI button simply checks if it was pressed, and returns True if yes.
+    if (ImGui::Button("Air")) {
+        TraceLog(LOG_INFO, "User selected AIR BLOCK.");
+        blockSelection_ = 0;
+    }
+    if (ImGui::Button("Dirt")) {
+        TraceLog(LOG_INFO, "User selected DIRT BLOCK.");
+        blockSelection_ = 1;
+    }
+    if (ImGui::Button("Grass")) {
+        TraceLog(LOG_INFO, "User selected GRASS BLOCK.");
+        blockSelection_ = 2;
+    }
+    rlImGuiEnd();
+}
+
+int GUI::GetBlockSelection() {
+    return blockSelection_;
 }

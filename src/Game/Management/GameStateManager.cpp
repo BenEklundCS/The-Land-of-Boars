@@ -122,23 +122,25 @@ void GameStateManager::SetTileManager(std::unique_ptr<TileManager> tileManager) 
 void GameStateManager::ReloadTiles() {
     const auto& tiles = tileManager_->GetTiles();
 
-    // Clear the tiles_ and reserve memory for rows
     tiles_.clear();
     tiles_.reserve(tiles.size());
 
-    // Populate tiles_
-    for (const auto& row : tiles) {
-        std::vector<Tile*> tileRow; // A row of raw pointers to tiles
-        tileRow.reserve(row.size());
+    for (size_t row = 0; row < tiles.size(); ++row) {
+        std::vector<Tile*> tileRow;
+        tileRow.reserve(tiles[row].size());
 
-        for (const auto& tile : row) {
-            if (tile) {
-                tileRow.push_back(tile.get());        // Add raw pointer to tiles_
+        for (size_t col = 0; col < tiles[row].size(); ++col) {
+            if (tiles[row][col]) {
+                tileRow.push_back(tiles[row][col].get());
+                TraceLog(LOG_INFO, "ReloadTiles: Tile added at (%zu, %zu)", row, col);
             }
         }
         tiles_.push_back(std::move(tileRow));
     }
+    TraceLog(LOG_INFO, "ReloadTiles completed: %zu rows, %zu columns", tiles_.size(), tiles_[0].size());
 }
+
+
 
 /**
  * @brief Updates all players and handles collisions.
@@ -149,6 +151,7 @@ void GameStateManager::UpdatePlayers() {
         HandleCollisions(player.get());
     }
 }
+
 
 /**
  * @brief Updates player attacks, running animations and iterating over the array of monsters.

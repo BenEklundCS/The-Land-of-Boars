@@ -45,7 +45,7 @@ void Engine::StartGame() {
     LoadLevels();
 
     // Start ImGUI
-    DebugGUI::InitGui();
+    GUI::InitGui();
     // Debug mode enabled
     SetTraceLogLevel(LOG_DEBUG);
     // Call screens sequentially
@@ -144,7 +144,10 @@ void Engine::RenderLevelScene(GameStateManager* scene) {
             BeginDrawing();
             Renderer::Draw(scene, settings.get()); // Draw the scene
             if (settings->displayDebug)
-                DebugGUI::DrawGui(scene); // Draw the debug GUI if necessary
+                GUI::DrawDebugGUI(scene); // Draw the debug GUI if necessary
+            // Editor mode GUI
+            if (scene->GetMode() == MODE_EDITOR)
+                GUI::DrawEditorGUI();
 
             IfEscapeExitGame();
 

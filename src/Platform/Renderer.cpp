@@ -80,6 +80,7 @@ void Renderer::Draw(GameStateManager* gameState, const EngineSettings* settings)
         // Draw level editor stuff in level editor mode
         if (gameState->GetMode() == MODE_EDITOR)
             DrawLevelEditor();
+
     }
     // End rendering
     EndMode2D();

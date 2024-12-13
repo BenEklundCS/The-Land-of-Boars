@@ -9,7 +9,7 @@
 #include <memory>
 #include <raylib.h>
 #include "Renderer.h"
-#include "../Platform/DebugGUI.h"
+#include "../Platform/GUI.h"
 #include "../Game/Level/Level.h"
 
 class GameStateManager;

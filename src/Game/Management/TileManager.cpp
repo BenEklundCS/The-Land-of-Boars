@@ -4,6 +4,7 @@
 
 #include "../../../include/Game/Management/TileManager.h"
 #include "../../../include/Platform/Globals.h"
+#include "../../../include/Game/Management/GameStateManager.h"
 #include <cmath>
 
 /**
@@ -133,21 +134,31 @@ Vector2 TileManager::TileToWorld(int tileX, int tileY) {
  *   - 0: Remove the tile (nullptr).
  *   - Other values: Create a new tile of the specified type.
  */
-void TileManager::SetTileAt(const float x, const float y, const int tileType) {
+void TileManager::SetTileAt(const int x, const int y, const int tileType) {
 
-    const float tileWidth = TILE_LENGTH * WINDOW_SCALE_FACTOR_X - 6.0f;
-    const float tileHeight = TILE_LENGTH * WINDOW_SCALE_FACTOR_Y - 6.0f;
+    const float tileWidth = GetTileWidth();
+    const float tileHeight = GetTileHeight();
 
     if (y >= 0 && y < tiles_.size() && x >= 0 && x < tiles_[y].size()) {
         if (tileType == 0) {
+            TraceLog(LOG_INFO, "Deleting tile at (%d, %d)", x, y);
             tiles_[y][x] = nullptr;
-        } else {
+            GameStateManager::GetInstance()->ReloadTiles();
+        }
+        else if (tileType == 1) {
+            TraceLog(LOG_INFO, "Creating dirt tile at (%d, %d)", x, y);
             tiles_[y][x] = std::make_unique<Tile>(
                 position_.x + static_cast<float>(x * tileWidth),
                 position_.y + static_cast<float>(y * tileHeight),
                 TILE_DIRT_TEXTURE);
+            TraceLog(LOG_INFO, "TileManager::SetTileAt: (%d, %d) set to dirt tile at %p", x, y, tiles_[y][x].get());
+            GameStateManager::GetInstance()->ReloadTiles();
         }
-    } else {
+        else {
+            TraceLog(LOG_WARNING, "Unhandled tileType: %d", tileType);
+        }
+    }
+    else {
         TraceLog(LOG_WARNING, "SetTileAt: Out-of-bounds indices (%d, %d)", x, y);
     }
 }

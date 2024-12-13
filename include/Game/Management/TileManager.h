@@ -86,7 +86,7 @@ public:
      *
      * This method allows dynamic modifications to the tile map during gameplay.
      */
-    void SetTileAt(const float x, const float y, const int tileType);
+    void SetTileAt(const int x, const int y, const int tileType);
 
     /**
      * @brief Retrieves the internal 2D array of tiles.

@@ -12,22 +12,25 @@
 #include "../Game/Management/GameStateManager.h"
 
 /**
- * @file DebugGUI.h
+ * @file GUI.h
  * @brief Provides debugging tools and utilities for rendering and interacting with in-game debug information.
  *
- * The `DebugGUI` class uses ImGui to render an interactive debugging interface during gameplay.
+ * The `GUI` class uses ImGui to render an interactive debugging interface during gameplay.
  * It is primarily used to display player data, object counts, and other game-related information.
  */
 
 /**
- * @class DebugGUI
+ * @class GUI
  * @brief Handles the initialization and rendering of the debug GUI overlay.
  *
- * The `DebugGUI` class provides static methods to initialize and render the debugging interface,
+ * The `GUI` class provides static methods to initialize and render the debugging interface,
  * using ImGui and rlImGui integrations. It works in conjunction with the `GameStateManager` to
  * display real-time information about the game state.
  */
-class DebugGUI {
+class GUI {
+private:
+    // GUI stores the user's current selected block, this value is updated when buttons are clicked
+    static int blockSelection_;
 public:
     /**
      * @brief Initializes the ImGui system for rendering the debug GUI.
@@ -46,7 +49,21 @@ public:
      * - Object counts (players, monsters, platforms, etc.).
      * - Debugging utilities for observing gameplay elements in real-time.
      */
-    static void DrawGui(GameStateManager* gameState);
+    static void DrawDebugGUI(GameStateManager* gameState);
+
+    /**
+     * @brief Renders the level editor GUI giving the user tools to edit the level.
+     *
+     * The GUI displays:
+     * - A block selector, for selecting between air, dirt, and grass blocks for placement in the level.
+     */
+    static void DrawEditorGUI();
+
+    /**
+     * @brief Gets the current block selection from the GUI.
+     * @return int - 0 for air, 1 for dirt, 2 for grass.
+     */
+    static int GetBlockSelection();
 };
 
 #endif //PLATFORMER_DEBUGGUI_H

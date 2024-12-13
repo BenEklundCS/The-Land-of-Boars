@@ -92,6 +92,8 @@ void InputManager::HandleEditorInput(Camera2D& camera) {
 void InputManager::HandleEditorActions(GameStateManager* gameState, Camera2D& camera) {
     try {
         TileManager& tileManager = gameState->GetTileManager();
+
+        // Edit
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             auto mousePos = GetMousePosition();
             auto worldPosition = GetScreenToWorld2D(mousePos, camera);
@@ -100,20 +102,27 @@ void InputManager::HandleEditorActions(GameStateManager* gameState, Camera2D& ca
                      mousePos.x, mousePos.y, worldPosition.x, worldPosition.y);
 
             auto tilePosition = tileManager.GetTileAt(worldPosition.x, worldPosition.y);
+
+            int blockSelection = GUI::GetBlockSelection();
+
+            TraceLog(LOG_INFO, "BLOCK SELECTION: %d", blockSelection);
+
+            tileManager.SetTileAt((int)tilePosition.x, (int)tilePosition.y, 1); // Set the tile
             TraceLog(LOG_INFO, "Tile at: %f, %f", tilePosition.x, tilePosition.y);
         }
 
+        // Print tile position (debug)
         if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
-            auto mousePos = GetMousePosition();
-            auto worldPosition = GetScreenToWorld2D(mousePos, camera);
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                auto mousePos = GetMousePosition();
+                auto worldPosition = GetScreenToWorld2D(mousePos, camera);
 
-            TraceLog(LOG_INFO, "Mouse Position: Screen (%f, %f), World (%f, %f)",
-                     mousePos.x, mousePos.y, worldPosition.x, worldPosition.y);
+                TraceLog(LOG_INFO, "Mouse Position: Screen (%f, %f), World (%f, %f)",
+                         mousePos.x, mousePos.y, worldPosition.x, worldPosition.y);
 
-            auto tilePosition = tileManager.GetTileAt(worldPosition.x, worldPosition.y);
-            tileManager.SetTileAt(tilePosition.x, tilePosition.y, 0); // delete the clicked tile from the scene
-            gameState->ReloadTiles(); // reflect the change across the gameState
-            TraceLog(LOG_INFO, "Tile at: %f, %f", tilePosition.x, tilePosition.y);
+                auto tilePosition = tileManager.GetTileAt(worldPosition.x, worldPosition.y);
+                TraceLog(LOG_INFO, "Tile at: %f, %f", tilePosition.x, tilePosition.y);
+            }
         }
 
     } catch (const std::exception& e) {
