@@ -18,7 +18,7 @@
 
 Player::Player() : GameObject(PLAYER) {
     // Construct the primitive GameObject attributes
-    position_ = Vector2{-300, -300};
+    position_ = Vector2{-300, -300 };
     dimensions_ = Vector2{PLAYER_LENGTH, PLAYER_LENGTH};
     // Scale the object
     Scale();
