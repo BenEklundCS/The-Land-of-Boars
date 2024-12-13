@@ -5,11 +5,23 @@
 #include "../../../include/Game/Sprites/TextureManager.h"
 #include "stdexcept"
 
+// Initialize the static instance for the TextureManager singleton
 std::unique_ptr<TextureManager> TextureManager::instance = nullptr;
 
+/**
+ * @brief Default constructor for the TextureManager.
+ */
 TextureManager::TextureManager() = default;
 
-// Get the TextureManager object
+/**
+ * @brief Retrieve the singleton instance of TextureManager.
+ *
+ * This ensures only one instance of TextureManager exists during runtime.
+ * If the instance does not already exist, it will be created, and textures
+ * will be loaded automatically.
+ *
+ * @return TextureManager* Pointer to the singleton instance.
+ */
 TextureManager* TextureManager::GetInstance() {
     if (instance == nullptr) {
         instance = std::make_unique<TextureManager>();
@@ -18,7 +30,9 @@ TextureManager* TextureManager::GetInstance() {
     return instance.get();
 }
 
-// Load all textures!
+/**
+ * @brief Load all necessary textures for the game.
+ */
 void TextureManager::LoadTextures() {
     // Load the textures
     LoadPlayerTextures();
@@ -27,7 +41,9 @@ void TextureManager::LoadTextures() {
     LoadMonsterTextures();
 }
 
-// Load player textures
+/**
+ * @brief Load textures specific to the player.
+ */
 void TextureManager::LoadPlayerTextures() {
     // Player
     TextureManager::LoadAnimatedTexture(PLAYER_TEXTURE_IDLE_PATH, PLAYER_IDLESHEET_OFFSET, PLAYER_IDLE_FRAMES, PLAYER_IDLE_TEXTURE);
@@ -36,7 +52,9 @@ void TextureManager::LoadPlayerTextures() {
     TextureManager::LoadAnimatedTexture(PLAYER_TEXTURE_ATTACKING_PATH, -16, PLAYER_ATTACKING_FRAMES, PLAYER_ATTACKING_TEXTURE);
 }
 
-// Load game tile textures
+/**
+ * @brief Load textures for the game's tiles.
+ */
 void TextureManager::LoadTileTextures() {
     // Use Raylib's LoadTexture, kinda confusing, but I don't have a better name for loading textures myself
     Texture2D texture = ::LoadTexture(TILE_TEXTURE_PATH);
@@ -48,7 +66,9 @@ void TextureManager::LoadTileTextures() {
                                 Rectangle{TILE_OFFSET, TILE_OFFSET + TILE_LENGTH, tileWidth, tileHeight});
 }
 
-// Load all other textures
+/**
+ * @brief Load other miscellaneous textures like trees and backgrounds.
+ */
 void TextureManager::LoadOtherTextures() {
     constexpr float treeWidth = 100;
     constexpr float treeHeight = 370;
@@ -74,7 +94,9 @@ void TextureManager::LoadOtherTextures() {
                                 Rectangle{redSquareX, redSquareY, redSquareWidth, redSquareHeight});
 }
 
-// Load my monster textures
+/**
+ * @brief Load textures for monsters such as boars, bees, and snails.
+ */
 void TextureManager::LoadMonsterTextures() {
     // Boars
     TextureManager::LoadAnimatedTexture(BOAR_TEXTURE_RUNNING_PATH_WHITE, 0, BOAR_RUNNING_FRAMES, BOAR_RUNNING_TEXTURE_WHITE);
@@ -85,6 +107,13 @@ void TextureManager::LoadMonsterTextures() {
     TextureManager::LoadAnimatedTexture(SNAIL_DYING_TEXTURE_PATH, 0, SNAIL_DYING_FRAMES, SNAIL_DYING_TEXTURE);
 }
 
+/**
+ * @brief Retrieves a GameTexture by its name.
+ *
+ * @param textureName The identifier for the texture.
+ * @return GameTexture The texture and its associated rectangle.
+ * @throws std::invalid_argument If the texture is not found.
+ */
 GameTexture TextureManager::GetTexture(const TextureName textureName) {
     if (const auto it = Textures.find(textureName); it != Textures.end()) {
         return it->second;
@@ -94,13 +123,26 @@ GameTexture TextureManager::GetTexture(const TextureName textureName) {
     throw std::invalid_argument("Texture not found.");
 }
 
-// My internal LoadTexture method that assigns a texture, name, and rect to the texture
+/**
+ * @brief Load a static texture and map it to a TextureName.
+ *
+ * @param texture The loaded texture object.
+ * @param textureName The identifier for the texture.
+ * @param rect The rectangle defining the texture's bounds.
+ */
 void TextureManager::LoadTexture(const Texture2D &texture, const TextureName textureName, const Rectangle rect) {
     GameTexture gameTexture = {texture, rect};
     Emplace(textureName, gameTexture);
 }
 
-// Loads a texture with the frames taken into account
+/**
+ * @brief Load an animated texture with frame information.
+ *
+ * @param filePath The file path to the texture.
+ * @param offset The vertical offset for the texture.
+ * @param frames The number of animation frames.
+ * @param textureName The identifier for the texture.
+ */
 void TextureManager::LoadAnimatedTexture(const char * filePath, const int offset, const int frames, const TextureName textureName) {
     // Use raylibs LoadTexture
     const Texture2D texture = ::LoadTexture(filePath);
@@ -111,19 +153,35 @@ void TextureManager::LoadAnimatedTexture(const char * filePath, const int offset
     Emplace(textureName, gameTexture);
 }
 
-// Emplace a texture into the TextureManager map
+/**
+ * @brief Add a texture to the internal map.
+ *
+ * @param textureName The identifier for the texture.
+ * @param gameTexture The GameTexture object containing the texture and rectangle.
+ */
 void TextureManager::Emplace(TextureName textureName, GameTexture gameTexture) {
     // emplace ensures the texture is not loaded twice
     Textures.emplace(std::pair<TextureName, GameTexture>(textureName, gameTexture));
 }
 
-// Destructor
+
+/**
+ * @brief Destructor for the TextureManager.
+ *
+ * Ensures all loaded textures are properly unloaded to free resources.
+ */
 TextureManager::~TextureManager() {
     for (const auto& gameTexture : Textures) {
         UnloadTexture(gameTexture.second.texture);
     }
 }
 
+/**
+ * @brief Convert a TextureName to its string representation.
+ *
+ * @param name The texture name.
+ * @return std::string The string representation.
+ */
 std::string TextureManager::TextureNameToString(const TextureName name) {
     switch (name) {
         ENUM_TO_STRING_CASE(PLAYER_IDLE_TEXTURE)

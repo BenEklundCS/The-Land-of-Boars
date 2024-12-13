@@ -4,12 +4,21 @@
 
 #include "../../include/Platform/DebugGUI.h"
 
+/**
+ * @brief Initialize ImGui for debugging purposes.
+ */
 void DebugGUI::InitGui() {
     TraceLog(LOG_INFO, "Setting up ImGui");
     rlImGuiSetup(true);
     TraceLog(LOG_INFO, "ImGui setup complete");
 }
 
+/**
+ * @brief Convert a Raylib Color struct to a string representation.
+ *
+ * @param color The Color struct to convert.
+ * @return std::string The string representation of the color.
+ */
 std::string ColorToString(Color color) {
     return "(r: " + std::to_string(color.r) +
            ", g: " + std::to_string(color.g) +
@@ -17,6 +26,12 @@ std::string ColorToString(Color color) {
            ", a: " + std::to_string(color.a) + ")";
 }
 
+/**
+ * @brief Convert a PlayerState enum to a string representation.
+ *
+ * @param state The PlayerState to convert.
+ * @return std::string The string representation of the player state.
+ */
 std::string PlayerStateToString(PlayerState state) {
     std::string stateString;
     // Parse the state
@@ -35,6 +50,13 @@ std::string PlayerStateToString(PlayerState state) {
     return stateString;
 }
 
+/**
+ * @brief Render the Debug GUI for the game.
+ *
+ * Displays game state and player data using ImGui.
+ *
+ * @param gameState The current game state manager instance.
+ */
 void DebugGUI::DrawGui(GameStateManager *gameState) {
     gameData gameData = gameState->GetGameData();
 

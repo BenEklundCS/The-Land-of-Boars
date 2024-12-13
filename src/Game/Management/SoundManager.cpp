@@ -6,6 +6,15 @@
 
 std::unique_ptr<SoundManager> SoundManager::instance = nullptr;
 
+
+/**
+ * @brief Retrieves the singleton instance of the SoundManager.
+ *
+ * If the instance does not already exist, it is created and initialized with
+ * loaded sounds. The main game theme is also started upon the first call.
+ *
+ * @return SoundManager* A pointer to the singleton instance.
+ */
 SoundManager *SoundManager::GetInstance() {
     if (instance == nullptr) {
         instance = std::make_unique<SoundManager>();
@@ -15,6 +24,16 @@ SoundManager *SoundManager::GetInstance() {
     return instance.get();
 }
 
+/**
+ * @brief Responds to game events and plays the appropriate sound.
+ *
+ * This function is called whenever the SoundManager is notified of a game event.
+ * It determines the correct sound to play based on the event type and, for some
+ * events, introduces randomness for variety.
+ *
+ * @param entity A pointer to the game object triggering the event (unused).
+ * @param event The event type triggering the notification.
+ */
 void SoundManager::OnNotify(const GameObject *entity, Events event) {
     switch (event) {
         case EVENT_PLAYER_JUMPED:
@@ -52,6 +71,13 @@ void SoundManager::OnNotify(const GameObject *entity, Events event) {
     }
 }
 
+/**
+ * @brief Loads all game sounds and stores them in a map for quick access.
+ *
+ * This function initializes the `sounds_` map by associating `SoundKey` enums
+ * with their corresponding loaded sound files. All sounds are preloaded to
+ * ensure smooth playback during the game.
+ */
 void SoundManager::LoadSounds() {
     // Load a sound and store it in the sounds_ map with its name as the key
     // Main theme
@@ -69,6 +95,14 @@ void SoundManager::LoadSounds() {
     sounds_.emplace(std::pair<SoundKey, Sound>(BOAR_DEATH, LoadSound("../Assets/Sounds/boarDeath.wav")));
 }
 
+/**
+ * @brief Plays the specified sound.
+ *
+ * This function retrieves a sound from the `sounds_` map using its `SoundKey`
+ * and plays it. If the sound is not found, no action is taken.
+ *
+ * @param sound The key corresponding to the sound to play.
+ */
 void SoundManager::PlaySound(SoundKey sound) {
     if (sounds_.find(sound) != sounds_.end())
         ::PlaySound(sounds_.at(sound));

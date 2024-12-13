@@ -1,6 +1,14 @@
 #include "../../../include/Game/Entities/Effects/ParticleCone.h"
 #include "cmath"
 
+/**
+ * @brief Constructs a ParticleCone object, representing a particle effect emanating in a cone shape.
+ *
+ * @param position The starting position of the particle cone.
+ * @param playerDimensions The dimensions of the player, used for positioning the cone relative to the player.
+ * @param facingRight Whether the cone is facing right (true) or left (false).
+ * @param particleCount The initial number of particles to spawn in the cone.
+ */
 ParticleCone::ParticleCone(const Vector2 position, const Vector2 playerDimensions, const bool facingRight, const float particleCount) {
     position_ = position;
     playerDimensions_ = playerDimensions;
@@ -8,6 +16,12 @@ ParticleCone::ParticleCone(const Vector2 position, const Vector2 playerDimension
     particleCount_ = particleCount;
 }
 
+/**
+ * @brief Renders the particle cone on the screen.
+ *
+ * Particles are spawned in a randomized cone shape, with their positions determined by the cone's base angle, spread,
+ * and randomized distance from the origin.
+ */
 void ParticleCone::Draw() {
     // Number of particles to draw
     const int particles = static_cast<int>(particleCount_);

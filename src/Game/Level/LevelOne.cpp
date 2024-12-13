@@ -11,6 +11,15 @@
 #include "../../../include/Game/Entities/Monsters/Bee.h"
 #include "../../../include/Game/Entities/Monsters/Snail.h"
 
+
+/**
+ * @brief Initializes the game state for Level One.
+ *
+ * Creates and adds game objects, tiles, platforms, monsters, and other entities
+ * to the game state. Configures their positions, behaviors, and interactions.
+ *
+ * @return GameStateManager* Pointer to the singleton game state manager with Level One's setup.
+ */
 GameStateManager* LevelOne::GetGameState() {
 
     Vector2 origin {0, 0};
@@ -24,7 +33,7 @@ GameStateManager* LevelOne::GetGameState() {
 
 #pragma region platforms
     // Spawn platforms into the gameState with absolute positions
-    auto platform3 = std::make_unique<Platform>(3-50, 700, 250, 25, BLACK);
+    auto platform3 = std::make_unique<Platform>(350, 700, 250, 25, BLACK);
     auto moving_platform = std::make_unique<MovingPlatform>(std::move(platform3), Vector2{0, 0}, Vector2{-700, 700}, 250.0f, false, true);
     auto platform4 = std::make_unique<Platform>(550, 400, 500, 50, BLACK);
     auto moving_platform2 = std::make_unique<MovingPlatform>(std::move(platform4), Vector2{-200, 200}, Vector2{0, 0}, 200.0f, true, false);

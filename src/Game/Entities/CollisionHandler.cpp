@@ -2,8 +2,23 @@
 #include "cmath"
 #include "raylib.h"
 
-// Handle an arbitrary platform collision between obj, a moving object
-// and platform a stationary platform the object will collide with
+/**
+ * @brief Handles collisions between a moving object (obj) and a stationary platform.
+ *
+ * Resolves collisions by determining the direction of the collision and
+ * adjusting the object's position and velocity accordingly.
+ *
+ * - For vertical collisions:
+ *   - If the object collides from above the platform, it is placed on top and its vertical velocity is set to zero.
+ *   - If the object collides from below, it is placed below the platform and its vertical velocity is set to zero.
+ *
+ * - For horizontal collisions:
+ *   - If the object collides from the left or right of the platform, it is pushed away horizontally, and its horizontal velocity is set to zero.
+ *   - If the object is a MONSTER, its direction of movement is toggled.
+ *
+ * @param obj Pointer to the moving GameObject involved in the collision.
+ * @param platform Pointer to the stationary GameObject (platform) involved in the collision.
+ */
 void CollisionHandler::HandlePlatformCollision(GameObject *obj, GameObject *platform) {
     if (CheckCollisionRecs(obj->GetRect(), platform->GetRect())) {
         auto [obj_x, obj_y, obj_width, obj_height] = obj->GetRect();

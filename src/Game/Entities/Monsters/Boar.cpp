@@ -6,6 +6,17 @@
 #include <random>
 #include <chrono>
 
+/**
+ * @brief Constructs a Boar object with specified position, dimensions, and state.
+ *
+ * Initializes the Boar's animation, health, and scale.
+ *
+ * @param posX The x-coordinate of the Boar's position.
+ * @param posY The y-coordinate of the Boar's position.
+ * @param dimX The width of the Boar.
+ * @param dimY The height of the Boar.
+ * @param state The initial state of the Boar.
+ */
 Boar::Boar(const float posX, const float posY, const float dimX, const float dimY, const MonsterState state)
 : Monster(posX, posY, dimX, dimY, state) {
     // Scale the boar
@@ -17,6 +28,11 @@ Boar::Boar(const float posX, const float posY, const float dimX, const float dim
 
 #pragma region render methods
 
+/**
+ * @brief Draws the Boar to the screen.
+ *
+ * Uses the Boar's animation and position to render its current state.
+ */
 void Boar::Draw() {
     // Get the playerTexture sheet and currentRect from the Animation object
     Texture2D boarTexture = boarAnimation_->GetTexture();
@@ -26,6 +42,11 @@ void Boar::Draw() {
     DrawTexturePro(boarTexture, currentRect, GetRect(), Vector2{0, 0}, 0, color_);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
 }
 
+/**
+ * @brief Updates the Boar's behavior and animation.
+ *
+ * Handles animation, updates from the base Monster class, and determines if the Boar should "oink."
+ */
 void Boar::Update() {
     AnimateBoar();
     Monster::Update();
@@ -33,6 +54,13 @@ void Boar::Update() {
     MaybeOink();
 }
 
+/**
+ * @brief Handles the Boar being hit.
+ *
+ * Reduces the Boar's health and notifies observers. If the health drops to zero, triggers the death animation.
+ *
+ * @param damage The amount of damage dealt to the Boar.
+ */
 void Boar::HitMonster(int damage) {
     // Run the base class code that's reusable
     Monster::HitMonster(damage);
@@ -46,6 +74,9 @@ void Boar::HitMonster(int damage) {
     }
 }
 
+/**
+ * @brief Initiates the Boar's death animation.
+ */
 void Boar::BeginDeathAnimation() {
     if (state_ != DYING) {
         state_ = DYING;
@@ -54,10 +85,18 @@ void Boar::BeginDeathAnimation() {
     }
 }
 
+/**
+ * @brief Marks the Boar for removal after death.
+ */
 void Boar::Died() {
     shouldRemove_ = true; // set shouldRemove
 }
 
+/**
+ * @brief Animates the Boar.
+ *
+ * Updates the Boar's animation and checks if the death animation has completed.
+ */
 void Boar::AnimateBoar() {
     boarAnimation_->Animate();
     if (state_ == DYING && boarAnimation_->IsDone()) {
@@ -65,6 +104,11 @@ void Boar::AnimateBoar() {
     }
 }
 
+/**
+ * @brief Determines if the Boar should "oink."
+ *
+ * The Boar randomly "oinks" within a range of 1 to 30 seconds. Notifies observers when it does.
+ */
 void Boar::MaybeOink() {
     if (timeSinceLastOink_ >= nextOinkTime_) { // Check if the time for the next oink has passed
         Notify(this, EVENT_BOAR_OINKED);

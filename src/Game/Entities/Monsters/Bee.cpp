@@ -6,7 +6,17 @@
 #include "../../../../include/Game/Management/GameStateManager.h"
 
 
-// Bee constructor
+/**
+ * @brief Constructs a Bee object with the specified position, dimensions, and state.
+ *
+ * Initializes the Bee's animation, health, and scale.
+ *
+ * @param posX The x-coordinate of the Bee's position.
+ * @param posY The y-coordinate of the Bee's position.
+ * @param dimX The width of the Bee.
+ * @param dimY The height of the Bee.
+ * @param state The initial state of the Bee.
+ */
 Bee::Bee(const float posX, const float posY, const float dimX, const float dimY, const MonsterState state)
 : Monster(posX, posY, dimX, dimY, state) {
     // Scale the bee
@@ -16,7 +26,11 @@ Bee::Bee(const float posX, const float posY, const float dimX, const float dimY,
     this->hp_ = BEE_MAX_HEALTH;
 }
 
-// Draw the bee
+/**
+ * @brief Draws the Bee to the screen.
+ *
+ * Uses the Bee's animation and position to render its current state.
+ */
 void Bee::Draw() {
     // Get the playerTexture sheet and currentRect from the Animation object
     const Texture2D beeTexture = beeAnimation_->GetTexture();
@@ -26,7 +40,11 @@ void Bee::Draw() {
     DrawTexturePro(beeTexture, currentRect, GetRect(), Vector2{0, 0}, 0, color_);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
 }
 
-// Update the bee
+/**
+ * @brief Updates the Bee's behavior and animation.
+ *
+ * Handles animation, state transitions, and updates from the base Monster class.
+ */
 void Bee::Update() {
     AnimateBee();
     if (state_ != DYING) { // do not allow state transition if dying
@@ -39,13 +57,24 @@ void Bee::Update() {
     Monster::Update();
 }
 
-// Logic to call when the bee dies
+/**
+ * @brief Logic executed when the Bee dies.
+ *
+ * Marks the Bee for removal from the game.
+ */
 void Bee::Died() {
     shouldRemove_ = true;
 }
 
 int counter = 0;
 
+/**
+ * @brief Checks if the Bee is within attack range of the player.
+ *
+ * Calculates the distance between the Bee and the player to determine if it is close enough to attack.
+ *
+ * @return True if the Bee is within attack range, false otherwise.
+ */
 bool Bee::InAttackRange() {
     // Get player from the GameStateManager
 
@@ -60,7 +89,11 @@ bool Bee::InAttackRange() {
     return false; // dummy return for now
 }
 
-// Animate the bee
+/**
+ * @brief Animates the Bee.
+ *
+ * Updates the Bee's animation and handles the death animation completion.
+ */
 void Bee::AnimateBee() {
     beeAnimation_->Animate();
     if (state_ == DYING && beeAnimation_->IsDone()) {
@@ -69,7 +102,13 @@ void Bee::AnimateBee() {
     }
 }
 
-// Override of hit monster
+/**
+ * @brief Handles the Bee being hit.
+ *
+ * Reduces the Bee's health and notifies observers. If the health drops to zero, triggers the death animation.
+ *
+ * @param damage The amount of damage dealt to the Bee.
+ */
 void Bee::HitMonster(const int damage) {
     Monster::HitMonster(damage);
     if (GetHealth() <= 0) {
@@ -81,6 +120,9 @@ void Bee::HitMonster(const int damage) {
     }
 }
 
+/**
+ * @brief Initiates the Bee's death animation.
+ */
 void Bee::BeginDeathAnimation() {
     if (state_ != DYING) {
         state_ = DYING;

@@ -10,6 +10,16 @@
 #define HEALTH_BAR_WIDTH 50
 #define HEALTH_BAR_HEIGHT 50
 
+/**
+ * @brief Constructs a HealthBar object.
+ *
+ * Initializes the health bar at a specified position with the player's current HP
+ * and loads the health globe texture from the TextureManager.
+ *
+ * @param pos_x The x-coordinate for the health bar's initial position.
+ * @param pos_y The y-coordinate for the health bar's initial position.
+ * @param hp The initial HP value to display.
+ */
 HealthBar::HealthBar(float pos_x, float pos_y, int hp) {
     // Set position and dimensions
     position_ = Vector2{pos_x, pos_y};
@@ -19,6 +29,12 @@ HealthBar::HealthBar(float pos_x, float pos_y, int hp) {
     gameTexture_ = TextureManager::GetInstance()->GetTexture(HEALTH_GLOBE_TEXTURE);
 }
 
+/**
+ * @brief Updates the health bar's position and current health.
+ *
+ * The health bar is anchored to the top-left corner of the screen relative to the camera,
+ * and its health value (`hp_`) is updated from the player's current HP in the GameStateManager.
+ */
 void HealthBar::Update() {
     auto camera = GameStateManager::GetInstance()->GetCamera();
     // Anchor to the top-left corner of the screen relative to the camera
@@ -27,6 +43,12 @@ void HealthBar::Update() {
     hp_ = GameStateManager::GetInstance()->GetPlayers().at(0)->GetPlayerData()->hp_; // update hp
 }
 
+/**
+ * @brief Draws the health bar on the screen.
+ *
+ * Each health globe is rendered as a part of the health bar using the loaded texture.
+ * The globes are spaced evenly with a 5-pixel gap between them.
+ */
 void HealthBar::Draw() {
     // Use the loaded texture and rectangles for rendering
     for (int i = 0; i < hp_; i++) {

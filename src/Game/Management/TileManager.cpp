@@ -6,14 +6,20 @@
 #include "../../../include/Platform/Globals.h"
 #include <cmath>
 
-// Create tiles creates a tilemap given a 2d vector of integers
-// - 0 for GRASS
-// - 1 for DIRT
-// - 2 for EMPTY (nullptr)
-
-// TileManager will need to implement or use a Grid Structure that is easily loadable from .json
-
-
+/**
+ * @brief Initializes the tile grid based on a 2D vector of integers.
+ *
+ * This function populates the `tiles_` vector with tiles based on the provided `tileMap`.
+ * Each integer in the `tileMap` corresponds to a specific tile type:
+ *   - 0: Empty (nullptr).
+ *   - 1: DIRT tile.
+ *   - 2: GRASS tile.
+ * The world-space position of each tile is calculated using its grid indices, tile
+ * dimensions, and overlap adjustments. This function also ensures that the grid
+ * dimensions match the input map.
+ *
+ * @param tileMap A 2D vector of integers representing the tile types.
+ */
 void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
     tiles_.resize(tileMap.size());
     for (int i = 0; i < tileMap.size(); ++i) {
@@ -44,7 +50,17 @@ void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
 }
 
 
-
+/**
+ * @brief Retrieves the grid position of a tile at a given mouse position in world space.
+ *
+ * This function calculates the grid indices of a tile based on the mouse's world-space
+ * coordinates. It accounts for tile dimensions, scaling factors, and overlap adjustments.
+ * If the calculated indices are out of bounds, an invalid position is returned.
+ *
+ * @param x The x-coordinate of the mouse in world space.
+ * @param y The y-coordinate of the mouse in world space.
+ * @return Vector2 The grid position of the tile as {tileX, tileY}, or {-1, -1} if out of bounds.
+ */
 Vector2 TileManager::GetTileAt(float x, float y) const {
     constexpr int tile_overlap = 6;
 
@@ -75,7 +91,19 @@ Vector2 TileManager::GetTileAt(float x, float y) const {
     return Vector2{-1, -1}; // Return invalid vector for out-of-bounds
 }
 
-
+/**
+ * @brief Updates or removes a tile at the specified grid position.
+ *
+ * This function modifies the tile at the given grid coordinates. If `tileType` is 0, the
+ * tile is set to nullptr, effectively removing it. Otherwise, a new tile of the specified
+ * type is created at the given position, using the appropriate texture.
+ *
+ * @param x The x-coordinate of the grid position.
+ * @param y The y-coordinate of the grid position.
+ * @param tileType The type of tile to set:
+ *   - 0: Remove the tile (nullptr).
+ *   - Other values: Create a new tile of the specified type.
+ */
 void TileManager::SetTileAt(const float x, const float y, const int tileType) {
 
     const float tileWidth = TILE_LENGTH * WINDOW_SCALE_FACTOR_X - 6.0f;
@@ -95,11 +123,7 @@ void TileManager::SetTileAt(const float x, const float y, const int tileType) {
     }
 }
 
-
-
-// GetTiles returns a flattened Vector representing the tile objects
-// Handles the nullptrs and does not return them to the outside
-// Return a const reference to avoid ownership transfer
+// Return the tiles_ 2d array.
 const std::vector<std::vector<std::unique_ptr<Tile>>>& TileManager::GetTiles() const {
     return tiles_;
 }

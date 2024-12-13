@@ -113,30 +113,114 @@ enum TextureName {
 
 #pragma endregion
 
+/**
+ * @struct GameTexture
+ * Struct representing a texture and its associated rectangle.
+ *
+ * This struct encapsulates a `Texture2D` object and a `Rectangle` defining the portion of the texture to use.
+ */
 struct GameTexture {
-    Texture2D texture;
-    Rectangle rect;
+    Texture2D texture; ///< The loaded texture.
+    Rectangle rect;    ///< The rectangle defining the texture's region.
 };
 
-// Texture Manager loads all textures as a Singleton, and has a GetTexture method to retrieve loaded texture objects
+/**
+ * @class TextureManager
+ * @brief Singleton class for managing game textures.
+ *
+ * The `TextureManager` handles the loading and retrieval of textures used in the game.
+ * It ensures all textures are loaded once and provides an interface to access them.
+ */
 class TextureManager {
 private:
-    static std::unique_ptr<TextureManager> instance; // Instance of texture manager
-    std::map<TextureName, GameTexture> Textures; // Map of textures
+    static std::unique_ptr<TextureManager> instance; ///< Singleton instance of the `TextureManager`.
+    std::map<TextureName, GameTexture> Textures;     ///< Map of loaded textures.
+
+    /**
+     * @brief Loads an animated texture from a sprite sheet.
+     * @param filePath Path to the sprite sheet.
+     * @param offset Starting offset for the texture in the sprite sheet.
+     * @param frames Number of animation frames in the sprite sheet.
+     * @param textureName The `TextureName` key for the texture.
+     */
     void LoadAnimatedTexture(const char * filePath, int offset, int frames, TextureName textureName);
-    void LoadTexture(const Texture2D &texture, TextureName textureName, Rectangle rect); // Load a texture
-    void Emplace(TextureName textureName, GameTexture gameTexture); // Emplace a texture into the texture map
-    void LoadPlayerTextures(); // Load player textures
-    void LoadTileTextures(); // Load tile textures
-    void LoadMonsterTextures(); // Load monster textures
-    void LoadOtherTextures(); // Load all other textures
+
+    /**
+     * @brief Loads a static texture and its rectangle.
+     * @param texture The `Texture2D` object.
+     * @param textureName The `TextureName` key for the texture.
+     * @param rect The rectangle defining the texture's region.
+     */
+    void LoadTexture(const Texture2D &texture, TextureName textureName, Rectangle rect);
+
+    /**
+     * @brief Adds a texture to the internal map.
+     * @param textureName The `TextureName` key for the texture.
+     * @param gameTexture The `GameTexture` to store.
+     */
+    void Emplace(TextureName textureName, GameTexture gameTexture);
+
+    /**
+     * @brief Loads player-related textures.
+     */
+    void LoadPlayerTextures();
+
+    /**
+     * @brief Loads tile-related textures.
+     */
+    void LoadTileTextures();
+
+    /**
+     * @brief Loads monster-related textures.
+     */
+    void LoadMonsterTextures();
+
+    /**
+     * @brief Loads miscellaneous textures (e.g., background, HUD).
+     */
+    void LoadOtherTextures();
+
+    /**
+     * @brief Converts a `TextureName` to its string representation.
+     * @param name The `TextureName` to convert.
+     * @return A string representation of the texture name.
+     */
     static std::string TextureNameToString(TextureName name);
+
 public:
+    /**
+     * @brief Default constructor for the `TextureManager`.
+     */
     TextureManager();
-    static TextureManager* GetInstance(); // Get the TextureManager instance
-    void LoadTextures(); // Load all textures
-    GameTexture GetTexture(TextureName textureName); // Get a texture by name
+
+    /**
+     * @brief Retrieves the singleton instance of the `TextureManager`.
+     * @return Pointer to the `TextureManager` instance.
+     */
+    static TextureManager* GetInstance();
+
+    /**
+     * @brief Loads all textures into the manager.
+     *
+     * This method loads player, tile, monster, and other textures into memory.
+     */
+    void LoadTextures();
+
+    /**
+     * @brief Retrieves a texture by name.
+     * @param textureName The name of the texture to retrieve.
+     * @return The `GameTexture` associated with the given `TextureName`.
+     * @throws std::invalid_argument if the texture name is not found.
+     */
+    GameTexture GetTexture(TextureName textureName);
+
+    /**
+     * @brief Destructor for the `TextureManager`.
+     *
+     * Unloads all textures managed by the class.
+     */
     ~TextureManager();
 };
 
 #endif //PLATFORMER_TEXTUREMANAGER_H
+

@@ -11,7 +11,15 @@
 Renderer::Renderer() = default;
 
 #pragma region render methods
-// Render the game background
+
+/**
+ * @brief Renders the game background.
+ *
+ * Uses the TextureManager to retrieve the background texture and renders it across the full screen,
+ * relative to the current camera position.
+ *
+ * @param camera The Camera2D object controlling the viewport.
+ */
 void Renderer::RenderBackground(Camera2D camera) {
     // Get the TextureManager instance and retrieve the BACKGROUND_TEXTURE from it
     GameTexture background = TextureManager::GetInstance()->GetTexture(BACKGROUND_TEXTURE);
@@ -23,13 +31,28 @@ void Renderer::RenderBackground(Camera2D camera) {
                    Vector2{0, 0}, 0, PINK);
 }
 
+/**
+ * @brief Renders the current FPS on the screen.
+ *
+ * Displays the FPS in the top-left corner of the viewport, relative to the camera position.
+ *
+ * @param camera The Camera2D object controlling the viewport.
+ */
 void Renderer::RenderFPS(Camera2D camera) {
     int offset = 20;
     DrawFPS((int)camera.target.x - GetScreenWidth()/2 + offset, (int)camera.target.y - GetScreenHeight()/2 + offset);
 }
 #pragma endregion
 
-// Draw all game objects
+/**
+ * @brief Draws all game objects within the current game state.
+ *
+ * Iterates through all game objects managed by the GameStateManager and calls their respective
+ * `Draw` methods. Optionally renders debug information, such as red hitbox borders, if enabled.
+ *
+ * @param gameState Pointer to the current GameStateManager instance.
+ * @param settings Pointer to the EngineSettings object controlling rendering options.
+ */
 void Renderer::Draw(GameStateManager* gameState, const EngineSettings* settings) {
     // Get the camera
     const Camera2D camera = gameState->GetCamera();
@@ -62,6 +85,12 @@ void Renderer::Draw(GameStateManager* gameState, const EngineSettings* settings)
     EndMode2D();
 }
 
+/**
+ * @brief Draws the grid for the level editor.
+ *
+ * This method is currently commented out due to performance concerns but can be implemented
+ * to render grid lines and tile placement for level editing.
+ */
 void Renderer::DrawLevelEditor() {
     // BELOW CODE IS VERY PERFORMANCE INTENSIVE
     /*
@@ -110,8 +139,12 @@ void Renderer::DrawLevelEditor() {
     */
 }
 
-
-
+/**
+ * @brief Renders the title screen of the game.
+ *
+ * Displays a title and a prompt for the user to start the game. Uses a basic camera setup
+ * and centralized text rendering for the title and subtitle.
+ */
 void Renderer::DrawTitleScreen() {
     Camera2D titleCamera = { 0 };
     titleCamera.target = (Vector2){ static_cast<float>(GetScreenWidth()) / 2.0f, static_cast<float>(GetScreenHeight()) / 2.0f };

@@ -16,9 +16,15 @@
 // Player becomes JUMPING when a Jump method is called, they should remain in a JUMPING state until they hit the ground again
 // Player becomes ATTACKING when an Attack method is called, no matter what they should remain attacking until the attack method finishes
 
+/**
+ * @brief Player constructor.
+ *
+ * Initializes the player object with default attributes such as position, dimensions, animations, and health bar.
+ * The player starts in the `IDLE` state.
+ */
 Player::Player() : GameObject(PLAYER) {
     // Construct the primitive GameObject attributes
-    position_ = Vector2{-300, -300 };
+    position_ = Vector2{300, -300 };
     dimensions_ = Vector2{PLAYER_LENGTH, PLAYER_LENGTH};
     // Scale the object
     Scale();
@@ -30,7 +36,12 @@ Player::Player() : GameObject(PLAYER) {
 
 #pragma region render methods
 
-// Overridden render methods from the GameObject parent class
+/**
+ * @brief Draws the player on the screen.
+ *
+ * This method retrieves the current animation frame and renders the player.
+ * If the game is in `MODE_GAME`, the health bar is also drawn.
+ */
 void Player::Draw() {
     // Get the playerTexture sheet and currentRect from the Animation object
 
@@ -42,6 +53,12 @@ void Player::Draw() {
     DrawTexturePro(playerTexture, currentRect, GetRect(), Vector2{0, 0}, 0, color_);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
 }
 
+/**
+ * @brief Updates the player's state and attributes.
+ *
+ * Handles state transitions, animations, movement, and health bar updates.
+ * Also ensures the player's jump counter and attack state are managed correctly.
+ */
 void Player::Update() {
     // Get deltaTime
     float deltaTime = GetFrameTime();
@@ -64,6 +81,13 @@ void Player::Update() {
 
 #pragma region movement methods
 
+/**
+ * @brief Moves the player based on velocity and physics.
+ *
+ * This method applies gravity, friction, and updates the player's position.
+ *
+ * @param deltaTime Time elapsed since the last frame.
+ */
 void Player::MovePlayer(const float deltaTime) {
     // Call the updatePosition and velocity changing functions
     ApplyFriction();
@@ -71,11 +95,19 @@ void Player::MovePlayer(const float deltaTime) {
     UpdatePosition(deltaTime);
 }
 
+/**
+ * @brief Updates the player's position based on velocity.
+ *
+ * @param deltaTime Time elapsed since the last frame.
+ */
 void Player::UpdatePosition(const float deltaTime) {
     position_.x += velocity_.x * deltaTime;
     position_.y += velocity_.y * deltaTime;
 }
 
+/**
+ * @brief Applies friction to the player's horizontal velocity.
+ */
 void Player::ApplyFriction() {
     if (constexpr int minVelocity = 50; velocity_.x > minVelocity) {
         velocity_.x -= FRICTION;
@@ -86,10 +118,18 @@ void Player::ApplyFriction() {
     }
 }
 
+/**
+ * @brief Applies gravity to the player's vertical velocity.
+ */
 void Player::ApplyGravity() {
     velocity_.y += GRAVITY;
 }
 
+/**
+ * @brief Moves the player to the left.
+ *
+ * Updates the player's state to `RUNNING` and decreases horizontal velocity.
+ */
 void Player::MoveLeft() {
     // If the player is not also jumping, we'll display the RUNNING animation
     if (velocity_.y == 0 && playerData.state_ != ATTACKING) {
@@ -103,6 +143,11 @@ void Player::MoveLeft() {
     }
 }
 
+/**
+ * @brief Moves the player to the right.
+ *
+ * Updates the player's state to `RUNNING` and increases horizontal velocity.
+ */
 void Player::MoveRight() {
     // If the player is not also jumping, we'll display the RUNNING animation
     if (velocity_.y == 0 && playerData.state_ != ATTACKING) {
@@ -116,7 +161,11 @@ void Player::MoveRight() {
     }
 }
 
-// Make the player jump!
+/**
+ * @brief Makes the player jump.
+ *
+ * Updates the player's state to `JUMPING`, increases vertical velocity, and notifies observers of the jump event.
+ */
 void Player::Jump() {
     // Set isOnGround to false if they jump!
     playerData.isOnGround_ = false;
@@ -134,7 +183,12 @@ void Player::Jump() {
 
 #pragma region player actions
 
-// Make the player attack!
+/**
+ * @brief Makes the player attack.
+ *
+ * Updates the player's state to `ATTACKING` if enough time has passed since the last attack.
+ * Notifies observers of the attack event.
+ */
 void Player::Attack() {
     // Set the player's state to ATTACKING if enough time has elapsed
     if (playerData.timeSinceLastAttack_ > PLAYER_ATTACK_DELAY) {
@@ -149,6 +203,9 @@ void Player::Attack() {
 
 #pragma region player state/animations
 
+/**
+ * @brief Updates the player's animation and transitions between states.
+ */
 void Player::AnimatePlayer() {
     // Call Animate to get the next rect
     playerData.playerAnimation_->Animate();
@@ -167,6 +224,9 @@ void Player::AnimatePlayer() {
     playerData.playerAnimation_->FlipX(movingRight_);
 }
 
+/**
+ * @brief Loads a new animation based on the player's current state.
+ */
 void Player::LoadNewAnimation() {
     // Changing state, so get the TextureManager so we can load the next animation
     TextureManager* textureManager = TextureManager::GetInstance();
@@ -194,26 +254,9 @@ void Player::LoadNewAnimation() {
     }
 }
 
-// Check if the player should go to IDLE state
-// This should be called after resetting x or y velocity to 0, and should NOT be called
-// after the velocities have been increased to ensure proper state transition
-/*
- * Good usage:
- * e.g. PlayerHitFloor (velocity.y set to 0)
- *       call GoIdle, should they be in an Idle state?\
- *
- *
- * Bad usage:
- *
- * Update()
- *      MovePlayer();
- *      ApplyGravity;
- *      GoIdle(); // should not be called here as the velocities have been increased for the frame!
- *
- * This is important, because even if the player is on the ground we apply constant y velocity downwards, so they'd never
- * go idle.
- *
- * We also cannot go IDLE if the player is currently ATTACKING
+
+/**
+ * @brief Transitions the player to the `IDLE` state if applicable.
  */
 void Player::StateTransition() {
     if (ZeroVelocity() && (playerData.state_ != ATTACKING)) {
@@ -221,17 +264,27 @@ void Player::StateTransition() {
     }
 }
 
+/**
+ * @brief Checks if the player can jump based on remaining jumps.
+ *
+ * @return True if the player has no velocity in the x or y direction. False otherwise.
+ */
 bool Player::ZeroVelocity() const {
     return (velocity_.x == 0 && velocity_.y == 0);
 }
 
-// Check and return if the player can jump!
+/**
+ * @brief Checks if the player can jump based on remaining jumps.
+ *
+ * @return True if the player can jump, false otherwise.
+ */
 bool Player::CanJump() const {
     return playerData.jumps_ <= PLAYER_MAX_JUMPS;
 }
 
-// If the player is on the ground, reset their jump counter to 0 and set isOnGround_ to false
-// GoIdle() must be called before jumps will be reset, because jumps cannot be reset while JUMPING
+/**
+ * @brief Resets the player's jump counter if they are on the ground.
+ */
 void Player::ResetJumps() {
     // If the player's on the ground, reset jumps
     if (playerData.isOnGround_ && playerData.state_ != JUMPING) {
@@ -242,6 +295,11 @@ void Player::ResetJumps() {
     }
 }
 
+/**
+ * @brief Checks if the player is currently attacking.
+ *
+ * @return True if the player is in the `ATTACKING` state, false otherwise.
+ */
 bool Player::AlreadyAttacking() {
     if (playerData.state_ == ATTACKING && playerData.last_state_ == ATTACKING) {
         if (playerData.playerAnimation_->IsDone()) {
@@ -259,7 +317,9 @@ bool Player::AlreadyAttacking() {
 
 #pragma region player object interactions
 
-// Hit the player externally
+/**
+ * @brief Handles player being hit, reducing HP and notifying observers.
+ */
 void Player::HitPlayer() {
     // 1 second safety window
     if (playerData.timeSinceHit_ > 1.0f) {
@@ -278,12 +338,20 @@ void Player::HitPlayer() {
     }
 }
 
-// Return if the player has died
+/**
+ * @brief Checks if the player is dead.
+ *
+ * @return True if the player's HP is 0 or less, false otherwise.
+ */
 bool Player::CheckPlayerDeath() const {
     return playerData.hp_ <= 0;
 }
 
-// Return a ptr to the playerData struct stored in memory
+/**
+ * @brief Returns a pointer to the player's data.
+ *
+ * @return Pointer to the player's data structure.
+ */
 playerDataStruct* Player::GetPlayerData() {
     playerData.timeSinceHit_ = timeSinceToggle_;
     return &playerData;

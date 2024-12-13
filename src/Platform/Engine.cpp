@@ -6,14 +6,21 @@
 #include "../../include/Game/Level/LevelOne.h"
 #include <stdexcept>
 
+/**
+ * @brief Default constructor for the Engine class.
+ */
 Engine::Engine() = default;
 
 
-// Declare Engine::settings as a nullptr as it is a static member attribute of Engine
+// Static member initialization
 std::unique_ptr<EngineSettings> Engine::settings = nullptr;
 bool Engine::shouldExit = false;
 
-// Load all the levels for the game
+/**
+ * @brief Load all game levels into the engine.
+ *
+ * Currently, only LevelOne is implemented. Additional levels can be added in the future.
+ */
 void Engine::LoadLevels() {
     TraceLog(LOG_INFO, "Engine loading levels...");
     auto levelOne = std::make_unique<LevelOne>();
@@ -23,7 +30,9 @@ void Engine::LoadLevels() {
     levels.push_back(std::move(levelOne));
 }
 
-// Start the game by loading the levels, then playing them in sequence
+/**
+ * @brief Starts the game by initializing settings, loading levels, and rendering screens sequentially.
+ */
 void Engine::StartGame() {
     // Init settings such that it is not null
     settings = std::make_unique<EngineSettings>();
@@ -45,6 +54,11 @@ void Engine::StartGame() {
     RenderGameOverScreen(); // Game over screen if necessary
 }
 
+/**
+ * @brief Renders the title screen.
+ *
+ * Displays the title screen and waits for user input to transition to the game screen.
+ */
 void Engine::RenderTitleScreen() {
     TraceLog(LOG_INFO, "Rendering Title Screen...");
     while (!WindowShouldClose()) {
@@ -68,6 +82,11 @@ void Engine::RenderTitleScreen() {
     }
 }
 
+/**
+ * @brief Renders the main game screen.
+ *
+ * Assumes only one level for simplicity.
+ */
 void Engine::RenderGameScreen() const {
     if (!shouldExit) {
         TraceLog(LOG_INFO, "Rendering Game Screen...");
@@ -85,6 +104,9 @@ void Engine::RenderGameScreen() const {
     }
 }
 
+/**
+ * @brief Renders the game over screen.
+ */
 void Engine::RenderGameOverScreen() {
     // Implementation for the Game Over screen
     if (!shouldExit) {
@@ -92,6 +114,9 @@ void Engine::RenderGameOverScreen() {
     }
 }
 
+/**
+ * @brief Checks if the escape key is pressed to exit the game.
+ */
 void Engine::IfEscapeExitGame() {
     if (IsKeyPressed(KEY_ESCAPE)) {
         TraceLog(LOG_INFO, "Escape pressed, forcefully closing application...");
@@ -99,7 +124,13 @@ void Engine::IfEscapeExitGame() {
     }
 }
 
-// Take a GameStateManager* as a parameter, initialize a renderer, and then render the scene
+/**
+ * @brief Renders a game level scene.
+ *
+ * Updates and draws the scene until the level is over or the user exits.
+ *
+ * @param scene Pointer to the GameStateManager for the current level.
+ */
 void Engine::RenderLevelScene(GameStateManager* scene) {
     if (!shouldExit) {
         TraceLog(LOG_INFO, "Rendering Level Scene...");
@@ -126,4 +157,7 @@ void Engine::RenderLevelScene(GameStateManager* scene) {
     }
 }
 
+/**
+ * @brief Destructor for the Engine class.
+ */
 Engine::~Engine() = default;
