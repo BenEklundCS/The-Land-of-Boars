@@ -35,7 +35,7 @@ GameStateManager* LevelOne::GetGameState() {
     // Spawn platforms into the gameState with absolute positions
     auto platform3 = std::make_unique<Platform>(350, 700, 250, 25, BLACK);
     auto moving_platform = std::make_unique<MovingPlatform>(std::move(platform3), Vector2{0, 0}, Vector2{-700, 700}, 250.0f, false, true);
-    auto platform4 = std::make_unique<Platform>(550, 400, 500, 50, BLACK);
+    auto platform4 = std::make_unique<Platform>(2000, 400, 500, 50, BLACK);
     auto moving_platform2 = std::make_unique<MovingPlatform>(std::move(platform4), Vector2{-200, 200}, Vector2{0, 0}, 200.0f, true, false);
 
     // Adding additional platforms with consistent spacing
@@ -61,7 +61,7 @@ GameStateManager* LevelOne::GetGameState() {
 
 #pragma region monsters
     // Spawn in and add monsters to the game
-    auto monster1 = std::make_unique<Boar>(1000, 200, 300, 300, MonsterState::DEFAULT);
+    auto monster1 = std::make_unique<Boar>(4500, 200, 300, 300, MonsterState::DEFAULT);
     auto monster2 = std::make_unique<Boar>(2000, 500, 100, 100, MonsterState::DEFAULT);
 
     gameState->AddObject(std::move(monster1));
@@ -76,7 +76,7 @@ GameStateManager* LevelOne::GetGameState() {
     */
 
     // Bee experiment
-    auto bee = std::make_unique<Bee>(100, 100, 300, 300, MonsterState::DEFAULT);
+    auto bee = std::make_unique<Bee>(5000, 0, 300, 300, MonsterState::DEFAULT);
     gameState->AddObject(std::move(bee));
 
     // Snail
@@ -86,7 +86,7 @@ GameStateManager* LevelOne::GetGameState() {
 #pragma endregion
 
 #pragma region trees
-    auto tree = std::make_unique<Tree>(2500, 375, GREEN_TREE_TEXTURE);
+    auto tree = std::make_unique<Tree>(4500, 120, GREEN_TREE_TEXTURE);
     gameState->AddObject(std::move(tree));
 #pragma endregion
 

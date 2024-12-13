@@ -39,8 +39,8 @@ void Renderer::RenderBackground(Camera2D camera) {
  * @param camera The Camera2D object controlling the viewport.
  */
 void Renderer::RenderFPS(Camera2D camera) {
-    int offset = 20;
-    DrawFPS((int)camera.target.x - GetScreenWidth()/2 + offset, (int)camera.target.y - GetScreenHeight()/2 + offset);
+    int offset = 100;
+    DrawFPS((int)camera.target.x + GetScreenWidth()/2 - offset, (int)camera.target.y - GetScreenHeight()/2 + offset);
 }
 #pragma endregion
 
@@ -61,7 +61,7 @@ void Renderer::Draw(GameStateManager* gameState, const EngineSettings* settings)
     // Render the background
     RenderBackground(camera);
     // Render FPS
-    //RenderFPS(camera);
+    RenderFPS(camera);
 
     // For each object in each std::vector of GameObjects, call Draw on the object
     for (const auto& object : gameState->GetAllObjects()) {

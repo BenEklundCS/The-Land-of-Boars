@@ -97,7 +97,6 @@ bool Bee::InAttackRange() {
 void Bee::AnimateBee() {
     beeAnimation_->Animate();
     if (state_ == DYING && beeAnimation_->IsDone()) {
-        TraceLog(LOG_INFO, "BEE HAS DIED");
         Died();
     }
 }

@@ -134,7 +134,6 @@ void GameStateManager::ReloadTiles() {
         for (const auto& tile : row) {
             if (tile) {
                 tileRow.push_back(tile.get());        // Add raw pointer to tiles_
-                TraceLog(LOG_INFO, "Added valid tile: %p to allGameObjects_", tile.get());
             }
         }
         tiles_.push_back(std::move(tileRow));
