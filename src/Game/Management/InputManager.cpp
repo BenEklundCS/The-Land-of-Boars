@@ -108,6 +108,7 @@ void InputManager::HandleEditorActions(GameStateManager* gameState, Camera2D& ca
             TraceLog(LOG_INFO, "BLOCK SELECTION: %d", blockSelection);
 
             tileManager.SetTileAt((int)tilePosition.x, (int)tilePosition.y, blockSelection); // Set the tile
+            gameState->ReloadTiles();
             TraceLog(LOG_INFO, "Tile at: %f, %f", tilePosition.x, tilePosition.y);
         }
 

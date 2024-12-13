@@ -145,7 +145,6 @@ void TileManager::SetTileAt(const int x, const int y, const int tileType) {
             // Remove the tile
             TraceLog(LOG_INFO, "Deleting tile at (%d, %d)", x, y);
             tiles_[y][x].reset(); // Safely delete the existing tile
-            GameStateManager::GetInstance()->ReloadTiles();
         }
         else if (tileType == 1) {
             // Create a new dirt tile
@@ -156,7 +155,6 @@ void TileManager::SetTileAt(const int x, const int y, const int tileType) {
                     static_cast<float>(y * tileHeight),
                     TILE_DIRT_TEXTURE); // Use appropriate texture for dirt
             TraceLog(LOG_INFO, "TileManager::SetTileAt: (%d, %d) set to dirt tile at %p", x, y, tiles_[y][x].get());
-            GameStateManager::GetInstance()->ReloadTiles();
         }
         else if (tileType == 2) {
             // Create a new grass tile
@@ -167,7 +165,6 @@ void TileManager::SetTileAt(const int x, const int y, const int tileType) {
                     static_cast<float>(y * tileHeight),
                     TILE_GRASS_TEXTURE); // Use appropriate texture for grass
             TraceLog(LOG_INFO, "TileManager::SetTileAt: (%d, %d) set to grass tile at %p", x, y, tiles_[y][x].get());
-            GameStateManager::GetInstance()->ReloadTiles();
         }
         else {
             // Handle unrecognized tile types
