@@ -139,9 +139,6 @@ void GameStateManager::ReloadTiles() {
     }
     //TraceLog(LOG_INFO, "ReloadTiles completed: %zu rows, %zu columns", tiles_.size(), tiles_[0].size());
 }
-
-
-
 /**
  * @brief Updates all players and handles collisions.
  */

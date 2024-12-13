@@ -12,12 +12,6 @@
  * tasks to helper functions based on the type of input being handled.
  */
 void InputManager::HandleUserInput() const {
-    // Check if ImGui wants to capture mouse input
-    if (ImGui::GetIO().WantCaptureMouse) {
-        // Skip game input processing
-        return;
-    }
-
     HandlePlayerInput();
     HandleUIInput();
     HandleDebugInput();

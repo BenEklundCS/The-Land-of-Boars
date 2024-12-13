@@ -67,6 +67,7 @@ void GUI::DrawDebugGUI(GameStateManager *gameState) {
     gameData gameData = gameState->GetGameData();
 
     rlImGuiBegin();
+    ImGui::Begin("Debug");
     // show ImGui Content
     ImGui::SetWindowFontScale(2);
     // Render player data
@@ -88,6 +89,7 @@ void GUI::DrawDebugGUI(GameStateManager *gameState) {
     ImGui::Text("Platforms count: %zu", gameData.numPlatforms);
     ImGui::Text("Other count: %zu", gameData.numOther);
     // Submit ImGui data to Raylib for processing
+    ImGui::End();
     rlImGuiEnd();
 }
 
@@ -100,6 +102,7 @@ void GUI::DrawDebugGUI(GameStateManager *gameState) {
 void GUI::DrawEditorGUI() {
     rlImGuiBegin();
     ImGui::SetNextWindowFocus();
+    ImGui::Begin("Editor", nullptr);
     // show ImGui Content
     ImGui::SetWindowFontScale(2);
     // ImGUI button simply checks if it was pressed, and returns True if yes.
@@ -115,6 +118,7 @@ void GUI::DrawEditorGUI() {
         TraceLog(LOG_INFO, "User selected GRASS BLOCK.");
         blockSelection_ = 2;
     }
+    ImGui::End();
     rlImGuiEnd();
 }
 
