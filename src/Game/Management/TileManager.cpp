@@ -132,36 +132,54 @@ Vector2 TileManager::TileToWorld(int tileX, int tileY) {
  * @param y The y-coordinate of the grid position.
  * @param tileType The type of tile to set:
  *   - 0: Remove the tile (nullptr).
- *   - Other values: Create a new tile of the specified type.
+ *   - 1: Create a new DIRT tile.
+ *   - 2: Create a new GRASS tile.
  */
 void TileManager::SetTileAt(const int x, const int y, const int tileType) {
-
+    // Calculate the dimensions of each tile
     const float tileWidth = GetTileWidth();
     const float tileHeight = GetTileHeight();
-
+    // Validate grid indices
     if (y >= 0 && y < tiles_.size() && x >= 0 && x < tiles_[y].size()) {
         if (tileType == 0) {
+            // Remove the tile
             TraceLog(LOG_INFO, "Deleting tile at (%d, %d)", x, y);
-            tiles_[y][x] = nullptr;
+            tiles_[y][x].reset(); // Safely delete the existing tile
             GameStateManager::GetInstance()->ReloadTiles();
         }
         else if (tileType == 1) {
+            // Create a new dirt tile
             TraceLog(LOG_INFO, "Creating dirt tile at (%d, %d)", x, y);
+            tiles_[y][x].reset(); // Reset the unique_ptr to clear any existing tile
             tiles_[y][x] = std::make_unique<Tile>(
-                position_.x + static_cast<float>(x * tileWidth),
-                position_.y + static_cast<float>(y * tileHeight),
-                TILE_DIRT_TEXTURE);
+                    static_cast<float>(x * tileWidth),
+                    static_cast<float>(y * tileHeight),
+                    TILE_DIRT_TEXTURE); // Use appropriate texture for dirt
             TraceLog(LOG_INFO, "TileManager::SetTileAt: (%d, %d) set to dirt tile at %p", x, y, tiles_[y][x].get());
             GameStateManager::GetInstance()->ReloadTiles();
         }
+        else if (tileType == 2) {
+            // Create a new grass tile
+            TraceLog(LOG_INFO, "Creating grass tile at (%d, %d)", x, y);
+            tiles_[y][x].reset(); // Reset the unique_ptr to clear any existing tile
+            tiles_[y][x] = std::make_unique<Tile>(
+                    static_cast<float>(x * tileWidth),
+                    static_cast<float>(y * tileHeight),
+                    TILE_GRASS_TEXTURE); // Use appropriate texture for grass
+            TraceLog(LOG_INFO, "TileManager::SetTileAt: (%d, %d) set to grass tile at %p", x, y, tiles_[y][x].get());
+            GameStateManager::GetInstance()->ReloadTiles();
+        }
         else {
+            // Handle unrecognized tile types
             TraceLog(LOG_WARNING, "Unhandled tileType: %d", tileType);
         }
     }
     else {
+        // Log out-of-bounds indices
         TraceLog(LOG_WARNING, "SetTileAt: Out-of-bounds indices (%d, %d)", x, y);
     }
 }
+
 
 // Return the tiles_ 2d array.
 const std::vector<std::vector<std::unique_ptr<Tile>>>& TileManager::GetTiles() const {

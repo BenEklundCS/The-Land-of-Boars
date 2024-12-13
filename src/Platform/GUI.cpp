@@ -99,6 +99,7 @@ void GUI::DrawDebugGUI(GameStateManager *gameState) {
  */
 void GUI::DrawEditorGUI() {
     rlImGuiBegin();
+    ImGui::SetNextWindowFocus();
     // show ImGui Content
     ImGui::SetWindowFontScale(2);
     // ImGUI button simply checks if it was pressed, and returns True if yes.

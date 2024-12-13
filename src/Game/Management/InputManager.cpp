@@ -12,6 +12,12 @@
  * tasks to helper functions based on the type of input being handled.
  */
 void InputManager::HandleUserInput() const {
+    // Check if ImGui wants to capture mouse input
+    if (ImGui::GetIO().WantCaptureMouse) {
+        // Skip game input processing
+        return;
+    }
+
     HandlePlayerInput();
     HandleUIInput();
     HandleDebugInput();
@@ -107,7 +113,7 @@ void InputManager::HandleEditorActions(GameStateManager* gameState, Camera2D& ca
 
             TraceLog(LOG_INFO, "BLOCK SELECTION: %d", blockSelection);
 
-            tileManager.SetTileAt((int)tilePosition.x, (int)tilePosition.y, 1); // Set the tile
+            tileManager.SetTileAt((int)tilePosition.x, (int)tilePosition.y, blockSelection); // Set the tile
             TraceLog(LOG_INFO, "Tile at: %f, %f", tilePosition.x, tilePosition.y);
         }
 

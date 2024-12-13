@@ -132,12 +132,12 @@ void GameStateManager::ReloadTiles() {
         for (size_t col = 0; col < tiles[row].size(); ++col) {
             if (tiles[row][col]) {
                 tileRow.push_back(tiles[row][col].get());
-                TraceLog(LOG_INFO, "ReloadTiles: Tile added at (%zu, %zu)", row, col);
+                //TraceLog(LOG_INFO, "ReloadTiles: Tile added at (%zu, %zu)", row, col);
             }
         }
         tiles_.push_back(std::move(tileRow));
     }
-    TraceLog(LOG_INFO, "ReloadTiles completed: %zu rows, %zu columns", tiles_.size(), tiles_[0].size());
+    //TraceLog(LOG_INFO, "ReloadTiles completed: %zu rows, %zu columns", tiles_.size(), tiles_[0].size());
 }
 
 
