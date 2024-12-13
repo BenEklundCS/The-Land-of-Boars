@@ -76,17 +76,30 @@ TileManager& GameStateManager::GetTileManager() const {
 void GameStateManager::SetTileManager(std::unique_ptr<TileManager> tileManager) {
     // Transfer ownership of TileManager
     tileManager_ = std::move(tileManager);
-
-    // Get the tiles and move them into the game objects
-    auto tiles = tileManager_->GetTiles();
-    for (auto& row : tiles) {
-        for (auto& tile : row) {
-            if (tile)
-                AddObject(std::move(tile)); // Move tile ownership
-        }
-    }
+    ReloadTiles();
 }
 
+void GameStateManager::ReloadTiles() {
+    const auto& tiles = tileManager_->GetTiles();
+
+    // Clear the tiles_ and reserve memory for rows
+    tiles_.clear();
+    tiles_.reserve(tiles.size());
+
+    // Repopulate tiles_ and allGameObjects_ with valid tile pointers
+    for (const auto& row : tiles) {
+        std::vector<Tile*> tileRow; // A row of raw pointers to tiles
+        tileRow.reserve(row.size());
+
+        for (const auto& tile : row) {
+            if (tile) {
+                tileRow.push_back(tile.get());        // Add raw pointer to tiles_
+                TraceLog(LOG_INFO, "Added valid tile: %p to allGameObjects_", tile.get());
+            }
+        }
+        tiles_.push_back(std::move(tileRow));
+    }
+}
 // Update all players in the scene by iterating over the players, calling update, and then checking for collisions
 void GameStateManager::UpdatePlayers() {
     for (auto& player : players_) {
@@ -135,7 +148,7 @@ void GameStateManager::HandleCollisions(GameObject* obj) const {
 #pragma omp parallel for // update the other objects in parallel using threads
     for (const auto& row : tiles_) {
         for (const auto& tile : row) {
-            CollisionHandler::HandlePlatformCollision(obj, tile.get()); // Trees are also otherObjects, and I don't want to collide with them
+            CollisionHandler::HandlePlatformCollision(obj, tile); // Trees are also otherObjects, and I don't want to collide with them
         }
     }
 }
@@ -177,30 +190,16 @@ void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
     if (obj->type_ == PLAYER) {
         InitObservers(dynamic_cast<Subject*>(obj.get())); // PLAYER is a subject, init observers
         players_.push_back(std::unique_ptr<Player>(dynamic_cast<Player*>(obj.release())));
-        allGameObjects_.push_back(players_.back().get()); // Insert at the end
     }
     else if (obj->type_ == MONSTER) {
         InitObservers(dynamic_cast<Subject*>(obj.get())); // MONSTER is a subject, init observers
         monsters_.push_back(std::unique_ptr<Monster>(dynamic_cast<Monster*>(obj.release())));
-        allGameObjects_.insert(allGameObjects_.begin(), monsters_.back().get()); // Insert at the beginning
     }
     else if (obj->type_ == PLATFORM || obj->type_ == MOVING_PLATFORM) {
         platforms_.push_back(std::unique_ptr<Platform>(dynamic_cast<Platform*>(obj.release())));
-        allGameObjects_.insert(allGameObjects_.begin() + (long)monsters_.size(), platforms_.back().get()); // Insert after monsters
-    }
-    else if (obj->type_ == TILE) {
-        auto tile = std::unique_ptr<Tile>(dynamic_cast<Tile*>(obj.release()));
-        if (!tiles_.empty()) {
-            tiles_.back().push_back(std::move(tile));
-        } else {
-            tiles_.emplace_back();
-            tiles_.back().push_back(std::move(tile));
-        }
-        allGameObjects_.insert(allGameObjects_.begin() + (long)monsters_.size() + (long)platforms_.size() + tiles_.back().size() - 1, tiles_.back().back().get());
     }
     else {
         otherObjects_.push_back(std::move(obj));
-        allGameObjects_.insert(allGameObjects_.begin() + (long)monsters_.size() + (long)platforms_.size() + tiles_.size(), otherObjects_.back().get());
     }
 }
 
@@ -249,8 +248,6 @@ void GameStateManager::RemoveOtherObject(GameObject* obj) {
 
 // Remove an object from the GameState
 void GameStateManager::RemoveObject(GameObject* obj) {
-    // Find and remove the object from the allGameObjects_ vector
-    allGameObjects_.erase(std::remove(allGameObjects_.begin(), allGameObjects_.end(), obj), allGameObjects_.end());
     // Call the appropriate function based on the object's type
     switch (obj->type_) {
         case PLAYER:
@@ -270,8 +267,42 @@ void GameStateManager::RemoveObject(GameObject* obj) {
 
 // Return the full GameObject* vector
 std::vector<GameObject*> GameStateManager::GetAllObjects() {
-    return allGameObjects_;
+    std::vector<GameObject*> allObjects;
+
+    // Reserve space for efficiency
+    allObjects.reserve(players_.size() + monsters_.size() + platforms_.size() + otherObjects_.size() + tiles_.size() * tiles_[0].size());
+
+    // Add players
+    for (const auto& player : players_) {
+        allObjects.push_back(player.get());
+    }
+
+    // Add monsters
+    for (const auto& monster : monsters_) {
+        allObjects.push_back(monster.get());
+    }
+
+    // Add platforms
+    for (const auto& platform : platforms_) {
+        allObjects.push_back(platform.get());
+    }
+
+    // Add other objects
+    for (const auto& obj : otherObjects_) {
+        allObjects.push_back(obj.get());
+    }
+
+    // Add tiles
+    for (const auto& row : tiles_) {
+        for (const auto& tile : row) {
+            if (tile) {
+                allObjects.push_back(tile);
+            }
+        }
+    }
+    return allObjects;
 }
+
 
 #pragma endregion
 

@@ -43,7 +43,7 @@ GameStateManager* LevelOne::GetGameState() {
 
 #pragma region game tiles
     // Get the TileManager
-    auto tileManager = std::make_unique<TileManager>(Vector2{-2000 - origin.x, 250 - origin.y});
+    auto tileManager = std::make_unique<TileManager>(Vector2{origin.x, origin.y});
     // Get the LevelLoader and use it to make a tileMap to load
     auto levelLoader = std::make_unique<LevelLoader>();
     auto tileMap = levelLoader->LoadLevel("../Levels/map_level_one.txt");

@@ -56,7 +56,6 @@ private:
     void RemovePlayer(GameObject *obj);
     void RemoveMonster(GameObject *obj);
     void RemovePlatform(GameObject *obj);
-    void RemoveObject(GameObject *obj);
     void RemoveOtherObject(GameObject *obj);
     // Observer stuff
     void InitObservers(Subject *subject);
@@ -67,8 +66,7 @@ private:
     std::vector<std::unique_ptr<Monster>> monsters_; // monster object vector
     std::vector<std::unique_ptr<Platform>> platforms_; // platform object vector
     std::vector<std::unique_ptr<GameObject>> otherObjects_; // other object vector
-    std::vector<std::vector<std::unique_ptr<Tile>>> tiles_;
-    std::vector<GameObject*> allGameObjects_; // All game object vector
+    std::vector<std::vector<Tile*>> tiles_; // Tiles are owned by TileManager
     Camera2D camera_{}; // Camera
     // Game systems
     std::unique_ptr<InputManager> inputManager_;
@@ -79,6 +77,7 @@ private:
     void UpdateAttacks(Player* player);
 public:
     GameStateManager(); // Constructor
+    void RemoveObject(GameObject *obj);
     static GameStateManager* GetInstance();
     void InitCamera(); // Initialize the camera - call before rendering
     void Update(); // Update the game state
@@ -94,10 +93,8 @@ public:
     // Tile Management
     [[nodiscard]] TileManager& GetTileManager() const;
     void SetTileManager(std::unique_ptr<TileManager> tileManager);
+    void ReloadTiles();
     InputManager* GetInputManager() const;
-    [[nodiscard]] const std::vector<std::vector<std::unique_ptr<Tile>>>& GetTiles() const {
-        return tiles_;
-    }
     // Mode
     [[nodiscard]] Mode GetMode() const;
     void SetMode(Mode mode);

@@ -43,47 +43,44 @@ void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
     }
 }
 
-std::unique_ptr<Tile> TileManager::GetTileAt(float x, float y) const {
-    int tile_overlap = 6;
-    int tileX = static_cast<int>((x - position_.x) / (TILE_LENGTH - tile_overlap));
-    int tileY = static_cast<int>((y - position_.y) / (TILE_LENGTH - tile_overlap));
+#include "cmath"
 
-    if (tileX >= 0 && tileX < tiles_.size() && tileY >= 0 && tileY < tiles_[tileX].size()) {
-        return std::make_unique<Tile>(*tiles_[tileX][tileY]);
+Vector2 TileManager::GetTileAt(float x, float y) const {
+    const float tileWidth = TILE_LENGTH * WINDOW_SCALE_FACTOR_X - 6.0f;
+    const float tileHeight = TILE_LENGTH * WINDOW_SCALE_FACTOR_Y - 6.0f;
+
+    int tileX = static_cast<int>(std::floor((x - position_.x) / tileWidth));
+    int tileY = static_cast<int>(std::floor((y - position_.y) / tileHeight));
+
+
+    TraceLog(LOG_INFO, "World Position: (%f, %f) -> Indices: (%d, %d)", x, y, tileX, tileY);
+
+    if (tileY >= 0 && tileY < tiles_.size() && tileX >= 0 && tileX < tiles_[tileY].size()) {
+        auto tile = tiles_[tileY][tileX].get();
+        if (tile) {
+            return Vector2{(float)tileX, (float)tileY};
+        }
     }
-    return nullptr;
+    TraceLog(LOG_WARNING, "Out-of-bounds indices: (%d, %d)", tileX, tileY);
+    return {-1, -1}; // not found
 }
 
-void TileManager::SetTileAt(const float x, const float y, const int tile) {
-    constexpr int tile_overlap = 6;
-    int tileX = static_cast<int>((x - position_.x) / (TILE_LENGTH - tile_overlap));
-    int tileY = static_cast<int>((y - position_.y) / (TILE_LENGTH - tile_overlap));
+void TileManager::SetTileAt(const float x, const float y, const int tileType) {
 
-    // Debug logs
-    TraceLog(LOG_DEBUG, "SetTileAt: Mouse (%f, %f) -> Indices (%d, %d)", x, y, tileX, tileY);
+    const float tileWidth = TILE_LENGTH * WINDOW_SCALE_FACTOR_X - 6.0f;
+    const float tileHeight = TILE_LENGTH * WINDOW_SCALE_FACTOR_Y - 6.0f;
 
-    // Check bounds
-    if (tileY >= 0 && tileY < tiles_.size() && tileX >= 0 && tileX < tiles_[tileY].size()) {
-        switch (tile) {
-            case 0:
-                tiles_[tileY][tileX] = nullptr;
-            break;
-            case 1:
-                tiles_[tileY][tileX] = std::make_unique<Tile>(
-                    position_.x + static_cast<float>(tileX * (TILE_LENGTH - tile_overlap)),
-                    position_.y + static_cast<float>(tileY * (TILE_LENGTH - tile_overlap)), TILE_DIRT_TEXTURE);
-            break;
-            case 2:
-                tiles_[tileY][tileX] = std::make_unique<Tile>(
-                    position_.x + static_cast<float>(tileX * (TILE_LENGTH - tile_overlap)),
-                    position_.y + static_cast<float>(tileY * (TILE_LENGTH - tile_overlap)), TILE_GRASS_TEXTURE);
-            break;
-            default:
-                TraceLog(LOG_FATAL, "Unknown tile type passed to SetTileAt");
+    if (y >= 0 && y < tiles_.size() && x >= 0 && x < tiles_[y].size()) {
+        if (tileType == 0) {
+            tiles_[y][x] = nullptr;
+        } else {
+            tiles_[y][x] = std::make_unique<Tile>(
+                position_.x + static_cast<float>(x * tileWidth),
+                position_.y + static_cast<float>(y * tileHeight),
+                TILE_DIRT_TEXTURE);
         }
     } else {
-        TraceLog(LOG_ERROR, "SetTileAt: Out-of-bounds indices (%d, %d). tiles_ size: rows: %zu, cols: %zu",
-                 tileY, tileX, tiles_.size(), tiles_.empty() ? 0 : tiles_[0].size());
+        TraceLog(LOG_WARNING, "SetTileAt: Out-of-bounds indices (%d, %d)", x, y);
     }
 }
 
@@ -91,9 +88,11 @@ void TileManager::SetTileAt(const float x, const float y, const int tile) {
 
 // GetTiles returns a flattened Vector representing the tile objects
 // Handles the nullptrs and does not return them to the outside
-std::vector<std::vector<std::unique_ptr<Tile>>> TileManager::GetTiles() {
-    return std::move(tiles_);
+// Return a const reference to avoid ownership transfer
+const std::vector<std::vector<std::unique_ptr<Tile>>>& TileManager::GetTiles() const {
+    return tiles_;
 }
+
 
 // Constructor
 TileManager::TileManager(Vector2 position) {

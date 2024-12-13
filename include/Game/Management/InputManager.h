@@ -5,6 +5,7 @@
 #ifndef PLATFORMER_INPUTMANAGER_H
 #define PLATFORMER_INPUTMANAGER_H
 
+#include "GameStateManager.h"
 #include "../Entities/Player/Player.h"
 #include "../Events/Commands/PlayerCommands.h"
 
@@ -24,13 +25,15 @@ private:
     Player* player_;
     EngineSettings& settings_;
     void HandlePlayerInput() const;
-    void HandleUIInput() const;
+    static void HandleUIInput() ;
     static void HandleDebugInput() ;
+    static void HandleEditorMovement(Camera2D& camera);
+    static void HandleEditorActions(GameStateManager *gameState, Camera2D& camera);
 public:
     explicit InputManager(Player* player, EngineSettings& settings)
     : player_(player), settings_(settings) {}
     void HandleUserInput() const;
-    void HandleEditorInput(Camera2D& camera) const;
+    static void HandleEditorInput(Camera2D& camera) ;
 };
 
 

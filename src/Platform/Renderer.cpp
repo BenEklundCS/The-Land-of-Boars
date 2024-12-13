@@ -42,6 +42,13 @@ void Renderer::Draw(GameStateManager* gameState, const EngineSettings* settings)
 
     // For each object in each std::vector of GameObjects, call Draw on the object
     for (const auto& object : gameState->GetAllObjects()) {
+
+        if (!object) {
+            TraceLog(LOG_ERROR, "Null object encountered");
+            continue;
+        }
+
+        TraceLog(LOG_INFO, "Drawing object at memory address: %p", object);
         object->Draw(); // <-- All GameObjects implement a Draw call
         // Draw object hitboxes
         if (settings->renderRedBorders) {
