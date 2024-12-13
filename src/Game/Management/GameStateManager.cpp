@@ -68,10 +68,6 @@ void GameStateManager::UpdateGame() {
     inputManager_->HandleUserInput();
     UpdateMonsters(); // update Monsters
     UpdateOthers();
-    // Transition to edit mode
-    if (IsKeyPressed(KEY_L)) {
-        mode_ = MODE_EDITOR;
-    }
 }
 
 /**

@@ -41,7 +41,7 @@ void InputManager::HandlePlayerInput() const {
  */
 void InputManager::HandleUIInput() {
     auto gameState = GameStateManager::GetInstance();
-    if (IsKeyPressed(KEY_L)) {
+    if (IsKeyPressed(KEY_E)) {
         gameState->SetMode(MODE_EDITOR);
         gameState->InitCamera(); // reset the camera
     }
@@ -70,7 +70,7 @@ void InputManager::HandleEditorInput(Camera2D& camera) {
     auto gameState = GameStateManager::GetInstance();
     HandleEditorActions(gameState, camera);
 
-    if (IsKeyPressed(KEY_L)) {
+    if (IsKeyPressed(KEY_E)) {
         gameState->SetMode(MODE_GAME);
         gameState->InitCamera(); // reset the camera
         // Reload tiles in case of any edits
@@ -94,22 +94,14 @@ void InputManager::HandleEditorActions(GameStateManager* gameState, Camera2D& ca
         TileManager& tileManager = gameState->GetTileManager();
 
         // Edit
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_LEFT_CONTROL))) {
             auto mousePos = GetMousePosition();
             auto worldPosition = GetScreenToWorld2D(mousePos, camera);
-
-            TraceLog(LOG_INFO, "Mouse Position: Screen (%f, %f), World (%f, %f)",
-                     mousePos.x, mousePos.y, worldPosition.x, worldPosition.y);
-
             auto tilePosition = tileManager.GetTileAt(worldPosition.x, worldPosition.y);
-
             int blockSelection = GUI::GetBlockSelection();
-
             TraceLog(LOG_INFO, "BLOCK SELECTION: %d", blockSelection);
-
             tileManager.SetTileAt((int)tilePosition.x, (int)tilePosition.y, blockSelection); // Set the tile
             gameState->ReloadTiles();
-            TraceLog(LOG_INFO, "Tile at: %f, %f", tilePosition.x, tilePosition.y);
         }
 
         // Print tile position (debug)
@@ -117,13 +109,19 @@ void InputManager::HandleEditorActions(GameStateManager* gameState, Camera2D& ca
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
                 auto mousePos = GetMousePosition();
                 auto worldPosition = GetScreenToWorld2D(mousePos, camera);
-
-                TraceLog(LOG_INFO, "Mouse Position: Screen (%f, %f), World (%f, %f)",
-                         mousePos.x, mousePos.y, worldPosition.x, worldPosition.y);
-
                 auto tilePosition = tileManager.GetTileAt(worldPosition.x, worldPosition.y);
-                TraceLog(LOG_INFO, "Tile at: %f, %f", tilePosition.x, tilePosition.y);
+                TraceLog(LOG_INFO, "Tile at: %d, %d", (int)tilePosition.x, (int)tilePosition.y);
             }
+        }
+
+        // Save level to file
+        if (IsKeyPressed(KEY_S)) {
+            TraceLog(LOG_INFO, "Saving level...");
+        }
+
+        // Load level from file
+        if (IsKeyPressed(KEY_L)) {
+            TraceLog(LOG_INFO, "Loading level...");
         }
 
     } catch (const std::exception& e) {
@@ -140,38 +138,21 @@ void InputManager::HandleEditorActions(GameStateManager* gameState, Camera2D& ca
  * @param camera The camera to be moved.
  */
 void InputManager::HandleEditorMovement(Camera2D& camera) {
-    if (IsKeyDown(KEY_UP)) {
-        if (IsKeyDown(KEY_LEFT_SHIFT)) {
-            camera.target.y -= 30;
+    // Lambda function for moving the camera
+    auto moveCamera = [&](int key, float& target, float amount) {
+        if (IsKeyDown(key)) {
+            if (IsKeyDown(KEY_LEFT_SHIFT))
+                amount *= 5; // faster
+            else if (IsKeyDown(KEY_LEFT_ALT))
+                amount *= 10; // very fast
+            target += amount;
         }
-        else {
-            camera.target.y -= 10;
-        }
-    }
-    if (IsKeyDown(KEY_DOWN)) {
-        if (IsKeyDown(KEY_LEFT_SHIFT)) {
-            camera.target.y += 30;
-        }
-        else {
-            camera.target.y += 10;
-        }
-    }
-    if (IsKeyDown(KEY_LEFT)) {
-        if (IsKeyDown(KEY_LEFT_SHIFT)) {
-            camera.target.x -= 30;
-        }
-        else {
-            camera.target.x -= 10;
-        }
-    }
-    if (IsKeyDown(KEY_RIGHT)) {
-        if (IsKeyDown(KEY_LEFT_SHIFT)) {
-            camera.target.x += 30;
-        }
-        else {
-            camera.target.x += 10;
-        }
-    }
+    };
+
+    moveCamera(KEY_UP, camera.target.y, -10);
+    moveCamera(KEY_DOWN, camera.target.y, 10);
+    moveCamera(KEY_LEFT, camera.target.x, -10);
+    moveCamera(KEY_RIGHT, camera.target.x, 10);
 }
 
 
