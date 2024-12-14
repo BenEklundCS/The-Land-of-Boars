@@ -13,7 +13,7 @@
  * @param y Y-coordinate of the tile.
  * @param tileTexture The texture to use for the tile, loaded via the TextureManager.
  */
-Tile::Tile(const float x, const float y, const TextureName tileTexture) : GameObject(TILE) {
+Tile::Tile(const float x, const float y, const TextureName tileTexture, int tileType) : GameObject(TILE) {
     // Ensure to instantiate the GameObject!
     dimensions_ = Vector2{TILE_LENGTH, TILE_LENGTH};
     position_ = Vector2{x, y};
@@ -21,6 +21,7 @@ Tile::Tile(const float x, const float y, const TextureName tileTexture) : GameOb
     Scale();
     // Load the texture
     texture_ = TextureManager::GetInstance()->GetTexture(tileTexture);
+    tileType_ = tileType;
 }
 
 /**
@@ -40,6 +41,16 @@ void Tile::Draw() {
 void Tile::Update() {
 
 }
+
+/**
+ * @brief Return the tile type.
+ *
+ * 0 | AIR, 1 | DIRT, 2 | GRASS
+ */
+int Tile::GetType() const {
+    return tileType_;
+}
+
 
 /**
  * @brief Sets a new texture for the tile.

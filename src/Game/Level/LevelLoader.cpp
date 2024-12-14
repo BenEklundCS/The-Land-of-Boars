@@ -40,7 +40,38 @@ std::vector<std::vector<int>> LevelLoader::LoadLevel(const std::string &filePath
     else {
         TraceLog(LOG_ERROR, "Unable to open file: %s", filePath.c_str());
     }
-
     return tileMap;
 }
+
+void LevelLoader::SaveLevel(const std::vector<std::vector<std::unique_ptr<Tile>>> &tiles, const std::string &filePath) {
+    // Open the file for writing
+    std::ofstream file(filePath);
+
+    // Check if the file is open
+    if (file.is_open()) {
+        // Iterate through each row of tiles
+        for (const auto &row : tiles) {
+            // Iterate through each tile in the row
+            for (const auto &tile : row) {
+                // Save tile type as an integer to the file
+                if (tile) {
+                    file << tile->GetType(); // Assuming Tile has a GetType() method
+                } else {
+                    file << "0"; // Save 0 for null tiles (or adjust based on your game's logic)
+                }
+            }
+            // Add a newline character after each row
+            file << "\n";
+        }
+        file.close(); // Close the file
+    }
+    // If file cannot be opened, log an error
+    else {
+        TraceLog(LOG_ERROR, "Unable to save to file: %s", filePath.c_str());
+    }
+}
+
+
+
+
 

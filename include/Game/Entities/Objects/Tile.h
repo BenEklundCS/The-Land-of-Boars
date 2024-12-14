@@ -27,7 +27,7 @@
 class Tile : public GameObject {
 private:
     GameTexture texture_; ///< The texture applied to the tile.
-
+    int tileType_; // 0 | AIR, 1 | DIRT, 2 | GRASS
 public:
     /**
      * @brief Constructs a Tile object with a specific position and texture.
@@ -37,9 +37,9 @@ public:
      * @param x The x-coordinate of the tile.
      * @param y The y-coordinate of the tile.
      * @param tileTexture The texture name for the tile.
+     * @param tileType The type of tile you want to create must be specified by Integer.
      */
-    Tile(float x, float y, TextureName tileTexture);
-
+    Tile(float x, float y, TextureName tileTexture, int tileType);
     /**
      * @brief Draws the tile on the screen.
      *
@@ -64,6 +64,8 @@ public:
      * @param texture The new texture to apply to the tile.
      */
     [[maybe_unused]] void SetTexture(const GameTexture &texture);
+
+     int GetType() const;
 };
 
 #endif //PLATFORMER_TILE_H

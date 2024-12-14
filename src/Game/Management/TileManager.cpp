@@ -38,10 +38,10 @@ void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
                     tiles_[i][j] = nullptr;
                 break;
                 case 1:
-                    tiles_[i][j] = std::make_unique<Tile>(tileX, tileY, TILE_DIRT_TEXTURE);
+                    tiles_[i][j] = std::make_unique<Tile>(tileX, tileY, TILE_DIRT_TEXTURE, tileMap[i][j]);
                 break;
                 case 2:
-                    tiles_[i][j] = std::make_unique<Tile>(tileX, tileY, TILE_GRASS_TEXTURE);
+                    tiles_[i][j] = std::make_unique<Tile>(tileX, tileY, TILE_GRASS_TEXTURE, tileMap[i][j]);
                 break;
                 default:
                     TraceLog(LOG_FATAL, "Unknown tile type was passed to TileManager::CreateTiles()");
@@ -153,7 +153,7 @@ void TileManager::SetTileAt(const int x, const int y, const int tileType) {
             tiles_[y][x] = std::make_unique<Tile>(
                     static_cast<float>(x * tileWidth),
                     static_cast<float>(y * tileHeight),
-                    TILE_DIRT_TEXTURE); // Use appropriate texture for dirt
+                    TILE_DIRT_TEXTURE, tileType); // Use appropriate texture for dirt
             TraceLog(LOG_INFO, "TileManager::SetTileAt: (%d, %d) set to dirt tile at %p", x, y, tiles_[y][x].get());
         }
         else if (tileType == 2) {
@@ -163,7 +163,7 @@ void TileManager::SetTileAt(const int x, const int y, const int tileType) {
             tiles_[y][x] = std::make_unique<Tile>(
                     static_cast<float>(x * tileWidth),
                     static_cast<float>(y * tileHeight),
-                    TILE_GRASS_TEXTURE); // Use appropriate texture for grass
+                    TILE_GRASS_TEXTURE, tileType); // Use appropriate texture for grass
             TraceLog(LOG_INFO, "TileManager::SetTileAt: (%d, %d) set to grass tile at %p", x, y, tiles_[y][x].get());
         }
         else {

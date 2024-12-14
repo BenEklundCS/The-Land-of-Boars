@@ -3,6 +3,8 @@
 //
 
 #include "../../../include/Game/Management/InputManager.h"
+
+#include "../../../include/Game/Level/LevelLoader.h"
 #include "../../../include/Platform/Engine.h"
 
 /**
@@ -93,30 +95,33 @@ void InputManager::HandleEditorActions(GameStateManager* gameState, Camera2D& ca
     try {
         TileManager& tileManager = gameState->GetTileManager();
 
-        // Edit
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_LEFT_CONTROL))) {
-            auto mousePos = GetMousePosition();
-            auto worldPosition = GetScreenToWorld2D(mousePos, camera);
-            auto tilePosition = tileManager.GetTileAt(worldPosition.x, worldPosition.y);
-            int blockSelection = GUI::GetBlockSelection();
-            TraceLog(LOG_INFO, "BLOCK SELECTION: %d", blockSelection);
-            tileManager.SetTileAt((int)tilePosition.x, (int)tilePosition.y, blockSelection); // Set the tile
-            gameState->ReloadTiles();
-        }
-
-        // Print tile position (debug)
-        if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
-            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        // Make sure ImGUI doesn't want to capture the mouse click before handling it
+        if (!ImGui::GetIO().WantCaptureMouse) {
+            // Edit
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_LEFT_CONTROL))) {
                 auto mousePos = GetMousePosition();
                 auto worldPosition = GetScreenToWorld2D(mousePos, camera);
                 auto tilePosition = tileManager.GetTileAt(worldPosition.x, worldPosition.y);
-                TraceLog(LOG_INFO, "Tile at: %d, %d", (int)tilePosition.x, (int)tilePosition.y);
+                int blockSelection = GUI::GetBlockSelection();
+                TraceLog(LOG_INFO, "BLOCK SELECTION: %d", blockSelection);
+                tileManager.SetTileAt((int)tilePosition.x, (int)tilePosition.y, blockSelection); // Set the tile
+                gameState->ReloadTiles();
+            }
+
+            // Print tile position (debug)
+            if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
+                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    auto mousePos = GetMousePosition();
+                    auto worldPosition = GetScreenToWorld2D(mousePos, camera);
+                    auto tilePosition = tileManager.GetTileAt(worldPosition.x, worldPosition.y);
+                    TraceLog(LOG_INFO, "Tile at: %d, %d", (int)tilePosition.x, (int)tilePosition.y);
+                }
             }
         }
-
         // Save level to file
         if (IsKeyPressed(KEY_S)) {
             TraceLog(LOG_INFO, "Saving level...");
+            LevelLoader::SaveLevel(tileManager.GetTiles(), "../Levels/myLevel.txt");
         }
 
         // Load level from file

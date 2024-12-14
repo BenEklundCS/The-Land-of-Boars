@@ -8,6 +8,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include "../../../include/Game/Entities/Objects/Tile.h"
 
 /**
  * @class LevelLoader
@@ -33,6 +34,15 @@ public:
      *       error is logged.
      */
     static std::vector<std::vector<int>> LoadLevel(const std::string& filePath);
+
+    /**
+    * @brief Saves a level to file at the specified file path.
+    *
+    *
+    * @param tiles The list of tiles to save. Note: unique_ptrs are safely accessed with .get()
+    * @param filePath The path to save file.
+    */
+    static void SaveLevel(const std::vector<std::vector<std::unique_ptr<Tile>>> &tiles, const std::string &filePath);
 };
 
 #endif //PLATFORMER_LEVELLOADER_H
