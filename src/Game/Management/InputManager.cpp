@@ -104,7 +104,7 @@ void InputManager::HandleEditorActions(GameStateManager* gameState, Camera2D& ca
                 auto tilePosition = tileManager.GetTileAt(worldPosition.x, worldPosition.y);
                 int blockSelection = GUI::GetBlockSelection();
                 TraceLog(LOG_INFO, "BLOCK SELECTION: %d", blockSelection);
-                tileManager.SetTileAt((int)tilePosition.x, (int)tilePosition.y, blockSelection); // Set the tile
+                tileManager.SetTileAt(static_cast<int>(tilePosition.x), static_cast<int>(tilePosition.y), blockSelection); // Set the tile
                 gameState->ReloadTiles();
             }
 
@@ -114,7 +114,7 @@ void InputManager::HandleEditorActions(GameStateManager* gameState, Camera2D& ca
                     auto mousePos = GetMousePosition();
                     auto worldPosition = GetScreenToWorld2D(mousePos, camera);
                     auto tilePosition = tileManager.GetTileAt(worldPosition.x, worldPosition.y);
-                    TraceLog(LOG_INFO, "Tile at: %d, %d", (int)tilePosition.x, (int)tilePosition.y);
+                    TraceLog(LOG_INFO, "Tile at: %d, %d", static_cast<int>(tilePosition.x), static_cast<int>(tilePosition.y));
                 }
             }
         }
