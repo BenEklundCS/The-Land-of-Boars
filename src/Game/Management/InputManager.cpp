@@ -96,7 +96,8 @@ void InputManager::HandleEditorActions(GameStateManager* gameState, Camera2D& ca
         TileManager& tileManager = gameState->GetTileManager();
 
         // Make sure ImGUI doesn't want to capture the mouse click before handling it
-        if (!ImGui::GetIO().WantCaptureMouse) {
+        //ImGui::GetIO().WantCaptureMouse;
+        if (!ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow)) {
             // Edit
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_LEFT_CONTROL))) {
                 auto mousePos = GetMousePosition();
@@ -143,7 +144,7 @@ void InputManager::HandleEditorActions(GameStateManager* gameState, Camera2D& ca
  * @param camera The camera to be moved.
  */
 void InputManager::HandleEditorMovement(Camera2D& camera) {
-    // Lambda function for moving the camera
+    // Lambda function for moving the camera`
     auto moveCamera = [&](int key, float& target, float amount) {
         if (IsKeyDown(key)) {
             if (IsKeyDown(KEY_LEFT_SHIFT))
