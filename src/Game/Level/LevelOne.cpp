@@ -26,6 +26,7 @@ GameStateManager* LevelOne::GetGameState() {
 
 #pragma region main game objects
     auto player = std::make_unique<Player>();
+    player->SetPosition({1500, 1500});
     // Register observers
     auto gameState = GameStateManager::GetInstance();
     gameState->AddObject(std::move(player));
@@ -33,7 +34,7 @@ GameStateManager* LevelOne::GetGameState() {
 
 #pragma region platforms
     // Spawn platforms into the gameState with absolute positions
-    auto platform3 = std::make_unique<Platform>(350, 700, 250, 25, BLACK);
+    auto platform3 = std::make_unique<Platform>(5350, 700, 250, 25, BLACK);
     auto moving_platform = std::make_unique<MovingPlatform>(std::move(platform3), Vector2{0, 0}, Vector2{-700, 700}, 250.0f, false, true);
     auto platform4 = std::make_unique<Platform>(2000, 400, 500, 50, BLACK);
     auto moving_platform2 = std::make_unique<MovingPlatform>(std::move(platform4), Vector2{-200, 200}, Vector2{0, 0}, 200.0f, true, false);
@@ -86,7 +87,7 @@ GameStateManager* LevelOne::GetGameState() {
 #pragma endregion
 
 #pragma region trees
-    auto tree = std::make_unique<Tree>(4500, 120, GREEN_TREE_TEXTURE);
+    auto tree = std::make_unique<Tree>(4500, 120+700, GREEN_TREE_TEXTURE);
     gameState->AddObject(std::move(tree));
 #pragma endregion
 

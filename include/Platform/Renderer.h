@@ -40,15 +40,6 @@ private:
      * This method is used in debug mode to display the current frames per second.
      */
     static void RenderFPS(Camera2D camera);
-
-    /**
-     * @brief Draws the level editor grid and tools.
-     *
-     * This method renders gridlines and level editor-specific UI elements when the game is in editor mode.
-     * It ensures that the developer can visually interact with the level editing tools.
-     */
-    static void DrawLevelEditor();
-
 public:
     /**
      * @brief Constructs a `Renderer` object.
