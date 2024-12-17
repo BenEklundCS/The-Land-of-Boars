@@ -140,6 +140,8 @@ set(SOURCES
         src/Game/Entities/uiElements/HealthBar.cpp
         src/Game/Entities/uiElements/StartButton.cpp
         include/Game/Entities/uiElements/StartButton.h
+        include/Game/Entities/Objects/Coin.h
+        src/Game/Entities/Objects/Coin.cpp
 )
 
 # Define executable

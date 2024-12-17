@@ -39,8 +39,8 @@
 #define SNAIL_TEXTURE_PATH "../Assets/Sprites/Mob/Snail/walk-Sheet.png"
 #define SNAIL_DYING_TEXTURE_PATH "../Assets/Sprites/Mob/Snail/Dead-Sheet.png"
 
-// Health icon
-#define HEALTH_GLOBE_TEXTURE_PATH "../Assets/Sprites/HUD/Base.png"
+// All HUD icons
+#define HUD_BASE_TEXTURE_PATH "../Assets/Sprites/HUD/Base.png"
 
 #pragma endregion
 
@@ -107,8 +107,10 @@ enum TextureName {
     // Tiles
     TILE_GRASS_TEXTURE,
     TILE_DIRT_TEXTURE,
-    // Health
-    HEALTH_GLOBE_TEXTURE
+    // UI
+    HEALTH_GLOBE_TEXTURE,
+    // Collectables
+    COIN_TEXTURE
 };
 
 #pragma endregion

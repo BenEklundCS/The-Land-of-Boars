@@ -81,7 +81,7 @@ void TextureManager::LoadOtherTextures() {
     TextureManager::LoadTexture(greenTreeTexture, GREEN_TREE_TEXTURE,
                                 Rectangle{0, 0, treeWidth, treeHeight});
     // Health Globe sprite sheet
-    const Texture2D healthGlobeTexture = ::LoadTexture(HEALTH_GLOBE_TEXTURE_PATH);
+    const Texture2D healthGlobeTexture = ::LoadTexture(HUD_BASE_TEXTURE_PATH);
 
     // Define the red square's portion of the sprite sheet
     constexpr float redSquareX = 95.0f;  // Fourth column
@@ -92,6 +92,18 @@ void TextureManager::LoadOtherTextures() {
     // Add the red square texture using its rectangle
     TextureManager::LoadTexture(healthGlobeTexture, HEALTH_GLOBE_TEXTURE,
                                 Rectangle{redSquareX, redSquareY, redSquareWidth, redSquareHeight});
+
+    const Texture2D coinTexture = ::LoadTexture(HUD_BASE_TEXTURE_PATH);
+
+    // Define the red square's portion of the sprite sheet
+    constexpr float coinX = 190.0f;
+    constexpr float coinY = 510.0f;
+    constexpr float coinWidth = 25.0f;
+    constexpr float coinHeight = 25.0f;
+
+    // Add the coin texture using its rectangle
+    TextureManager::LoadTexture(coinTexture, COIN_TEXTURE,
+                                Rectangle{coinX, coinY, coinWidth, coinHeight});
 }
 
 /**
