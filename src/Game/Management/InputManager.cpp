@@ -96,7 +96,8 @@ void InputManager::HandleEditorActions(GameStateManager* gameState, Camera2D& ca
         TileManager& tileManager = gameState->GetTileManager();
 
         // Make sure ImGUI doesn't want to capture the mouse click before handling it
-        //ImGui::GetIO().WantCaptureMouse;
+        // ImGui::GetIO().WantCaptureMouse worked on Windows, did not work as expected on Linux.
+        // This function seems to work better anyway - although it is not suggested for use this way.
         if (!ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow)) {
             // Edit
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_LEFT_CONTROL))) {

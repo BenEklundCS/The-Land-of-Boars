@@ -22,7 +22,7 @@
 
 /**
  * @class Coin
- * @brief Represents a tree object in the platformer game.
+ * @brief Represents a coin object in the platformer game.
  *
  * This class inherits from GameObject and manages a coin’s texture, drawing it on screen,
  * and updating its state. It allows coin to be part of the game world, interacting
@@ -30,7 +30,7 @@
  */
 class Coin : public GameObject {
 private:
-    GameTexture texture_; ///< The texture applied to the tree.
+    GameTexture texture_; ///< The texture applied to the coin.
 
 public:
     /**
