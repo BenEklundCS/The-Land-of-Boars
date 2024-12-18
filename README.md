@@ -33,6 +33,9 @@
 - **Debugging Tools:**
   - Built-in debug and developer menus using the **ImGui** library for rapid testing and fine-tuning.
 
+- **Level Editing:**
+  - Implemented TileMap editing live while in-game **Press E**. Save/Load levels to/from file with S and L. Full Level Editor is (WIP).
+
 ---
 
 ## Controls
