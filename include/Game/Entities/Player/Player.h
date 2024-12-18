@@ -68,7 +68,6 @@ private:
     void MovePlayer(float deltaTime); ///< Handles player movement for the current frame.
     void UpdatePosition(float deltaTime); ///< Updates player position based on velocity.
     void ApplyFriction(); ///< Applies friction to player movement.
-    void ApplyGravity(); ///< Applies gravity to the player.
 
     // **State and Animation**
     [[nodiscard]] bool CheckPlayerDeath() const; ///< Checks if the player is dead.

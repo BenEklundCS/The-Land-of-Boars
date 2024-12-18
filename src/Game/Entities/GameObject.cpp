@@ -4,6 +4,7 @@
 
 #include "../../../include/Game/Entities/GameObject.h"
 #include "../../../include/Platform/Globals.h"
+#include "../../../include/Game/Entities/PhysicsConstants.h"
 
 /**
  * @brief Constructs a GameObject with the specified type.
@@ -172,6 +173,17 @@ void GameObject::Scale() {
     // Adjust the position of the object based on the window scale factor
     position_.x *= WINDOW_SCALE_FACTOR_X;
     position_.y *= WINDOW_SCALE_FACTOR_Y;
+}
+
+/**
+* @brief Applies gravity to the object's velocity.
+*
+* This method adjusts the object's velocity by applying gravity based on the delta time.
+* Note: The velocity is pre-modified with deltaTime, do not multiply it again later.
+* @param deltaTime The time delta for smooth movement.
+*/
+void GameObject::ApplyGravity() {
+    velocity_.y += GRAVITY;
 }
 
 

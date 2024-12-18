@@ -78,15 +78,6 @@ public:
     void Update() override;
 
     /**
-     * @brief Applies gravity to the monster.
-     *
-     * This method adjusts the monster's velocity by applying gravity based on the delta time.
-     *
-     * @param deltaTime The time delta for smooth movement.
-     */
-    void ApplyGravity(float deltaTime);
-
-    /**
      * @brief Moves the monster according to its velocity.
      *
      * This method updates the monster's position based on its current velocity.

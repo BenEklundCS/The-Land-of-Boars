@@ -36,8 +36,7 @@ Monster::Monster(const float pos_x, const float pos_y, const float dim_x, const 
  */
 void Monster::Update() {
     MoveMonster();
-    float deltaTime = GetFrameTime();
-    ApplyGravity(deltaTime);
+    ApplyGravity();
     GameObject::Update();
 }
 
@@ -125,18 +124,7 @@ void Monster::MoveDefault() {
         position_.x -= MONSTER_SPEED;
     }
     // Move Y axis
-    position_.y += velocity_.y;
-}
-
-/**
- * @brief Applies gravity to the Monster.
- *
- * @param deltaTime The time elapsed since the last frame.
- */
-void Monster::ApplyGravity(const float deltaTime) {
-    if (velocity_.y <= MAX_VELOCITY) {
-        velocity_.y += GRAVITY * deltaTime;
-    }
+    position_.y += velocity_.y * GetFrameTime();
 }
 
 /**

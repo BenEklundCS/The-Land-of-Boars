@@ -119,13 +119,6 @@ void Player::ApplyFriction() {
 }
 
 /**
- * @brief Applies gravity to the player's vertical velocity.
- */
-void Player::ApplyGravity() {
-    velocity_.y += GRAVITY;
-}
-
-/**
  * @brief Moves the player to the left.
  *
  * Updates the player's state to `RUNNING` and decreases horizontal velocity.

@@ -179,6 +179,13 @@ public:
     [[nodiscard]] virtual bool ShouldRemove() const;
 
     /**
+    * @brief Applies gravity to the object's velocity.
+    *
+    * This method adjusts the object's velocity by applying gravity. Does not account for deltaTime.
+    */
+    void ApplyGravity();
+
+    /**
      * @brief Virtual destructor for GameObject.
      */
     virtual ~GameObject();
