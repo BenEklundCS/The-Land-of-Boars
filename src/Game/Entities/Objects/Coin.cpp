@@ -15,8 +15,9 @@
  * @param x The x-coordinate for the coin.
  * @param y The y-coordinate for the coin.
  */
-Coin::Coin(float x, float y) {
-
+Coin::Coin(float x, float y) : texture_(TextureManager::GetInstance()->GetTexture(COIN_TEXTURE)) {
+    position_ = Vector2{x, y};
+    dimensions_ = Vector2{COIN_WIDTH, COIN_HEIGHT};
 }
 
 /**
@@ -26,7 +27,7 @@ Coin::Coin(float x, float y) {
  * at the specified position.
  */
 void Coin::Draw() {
-
+    DrawTexturePro(texture_.texture, texture_.rect, GetRect(), Vector2{0, 0}, 0, GOLD);     // Draw the texture
 }
 
 /**

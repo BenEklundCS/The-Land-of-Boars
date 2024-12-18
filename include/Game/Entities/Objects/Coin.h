@@ -12,6 +12,10 @@
 #include "../GameObject.h"
 #include "../../Sprites/TextureManager.h"
 
+// Coin Measurements
+#define COIN_WIDTH 50
+#define COIN_HEIGHT 50
+
 /**
  * @file Coin.h
  * @brief Defines the Coin class, representing a coin object in the platformer game.

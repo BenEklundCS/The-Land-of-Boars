@@ -9,6 +9,10 @@
 #include "../GameObject.h"
 #include "../../Sprites/TextureManager.h"
 
+// Tree Measurements
+#define TREE_WIDTH 400
+#define TREE_HEIGHT 1000
+
 /**
  * @file Tree.h
  * @brief Defines the Tree class, representing a tree object in the platformer game.

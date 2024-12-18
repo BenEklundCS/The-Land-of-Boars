@@ -68,14 +68,9 @@
 #define SNAIL_FRAMES 8
 #define SNAIL_DYING_FRAMES 8
 
-
 // Tiles
 #define TILE_LENGTH 80 // size of a tile
 #define TILE_OFFSET 10 // starting offset to get tile from spritesheet
-
-// Trees
-#define TREE_WIDTH 400
-#define TREE_HEIGHT 1000
 
 #pragma endregion
 

@@ -10,6 +10,7 @@
 #include "../../../include/Game/Entities/Objects/Tree.h"
 #include "../../../include/Game/Entities/Monsters/Bee.h"
 #include "../../../include/Game/Entities/Monsters/Snail.h"
+#include "../../../include/Game/Entities/Objects/Coin.h"
 
 
 /**
@@ -91,5 +92,8 @@ GameStateManager* LevelOne::GetGameState() {
     gameState->AddObject(std::move(tree));
 #pragma endregion
 
+#pragma region coins
+    auto coin = std::make_unique<Coin>(2000, 0);
+    gameState->AddObject(std::move(coin));
     return gameState;
 }
