@@ -5,6 +5,8 @@
 
 #include "../../../../include/Game/Entities/Monsters/Monster.h"
 #include "../../../../include/Game/Management/GameStateManager.h"
+#include "../../../../include/Game/Entities/Objects/Coin.h"
+#include <memory>
 
 /**
  * @brief Constructs a Monster object with specified position, dimensions, and state.
@@ -110,6 +112,15 @@ void Monster::MoveMonster() {
         // Otherwise just update the position based on the speed
         MoveDefault();
     }
+}
+
+/**
+ * @brief Marks the monster for removal after death and spawns coins.
+ */
+void Monster::Died() {
+    shouldRemove_ = true;
+    // Notifies all observers a general monster died event has occurred
+    Notify(this, EVENT_MONSTER_DIED);
 }
 
 /**

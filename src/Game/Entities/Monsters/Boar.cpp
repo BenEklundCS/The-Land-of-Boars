@@ -86,13 +86,6 @@ void Boar::BeginDeathAnimation() {
 }
 
 /**
- * @brief Marks the Boar for removal after death.
- */
-void Boar::Died() {
-    shouldRemove_ = true; // set shouldRemove
-}
-
-/**
  * @brief Animates the Boar.
  *
  * Updates the Boar's animation and checks if the death animation has completed.

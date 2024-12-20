@@ -57,15 +57,6 @@ void Bee::Update() {
     Monster::Update();
 }
 
-/**
- * @brief Logic executed when the Bee dies.
- *
- * Marks the Bee for removal from the game.
- */
-void Bee::Died() {
-    shouldRemove_ = true;
-}
-
 int counter = 0;
 
 /**

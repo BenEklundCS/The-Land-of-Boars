@@ -186,6 +186,14 @@ void GameObject::ApplyGravity() {
     velocity_.y += GRAVITY;
 }
 
+/**
+* @brief Gets the object's type. Types are defined in GameObjectType enum.
+*
+* @return The type of the object.
+*/
+GameObjectType GameObject::GetType() const {
+    return type_;
+}
 
 
 

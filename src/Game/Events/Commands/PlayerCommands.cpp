@@ -12,7 +12,10 @@
  * @param player Pointer to the player instance.
  */
 void JumpCommand::Execute(Player *player) {
-    player->Jump();
+    // Make sure the player can jump before processing the jump command
+    if (player->CanJump()) {
+        player->Jump();
+    }
 }
 
 /**

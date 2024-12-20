@@ -73,6 +73,19 @@ private:
      */
     static void HandleEditorActions(GameStateManager* gameState, Camera2D& camera);
 
+    /**
+    * @brief Place a tile into the scene based on the user's selected tile.
+    * @param gameState, current world state
+    * @param camera, the world's camera
+    */
+    static void PlaceTile(GameStateManager *gameState, Camera2D &camera);
+
+    /**
+    * @brief Print the location of the clicked tile in the tiles_ array.
+    * @param gameState, current world state
+    * @param camera, the world's camera
+    */
+    static void PrintTileLocation(GameStateManager *gameState, Camera2D &camera);
 public:
     /**
      * @brief Constructs an InputManager instance.
@@ -88,9 +101,9 @@ public:
     void HandleUserInput() const;
 
     /**
-     * @brief Handles user input specific to the level editor, including camera and tile actions.
-     * @param camera Reference to the game's camera.
-     */
+    * @brief Handles user input specific to the level editor, including camera and tile actions.
+    * @param camera Reference to the game's camera.
+    */
     static void HandleEditorInput(Camera2D& camera);
 };
 

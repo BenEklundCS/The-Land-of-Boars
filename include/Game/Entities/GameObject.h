@@ -33,6 +33,7 @@ enum GameObjectType {
     MONSTER,
     TILE,
     TREE,
+    COIN,
     OTHER
 };
 
@@ -57,6 +58,7 @@ protected:
     Color color_ = WHITE; ///< The color of the object (default is white).
     bool shouldRemove_ = false; ///< Flag indicating if the object should be removed from the scene.
     bool movingRight_ = true; ///< Direction of movement (true if moving right).
+    GameObjectType type_; ///< The type of the GameObject (e.g., `PLAYER`, `PLATFORM`).
 
     /**
      * @brief Scales the object based on global scaling factors.
@@ -186,11 +188,16 @@ public:
     void ApplyGravity();
 
     /**
+    * @brief Gets the object's type. Types are defined in GameObjectType enum.
+    *
+    * @return The type of the object.
+    */
+    GameObjectType GetType() const;
+
+    /**
      * @brief Virtual destructor for GameObject.
      */
     virtual ~GameObject();
-
-    GameObjectType type_; ///< The type of the GameObject (e.g., `PLAYER`, `PLATFORM`).
 };
 
 #endif //PLATFORMER_GAMEOBJECT_H

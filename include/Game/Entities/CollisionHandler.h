@@ -5,6 +5,7 @@
 #ifndef THE_LAND_OF_BOARS_COLLISIONHANDLER_H
 #define THE_LAND_OF_BOARS_COLLISIONHANDLER_H
 
+#include <memory>
 #include "GameObject.h"
 
 /**
@@ -35,6 +36,8 @@ public:
      * @param platform Pointer to the platform with which the object is colliding.
      */
     static void HandlePlatformCollision(GameObject* obj, GameObject* platform);
+
+    static bool GetCoinCollision(GameObject* player, GameObject* coin);
 };
 
 #endif //THE_LAND_OF_BOARS_COLLISIONHANDLER_H

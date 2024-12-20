@@ -38,13 +38,6 @@ private:
     std::unique_ptr<Animation> snailAnimation_; ///< The animation associated with the snail.
 
     /**
-     * @brief Handles the death of the snail.
-     *
-     * This method is called when the snail's health reaches zero, triggering its death behavior.
-     */
-    void Died();
-
-    /**
      * @brief Begins the snail's death animation.
      *
      * This method starts the animation sequence that plays when the snail dies.

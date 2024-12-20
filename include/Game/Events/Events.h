@@ -28,7 +28,9 @@ enum Events {
     EVENT_SNAIL_DIED,      ///< Triggered when a snail loses all health and dies.
 
     EVENT_BEE_HIT,         ///< Triggered when a bee is hit by the player or another entity.
-    EVENT_BEE_DIED         ///< Triggered when a bee loses all health and dies.
+    EVENT_BEE_DIED,        ///< Triggered when a bee loses all health and dies.
+
+    EVENT_MONSTER_DIED     ///< Triggered at the end of all monster death animations.
 };
 
 #endif //PLATFORMER_EVENTS_H

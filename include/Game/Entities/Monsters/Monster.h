@@ -122,6 +122,16 @@ public:
      * This method allows the monster to move according to its default movement pattern (e.g., pacing).
      */
     void MoveDefault();
+
+    /**
+    * @brief Marks the monster for removal after death and spawns coins.
+    */
+    void Died();
+
+    /**
+    * @brief Drops coins from the monster by adding them to the scene. Called on-death to reward the player.
+    */
+    void DropCoins();
 };
 
 #endif //PLATFORMER_MONSTER_H

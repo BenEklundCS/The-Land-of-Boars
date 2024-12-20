@@ -40,13 +40,6 @@ private:
     void MaybeOink();
 
     /**
-     * @brief Handles the death of the boar.
-     *
-     * This method is called when the boar's health reaches zero and handles the boar's death behavior.
-     */
-    void Died();
-
-    /**
      * @brief Updates the boar's animation.
      *
      * This method updates the boar's animation to reflect its current state (e.g., idle, running, etc.).

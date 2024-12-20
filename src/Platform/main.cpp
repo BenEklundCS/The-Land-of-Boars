@@ -15,8 +15,8 @@ int main() {
         auto gameEngine = Engine();
 
         // Start the game
-        gameEngine.StartGame();
 
+        gameEngine.StartGame();
         // Farewell message upon successful exit
         TraceLog(LOG_INFO, "You have triumphed or fallen in the Land of Boars. Until next time, hero!");
     } catch (const std::exception& ex) {

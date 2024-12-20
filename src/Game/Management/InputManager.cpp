@@ -31,7 +31,7 @@ void InputManager::HandlePlayerInput() const {
     if (IsKeyDown(KEY_LEFT)) LeftCommand::Execute(player_); // move left on left keypress
     if (IsKeyDown(KEY_RIGHT)) RightCommand::Execute(player_); // move right on right keypress
     if (IsKeyPressed(KEY_A)) AttackCommand::Execute(player_);
-    if ((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)) && player_->CanJump())
+    if ((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)))
         JumpCommand::Execute(player_); // make the player jump if can jump
 }
 
@@ -93,37 +93,24 @@ void InputManager::HandleEditorInput(Camera2D& camera) {
  */
 void InputManager::HandleEditorActions(GameStateManager* gameState, Camera2D& camera) {
     try {
-        TileManager& tileManager = gameState->GetTileManager();
-
         // Make sure ImGUI doesn't want to capture the mouse click before handling it
         // ImGui::GetIO().WantCaptureMouse worked on Windows, did not work as expected on Linux.
         // This function seems to work better anyway - although it is not suggested for use this way.
         if (!ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow)) {
             // Edit
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_LEFT_CONTROL))) {
-                auto mousePos = GetMousePosition();
-                auto worldPosition = GetScreenToWorld2D(mousePos, camera);
-                auto tilePosition = tileManager.GetTileAt(worldPosition.x, worldPosition.y);
-                int blockSelection = GUI::GetBlockSelection();
-                TraceLog(LOG_INFO, "BLOCK SELECTION: %d", blockSelection);
-                tileManager.SetTileAt(static_cast<int>(tilePosition.x), static_cast<int>(tilePosition.y), blockSelection); // Set the tile
-                gameState->ReloadTiles();
+                PlaceTile(gameState, camera);
             }
 
             // Print tile position (debug)
             if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
-                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    auto mousePos = GetMousePosition();
-                    auto worldPosition = GetScreenToWorld2D(mousePos, camera);
-                    auto tilePosition = tileManager.GetTileAt(worldPosition.x, worldPosition.y);
-                    TraceLog(LOG_INFO, "Tile at: %d, %d", static_cast<int>(tilePosition.x), static_cast<int>(tilePosition.y));
-                }
+                PrintTileLocation(gameState, camera);
             }
         }
         // Save level to file
         if (IsKeyPressed(KEY_S)) {
             TraceLog(LOG_INFO, "Saving level...");
-            LevelLoader::SaveLevel(tileManager.GetTiles(), "../Levels/myLevel.txt");
+            LevelLoader::SaveLevel(gameState->GetTileManager().GetTiles(), "../Levels/myLevel.txt");
         }
 
         // Load level from file
@@ -134,6 +121,30 @@ void InputManager::HandleEditorActions(GameStateManager* gameState, Camera2D& ca
     } catch (const std::exception& e) {
         TraceLog(LOG_ERROR, "Error accessing TileManager: %s", e.what());
     }
+}
+
+/**
+* @brief Place a tile into the scene based on the user's selected tile.
+* @param gameState, current world state
+* @param camera, the world's camera
+*/
+void InputManager::PlaceTile(GameStateManager* gameState, Camera2D& camera) {
+    TileManager& tileManager = gameState->GetTileManager();
+    auto mousePos = GetMousePosition();
+    auto worldPosition = GetScreenToWorld2D(mousePos, camera);
+    auto tilePosition = tileManager.GetTileAt(worldPosition.x, worldPosition.y);
+    int blockSelection = GUI::GetBlockSelection();
+    TraceLog(LOG_INFO, "BLOCK SELECTION: %d", blockSelection);
+    tileManager.SetTileAt(static_cast<int>(tilePosition.x), static_cast<int>(tilePosition.y), blockSelection); // Set the tile
+    gameState->ReloadTiles();
+}
+
+void InputManager::PrintTileLocation(GameStateManager* gameState, Camera2D& camera) {
+    TileManager& tileManager = gameState->GetTileManager();
+    auto mousePos = GetMousePosition();
+    auto worldPosition = GetScreenToWorld2D(mousePos, camera);
+    auto tilePosition = tileManager.GetTileAt(worldPosition.x, worldPosition.y);
+    TraceLog(LOG_INFO, "Tile at: %d, %d", static_cast<int>(tilePosition.x), static_cast<int>(tilePosition.y));
 }
 
 /**

@@ -6,6 +6,7 @@
 #include "../../../include/Game/Management/InputManager.h"
 #include "../../../include/Game/Management/GameStateManager.h"
 #include "../../../include/Game/Entities/Effects/ParticleCone.h"
+#include "../../../include/Game/Entities/Objects/Coin.h"
 #include <algorithm>
 #include <stdexcept>
 
@@ -145,7 +146,6 @@ void GameStateManager::UpdatePlayers() {
     }
 }
 
-
 /**
  * @brief Updates player attacks, running animations and iterating over the array of monsters.
  */
@@ -184,14 +184,38 @@ void GameStateManager::UpdateMonsters() {
 }
 
 /**
+ * @brief Helper function for handling collisions between players and coins.
+ *        The function updates the player state with the new coin count after picking up a coin.
+ * @param obj, the current object colliding. The function will check if it's the player, if not it quickly returns.
+ */
+void GameStateManager::PlayerPickUpCoins(GameObject* obj) {
+    // Pick up coins
+    if (obj->GetType() == PLAYER) {
+        auto p = dynamic_cast<Player*>(obj); // we know it's a player now
+        for (auto& c : otherObjects_) {
+            if (c->GetType() == COIN) {
+                if (CollisionHandler::GetCoinCollision(p, c.get())) {
+                    RemoveObject(c.get());
+                    p->GetPlayerData()->coins_ += 1; // increment coins
+                }
+            }
+        }
+    }
+}
+
+/**
  * @brief Handles collisions for a given game object.
  *
  * @param obj Pointer to the game object for collision handling.
  */
-void GameStateManager::HandleCollisions(GameObject* obj) const {
+void GameStateManager::HandleCollisions(GameObject* obj) {
+
+    PlayerPickUpCoins(obj);
+
     for (auto& platform : platforms_) {
         CollisionHandler::HandlePlatformCollision(obj, platform.get());
     }
+
     #pragma omp parallel for // update the other objects in parallel using threads
     for (const auto& row : tiles_) {
         for (const auto& tile : row) {
@@ -204,12 +228,17 @@ void GameStateManager::HandleCollisions(GameObject* obj) const {
  * @brief Updates other non-player, non-monster objects in the game.
  */
 void GameStateManager::UpdateOthers() {
-    for (auto it = otherObjects_.begin(); it != otherObjects_.end(); ) {
-        (*it)->Update();
-        if ((*it)->ShouldRemove()) {
-            RemoveObject(it->get());
-        } else {
-            ++it;
+    for (auto obj = otherObjects_.begin(); obj != otherObjects_.end(); ) {
+        (*obj)->Update();
+        if ((*obj)->ShouldRemove()) {
+            RemoveObject(obj->get());
+        }
+        else if ((*obj)->GetType() == COIN) {
+            HandleCollisions(obj->get());
+            ++obj;
+        }
+        else {
+            ++obj;
         }
     }
 }
@@ -228,12 +257,26 @@ void GameStateManager::UpdateOthers() {
  */
 void GameStateManager::OnNotify(const GameObject *entity, Events event) {
     // Player events!
-    if (entity->type_ == PLAYER) {
+    if (entity->GetType() == PLAYER) {
         if (event == EVENT_PLAYER_ATTACK) {
             UpdateAttacks((Player *) entity);
         }
     }
+    // Drop coins on death events
+    if (entity->GetType() == MONSTER) {
+        // Check if a monster died in the event, if so drop coins at its location
+        if (event == EVENT_MONSTER_DIED) {
+            DropCoins(entity->GetPosition());
+        }
+    }
+}
 
+/**
+ * @brief Drops coins from the monster by adding them to the scene. Called on-death to reward the player.
+ */
+void GameStateManager::DropCoins(Vector2 monsterPosition) {
+    auto coin1 = std::make_unique<Coin>(monsterPosition.x, monsterPosition.y);
+    AddObject(std::move(coin1));
 }
 
 #pragma endregion
@@ -249,15 +292,15 @@ void GameStateManager::OnNotify(const GameObject *entity, Events event) {
  * @param obj Unique pointer to the game object being added.
  */
 void GameStateManager::AddObject(std::unique_ptr<GameObject> obj) {
-    if (obj->type_ == PLAYER) {
+    if (obj->GetType() == PLAYER) {
         InitObservers(dynamic_cast<Subject*>(obj.get())); // PLAYER is a subject, init observers
         players_.push_back(std::unique_ptr<Player>(dynamic_cast<Player*>(obj.release())));
     }
-    else if (obj->type_ == MONSTER) {
+    else if (obj->GetType() == MONSTER) {
         InitObservers(dynamic_cast<Subject*>(obj.get())); // MONSTER is a subject, init observers
         monsters_.push_back(std::unique_ptr<Monster>(dynamic_cast<Monster*>(obj.release())));
     }
-    else if (obj->type_ == PLATFORM || obj->type_ == MOVING_PLATFORM) {
+    else if (obj->GetType() == PLATFORM || obj->GetType() == MOVING_PLATFORM) {
         platforms_.push_back(std::unique_ptr<Platform>(dynamic_cast<Platform*>(obj.release())));
     }
     else {
@@ -340,7 +383,7 @@ void GameStateManager::RemoveOtherObject(GameObject* obj) {
  */
 void GameStateManager::RemoveObject(GameObject* obj) {
     // Call the appropriate function based on the object's type
-    switch (obj->type_) {
+    switch (obj->GetType()) {
         case PLAYER:
             RemovePlayer(obj);
             break;

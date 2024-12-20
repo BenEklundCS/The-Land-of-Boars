@@ -18,6 +18,7 @@
 Coin::Coin(float x, float y) : texture_(TextureManager::GetInstance()->GetTexture(COIN_TEXTURE)) {
     position_ = Vector2{x, y};
     dimensions_ = Vector2{COIN_WIDTH, COIN_HEIGHT};
+    type_ = COIN;
 }
 
 /**
@@ -37,7 +38,10 @@ void Coin::Draw() {
  * specific coin behavior or state changes (e.g., animations, interactions).
  */
 void Coin::Update() {
-
+    GameObject::ApplyGravity();
+    float deltaTime = GetFrameTime();
+    position_.y += velocity_.y * deltaTime;
+    position_.x += velocity_.x * deltaTime;
 }
 
 

@@ -44,7 +44,7 @@ void CollisionHandler::HandlePlatformCollision(GameObject *obj, GameObject *plat
             }
         } else {
             // Toggle direction for MONSTER collisions that occur on the X-axis
-            if (obj->type_ == MONSTER) {
+            if (obj->GetType() == MONSTER) {
                 obj->ToggleMovingRight();
             }
             if (deltaX > 0) { // Collision from the left
@@ -56,4 +56,8 @@ void CollisionHandler::HandlePlatformCollision(GameObject *obj, GameObject *plat
             }
         }
     }
+}
+
+bool CollisionHandler::GetCoinCollision(GameObject* player, GameObject* coin) {
+    return CheckCollisionRecs(player->GetRect(), coin->GetRect());
 }

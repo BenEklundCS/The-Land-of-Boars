@@ -41,6 +41,7 @@ struct playerDataStruct {
     // **General Properties**
     int hp_ = PLAYER_MAX_HP; ///< Current player health.
     int damage_ = 1;         ///< Damage dealt by the player.
+    int coins_ = 0;
 
     // **Animation**
     float timeSinceHit_ = 0.0f; ///< Time since the player was last hit.

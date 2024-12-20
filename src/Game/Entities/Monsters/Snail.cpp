@@ -43,16 +43,6 @@ void Snail::Update() {
 }
 
 /**
- * @brief Handles the logic when the Snail dies.
- *
- * Sets the `shouldRemove_` flag to true, marking the Snail for removal.
- */
-void Snail::Died() {
-    // Implementation for when Snail dies
-    shouldRemove_ = true;
-}
-
-/**
  * @brief Begins the Snail's death animation if not already in the DYING state.
  */
 void Snail::BeginDeathAnimation() {

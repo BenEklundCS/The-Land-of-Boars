@@ -77,6 +77,7 @@ void GUI::DrawDebugGUI(GameStateManager *gameState) {
     // Render player data
     ImGui::Text("Health: %d", gameData.player->GetPlayerData()->hp_);
     ImGui::Text("Jumps: %d", gameData.player->GetPlayerData()->jumps_);
+    ImGui::Text("Coins: %d", gameData.player->GetPlayerData()->coins_);
     // Render player state
     ImGui::Text("State: %s", PlayerStateToString(gameData.player->GetPlayerData()->state_).c_str());
     ImGui::Text("isOnGround: %s", (gameData.player->GetPlayerData()->isOnGround_) ? "True" : "False");

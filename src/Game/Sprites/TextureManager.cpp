@@ -96,10 +96,10 @@ void TextureManager::LoadOtherTextures() {
     const Texture2D coinTexture = ::LoadTexture(HUD_BASE_TEXTURE_PATH);
 
     // Define the red square's portion of the sprite sheet
-    constexpr float coinX = 185.0f;
-    constexpr float coinY = 510.0f;
-    constexpr float coinWidth = 30.0f;
-    constexpr float coinHeight = 30.0f;
+    constexpr float coinX = 20.0f;
+    constexpr float coinY = 212.0f;
+    constexpr float coinWidth = 10.0f;
+    constexpr float coinHeight = 10.0f;
 
     // Add the coin texture using its rectangle
     TextureManager::LoadTexture(coinTexture, COIN_TEXTURE,

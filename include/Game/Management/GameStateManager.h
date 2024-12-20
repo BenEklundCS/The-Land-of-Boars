@@ -66,7 +66,7 @@ private:
     void UpdateLevel(); ///< Updates the current level.
     void UpdatePlayers(); ///< Updates all player objects.
     void UpdateMonsters(); ///< Updates all monster objects.
-    void HandleCollisions(GameObject* obj) const; ///< Handles collisions for a given game object.
+    void HandleCollisions(GameObject* obj); ///< Handles collisions for a given game object.
     void UpdatePlatforms(); ///< Updates all platform objects.
     void UpdateOthers(); ///< Updates all other game objects.
 
@@ -97,6 +97,9 @@ private:
     std::vector<std::unique_ptr<Platform>> platforms_; ///< Vector of platform objects.
     std::vector<std::unique_ptr<GameObject>> otherObjects_; ///< Vector of miscellaneous game objects.
     std::vector<std::vector<Tile*>> tiles_; ///< Vector of tiles, managed by the TileManager.
+
+    // Helper function for player coin interactions
+    void PlayerPickUpCoins(GameObject *obj);
 
     // Camera
     Camera2D camera_{}; ///< Game camera.
@@ -201,6 +204,10 @@ public:
      * @brief Destroys the GameStateManager instance.
      */
     ~GameStateManager() override;
+
+    void DropCoins();
+
+    void DropCoins(Vector2 monsterPosition);
 };
 
 #endif //PLATFORMER_GAMESTATEMANAGER_H

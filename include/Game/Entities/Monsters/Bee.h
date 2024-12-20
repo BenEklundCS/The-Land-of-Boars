@@ -33,13 +33,6 @@ private:
     std::unique_ptr<Animation> beeAnimation_; ///< The animation associated with the bee.
 
     /**
-     * @brief Handles the death of the bee.
-     *
-     * This method is called when the bee's health reaches zero and handles the bee's death behavior.
-     */
-    void Died();
-
-    /**
      * @brief Checks if the bee is within attack range.
      *
      * This method checks whether the bee is within the specified attack range to perform an attack.
