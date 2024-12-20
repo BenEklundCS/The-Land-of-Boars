@@ -20,25 +20,6 @@ constexpr float TILE_OVERLAP = 6.0f;
  * This class also supports querying and modifying tiles at specific positions.
  */
 
-/**
- * @namespace std
- * @brief Adds a custom hash implementation for `std::pair<int, int>` to use as a key in unordered maps.
- *
- * This allows `std::unordered_map` to efficiently handle 2D coordinates as keys.
- */
-namespace std {
-    template <>
-    struct hash<std::pair<int, int>> {
-        /**
-         * @brief Hash function for a pair of integers.
-         * @param p A pair of integers to hash.
-         * @return A combined hash value for the pair.
-         */
-        size_t operator()(const std::pair<int, int>& p) const {
-            return hash<int>()(p.first) ^ (hash<int>()(p.second) << 1);
-        }
-    };
-}
 
 /**
  * @class TileManager
