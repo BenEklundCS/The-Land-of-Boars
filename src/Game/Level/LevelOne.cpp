@@ -92,8 +92,5 @@ GameStateManager* LevelOne::GetGameState() {
     gameState->AddObject(std::move(tree));
 #pragma endregion
 
-#pragma region coins
-    auto coin = std::make_unique<Coin>(2000, 0);
-    gameState->AddObject(std::move(coin));
     return gameState;
 }

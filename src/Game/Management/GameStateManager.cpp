@@ -198,6 +198,7 @@ void GameStateManager::PlayerPickUpCoins(GameObject* obj) {
                     RemoveObject(c.get());
                     p->GetPlayerData()->coins_ += 1; // increment coins
                 }
+                return; // only process one coin per frame. This avoids issues in the loops of the GetCoinCollision and RemoveObject methods where they will iterate over deleted pointers.
             }
         }
     }
@@ -275,8 +276,18 @@ void GameStateManager::OnNotify(const GameObject *entity, Events event) {
  * @brief Drops coins from the monster by adding them to the scene. Called on-death to reward the player.
  */
 void GameStateManager::DropCoins(Vector2 monsterPosition) {
-    auto coin1 = std::make_unique<Coin>(monsterPosition.x, monsterPosition.y);
-    AddObject(std::move(coin1));
+    int coins = (rand() % 4) + 1;
+    for (int i = 0; i < coins; i++) {
+        int mid_point = coins/2;
+        if (i < mid_point) {
+            auto coin1 = std::make_unique<Coin>(monsterPosition.x - i * 10, monsterPosition.y);
+            AddObject(std::move(coin1));
+        }
+        else if (i > mid_point) {
+            auto coin1 = std::make_unique<Coin>(monsterPosition.x + i * 10, monsterPosition.y);
+            AddObject(std::move(coin1));
+        }
+    }
 }
 
 #pragma endregion
@@ -366,7 +377,7 @@ void GameStateManager::RemovePlatform(GameObject* obj) {
  * @param obj Pointer to the object to remove.
  */
 void GameStateManager::RemoveOtherObject(GameObject* obj) {
-    auto it = std::find_if(otherObjects_.begin(), otherObjects_.end(), [&obj](const std::unique_ptr<GameObject>& other) {
+    const auto it = std::find_if(otherObjects_.begin(), otherObjects_.end(), [&obj](const std::unique_ptr<GameObject>& other) {
         return other.get() == obj;
     });
     if (it != otherObjects_.end()) {

@@ -13,7 +13,7 @@
 #include "../../Sprites/Animation.h"
 #include "../../Sprites/TextureManager.h"
 #include "../../Events/Observers/Subject.h"
-#include "../uiElements/HealthBar.h"
+#include "../uiElements/PlayerUI.h"
 
 /// **Player Constants**
 /// These constants define the player's movement, physics, and other gameplay attributes.
@@ -63,7 +63,7 @@ class Player : public GameObject, public Subject {
 private:
     // **Attributes**
     playerDataStruct playerData; ///< Player data structure containing state and attributes.
-    std::unique_ptr<HealthBar> health_bar_; ///< Player health bar UI element.
+    std::unique_ptr<PlayerUI> playerUI_; ///< PlayerUI element.
 
     // **Movement Methods**
     void MovePlayer(float deltaTime); ///< Handles player movement for the current frame.

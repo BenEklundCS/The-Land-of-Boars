@@ -31,7 +31,7 @@ Player::Player() : GameObject(PLAYER) {
     // Load it here to ensure the TextureManager is queried after the player object is created
     playerData.playerAnimation_ = std::make_unique<Animation>(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE),
                                                               PLAYER_IDLE_FRAMES, 0.2f, true);
-    health_bar_ = std::make_unique<HealthBar>(150, 150, 100);
+    playerUI_ = std::make_unique<PlayerUI>(150, 150, 100, 0);
 }
 
 #pragma region render methods
@@ -48,7 +48,7 @@ void Player::Draw() {
     const Texture2D playerTexture = playerData.playerAnimation_->GetTexture();
     const Rectangle currentRect = playerData.playerAnimation_->GetCurrentRect();
     if (GameStateManager::GetInstance()->GetMode() == MODE_GAME)
-        health_bar_->Draw();
+        playerUI_->Draw();
     // Draw the player utilizing the currently loaded playerTexture, and rect position
     DrawTexturePro(playerTexture, currentRect, GetRect(), Vector2{0, 0}, 0, color_);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
 }
@@ -71,8 +71,8 @@ void Player::Update() {
     // Move the player based on their velocity and position
     MovePlayer(deltaTime);
     GameObject::Update();
-    // Update healthbar
-    health_bar_->Update();
+    // Update PlayerUI
+    playerUI_->Update();
     playerData.timeSinceLastAttack_ += deltaTime;
     playerData.last_state_ = playerData.state_;
 }

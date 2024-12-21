@@ -38,7 +38,7 @@ public:
      * @brief Constructor for the `TileManager`.
      * @param position The starting position of the TileManager (used as an origin for the tile grid).
      */
-    TileManager(Vector2 position);
+    explicit TileManager(Vector2 position);
 
     /**
      * @brief Creates tiles from a 2D array of integers.

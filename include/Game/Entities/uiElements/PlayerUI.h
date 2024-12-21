@@ -8,12 +8,13 @@
 #include "../GameObject.h"
 #include "../../Sprites/TextureManager.h"
 
-class HealthBar : public GameObject {
+class PlayerUI : public GameObject {
 private:
     GameTexture gameTexture_{};
     int hp_;
+    int coins_;
 public:
-    HealthBar(float pos_x, float pos_y, int hp);
+    PlayerUI(float pos_x, float pos_y, int hp, int coins);
     void Update() override;
     void Draw() override;
 };

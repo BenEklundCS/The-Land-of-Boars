@@ -136,12 +136,13 @@ set(SOURCES
         ${imgui_SOURCE_DIR}/imgui_widgets.cpp
         src/Game/Entities/CollisionHandler.cpp
         include/Platform/Globals.h
-        include/Game/Entities/uiElements/HealthBar.h
-        src/Game/Entities/uiElements/HealthBar.cpp
+        include/Game/Entities/uiElements/PlayerUI.h
+        src/Game/Entities/uiElements/PlayerUI.cpp
         src/Game/Entities/uiElements/StartButton.cpp
         include/Game/Entities/uiElements/StartButton.h
         include/Game/Entities/Objects/Coin.h
         src/Game/Entities/Objects/Coin.cpp
+        include/Game/Entities/uiElements/PlayerUI.h
 )
 
 # Define executable
