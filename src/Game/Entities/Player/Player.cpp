@@ -3,7 +3,6 @@
 //
 
 #include "../../../../include/Game/Entities/Player/Player.h"
-#include "../../../../include/Game/Entities/Objects/MovingPlatform.h"
 #include "../../../../include/Game/Management/GameStateManager.h"
 #include <chrono>
 #include <thread>
@@ -61,7 +60,7 @@ void Player::Draw() {
  */
 void Player::Update() {
     // Get deltaTime
-    float deltaTime = GetFrameTime();
+    const float deltaTime = GetFrameTime();
     // State
     StateTransition();
     // Check to see if we need to update the displayed animation

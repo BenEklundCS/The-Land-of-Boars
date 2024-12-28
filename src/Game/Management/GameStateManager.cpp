@@ -197,8 +197,8 @@ void GameStateManager::PlayerPickUpCoins(GameObject* obj) {
                 if (CollisionHandler::GetCoinCollision(p, c.get())) {
                     RemoveObject(c.get());
                     p->GetPlayerData()->coins_ += 1; // increment coins
+                    return; // only pick up one coin per frame. This avoids issues in the loops of the GetCoinCollision and RemoveObject methods where they will iterate over deleted pointers.
                 }
-                return; // only process one coin per frame. This avoids issues in the loops of the GetCoinCollision and RemoveObject methods where they will iterate over deleted pointers.
             }
         }
     }
