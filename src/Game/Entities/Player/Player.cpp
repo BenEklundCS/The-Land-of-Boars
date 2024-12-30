@@ -89,8 +89,8 @@ void Player::Update() {
  */
 void Player::MovePlayer(const float deltaTime) {
     // Call the updatePosition and velocity changing functions
-    ApplyFriction();
-    ApplyGravity();
+    GameObject::ApplyFriction();
+    GameObject::ApplyGravity();
     UpdatePosition(deltaTime);
 }
 
@@ -102,19 +102,6 @@ void Player::MovePlayer(const float deltaTime) {
 void Player::UpdatePosition(const float deltaTime) {
     position_.x += velocity_.x * deltaTime;
     position_.y += velocity_.y * deltaTime;
-}
-
-/**
- * @brief Applies friction to the player's horizontal velocity.
- */
-void Player::ApplyFriction() {
-    if (constexpr int minVelocity = 50; velocity_.x > minVelocity) {
-        velocity_.x -= FRICTION;
-    } else if (velocity_.x < -minVelocity) {
-        velocity_.x += FRICTION;
-    } else {
-        velocity_.x = 0;
-    }
 }
 
 /**

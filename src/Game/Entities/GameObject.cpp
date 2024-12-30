@@ -187,6 +187,19 @@ void GameObject::ApplyGravity() {
 }
 
 /**
+ * @brief Applies friction to the object's horizontal velocity.
+ */
+void GameObject::ApplyFriction() {
+    if (constexpr int minVelocity = 50; velocity_.x > minVelocity) {
+        velocity_.x -= FRICTION;
+    } else if (velocity_.x < -minVelocity) {
+        velocity_.x += FRICTION;
+    } else {
+        velocity_.x = 0;
+    }
+}
+
+/**
 * @brief Gets the object's type. Types are defined in GameObjectType enum.
 *
 * @return The type of the object.

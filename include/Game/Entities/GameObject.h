@@ -198,6 +198,11 @@ public:
      * @brief Virtual destructor for GameObject.
      */
     virtual ~GameObject();
+
+    /**
+    * @brief Applies friction to the object's horizontal velocity.
+    */
+    void ApplyFriction();
 };
 
 #endif //PLATFORMER_GAMEOBJECT_H
