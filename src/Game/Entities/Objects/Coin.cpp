@@ -19,7 +19,7 @@ Coin::Coin(float x, float y) : texture_(TextureManager::GetInstance()->GetTextur
     position_ = Vector2{x, y};
     dimensions_ = Vector2{COIN_WIDTH, COIN_HEIGHT};
     int random_x = (rand() % 2 == 1) ? 1 : -1;
-    velocity_ = {static_cast<float>(1000 * random_x), 1000};
+    velocity_ = {static_cast<float>(1000 * random_x), -500};
     type_ = COIN;
 }
 
@@ -46,7 +46,3 @@ void Coin::Update() {
     position_.y += velocity_.y * deltaTime;
     position_.x += velocity_.x * deltaTime;
 }
-
-
-
-
