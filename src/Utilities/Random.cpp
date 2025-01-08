@@ -7,6 +7,12 @@
 #include <random>
 #include <chrono>
 
+/**
+ * @brief Gives a random floating-point value between an inclusive range of values
+ * @param x The lower bound of the distribution
+ * @param y The upper bound of the distribution
+ * @returns A random floating-point value between the provided range
+ */
 float GetRandomFloat(float x, float y) {
     // Create a random number generator
     std::default_random_engine generator(std::chrono::system_clock::now().time_since_epoch().count());
@@ -15,6 +21,12 @@ float GetRandomFloat(float x, float y) {
     return distribution(generator);
 }
 
+/**
+ * @brief Gives a random integer value between an inclusive range of values
+ * @param x The lower bound of the distribution
+ * @param y The upper bound of the distribution
+ * @returns A random integer value between the provided range
+ */
 int GetRandomInt(int x, int y) {
     std::default_random_engine generator(std::chrono::system_clock::now().time_since_epoch().count());
     std::uniform_int_distribution<int> distribution(x, y);
