@@ -3,8 +3,7 @@
 //
 
 #include "../../../../include/Game/Entities/Monsters/Boar.h"
-#include <random>
-#include <chrono>
+#include "../../../../include/Utilities/Random.h"
 
 /**
  * @brief Constructs a Boar object with specified position, dimensions, and state.
@@ -107,13 +106,7 @@ void Boar::MaybeOink() {
         Notify(this, EVENT_BOAR_OINKED);
         timeSinceLastOink_ = 0.0f; // Reset the timer
         // Set the nextOinkTime randomly after an oink
-            // using the C++11 random library
-        // Create a random engine (seeded with the current time in ms)
-        std::default_random_engine generator(std::chrono::system_clock::now().time_since_epoch().count());
-        // Create a uniform distribution between 1 and 30
-        std::uniform_real_distribution<float> distribution(1.0, 30.0);
-        // Get the next oink time
-        nextOinkTime_ = distribution(generator); // Set the time for the next oink to a random value between 1 and 30 seconds
+        nextOinkTime_ = GetRandomFloat(0, 30);
     }
 }
 

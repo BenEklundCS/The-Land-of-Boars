@@ -7,6 +7,7 @@
 #include "../../../include/Game/Management/GameStateManager.h"
 #include "../../../include/Game/Entities/Effects/ParticleCone.h"
 #include "../../../include/Game/Entities/Objects/Coin.h"
+#include "../../../include/Utilities/Random.h"
 #include <algorithm>
 #include <stdexcept>
 
@@ -276,7 +277,7 @@ void GameStateManager::OnNotify(const GameObject *entity, Events event) {
  * @brief Drops coins from the monster by adding them to the scene. Called on-death to reward the player.
  */
 void GameStateManager::DropCoins(Vector2 monsterPosition) {
-    int coins = (rand() % 4) + 1;
+    int coins = (GetRandomInt(1, 5)); // get 1-5 coins
     for (int i = 0; i < coins; i++) {
         int mid_point = coins/2;
         if (i < mid_point) {

@@ -3,6 +3,7 @@
 //
 
 #include "../../../include/Game/Management/SoundManager.h"
+#include "../../../include/Utilities/Random.h"
 
 std::unique_ptr<SoundManager> SoundManager::instance = nullptr;
 
@@ -38,7 +39,7 @@ void SoundManager::OnNotify(const GameObject *entity, Events event) {
     switch (event) {
         case EVENT_PLAYER_JUMPED:
             // Play jump2 more rarely as it's a grunt/more annoying sound
-            if ((rand() % 4) + 1 == 1) {
+            if (GetRandomInt(1, 4) == 1) {
                 PlaySound(HERO_JUMP2);
             } else { // play the basic jump sound if the rand doesn't hit
                 PlaySound(HERO_JUMP1);

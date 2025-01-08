@@ -3,9 +3,10 @@
 //
 
 #include "../../../../include/Game/Entities/Objects/Coin.h"
-
+#include "../../../../include/Utilities/Random.h"
 #include "../../../../include/Game/Entities/Objects/MovingPlatform.h"
 #include "raylib.h"
+
 
 /**
  * @brief Constructs a Coin object with a specific position and texture.
@@ -18,7 +19,7 @@
 Coin::Coin(float x, float y) : texture_(TextureManager::GetInstance()->GetTexture(COIN_TEXTURE)) {
     position_ = Vector2{x, y};
     dimensions_ = Vector2{COIN_WIDTH, COIN_HEIGHT};
-    int random_x = (rand() % 2 == 1) ? 1 : -1;
+    int random_x = (GetRandomInt(0, 1) == 1) ? 1 : -1;
     velocity_ = {static_cast<float>(1000 * random_x), -500};
     type_ = COIN;
 }
