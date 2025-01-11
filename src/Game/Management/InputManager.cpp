@@ -4,7 +4,9 @@
 
 #include "../../../include/Game/Management/InputManager.h"
 
+#include "../../../include/Game/Events/Commands/EditorCommands.h"
 #include "../../../include/Game/Level/LevelLoader.h"
+#include "../../../include/Game/Level/LevelEditor.h"
 #include "../../../include/Platform/Engine.h"
 
 /**
@@ -97,55 +99,35 @@ void InputManager::HandleEditorActions(GameStateManager* gameState, Camera2D& ca
         // ImGui::GetIO().WantCaptureMouse worked on Windows, did not work as expected on Linux.
         // This function seems to work better anyway - although it is not suggested for use this way.
         if (!ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow)) {
-            // Edit
-            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_LEFT_CONTROL))) {
-                PlaceTile(gameState, camera);
+            // Lambda function returns True if left mouse button and left control are both pressed down
+            auto CtrlAndLeftMouseDown = [&]() {
+                return IsMouseButtonDown(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_LEFT_CONTROL);
+            };
+            // Place tile command
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || CtrlAndLeftMouseDown()) {
+                PlaceTileCommand::Execute();
             }
 
             // Print tile position (debug)
             if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
-                PrintTileLocation(gameState, camera);
+                PrintTileCommand::Execute();
             }
         }
         // Save level to file
-        if (IsKeyPressed(KEY_S)) {
-            TraceLog(LOG_INFO, "Saving level...");
-            LevelLoader::SaveLevel(gameState->GetTileManager().GetTiles(), "../Levels/myLevel.txt");
-        }
-
+        if (IsKeyPressed(KEY_S))
+            SaveLevelCommand::Execute();
         // Load level from file
-        if (IsKeyPressed(KEY_L)) {
-            TraceLog(LOG_INFO, "Loading level...");
-        }
+        if (IsKeyPressed(KEY_L))
+            LoadLevelCommand::Execute();
 
     } catch (const std::exception& e) {
         TraceLog(LOG_ERROR, "Error accessing TileManager: %s", e.what());
     }
 }
 
-/**
-* @brief Place a tile into the scene based on the user's selected tile.
-* @param gameState, current world state
-* @param camera, the world's camera
-*/
-void InputManager::PlaceTile(GameStateManager* gameState, Camera2D& camera) {
-    TileManager& tileManager = gameState->GetTileManager();
-    auto mousePos = GetMousePosition();
-    auto worldPosition = GetScreenToWorld2D(mousePos, camera);
-    auto tilePosition = tileManager.GetTileAt(worldPosition.x, worldPosition.y);
-    int blockSelection = GUI::GetBlockSelection();
-    TraceLog(LOG_INFO, "BLOCK SELECTION: %d", blockSelection);
-    tileManager.SetTileAt(static_cast<int>(tilePosition.x), static_cast<int>(tilePosition.y), blockSelection); // Set the tile
-    gameState->ReloadTiles();
-}
-
-void InputManager::PrintTileLocation(GameStateManager* gameState, Camera2D& camera) {
-    TileManager& tileManager = gameState->GetTileManager();
-    auto mousePos = GetMousePosition();
-    auto worldPosition = GetScreenToWorld2D(mousePos, camera);
-    auto tilePosition = tileManager.GetTileAt(worldPosition.x, worldPosition.y);
-    TraceLog(LOG_INFO, "Tile at: %d, %d", static_cast<int>(tilePosition.x), static_cast<int>(tilePosition.y));
-}
+constexpr float CAMERA_MOVE_SPEED = 10.0f;
+constexpr float CAMERA_FAST_MULTIPLIER = 5.0f;
+constexpr float CAMERA_VERY_FAST_MULTIPLIER = 10.0f;
 
 /**
  * @brief Handles camera movement in the editor.
@@ -156,22 +138,22 @@ void InputManager::PrintTileLocation(GameStateManager* gameState, Camera2D& came
  * @param camera The camera to be moved.
  */
 void InputManager::HandleEditorMovement(Camera2D& camera) {
-    // Lambda function for moving the camera`
     auto moveCamera = [&](int key, float& target, float amount) {
         if (IsKeyDown(key)) {
             if (IsKeyDown(KEY_LEFT_SHIFT))
-                amount *= 5; // faster
+                amount *= CAMERA_FAST_MULTIPLIER;
             else if (IsKeyDown(KEY_LEFT_ALT))
-                amount *= 10; // very fast
+                amount *= CAMERA_VERY_FAST_MULTIPLIER;
             target += amount;
         }
     };
 
-    moveCamera(KEY_UP, camera.target.y, -10);
-    moveCamera(KEY_DOWN, camera.target.y, 10);
-    moveCamera(KEY_LEFT, camera.target.x, -10);
-    moveCamera(KEY_RIGHT, camera.target.x, 10);
+    moveCamera(KEY_UP, camera.target.y, -CAMERA_MOVE_SPEED);
+    moveCamera(KEY_DOWN, camera.target.y, CAMERA_MOVE_SPEED);
+    moveCamera(KEY_LEFT, camera.target.x, -CAMERA_MOVE_SPEED);
+    moveCamera(KEY_RIGHT, camera.target.x, CAMERA_MOVE_SPEED);
 }
+
 
 
 #pragma endregion

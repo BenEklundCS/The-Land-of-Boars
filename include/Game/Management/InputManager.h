@@ -8,6 +8,7 @@
 #include "GameStateManager.h"
 #include "../Entities/Player/Player.h"
 #include "../Events/Commands/PlayerCommands.h"
+#include "../Events/Commands/EditorCommands.h"
 
 /**
  * @file InputManager.h
@@ -16,20 +17,6 @@
  * The `InputManager` class is responsible for capturing and processing user inputs,
  * delegating actions to the appropriate game systems (e.g., player movement, UI navigation, debug controls).
  */
-
-/**
- * @struct PlayerCommands
- * @brief Encapsulates the commands a player can execute.
- *
- * This structure holds pointers to various commands (jump, move left/right, attack)
- * that are mapped to player actions for easy handling.
- */
-struct PlayerCommands {
-    JumpCommand* jumpCommand; ///< Command for jumping.
-    LeftCommand* leftCommand; ///< Command for moving left.
-    RightCommand* rightCommand; ///< Command for moving right.
-    AttackCommand* attackCommand; ///< Command for attacking.
-};
 
 /**
  * @class InputManager
@@ -41,7 +28,6 @@ struct PlayerCommands {
  */
 class InputManager {
 private:
-    PlayerCommands playerCommands{}; ///< Encapsulates the player's command mappings.
     Player* player_; ///< Pointer to the player object for handling input.
     EngineSettings& settings_; ///< Reference to engine settings for input customization.
 
@@ -72,28 +58,15 @@ private:
      * @param camera Reference to the game's camera.
      */
     static void HandleEditorActions(GameStateManager* gameState, Camera2D& camera);
-
-    /**
-    * @brief Place a tile into the scene based on the user's selected tile.
-    * @param gameState, current world state
-    * @param camera, the world's camera
-    */
-    static void PlaceTile(GameStateManager *gameState, Camera2D &camera);
-
-    /**
-    * @brief Print the location of the clicked tile in the tiles_ array.
-    * @param gameState, current world state
-    * @param camera, the world's camera
-    */
-    static void PrintTileLocation(GameStateManager *gameState, Camera2D &camera);
 public:
     /**
      * @brief Constructs an InputManager instance.
      * @param player Pointer to the player object.
      * @param settings Reference to the engine settings for input configuration.
      */
-    explicit InputManager(Player* player, EngineSettings& settings)
-        : player_(player), settings_(settings) {}
+     explicit InputManager(Player* player, EngineSettings& settings)
+     : player_(player), settings_(settings) {
+     }
 
     /**
      * @brief Handles all user input during gameplay, including player commands and UI interactions.

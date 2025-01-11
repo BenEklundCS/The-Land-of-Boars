@@ -149,6 +149,10 @@ ${imgui_SOURCE_DIR}/imgui_demo.cpp
 ${imgui_SOURCE_DIR}/imgui_draw.cpp
 ${imgui_SOURCE_DIR}/imgui_tables.cpp
 ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+        src/Game/Level/LevelEditor.cpp
+        include/Game/Level/LevelEditor.h
+        include/Game/Events/Commands/EditorCommands.h
+        src/Game/Events/Commands/EditorCommands.cpp
 )
 
 # Define executable
