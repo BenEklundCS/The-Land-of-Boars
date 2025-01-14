@@ -3,9 +3,11 @@
 //
 
 #include "../../include/Platform/Renderer.h"
+#include "../../include/Game/Entities/UI/Button.h"
+
 #include "raylib.h"
-#include "../../include/Game/Management/GameStateManager.h"
-#include "../../include/Platform/Globals.h"
+
+
 
 
 Renderer::Renderer() = default;
@@ -84,22 +86,8 @@ void Renderer::Draw(GameStateManager* gameState, const EngineSettings* settings)
     EndMode2D();
 }
 
-/**
- * @brief Renders the title screen of the game.
- *
- * Displays a title and a prompt for the user to start the game. Uses a basic camera setup
- * and centralized text rendering for the title and subtitle.
- */
-void Renderer::DrawTitleScreen() {
-    Camera2D titleCamera = { 0 };
-    titleCamera.target = (Vector2){ static_cast<float>(GetScreenWidth()) / 2.0f, static_cast<float>(GetScreenHeight()) / 2.0f };
-    titleCamera.offset = (Vector2){ static_cast<float>(GetScreenWidth()) / 2.0f, static_cast<float>(GetScreenHeight()) / 2.0f };
-    titleCamera.rotation = 0.0f;
-    titleCamera.zoom = 1.0f;
-
-    // Draw the background with camera
-    RenderBackground(titleCamera);
-
+// Helper function for DrawTitleScreen to collapse all this text drawing math/code into a function
+void Renderer::DrawTitleText() {
     // Scale font sizes
     const int titleFontSize = static_cast<int>(75 * WINDOW_SCALE_FACTOR_Y);
     const int subtitleFontSize = static_cast<int>(40 * WINDOW_SCALE_FACTOR_Y);
@@ -117,6 +105,35 @@ void Renderer::DrawTitleScreen() {
     // Draw the title and subtitle text with centralized positions and scaled font sizes
     DrawText("Welcome to The Land of Boars!", titlePosX, titlePosY, titleFontSize, WHITE);
     DrawText("Press SPACEBAR to begin", subtitlePosX, subtitlePosY, subtitleFontSize, WHITE);
+}
+
+void Renderer::DrawTitleButton() {
+    auto* button = new Button(0, 0, "Start Game");
+
+    button->Draw();
+
+    free(button);
+}
+
+/**
+ * @brief Renders the title screen of the game.
+ *
+ * Displays a title and a prompt for the user to start the game. Uses a basic camera setup
+ * and centralized text rendering for the title and subtitle.
+ */
+void Renderer::DrawTitleScreen() {
+    Camera2D titleCamera = { 0 };
+    titleCamera.target = (Vector2){ static_cast<float>(GetScreenWidth()) / 2.0f, static_cast<float>(GetScreenHeight()) / 2.0f };
+    titleCamera.offset = (Vector2){ static_cast<float>(GetScreenWidth()) / 2.0f, static_cast<float>(GetScreenHeight()) / 2.0f };
+    titleCamera.rotation = 0.0f;
+    titleCamera.zoom = 1.0f;
+
+    // Draw the background with camera
+    RenderBackground(titleCamera);
+
+    DrawTitleText();
+
+    DrawTitleButton();
 }
 
 

@@ -95,7 +95,7 @@ void TextureManager::LoadOtherTextures() {
 
     const Texture2D coinTexture = ::LoadTexture(HUD_BASE_TEXTURE_PATH);
 
-    // Define the red square's portion of the sprite sheet
+    // Define the coin's portion of the sprite sheet
     constexpr float coinX = 20.0f;
     constexpr float coinY = 212.0f;
     constexpr float coinWidth = 10.0f;
@@ -104,6 +104,15 @@ void TextureManager::LoadOtherTextures() {
     // Add the coin texture using its rectangle
     TextureManager::LoadTexture(coinTexture, COIN_TEXTURE,
                                 Rectangle{coinX, coinY, coinWidth, coinHeight});
+
+    // Load button texture (blue)
+    constexpr float bbuttonX = 243.0f;
+    constexpr float bbuttonY = 59.0f;
+    constexpr float bbuttonWidth = 60.0f;
+    constexpr float bbuttonHeight = 26.0f;
+
+    TextureManager::LoadTexture(coinTexture, BLUE_BUTTON_TEXTURE,
+                                Rectangle{bbuttonX, bbuttonY, bbuttonWidth, bbuttonHeight});
 }
 
 /**
@@ -210,6 +219,8 @@ std::string TextureManager::TextureNameToString(const TextureName name) {
         ENUM_TO_STRING_CASE(GREEN_TREE_TEXTURE)
         ENUM_TO_STRING_CASE(TILE_GRASS_TEXTURE)
         ENUM_TO_STRING_CASE(TILE_DIRT_TEXTURE)
+        ENUM_TO_STRING_CASE(BLUE_BUTTON_TEXTURE)
+        ENUM_TO_STRING_CASE(HEALTH_GLOBE_TEXTURE)
         default: return "UNKNOWN_TEXTURE";
     }
 

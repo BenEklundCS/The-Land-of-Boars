@@ -8,11 +8,15 @@
 #include "../GameObject.h"
 #include "../../Sprites/TextureManager.h"
 
+#define BUTTON_WIDTH 240
+#define BUTTON_HEIGHT 120
+
 class Button : public GameObject {
 private:
-    GameTexture gameTexture_{};
+    GameTexture texture_{};
+    std::string text;
 public:
-    Button(float pos_x, float pos_y);
+    Button(float pos_x, float pos_y, const std::string& text);
     void Update() override;
     void Draw() override;
 };

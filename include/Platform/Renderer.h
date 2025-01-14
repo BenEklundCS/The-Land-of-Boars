@@ -40,6 +40,10 @@ private:
      * This method is used in debug mode to display the current frames per second.
      */
     static void RenderFPS(Camera2D camera);
+
+    // Helper functions
+    static void DrawTitleText();
+    static void DrawTitleButton();
 public:
     /**
      * @brief Constructs a `Renderer` object.

@@ -104,6 +104,7 @@ enum TextureName {
     TILE_DIRT_TEXTURE,
     // UI
     HEALTH_GLOBE_TEXTURE,
+    BLUE_BUTTON_TEXTURE,
     // Collectables
     COIN_TEXTURE
 };
