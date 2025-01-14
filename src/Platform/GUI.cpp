@@ -22,11 +22,11 @@ void GUI::InitGui() {
  * @param color The Color struct to convert.
  * @return std::string The string representation of the color.
  */
-std::string ColorToString(Color color) {
-    return "(r: " + std::to_string(color.r) +
+std::string GUI::ColorToString(Color color) {
+    return "( r: " + std::to_string(color.r) +
            ", g: " + std::to_string(color.g) +
            ", b: " + std::to_string(color.b) +
-           ", a: " + std::to_string(color.a) + ")";
+           ", a: " + std::to_string(color.a) + " )";
 }
 
 /**
@@ -35,7 +35,7 @@ std::string ColorToString(Color color) {
  * @param state The PlayerState to convert.
  * @return std::string The string representation of the player state.
  */
-std::string PlayerStateToString(PlayerState state) {
+std::string GUI::PlayerStateToString(PlayerState state) {
     std::string stateString;
     // Parse the state
     if (state == IDLE) {

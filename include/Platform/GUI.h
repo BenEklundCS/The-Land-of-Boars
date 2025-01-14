@@ -64,6 +64,22 @@ public:
      * @return int - 0 for air, 1 for dirt, 2 for grass.
      */
     static int GetBlockSelection();
+
+    /**
+     * @brief Convert a PlayerState enum to a string representation.
+     *
+     * @param state The PlayerState to convert.
+     * @return std::string The string representation of the player state.
+     */
+    static std::string PlayerStateToString(PlayerState state);
+
+    /**
+    * @brief Convert a Raylib Color struct to a string representation.
+    *
+    * @param color The Color struct to convert.
+    * @return std::string The string representation of the color.
+    */
+    static std::string ColorToString(Color color);
 };
 
 #endif //PLATFORMER_DEBUGGUI_H

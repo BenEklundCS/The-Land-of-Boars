@@ -13,7 +13,7 @@
 #include "../../Sprites/Animation.h"
 #include "../../Sprites/TextureManager.h"
 #include "../../Events/Observers/Subject.h"
-#include "../uiElements/PlayerUI.h"
+#include "../UI/PlayerUI.h"
 
 /// **Player Constants**
 /// These constants define the player's movement, physics, and other gameplay attributes.

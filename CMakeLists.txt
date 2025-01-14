@@ -92,8 +92,8 @@ src/Game/Entities/Effects/ParticleCone.cpp
 src/Game/Entities/Monsters/Bee.cpp
 src/Game/Entities/Monsters/Snail.cpp
 src/Game/Entities/CollisionHandler.cpp
-src/Game/Entities/uiElements/PlayerUI.cpp
-src/Game/Entities/uiElements/StartButton.cpp
+        src/Game/Entities/UI/PlayerUI.cpp
+        src/Game/Entities/UI/Button.cpp
 src/Game/Entities/Objects/Coin.cpp
 )
 
@@ -123,8 +123,8 @@ include/Game/Events/Observers/Subject.h
 include/Game/Entities/Objects/Tree.h
 include/Game/Level/LevelLoader.h
 include/Platform/Globals.h
-include/Game/Entities/uiElements/PlayerUI.h
-include/Game/Entities/uiElements/StartButton.h
+        include/Game/Entities/UI/PlayerUI.h
+        include/Game/Entities/UI/Button.h
 include/Game/Entities/Objects/Coin.h
 include/Utilities/Random.h
 )

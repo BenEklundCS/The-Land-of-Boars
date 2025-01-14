@@ -309,8 +309,8 @@ void Player::HitPlayer() {
             Notify(this, EVENT_PLAYER_DIED);
             // Use a thread to call a function on a delay using Thread.h
             callAfterDelay([]() {
-                GameStateManager::GetInstance()->SetLevelOver();
-            }, 1000); // Sets level over to True, ending the game
+                GameStateManager::GetInstance()->SetLevelOver(); // set level over after a 1350ms delay
+            }, 1350); // Sets level over to True, ending the game
         }
         else {
             // Player was hit but has not died
