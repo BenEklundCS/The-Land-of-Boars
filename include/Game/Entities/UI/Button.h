@@ -12,22 +12,66 @@
 #define BUTTON_WIDTH 240
 #define BUTTON_HEIGHT 120
 
-#define BUTTON_IDLE 0
-#define BUTTON_HOVER 1
-#define BUTTON_PRESSED 2
+/**
+ * @enum ButtonState
+ * @brief Represents the various states a button can be in.
+ */
+enum ButtonState {
+    BUTTON_IDLE,   ///< The button is idle and not interacted with.
+    BUTTON_HOVER,  ///< The mouse is hovering over the button.
+    BUTTON_PRESSED ///< The button is clicked/pressed.
+};
 
+/**
+ * @class Button
+ * @brief Represents a UI button in the game.
+ *
+ * This class handles rendering a button, detecting user interaction,
+ * and executing a callback function when the button is clicked.
+ */
 class Button : public GameObject {
 private:
-    GameTexture texture_{};
-    std::string text_;
-    int state_ = BUTTON_IDLE;
-    std::function<void()> onClick_;
+    GameTexture texture_; ///< The texture used to render the button.
+    std::string text_; ///< The text displayed on the button.
+    ButtonState state_ = BUTTON_IDLE; ///< The current state of the button.
+    std::function<void()> onClick_; ///< Callback function to execute when the button is clicked.
+
 public:
+    /**
+     * @brief Constructs a Button object.
+     *
+     * @param position The position of the button on the screen as a Vector2.
+     * @param dimensions The width and height of the button as a Vector2.
+     * @param callback The function to call when the button is clicked.
+     * @param text The text to display on the button.
+     */
     Button(Vector2 position, Vector2 dimensions, const std::function<void()>& callback, const std::string& text);
+
+    /**
+     * @brief Updates the button's state based on user interaction.
+     */
     virtual void ChangeState();
+
+    /**
+     * @brief Executes the button's action when it is pressed.
+     */
     virtual void HandleAction();
+
+    /**
+     * @brief Resets the button's state to idle.
+     */
     virtual void Reset();
+
+    /**
+     * @brief Updates the button's logic every frame.
+     *
+     * Handles state changes, executes actions, and resets the state.
+     */
     void Update() override;
+
+    /**
+     * @brief Renders the button on the screen.
+     */
     void Draw() override;
 };
 
