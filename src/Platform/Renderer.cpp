@@ -108,8 +108,17 @@ void Renderer::DrawTitleText() {
 }
 
 void Renderer::DrawTitleButton() {
-    auto* button = new Button(0, 0, "Start Game");
+    auto callback = [&]() {
+        TraceLog(LOG_INFO, "Button was clicked!");
+    };
 
+    auto position = Vector2{0, 0};
+    auto dimensions = Vector2{BUTTON_WIDTH, BUTTON_HEIGHT};
+    auto text = "Start game";
+
+    auto* button = new Button(position, dimensions, callback, text);
+
+    button->Update();
     button->Draw();
 
     free(button);

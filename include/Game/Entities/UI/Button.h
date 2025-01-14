@@ -7,16 +7,26 @@
 
 #include "../GameObject.h"
 #include "../../Sprites/TextureManager.h"
+#include <functional>
 
 #define BUTTON_WIDTH 240
 #define BUTTON_HEIGHT 120
 
+#define BUTTON_IDLE 0
+#define BUTTON_HOVER 1
+#define BUTTON_PRESSED 2
+
 class Button : public GameObject {
 private:
     GameTexture texture_{};
-    std::string text;
+    std::string text_;
+    int state_ = BUTTON_IDLE;
+    std::function<void()> onClick_;
 public:
-    Button(float pos_x, float pos_y, const std::string& text);
+    Button(Vector2 position, Vector2 dimensions, const std::function<void()>& callback, const std::string& text);
+    virtual void ChangeState();
+    virtual void HandleAction();
+    virtual void Reset();
     void Update() override;
     void Draw() override;
 };
