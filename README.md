@@ -8,7 +8,8 @@
 **The Land of Boars** is a platformer game built in **C++** using the **Raylib** graphics library. This project is inspired by techniques and design patterns from [Game Programming Patterns](https://gameprogrammingpatterns.com/). While still a work in progress, it showcases a variety of features and design principles aimed at creating an immersive and performant game.
 
 🎮 **Check out a short demo here:**  
-[Screencast.2024-08-22.07.46.42.mp4](https://github.com/user-attachments/assets/737d2435-87ed-494a-a426-5baf77388992)
+[Gameplay Demo](https://www.youtube.com/watch?v=zfADrx9wfsA)
+[Level Editor](https://www.youtube.com/watch?v=1qH6dVuWXyU)
 
 ---
 
