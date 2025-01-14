@@ -2,7 +2,7 @@
 // Created by luke4 on 11/25/2024.
 //
 
-#include "../../../include/Game/Entities/uiElements/PlayerUI.h"
+#include "../../../include/Game/Entities/UI/PlayerUI.h"
 
 #include "../../../../include/Game/Management/GameStateManager.h"
 #include "../../../../include/Game/Sprites/TextureManager.h"
