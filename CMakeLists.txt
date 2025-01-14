@@ -153,6 +153,7 @@ ${imgui_SOURCE_DIR}/imgui_widgets.cpp
         include/Game/Level/LevelEditor.h
         include/Game/Events/Commands/EditorCommands.h
         src/Game/Events/Commands/EditorCommands.cpp
+        include/Utilities/Thread.h
 )
 
 # Define executable

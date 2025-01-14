@@ -4,7 +4,7 @@
 
 #include "../../../../include/Game/Entities/Player/Player.h"
 #include "../../../../include/Game/Management/GameStateManager.h"
-#include <chrono>
+#include "../../../include/Utilities/Thread.h"
 #include <thread>
 
 // Player state management
@@ -307,8 +307,10 @@ void Player::HitPlayer() {
         if (CheckPlayerDeath()) {
             // Player has died
             Notify(this, EVENT_PLAYER_DIED);
-            std::this_thread::sleep_for(std::chrono::seconds(2)); // Pause for 5 seconds
-            GameStateManager::GetInstance()->SetLevelOver(); // Sets level over to True, ending the game
+            // Use a thread to call a function on a delay using Thread.h
+            callAfterDelay([]() {
+                GameStateManager::GetInstance()->SetLevelOver();
+            }, 1000); // Sets level over to True, ending the game
         }
         else {
             // Player was hit but has not died

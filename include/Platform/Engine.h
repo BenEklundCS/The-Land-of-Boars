@@ -95,11 +95,6 @@ private:
      */
     static void IfEscapeExitGame();
 
-    /**
-     * @brief Handles potential exit logic during gameplay.
-     */
-    static void MaybeExitGame();
-
     static bool shouldExit; /**< Tracks whether the game should exit. */
 
 public:
@@ -120,11 +115,6 @@ public:
     static EngineSettings* GetSettings() {
         return settings.get();
     }
-
-    /**
-     * @brief Shuts down the engine and performs cleanup operations.
-     */
-    static void Shutdown();
 
     /**
      * @brief Destructor for the `Engine`.

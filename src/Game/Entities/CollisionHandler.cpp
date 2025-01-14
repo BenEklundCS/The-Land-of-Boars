@@ -55,6 +55,13 @@ void CollisionHandler::HandlePlatformCollision(GameObject *obj, GameObject *plat
                 obj->SetVelocity(Vector2{0, obj->GetVelocity().y});
             }
         }
+        /*
+        if (obj->GetType() == PLAYER && platform->GetType() == MOVING_PLATFORM) {
+            Vector2 pv = obj->GetVelocity();
+            Vector2 plv = platform->GetVelocity();
+            obj->SetVelocity({pv.x + plv.x, pv.y + plv.y});
+        }
+        */
     }
 }
 

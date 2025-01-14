@@ -24,10 +24,12 @@ void Renderer::RenderBackground(Camera2D camera) {
     // Get the TextureManager instance and retrieve the BACKGROUND_TEXTURE from it
     GameTexture background = TextureManager::GetInstance()->GetTexture(BACKGROUND_TEXTURE);
     // Get the background position from the camera
-    Vector2 backgroundPosition = { camera.target.x - (float)GetScreenWidth() / 2, camera.target.y - (float)GetScreenHeight() / 2 };
+    Vector2 backgroundPosition = { camera.target.x - static_cast<float>(GetScreenWidth()) / 2,
+                                   camera.target.y - static_cast<float>(GetScreenHeight()) / 2};
     // Render the background.texture across the full screen's dimensions
     DrawTexturePro(background.texture, background.rect,
-                   Rectangle{backgroundPosition.x, backgroundPosition.y, (float)GetScreenWidth(), (float)GetScreenHeight()},
+                   Rectangle{backgroundPosition.x, backgroundPosition.y,
+                             static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight())},
                    Vector2{0, 0}, 0, PINK);
 }
 
@@ -40,7 +42,7 @@ void Renderer::RenderBackground(Camera2D camera) {
  */
 void Renderer::RenderFPS(Camera2D camera) {
     int offset = 100;
-    DrawFPS((int)camera.target.x + GetScreenWidth()/2 - offset, (int)camera.target.y - GetScreenHeight()/2 + offset);
+    DrawFPS(static_cast<int>(camera.target.x) + GetScreenWidth()/2 - offset, static_cast<int>(camera.target.y) - GetScreenHeight()/2 + offset);
 }
 #pragma endregion
 
