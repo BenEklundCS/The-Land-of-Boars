@@ -27,7 +27,7 @@ Button::Button(Vector2 position, Vector2 dimensions, std::function<void()> onCli
 /**
  * @brief Renders the button, including its texture and text.
  */
-void Button::Draw() const {
+void Button::Draw() {
     // Draw the button texture
     DrawTexturePro(texture_.texture, texture_.rect, GetRect(), Vector2{0, 0}, 0, color_);
     // Draw the button text centered within the button's dimensions
