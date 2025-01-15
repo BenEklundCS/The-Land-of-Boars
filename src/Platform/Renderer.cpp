@@ -117,7 +117,7 @@ void Renderer::DrawTitleButton() {
  * Displays a title and a prompt for the user to start the game. Uses a basic camera setup
  * and centralized text rendering for the title and subtitle.
  */
-bool Renderer::DrawTitleScreen(Button* startButton) {
+void Renderer::DrawTitleScreen(Button* startButton) {
     Camera2D titleCamera = { 0 };
     titleCamera.target = (Vector2){ static_cast<float>(GetScreenWidth()) / 2.0f, static_cast<float>(GetScreenHeight()) / 2.0f };
     titleCamera.offset = (Vector2){ static_cast<float>(GetScreenWidth()) / 2.0f, static_cast<float>(GetScreenHeight()) / 2.0f };
