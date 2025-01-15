@@ -69,12 +69,17 @@ void Button::ChangeState() {
  * Calls the `onClick_` callback function if the button is in the pressed state.
  */
 void Button::HandleAction() {
-    if (state_ == BUTTON_PRESSED) {
-        // Trigger the action associated with the button press
-        onClick_();
-    }
-    if (state_ == BUTTON_HOVER) {
-        onHover_();
+    switch(state_) {
+        case BUTTON_PRESSED:
+            onClick_();
+            break;
+        case BUTTON_HOVER:
+            onHover_();
+            break;
+        case BUTTON_IDLE:
+            break;
+        default:
+            TraceLog(LOG_WARNING, "Button::HandleAction() Unknown button state.");
     }
 }
 
