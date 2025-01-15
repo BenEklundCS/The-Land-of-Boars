@@ -129,7 +129,6 @@ void Renderer::DrawTitleScreen(Button* startButton) {
 
     DrawTitleText();
 
-    // Pass the button into DrawTitleButton to delegate button behavior
     startButton->Draw();
 }
 
