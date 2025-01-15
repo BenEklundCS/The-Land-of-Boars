@@ -5,6 +5,7 @@
 #include "../../../include/Game/Management/InputManager.h"
 
 #include "../../../include/Game/Events/Commands/EditorCommands.h"
+#include "../../../include/Game/Events/Commands/EngineCommands.h"
 #include "../../../include/Game/Level/LevelLoader.h"
 #include "../../../include/Game/Level/LevelEditor.h"
 #include "../../../include/Platform/Engine.h"
@@ -19,6 +20,8 @@ void InputManager::HandleUserInput() const {
     HandlePlayerInput();
     HandleUIInput();
     HandleDebugInput();
+    // always handle Engine Input while User Input is being handled.
+    HandleEngineInput();
 }
 
 #pragma region helper functions
@@ -42,6 +45,8 @@ void InputManager::HandlePlayerInput() const {
  *
  * Detects input for UI interactions, such as toggling to the editor mode
  * and resetting the camera for proper navigation.
+ * NOTE: We check to exit game here, as I do not currently want to allow it to be this easy to exit the game in editor-mode.
+ * I have lost work multiple times editing levels.
  */
 void InputManager::HandleUIInput() {
     auto gameState = GameStateManager::GetInstance();
@@ -154,6 +159,11 @@ void InputManager::HandleEditorMovement(Camera2D& camera) {
     moveCamera(KEY_RIGHT, camera.target.x, CAMERA_MOVE_SPEED);
 }
 
+void InputManager::HandleEngineInput() {
+    if (IsKeyPressed(KEY_ESCAPE)) {
+        StopGameCommand::Execute();
+    }
+}
 
 
 #pragma endregion

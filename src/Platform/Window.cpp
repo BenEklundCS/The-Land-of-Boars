@@ -19,7 +19,7 @@ Window::Window() {
     InitWindow(this->windowWidth_, this->windowHeight_, WINDOW_NAME); // initialize the window based on windowWidth_ and windowHeight_
     InitAudioDevice();
     SetConfigFlags(FLAG_WINDOW_RESIZABLE); // set window resizable such that Window::Resize is callable later on
-    //ToggleFullscreen();
+    ToggleFullscreen();
     SetTargetFPS(60); // Set the desired frames per second
     SetExitKey(0);  // Disable default ESC behavior
     InitScaling(); // Initialize the scaling factors

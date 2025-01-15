@@ -104,24 +104,11 @@ void Renderer::DrawTitleText() {
 
     // Draw the title and subtitle text with centralized positions and scaled font sizes
     DrawText("Welcome to The Land of Boars!", titlePosX, titlePosY, titleFontSize, WHITE);
-    DrawText("Press SPACEBAR to begin", subtitlePosX, subtitlePosY, subtitleFontSize, WHITE);
+    DrawText("Click START GAME to begin", subtitlePosX, subtitlePosY, subtitleFontSize, WHITE);
 }
 
 void Renderer::DrawTitleButton() {
-    auto callback = [&]() {
-        TraceLog(LOG_INFO, "Button was clicked!");
-    };
 
-    auto position = Vector2{0, 0};
-    auto dimensions = Vector2{BUTTON_WIDTH, BUTTON_HEIGHT};
-    auto text = "Start game";
-
-    auto* button = new Button(position, dimensions, callback, text);
-
-    button->Update();
-    button->Draw();
-
-    free(button);
 }
 
 /**
@@ -130,7 +117,7 @@ void Renderer::DrawTitleButton() {
  * Displays a title and a prompt for the user to start the game. Uses a basic camera setup
  * and centralized text rendering for the title and subtitle.
  */
-void Renderer::DrawTitleScreen() {
+bool Renderer::DrawTitleScreen(Button* startButton) {
     Camera2D titleCamera = { 0 };
     titleCamera.target = (Vector2){ static_cast<float>(GetScreenWidth()) / 2.0f, static_cast<float>(GetScreenHeight()) / 2.0f };
     titleCamera.offset = (Vector2){ static_cast<float>(GetScreenWidth()) / 2.0f, static_cast<float>(GetScreenHeight()) / 2.0f };
@@ -142,7 +129,8 @@ void Renderer::DrawTitleScreen() {
 
     DrawTitleText();
 
-    DrawTitleButton();
+    // Pass the button into DrawTitleButton to delegate button behavior
+    startButton->Draw();
 }
 
 

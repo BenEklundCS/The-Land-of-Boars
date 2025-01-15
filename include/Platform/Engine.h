@@ -11,6 +11,7 @@
 #include "Renderer.h"
 #include "../Platform/GUI.h"
 #include "../Game/Level/Level.h"
+#include "../Game/Entities/UI/Button.h"
 
 class GameStateManager;
 
@@ -57,6 +58,7 @@ enum GameScreen {
  */
 class Engine {
 private:
+    std::unique_ptr<Button> startButton_;
     std::vector<std::unique_ptr<Level>> levels; /**< Stores the loaded levels for the game. */
     int curr = 0; /**< Tracks the current level being played. */
 
@@ -76,6 +78,10 @@ private:
     void LoadLevels();
 
     /**
+     * @brief Helper method for creating a button and registering a callback function.
+     */
+    void CreateStartButton();
+    /**
      * @brief Renders the Title screen.
      */
     void RenderTitleScreen();
@@ -90,12 +96,7 @@ private:
      */
     static void RenderGameOverScreen();
 
-    /**
-     * @brief Checks if the Escape key is pressed to exit the game.
-     */
-    static void IfEscapeExitGame();
-
-    static bool shouldExit; /**< Tracks whether the game should exit. */
+    static bool shouldExit_; /**< Tracks whether the game should exit. */
 
 public:
     /**
@@ -120,6 +121,8 @@ public:
      * @brief Destructor for the `Engine`.
      */
     ~Engine();
+
+    static void StopGame();
 };
 
 #endif //PLATFORMER_ENGINE_H

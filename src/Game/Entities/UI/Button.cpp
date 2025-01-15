@@ -14,12 +14,14 @@
  * @param callback A function to call when the button is clicked.
  * @param text The text to display on the button.
  */
-Button::Button(Vector2 position, Vector2 dimensions, const std::function<void()>& callback, const std::string& text)
+Button::Button(Vector2 position, Vector2 dimensions, std::function<void()> onClick, std::function<void()> onHover, const std::string& text)
         : texture_(TextureManager::GetInstance()->GetTexture(BLUE_BUTTON_TEXTURE)) {
     this->position_ = position;
     this->dimensions_ = dimensions;
     this->text_ = text;
-    this->onClick_ = callback;
+    this->color_ = WHITE;
+    this->onClick_ = onClick;
+    this->onHover_ = onHover;
 }
 
 /**
@@ -27,10 +29,9 @@ Button::Button(Vector2 position, Vector2 dimensions, const std::function<void()>
  */
 void Button::Draw() {
     // Draw the button texture
-    DrawTexturePro(texture_.texture, texture_.rect, GetRect(), Vector2{0, 0}, 0, WHITE);
-
+    DrawTexturePro(texture_.texture, texture_.rect, GetRect(), Vector2{0, 0}, 0, color_);
     // Draw the button text centered within the button's dimensions
-    DrawText(text_.c_str(), position_.x + dimensions_.x / 4, position_.y + dimensions_.y / 3, 20, BLACK);
+    DrawText(text_.c_str(), position_.x + dimensions_.x / 3, position_.y + dimensions_.y / 3, 32, BLACK);
 }
 
 /**
@@ -40,6 +41,9 @@ void Button::Draw() {
  * depending on the mouse's position and button press state.
  */
 void Button::ChangeState() {
+    // Reset color AFTER draw call so on-hover effects work. E.g. next update call
+    color_ = WHITE;
+
     Vector2 mousePoint = GetMousePosition(); // Get the current mouse position
 
     // Check if the mouse is over the button's rectangle
@@ -48,7 +52,7 @@ void Button::ChangeState() {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             state_ = BUTTON_PRESSED;
         }
-            // Otherwise, set it to hover state
+        // Otherwise, set it to hover state
         else {
             state_ = BUTTON_HOVER;
         }
@@ -68,6 +72,9 @@ void Button::HandleAction() {
     if (state_ == BUTTON_PRESSED) {
         // Trigger the action associated with the button press
         onClick_();
+    }
+    if (state_ == BUTTON_HOVER) {
+        onHover_();
     }
 }
 
@@ -95,3 +102,8 @@ void Button::Update() {
     HandleAction();
     Reset();
 }
+
+void Button::SetColor(Color color) {
+    color_ = color;
+}
+

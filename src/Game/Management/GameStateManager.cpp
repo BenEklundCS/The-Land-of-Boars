@@ -61,13 +61,14 @@ void GameStateManager::Update() {
  * @brief Updates game-related logic (e.g., players, monsters, platforms).
  */
 void GameStateManager::UpdateGame() {
+    inputManager_->HandleUserInput(); // get input for the scene
     // Update the camera
     UpdateCamera();
     // Update all game objects and handle collisions
     UpdatePlayers(); // update Players
     UpdatePlatforms(); // update Platforms
     // Handle user input
-    inputManager_->HandleUserInput();
+
     UpdateMonsters(); // update Monsters
     UpdateOthers();
 }

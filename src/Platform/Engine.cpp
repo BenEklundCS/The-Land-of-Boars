@@ -4,6 +4,7 @@
 
 #include "../../include/Platform/Engine.h"
 #include "../../include/Game/Level/LevelOne.h"
+#include "../../include/Game/Management/InputManager.h"
 #include <stdexcept>
 
 /**
@@ -14,7 +15,7 @@ Engine::Engine() = default;
 
 // Static member initialization
 std::unique_ptr<EngineSettings> Engine::settings = nullptr;
-bool Engine::shouldExit = false;
+bool Engine::shouldExit_ = false;
 
 /**
  * @brief Load all game levels into the engine.
@@ -44,14 +45,40 @@ void Engine::StartGame() {
     // Load all the levels
     LoadLevels();
 
+    // Create the start button
+    CreateStartButton();
+
     // Start ImGUI
     GUI::InitGui();
     // Debug mode enabled
     SetTraceLogLevel(LOG_DEBUG);
     // Call screens sequentially
     RenderTitleScreen();  // Title screen
-    RenderGameScreen();   // Game screen
     RenderGameOverScreen(); // Game over screen if necessary
+}
+
+/**
+ * @brief Helper method for creating a button and registering a callback function.
+ */
+void Engine::CreateStartButton() {
+    auto onClick = [&]() {
+        TraceLog(LOG_INFO, "Start button clicked.");
+        RenderGameScreen(); // Render the Game Screen once the start button has been clicked.
+    };
+
+    auto onHover = [&]() {
+        startButton_->SetColor(LIGHTGRAY);
+    }; // create an empty function for our onHover effect
+
+    auto w = GetScreenWidth();
+    auto h = GetScreenHeight();
+
+    auto position = Vector2{static_cast<float>((w)/2-(w/8)), static_cast<float>(h/2+(h/7))};
+    auto dimensions = Vector2{(float)BUTTON_WIDTH, (float)BUTTON_HEIGHT};
+    auto text = "Start game";
+
+    // Create a start button for the game that will call RenderGameScreen();
+    startButton_ = std::make_unique<Button>(position, dimensions, onClick, onHover, text);
 }
 
 /**
@@ -64,19 +91,19 @@ void Engine::RenderTitleScreen() {
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        Renderer::DrawTitleScreen(); // Assuming this draws the title screen
 
-        // Check for key press to exit title screen and start the game
-        if (IsKeyPressed(KEY_SPACE)) {
-            currentScreen = GAME;
-            break; // Exit loop and return to StartGame
-        }
+        // Handle Engine input ourselves, the input manager is created later.
+        InputManager::HandleEngineInput();
 
-        IfEscapeExitGame();
+        // Update the start button
+        startButton_->Update();
+
+        // Pass the start button to be drawn to screen
+        Renderer::DrawTitleScreen(startButton_.get());
 
         EndDrawing();
 
-        if (shouldExit) {
+        if (shouldExit_) {
             break;
         }
     }
@@ -88,7 +115,7 @@ void Engine::RenderTitleScreen() {
  * Assumes only one level for simplicity.
  */
 void Engine::RenderGameScreen() const {
-    if (!shouldExit) {
+    if (!shouldExit_) {
         TraceLog(LOG_INFO, "Rendering Game Screen...");
 
         // Assume only one level for simplicity
@@ -109,18 +136,8 @@ void Engine::RenderGameScreen() const {
  */
 void Engine::RenderGameOverScreen() {
     // Implementation for the Game Over screen
-    if (!shouldExit) {
+    if (!shouldExit_) {
         TraceLog(LOG_INFO, "Rendering Game Over Screen...");
-    }
-}
-
-/**
- * @brief Checks if the escape key is pressed to exit the game.
- */
-void Engine::IfEscapeExitGame() {
-    if (IsKeyPressed(KEY_ESCAPE)) {
-        TraceLog(LOG_INFO, "Escape pressed, forcefully closing application...");
-        shouldExit = true;
     }
 }
 
@@ -132,7 +149,7 @@ void Engine::IfEscapeExitGame() {
  * @param scene Pointer to the GameStateManager for the current level.
  */
 void Engine::RenderLevelScene(GameStateManager* scene) {
-    if (!shouldExit) {
+    if (!shouldExit_) {
         TraceLog(LOG_INFO, "Rendering Level Scene...");
 
         // Render the level until it's over or the window should close
@@ -149,15 +166,17 @@ void Engine::RenderLevelScene(GameStateManager* scene) {
             if (scene->GetMode() == MODE_EDITOR)
                 GUI::DrawEditorGUI();
 
-            IfEscapeExitGame();
-
             EndDrawing();
 
-            if (shouldExit) {
+            if (shouldExit_) {
                 return;
             }
         }
     }
+}
+
+void Engine::StopGame() {
+    shouldExit_ = true;
 }
 
 /**

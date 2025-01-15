@@ -9,6 +9,7 @@
 #include "Window.h"
 #include "raylib.h"
 #include "Engine.h"
+#include "../Game/Entities/UI/Button.h"
 
 struct EngineSettings; /**< Forward declaration for EngineSettings structure. */
 class GameStateManager; /**< Forward declaration for GameStateManager class. */
@@ -68,8 +69,9 @@ public:
      *
      * This method handles rendering the game's title screen, including the title text, subtitle,
      * and any background or animation effects.
+     * @param startButton - the start button to be drawn on-screen. Passed from the outside to allow the Engine to decide on behavior.
      */
-    static void DrawTitleScreen();
+    static bool DrawTitleScreen(Button* startButton);
 
     /**
      * @brief Destroys the `Renderer` object.

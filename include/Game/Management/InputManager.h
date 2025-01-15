@@ -74,6 +74,11 @@ public:
     void HandleUserInput() const;
 
     /**
+     * @brief Public static interface for handling the escape key and other global commands.
+     */
+    static void HandleEngineInput();
+
+    /**
     * @brief Handles user input specific to the level editor, including camera and tile actions.
     * @param camera Reference to the game's camera.
     */

@@ -154,6 +154,8 @@ ${imgui_SOURCE_DIR}/imgui_widgets.cpp
         include/Game/Events/Commands/EditorCommands.h
         src/Game/Events/Commands/EditorCommands.cpp
         include/Utilities/Thread.h
+        src/Game/Events/Commands/EngineCommands.cpp
+        include/Game/Events/Commands/EngineCommands.h
 )
 
 # Define executable
