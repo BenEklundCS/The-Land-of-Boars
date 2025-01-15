@@ -21,7 +21,7 @@
 #define PLAYER_SPEED_Y (200.0f * WINDOW_SCALE_FACTOR_Y)
 #define PLAYER_JUMP_HEIGHT (INVERSE_WINDOW_SCALE_FACTOR_Y)
 #define PLAYER_JUMP_POWER (sqrt(2 * GRAVITY * PLAYER_JUMP_HEIGHT))
-#define PLAYER_MAX_JUMPS 1
+#define PLAYER_MAX_JUMPS 0 // 0 is single jump, 1 would be double-jump. Remember this for power-ups as I want single jump to be default behavior.
 #define PLAYER_MAX_HP 7
 #define PLAYER_LENGTH 150 ///< Length of the player; scaling handled internally.
 #define PLAYER_ATTACK_DELAY 0.5f ///< Delay between player attacks in seconds.
