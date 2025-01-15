@@ -146,16 +146,20 @@ void Player::MoveRight() {
  * Updates the player's state to `JUMPING`, increases vertical velocity, and notifies observers of the jump event.
  */
 void Player::Jump() {
-    // Set isOnGround to false if they jump!
-    playerData.isOnGround_ = false;
-    // Set jumps and reset player animation
-    playerData.jumps_++; // Increment jumps
-    playerData.playerAnimation_->Reset(); // Reset the player's animation on Jump (handles double jump animating)
-    // Make the player jump!
-    playerData.state_ = JUMPING;
-    velocity_.y -= PLAYER_SPEED_Y * PLAYER_JUMP_POWER;
-    // Notify of jump event
-    Notify(this, EVENT_PLAYER_JUMPED);
+    if (playerData.jumpTimer_ == 0) {
+        // Set isOnGround to false if they jump!
+        playerData.isOnGround_ = false;
+        // Set jumps and reset player animation
+        playerData.jumps_++; // Increment jumps
+        playerData.playerAnimation_->Reset(); // Reset the player's animation on Jump (handles double jump animating)
+        // Make the player jump!
+        playerData.state_ = JUMPING;
+        velocity_.y -= PLAYER_SPEED_Y * PLAYER_JUMP_POWER;
+        // add to jump delay
+        playerData.jumpTimer_ += jumpDelay_;
+        // Notify of jump event
+        Notify(this, EVENT_PLAYER_JUMPED);
+    }
 }
 
 #pragma endregion
@@ -265,6 +269,11 @@ bool Player::CanJump() const {
  * @brief Resets the player's jump counter if they are on the ground.
  */
 void Player::ResetJumps() {
+    if (playerData.jumpTimer_ > 0) {
+        playerData.jumpTimer_ -= GetFrameTime();
+    } else {
+        playerData.jumpTimer_ = 0;
+    }
     // If the player's on the ground, reset jumps
     if (playerData.isOnGround_ && playerData.state_ != JUMPING) {
         playerData.jumps_ = 0;

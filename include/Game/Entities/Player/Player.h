@@ -21,7 +21,7 @@
 #define PLAYER_SPEED_Y (200.0f * WINDOW_SCALE_FACTOR_Y)
 #define PLAYER_JUMP_HEIGHT (INVERSE_WINDOW_SCALE_FACTOR_Y)
 #define PLAYER_JUMP_POWER (sqrt(2 * GRAVITY * PLAYER_JUMP_HEIGHT))
-#define PLAYER_MAX_JUMPS 0 // 0 is single jump, 1 would be double-jump. Remember this for power-ups as I want single jump to be default behavior.
+#define PLAYER_MAX_JUMPS 1 // 0 is single jump, 1 would be double-jump. Remember this for power-ups
 #define PLAYER_MAX_HP 7
 #define PLAYER_LENGTH 150 ///< Length of the player; scaling handled internally.
 #define PLAYER_ATTACK_DELAY 0.5f ///< Delay between player attacks in seconds.
@@ -52,6 +52,7 @@ struct playerDataStruct {
 
     // **Movement**
     int jumps_ = 0; ///< Number of jumps performed (e.g., for double jump logic).
+    float jumpTimer_ = 0;
     bool isOnGround_ = false; ///< Indicates if the player is on the ground.
     float attackRange_ = 500.0f * WINDOW_SCALE_FACTOR_X; ///< Attack range.
 };
@@ -76,7 +77,7 @@ private:
     bool AlreadyAttacking(); ///< Checks if the player is already attacking.
     void LoadNewAnimation(); ///< Loads a new animation based on the player's state.
     void StateTransition(); ///< Handles state transitions (e.g., IDLE to RUNNING).
-
+    float jumpDelay_ = 0.5f;
     // **Utility**
     [[nodiscard]] bool ZeroVelocity() const; ///< Checks if the player's velocity is zero.
 
