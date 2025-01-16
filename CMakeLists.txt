@@ -178,7 +178,6 @@ $<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
 endif()
 endif()
-
 # Include directories for ImGui and rlImGui
 target_include_directories(${PROJECT_NAME} PRIVATE ${imgui_SOURCE_DIR} ${rlimgui_SOURCE_DIR})
 

@@ -26,7 +26,7 @@
  */
 class Platform : public GameObject {
 protected:
-    Color color_; ///< The color of the platform.
+    Color color_{}; ///< The color of the platform.
 
 public:
     /**

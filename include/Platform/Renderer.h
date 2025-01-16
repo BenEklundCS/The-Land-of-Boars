@@ -71,7 +71,7 @@ public:
      * and any background or animation effects.
      * @param startButton - the start button to be drawn on-screen. Passed from the outside to allow the Engine to decide on behavior.
      */
-    static bool DrawTitleScreen(Button* startButton);
+    static void DrawTitleScreen(Button* startButton);
 
     /**
      * @brief Destroys the `Renderer` object.
