@@ -64,6 +64,8 @@ private:
 
     static std::unique_ptr<EngineSettings> settings; /**< Singleton settings object. */
 
+    bool pressedStart_ = false;
+
     GameScreen currentScreen = TITLE; /**< Tracks the current screen being displayed. */
 
     /**

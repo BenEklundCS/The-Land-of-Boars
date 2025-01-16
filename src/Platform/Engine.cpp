@@ -63,6 +63,7 @@ void Engine::StartGame() {
 void Engine::CreateStartButton() {
     auto onClick = [&]() {
         TraceLog(LOG_INFO, "Start button clicked.");
+        pressedStart_ = true;
         RenderGameScreen(); // Render the Game Screen once the start button has been clicked.
     };
 
@@ -88,24 +89,20 @@ void Engine::CreateStartButton() {
  */
 void Engine::RenderTitleScreen() {
     TraceLog(LOG_INFO, "Rendering Title Screen...");
-    while (!WindowShouldClose()) {
+    while (!WindowShouldClose() && !pressedStart_ && !shouldExit_) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
         // Handle Engine input ourselves, the input manager is created later.
         InputManager::HandleEngineInput();
 
-        // Update the start button
-        startButton_->Update();
-
         // Pass the start button to be drawn to screen
         Renderer::DrawTitleScreen(startButton_.get());
 
-        EndDrawing();
+        // Update the start button
+        startButton_->Update();
 
-        if (shouldExit_) {
-            break;
-        }
+        EndDrawing();
     }
 }
 
@@ -149,29 +146,22 @@ void Engine::RenderGameOverScreen() {
  * @param scene Pointer to the GameStateManager for the current level.
  */
 void Engine::RenderLevelScene(GameStateManager* scene) {
-    if (!shouldExit_) {
-        TraceLog(LOG_INFO, "Rendering Level Scene...");
 
-        // Render the level until it's over or the window should close
-        while (!WindowShouldClose() && !scene->IsLevelOver()) {
-            // Update the game
-            scene->Update();
+    TraceLog(LOG_INFO, "Rendering Level Scene...");
+    // Render the level until it's over or the window should close
+    while (!WindowShouldClose() && !scene->IsLevelOver() && !shouldExit_) {
+        // Update the game
+        scene->Update();
+        // Draw the frame
+        BeginDrawing();
+        Renderer::Draw(scene, settings.get()); // Draw the scene
+        if (settings->displayDebug)
+            GUI::DrawDebugGUI(scene); // Draw the debug GUI if necessary
+        // Editor mode GUI
+        if (scene->GetMode() == MODE_EDITOR)
+            GUI::DrawEditorGUI();
 
-            // Draw the frame
-            BeginDrawing();
-            Renderer::Draw(scene, settings.get()); // Draw the scene
-            if (settings->displayDebug)
-                GUI::DrawDebugGUI(scene); // Draw the debug GUI if necessary
-            // Editor mode GUI
-            if (scene->GetMode() == MODE_EDITOR)
-                GUI::DrawEditorGUI();
-
-            EndDrawing();
-
-            if (shouldExit_) {
-                return;
-            }
-        }
+        EndDrawing();
     }
 }
 
