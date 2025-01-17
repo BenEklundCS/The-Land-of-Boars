@@ -78,7 +78,7 @@ private:
     /**
      * @brief Renders the Title screen.
      */
-    void RenderTitleScreen();
+    void RenderTitleScreen() const;
 
     /**
      * @brief Renders the Game screen.
@@ -88,7 +88,7 @@ private:
     /**
     * @brief Main game loop.
     */
-    void GameLoop(GameStateManager* scene);
+    void GameLoop(GameStateManager* scene) const;
 
     /**
      * @brief Renders the Game Over screen.

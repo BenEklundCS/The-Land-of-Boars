@@ -80,8 +80,8 @@ void Monster::CollideWithPlayer(Player* player) {
 void Monster::MoveMonster() {
     // If the monster is pacing, calculate boundaries and move between them
     if (this->state_ == PACING) {
-        float leftBound = initialPosition_.x - PACING_WINDOW;
-        float rightBound = initialPosition_.x + PACING_WINDOW;
+        const float leftBound = initialPosition_.x - PACING_WINDOW;
+        const float rightBound = initialPosition_.x + PACING_WINDOW;
         // Toggle movingRight_ based on the position vs boundaries
         if (position_.x <= leftBound && !movingRight_) {
             movingRight_ = true;
@@ -91,8 +91,8 @@ void Monster::MoveMonster() {
         }
     }
     else if (this->state_ == MOVE_TO_FLYING) {
-        Vector2 player1_position = GameStateManager::GetInstance()->GetPlayers().at(0)->GetPosition();
-        if (player1_position.x > position_.x) {
+        auto [x, y] = GameStateManager::GetInstance()->GetPlayers().at(0)->GetPosition();
+        if (x > position_.x) {
             position_.x += MONSTER_SPEED * 2;
             movingRight_ = true;
         }
@@ -100,7 +100,7 @@ void Monster::MoveMonster() {
             position_.x -= MONSTER_SPEED * 2;
             movingRight_ = false;
         }
-        if (player1_position.y > position_.y) {
+        if (y > position_.y) {
             position_.y += MONSTER_SPEED * 2;
         }
         else {

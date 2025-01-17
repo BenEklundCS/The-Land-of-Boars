@@ -13,7 +13,7 @@
  * @param y The upper bound of the distribution
  * @returns A random floating-point value between the provided range
  */
-float GetRandomFloat(float x, float y) {
+float GetRandomFloat(const float x, const float y) {
     // Create a random number generator
     std::default_random_engine generator(std::chrono::system_clock::now().time_since_epoch().count());
     // Create a uniform distribution between x and y
@@ -27,7 +27,7 @@ float GetRandomFloat(float x, float y) {
  * @param y The upper bound of the distribution
  * @returns A random integer value between the provided range
  */
-int GetRandomInt(int x, int y) {
+int GetRandomInt(const int x, const int y) {
     std::default_random_engine generator(std::chrono::system_clock::now().time_since_epoch().count());
     std::uniform_int_distribution<int> distribution(x, y);
     return distribution(generator);

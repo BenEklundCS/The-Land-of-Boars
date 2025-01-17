@@ -49,7 +49,7 @@ public:
      * - Object counts (players, monsters, platforms, etc.).
      * - Debugging utilities for observing gameplay elements in real-time.
      */
-    static void DrawDebugGUI(GameStateManager* gameState);
+    static void DrawDebugGUI(const GameStateManager* gameState);
 
     /**
      * @brief Renders the level editor GUI giving the user tools to edit the level.

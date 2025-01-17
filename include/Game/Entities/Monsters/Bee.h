@@ -39,7 +39,7 @@ private:
      *
      * @return `true` if the bee is within attack range, `false` otherwise.
      */
-    bool InAttackRange();
+    [[nodiscard]] bool InAttackRange() const;
 
     /**
      * @brief Updates the bee's animation.

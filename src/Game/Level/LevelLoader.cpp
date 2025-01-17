@@ -44,11 +44,8 @@ std::vector<std::vector<int>> LevelLoader::LoadLevel(const std::string &filePath
 }
 
 void LevelLoader::SaveLevel(const std::vector<std::vector<std::unique_ptr<Tile>>> &tiles, const std::string &filePath) {
-    // Open the file for writing
-    std::ofstream file(filePath);
-
     // Check if the file is open
-    if (file.is_open()) {
+    if (std::ofstream file(filePath); file.is_open()) {
         // Iterate through each row of tiles
         for (const auto &row : tiles) {
             // Iterate through each tile in the row

@@ -24,7 +24,7 @@
  */
 class Animation {
 private:
-    GameTexture gameTexture_; ///< The texture associated with the animation.
+    GameTexture gameTexture_{}; ///< The texture associated with the animation.
     int currentFrame_;        ///< The current frame being displayed.
     float frameTime_;         ///< Time elapsed since the last frame change.
     int frameCount_;          ///< Total number of frames in the animation.

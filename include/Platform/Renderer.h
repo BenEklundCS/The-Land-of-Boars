@@ -31,7 +31,7 @@ private:
      *
      * This method renders a scrolling or static background depending on the game's camera position.
      */
-    static void RenderBackground(Camera2D camera);
+    static void RenderBackground(const Camera2D &camera);
 
     /**
      * @brief Renders the FPS counter.
@@ -40,7 +40,7 @@ private:
      *
      * This method is used in debug mode to display the current frames per second.
      */
-    static void RenderFPS(Camera2D camera);
+    static void RenderFPS(const Camera2D &camera);
 
     // Helper functions
     static void DrawTitleText();

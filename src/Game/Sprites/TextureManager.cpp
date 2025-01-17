@@ -58,8 +58,8 @@ void TextureManager::LoadPlayerTextures() {
 void TextureManager::LoadTileTextures() {
     // Use Raylib's LoadTexture, kinda confusing, but I don't have a better name for loading textures myself
     Texture2D texture = ::LoadTexture(TILE_TEXTURE_PATH);
-    float tileWidth = 64;
-    float tileHeight = 64;
+    constexpr float tileWidth = 64;
+    constexpr float tileHeight = 64;
     TextureManager::LoadTexture(texture, TILE_GRASS_TEXTURE,
                                 Rectangle{TILE_OFFSET, TILE_OFFSET, tileWidth, tileHeight});
     TextureManager::LoadTexture(texture, TILE_DIRT_TEXTURE,
@@ -152,7 +152,7 @@ GameTexture TextureManager::GetTexture(const TextureName textureName) {
  * @param rect The rectangle defining the texture's bounds.
  */
 void TextureManager::LoadTexture(const Texture2D &texture, const TextureName textureName, const Rectangle rect) {
-    GameTexture gameTexture = {texture, rect};
+    const GameTexture gameTexture = {texture, rect};
     Emplace(textureName, gameTexture);
 }
 
@@ -192,8 +192,8 @@ void TextureManager::Emplace(TextureName textureName, GameTexture gameTexture) {
  * Ensures all loaded textures are properly unloaded to free resources.
  */
 TextureManager::~TextureManager() {
-    for (const auto& gameTexture : Textures) {
-        UnloadTexture(gameTexture.second.texture);
+    for (const auto&[fst, snd] : Textures) {
+        UnloadTexture(snd.texture);
     }
 }
 

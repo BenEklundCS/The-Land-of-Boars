@@ -15,17 +15,16 @@ void LevelEditor::PlaceTile() {
     // Get the game state
     GameStateManager* gameState = GameStateManager::GetInstance();
     // Get the camera
-    Camera2D camera = gameState->GetCamera();
+    const Camera2D camera = gameState->GetCamera();
     // Get the tileManager
     TileManager& tileManager = gameState->GetTileManager();
-
     // Logic for placing tile
-    auto mousePos = GetMousePosition();
-    auto worldPosition = GetScreenToWorld2D(mousePos, camera);
-    auto tilePosition = tileManager.GetTileAt(worldPosition.x, worldPosition.y);
-    int blockSelection = GUI::GetBlockSelection();
+    const auto mousePos = GetMousePosition();
+    auto [world_x, world_y] = GetScreenToWorld2D(mousePos, camera);
+    auto [tile_x, tile_y] = tileManager.GetTileAt(world_x, world_y);
+    const int blockSelection = GUI::GetBlockSelection();
     TraceLog(LOG_INFO, "BLOCK SELECTION: %d", blockSelection);
-    tileManager.SetTileAt(static_cast<int>(tilePosition.x), static_cast<int>(tilePosition.y), blockSelection); // Set the tile
+    tileManager.SetTileAt(static_cast<int>(tile_x), static_cast<int>(tile_y), blockSelection); // Set the tile
     gameState->ReloadTiles();
 }
 
@@ -34,14 +33,13 @@ void LevelEditor::PlaceTile() {
 */
 void LevelEditor::PrintTileLocation() {
     // Get the game state
-    GameStateManager* gameState = GameStateManager::GetInstance();
+    const GameStateManager* gameState = GameStateManager::GetInstance();
     // Get the camera
-    Camera2D camera = gameState->GetCamera();
-
+    const Camera2D camera = gameState->GetCamera();
     // Logic for getting a tile and printing the location
-    TileManager& tileManager = gameState->GetTileManager();
-    auto mousePos = GetMousePosition();
-    auto worldPosition = GetScreenToWorld2D(mousePos, camera);
-    auto tilePosition = tileManager.GetTileAt(worldPosition.x, worldPosition.y);
-    TraceLog(LOG_INFO, "Tile at: %d, %d", static_cast<int>(tilePosition.x), static_cast<int>(tilePosition.y));
+    const TileManager& tileManager = gameState->GetTileManager();
+    const auto mousePos = GetMousePosition();
+    auto [world_x, world_y] = GetScreenToWorld2D(mousePos, camera);
+    auto [tile_x, tile_y] = tileManager.GetTileAt(world_x, world_y);
+    TraceLog(LOG_INFO, "Tile at: %d, %d", static_cast<int>(tile_x), static_cast<int>(tile_y));
 }

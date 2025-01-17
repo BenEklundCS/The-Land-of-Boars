@@ -51,7 +51,7 @@ void Bee::Update() {
         if (InAttackRange()) {
             state_ = MOVE_TO_FLYING;
         } else {
-            state_ = MOVE_TO_FLYING;
+            state_ = DEFAULT;
         }
     }
     Monster::Update();
@@ -66,15 +66,14 @@ int counter = 0;
  *
  * @return True if the Bee is within attack range, false otherwise.
  */
-bool Bee::InAttackRange() {
+bool Bee::InAttackRange() const {
     // Get player from the GameStateManager
 
-    auto players = GameStateManager::GetInstance()->GetPlayers();
+    const auto players = GameStateManager::GetInstance()->GetPlayers();
     // Get relevant object positions
-    Vector2 playerPosition = players.at(0)->GetPosition(); // get player1's position
-    Vector2 beePosition = position_;
-    
-    if (std::abs(playerPosition.x - beePosition.x) < 50.0f || std::abs(playerPosition.y - beePosition.y) < 50.0f) {
+    auto [player_x, player_y] = players.at(0)->GetPosition(); // get player1's position
+
+    if (auto [bee_x, bee_y] = position_; std::abs(player_x - bee_x) < 50.0f || std::abs(player_y - bee_y) < 50.0f) {
         return true;
     }
     return false; // dummy return for now

@@ -30,8 +30,8 @@ void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
     for (int i = 0; i < tileMap.size(); ++i) {
         for (int j = 0; j < tileMap[i].size(); ++j) {
             constexpr int tile_overlap = 6;
-            float tileX = static_cast<float>(j * (TILE_LENGTH - tile_overlap));
-            float tileY = static_cast<float>(i * (TILE_LENGTH - tile_overlap));
+            auto tileX = static_cast<float>(j * (TILE_LENGTH - tile_overlap));
+            auto tileY = static_cast<float>(i * (TILE_LENGTH - tile_overlap));
 
             switch (tileMap[i][j]) {
                 case 0:
@@ -63,11 +63,10 @@ void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
  * @return Vector2 The grid position of the tile as {tileX, tileY}, or {-1, -1} if out of bounds.
  */
 Vector2 TileManager::GetTileAt(float x, float y) const {
-    auto tilePos = WorldToTile(x, y);
-    int tileX = static_cast<int>(tilePos.x);
-    int tileY = static_cast<int>(tilePos.y);
+    const auto tilePos = WorldToTile(x, y);
+    const int tileX = static_cast<int>(tilePos.x);
 
-    if (tileY >= 0 && tileY < tiles_.size() && tileX >= 0 && tileX < tiles_[tileY].size()) {
+    if (const int tileY = static_cast<int>(tilePos.y); tileY >= 0 && tileY < tiles_.size() && tileX >= 0 && tileX < tiles_[tileY].size()) {
         TraceLog(LOG_INFO, "Mouse (%f, %f) -> Tile Grid Pos: (%d, %d)", x, y, tileX, tileY);
         return tilePos;
     }

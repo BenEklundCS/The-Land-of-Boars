@@ -22,7 +22,7 @@ void GUI::InitGui() {
  * @param color The Color struct to convert.
  * @return std::string The string representation of the color.
  */
-std::string GUI::ColorToString(Color color) {
+std::string GUI::ColorToString(const Color color) {
     return "( r: " + std::to_string(color.r) +
            ", g: " + std::to_string(color.g) +
            ", b: " + std::to_string(color.b) +
@@ -35,7 +35,7 @@ std::string GUI::ColorToString(Color color) {
  * @param state The PlayerState to convert.
  * @return std::string The string representation of the player state.
  */
-std::string GUI::PlayerStateToString(PlayerState state) {
+std::string GUI::PlayerStateToString(const PlayerState state) {
     std::string stateString;
     // Parse the state
     if (state == IDLE) {
@@ -60,11 +60,11 @@ std::string GUI::PlayerStateToString(PlayerState state) {
  *
  * @param gameState The current game state manager instance.
  */
-void GUI::DrawDebugGUI(GameStateManager *gameState) {
+void GUI::DrawDebugGUI(const GameStateManager *gameState) {
     ImGuiIO& io = ImGui::GetIO();
-    io.DisplaySize = ImVec2((float)GetScreenWidth(), (float)GetScreenHeight());
+    io.DisplaySize = ImVec2(static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight()));
 
-    gameData gameData = gameState->GetGameData();
+    auto [player, numPlayers, numMonsters, numPlatforms, numOther] = gameState->GetGameData();
 
     rlImGuiBegin();
     ImGui::Begin("Debug");
@@ -72,23 +72,23 @@ void GUI::DrawDebugGUI(GameStateManager *gameState) {
     ImGui::SetWindowFontScale(2);
     // Render player data
     ImGui::Text("Player data:");
-    ImGui::Text("Position: %1.2fx, %1.2fy", gameData.player->GetPosition().x, gameData.player->GetPosition().y);
-    ImGui::Text("Velocity: %1.2fx, %1.2fy", gameData.player->GetVelocity().x, gameData.player->GetVelocity().y);
+    ImGui::Text("Position: %1.2fx, %1.2fy", player->GetPosition().x, player->GetPosition().y);
+    ImGui::Text("Velocity: %1.2fx, %1.2fy", player->GetVelocity().x, player->GetVelocity().y);
     // Render player data
-    ImGui::Text("Health: %d", gameData.player->GetPlayerData()->hp_);
-    ImGui::Text("Jumps: %d", gameData.player->GetPlayerData()->jumps_);
-    ImGui::Text("Coins: %d", gameData.player->GetPlayerData()->coins_);
+    ImGui::Text("Health: %d", player->GetPlayerData()->hp_);
+    ImGui::Text("Jumps: %d", player->GetPlayerData()->jumps_);
+    ImGui::Text("Coins: %d", player->GetPlayerData()->coins_);
     // Render player state
-    ImGui::Text("State: %s", PlayerStateToString(gameData.player->GetPlayerData()->state_).c_str());
-    ImGui::Text("isOnGround: %s", (gameData.player->GetPlayerData()->isOnGround_) ? "True" : "False");
-    ImGui::Text("timeSinceHit: %1.2f", gameData.player->GetPlayerData()->timeSinceHit_);
+    ImGui::Text("State: %s", PlayerStateToString(player->GetPlayerData()->state_).c_str());
+    ImGui::Text("isOnGround: %s", (player->GetPlayerData()->isOnGround_) ? "True" : "False");
+    ImGui::Text("timeSinceHit: %1.2f", player->GetPlayerData()->timeSinceHit_);
     ImGui::Text("");
     // Number of objects
     ImGui::Text("Object counts:");
-    ImGui::Text("Player count: %zu", gameData.numPlayers);
-    ImGui::Text("Monsters count: %zu", gameData.numMonsters);
-    ImGui::Text("Platforms count: %zu", gameData.numPlatforms);
-    ImGui::Text("Other count: %zu", gameData.numOther);
+    ImGui::Text("Player count: %zu", numPlayers);
+    ImGui::Text("Monsters count: %zu", numMonsters);
+    ImGui::Text("Platforms count: %zu", numPlatforms);
+    ImGui::Text("Other count: %zu", numOther);
     // Submit ImGui data to Raylib for processing
     ImGui::End();
     rlImGuiEnd();

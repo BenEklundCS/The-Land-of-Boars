@@ -40,7 +40,7 @@ enum MonsterState {
  */
 class Monster : public GameObject, public Subject {
 private:
-    Vector2 initialPosition_; ///< The monster's initial position when it is created.
+    Vector2 initialPosition_{}; ///< The monster's initial position when it is created.
 
 protected:
     int hp_; ///< The health of the monster.

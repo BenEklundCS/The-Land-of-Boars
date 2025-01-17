@@ -80,7 +80,7 @@ void Animation::Animate() {
  *
  * @param movingRight True if the entity is moving right; false otherwise.
  */
-void Animation::FlipX(bool movingRight) {
+void Animation::FlipX(const bool movingRight) {
     if (movingRight) {
         if (gameTexture_.texture.width < 0) {
             gameTexture_.texture.width *= -1;

@@ -56,8 +56,8 @@ void Engine::StartGame() {
     // Set up the game for rendering
 
     // Assume only one level for simplicity
-    auto& level = levels[0];
-    auto gameState = level->GetGameState();
+    const auto& level = levels[0];
+    const auto gameState = level->GetGameState();
     gameState->InitCamera();
 
     // Initialize game input
@@ -67,8 +67,8 @@ void Engine::StartGame() {
     GameLoop(gameState);
 }
 
-void Engine::GameLoop(GameStateManager* scene) {
-    while (!WindowShouldClose() && !shouldExit_) {
+void Engine::GameLoop(GameStateManager* scene) const {
+    while (!WindowShouldClose() && !scene->IsLevelOver() && !shouldExit_) {
         switch(currentScreen) {
             case TITLE:
                 RenderTitleScreen();
@@ -99,8 +99,8 @@ void Engine::CreateStartButton() {
         startButton_->SetColor(LIGHTGRAY);
     }; // create an empty function for our onHover effect
 
-    auto w = GetScreenWidth();
-    auto h = GetScreenHeight();
+    const auto w = GetScreenWidth();
+    const auto h = GetScreenHeight();
 
     auto position = Vector2{static_cast<float>((w)/2-(w/8)), static_cast<float>(h/2+(h/7))};
     auto dimensions = Vector2{(float)BUTTON_WIDTH, (float)BUTTON_HEIGHT};
@@ -115,7 +115,7 @@ void Engine::CreateStartButton() {
  *
  * Displays the title screen and waits for user input to transition to the game screen.
  */
-void Engine::RenderTitleScreen() {
+void Engine::RenderTitleScreen() const {
     BeginDrawing();
     ClearBackground(RAYWHITE);
 

@@ -77,7 +77,7 @@ void GameStateManager::UpdateGame() {
  * @brief Handles updates in editor mode (e.g., camera navigation, tile editing).
  */
 void GameStateManager::UpdateLevel() {
-    inputManager_->HandleEditorInput(camera_);
+    InputManager::HandleEditorInput(camera_);
 }
 
 /**
@@ -124,13 +124,13 @@ void GameStateManager::ReloadTiles() {
     tiles_.clear();
     tiles_.reserve(tiles.size());
 
-    for (size_t row = 0; row < tiles.size(); ++row) {
+    for (const auto & tile : tiles) {
         std::vector<Tile*> tileRow;
-        tileRow.reserve(tiles[row].size());
+        tileRow.reserve(tile.size());
 
-        for (size_t col = 0; col < tiles[row].size(); ++col) {
-            if (tiles[row][col]) {
-                tileRow.push_back(tiles[row][col].get());
+        for (const auto & col : tile) {
+            if (col) {
+                tileRow.push_back(col.get());
                 //TraceLog(LOG_INFO, "ReloadTiles: Tile added at (%zu, %zu)", row, col);
             }
         }
@@ -193,7 +193,7 @@ void GameStateManager::UpdateMonsters() {
 void GameStateManager::PlayerPickUpCoins(GameObject* obj) {
     // Pick up coins
     if (obj->GetType() == PLAYER) {
-        auto p = dynamic_cast<Player*>(obj); // we know it's a player now
+        const auto p = dynamic_cast<Player*>(obj); // we know it's a player now
         for (auto& c : otherObjects_) {
             if (c->GetType() == COIN) {
                 if (CollisionHandler::GetCoinCollision(p, c.get())) {
@@ -258,11 +258,11 @@ void GameStateManager::UpdateOthers() {
  * @param entity Pointer to the game object triggering the event.
  * @param event The event being triggered.
  */
-void GameStateManager::OnNotify(const GameObject *entity, Events event) {
+void GameStateManager::OnNotify(const GameObject *entity, const Events event) {
     // Player events!
     if (entity->GetType() == PLAYER) {
         if (event == EVENT_PLAYER_ATTACK) {
-            UpdateAttacks((Player *) entity);
+            UpdateAttacks((Player *)entity);
         }
     }
     // Drop coins on death events
@@ -278,10 +278,9 @@ void GameStateManager::OnNotify(const GameObject *entity, Events event) {
  * @brief Drops coins from the monster by adding them to the scene. Called on-death to reward the player.
  */
 void GameStateManager::DropCoins(Vector2 monsterPosition) {
-    int coins = (GetRandomInt(1, 5)); // get 1-5 coins
+    const int coins = (GetRandomInt(1, 5)); // get 1-5 coins
     for (int i = 0; i < coins; i++) {
-        int mid_point = coins/2;
-        if (i < mid_point) {
+        if (const int mid_point = coins/2; i < mid_point) {
             auto coin1 = std::make_unique<Coin>(monsterPosition.x - i * 10, monsterPosition.y);
             AddObject(std::move(coin1));
         }
@@ -468,7 +467,7 @@ std::vector<GameObject*> GameStateManager::GetAllObjects() {
 // Call this function just before attempting to render the GameState
 // DO NOT CALL UNLESS players_ HAS AT LEAST ONE PLAYER
 void GameStateManager::InitCamera() {
-    Player* player1 = players_.at(0).get();
+    const Player* player1 = players_.at(0).get();
     camera_.target = (Vector2){player1->GetPosition().x + 20.0f, player1->GetPosition().y + 20.0f};
     camera_.offset = (Vector2){static_cast<float>(GetScreenWidth()) / 2.0f, static_cast<float>(GetScreenHeight()) / 2.0f};
     camera_.rotation = 0.0f;
@@ -593,26 +592,26 @@ GameStateManager::~GameStateManager() {
  * @param monster Pointer to the monster being checked for a hit.
  */
 void GameStateManager::HandlePlayerAttack(Player* player, Monster* monster) {
-    Vector2 playerPos = player->GetPosition();
-    Vector2 monsterPos = monster->GetPosition();
+    auto [player_x, player_y] = player->GetPosition();
+    auto [monster_x, monster_y] = monster->GetPosition();
     // Get attack range and player movement direction
-    bool movingRight = player->GetMovingRight();
-    float attackRange = player->GetPlayerData()->attackRange_;
-    float playerHeight = player->GetRect().height;
+    const bool movingRight = player->GetMovingRight();
+    const float attackRange = player->GetPlayerData()->attackRange_;
+    const float playerHeight = player->GetRect().height;
 
     // Lambda function to simplify the boolean check
     // Is the monster in front of the player and player moving right?
     auto monster_inFront = [=]() {
         // player.x ------ monster.x --- | attackRange // Hit monsters facing right
-        bool inRangeX = monsterPos.x > playerPos.x && monsterPos.x <= playerPos.x + attackRange;
-        bool inRangeY = (monsterPos.y >= playerPos.y - playerHeight) && (monsterPos.y <= playerPos.y + playerHeight);
+        const bool inRangeX = monster_x > player_x && monster_x <= player_x + attackRange;
+        const bool inRangeY = (monster_y >= player_y - playerHeight) && (monster_y <= player_y + playerHeight);
         return (inRangeX && inRangeY && movingRight);
     };
 
     auto monster_behind = [=]() {
         // attackRange | --- monster.x -------- player.x // Hit monsters facing left
-        bool inRangeX = monsterPos.x < playerPos.x && monsterPos.x >= playerPos.x - attackRange;
-        bool inRangeY = (monsterPos.y >= playerPos.y - playerHeight) && (monsterPos.y <= playerPos.y + playerHeight);
+        const bool inRangeX = monster_x < player_x && monster_x >= player_x - attackRange;
+        const bool inRangeY = (monster_y >= player_y - playerHeight) && (monster_y <= player_y + playerHeight);
         return (inRangeX && inRangeY && !movingRight);
     };
 

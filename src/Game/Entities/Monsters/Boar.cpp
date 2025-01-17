@@ -34,8 +34,8 @@ Boar::Boar(const float posX, const float posY, const float dimX, const float dim
  */
 void Boar::Draw() {
     // Get the playerTexture sheet and currentRect from the Animation object
-    Texture2D boarTexture = boarAnimation_->GetTexture();
-    Rectangle currentRect = boarAnimation_->GetCurrentRect();
+    const Texture2D boarTexture = boarAnimation_->GetTexture();
+    const Rectangle currentRect = boarAnimation_->GetCurrentRect();
     boarAnimation_->FlipX(!movingRight_); // flip x axis based on the INVERSE of this flag, because boars face the opposite way in the sprite sheet
     // Draw the boar utilizing the currently loaded boarTexture, and rect position
     DrawTexturePro(boarTexture, currentRect, GetRect(), Vector2{0, 0}, 0, color_);     // Draw a part of a texture defined by a rectangle with 'pro' parameters
@@ -60,7 +60,7 @@ void Boar::Update() {
  *
  * @param damage The amount of damage dealt to the Boar.
  */
-void Boar::HitMonster(int damage) {
+void Boar::HitMonster(const int damage) {
     // Run the base class code that's reusable
     Monster::HitMonster(damage);
     // Boar has died

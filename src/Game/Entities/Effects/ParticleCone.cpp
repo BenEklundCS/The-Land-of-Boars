@@ -30,11 +30,11 @@ void ParticleCone::Draw() {
     const float baseAngle = facingRight_ ? 0.0f : PI;
 
     // Adjust the initial position based on the player's direction and dimensions
-    Vector2 initialPosition = position_;
+    auto [x, y] = position_;
     if (facingRight_) {
-        initialPosition.x += playerDimensions_.x;  // Spawn at the front-right edge
+        x += playerDimensions_.x;  // Spawn at the front-right edge
     } else {
-        initialPosition.x -= playerDimensions_.x;  // Spawn at the front-left edge
+        x -= playerDimensions_.x;  // Spawn at the front-left edge
     }
 
     // Loop through each particle
@@ -48,8 +48,8 @@ void ParticleCone::Draw() {
 
         // Calculate the particle's position
         const Vector2 particlePosition = {
-                initialPosition.x + cosf(angle) * distance + 60,
-                initialPosition.y + sinf(angle) * distance + 100
+                x + cosf(angle) * distance + 60,
+                y + sinf(angle) * distance + 100
         };
 
         // Draw the particle as a small circle or a texture

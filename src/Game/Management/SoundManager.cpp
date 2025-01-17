@@ -104,7 +104,7 @@ void SoundManager::LoadSounds() {
  *
  * @param sound The key corresponding to the sound to play.
  */
-void SoundManager::PlaySound(SoundKey sound) {
+void SoundManager::PlaySound(const SoundKey sound) {
     if (sounds_.find(sound) != sounds_.end())
         ::PlaySound(sounds_.at(sound));
 }
