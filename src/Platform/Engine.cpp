@@ -52,9 +52,37 @@ void Engine::StartGame() {
     GUI::InitGui();
     // Debug mode enabled
     SetTraceLogLevel(LOG_DEBUG);
-    // Call screens sequentially
-    RenderTitleScreen();  // Title screen
-    RenderGameOverScreen(); // Game over screen if necessary
+
+    // Set up the game for rendering
+
+    // Assume only one level for simplicity
+    auto& level = levels[0];
+    auto gameState = level->GetGameState();
+    gameState->InitCamera();
+
+    // Initialize game input
+    gameState->InitInput(settings.get());
+
+    // Start the game loop
+    GameLoop(gameState);
+}
+
+void Engine::GameLoop(GameStateManager* scene) {
+    while (!WindowShouldClose() && !shouldExit_) {
+        switch(currentScreen) {
+            case TITLE:
+                RenderTitleScreen();
+                break;
+            case GAME:
+                RenderGameScreen(scene);
+                break;
+            case GAMEOVER:
+                RenderGameOverScreen();
+                break;
+            default:
+                return;
+        }
+    }
 }
 
 /**
@@ -63,8 +91,7 @@ void Engine::StartGame() {
 void Engine::CreateStartButton() {
     auto onClick = [&]() {
         TraceLog(LOG_INFO, "Start button clicked.");
-        pressedStart_ = true;
-        RenderGameScreen(); // Render the Game Screen once the start button has been clicked.
+        currentScreen = GAME; // switch to game screen
     };
 
     auto onHover = [&]() {
@@ -88,22 +115,19 @@ void Engine::CreateStartButton() {
  * Displays the title screen and waits for user input to transition to the game screen.
  */
 void Engine::RenderTitleScreen() {
-    TraceLog(LOG_INFO, "Rendering Title Screen...");
-    while (!WindowShouldClose() && !pressedStart_ && !shouldExit_) {
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
+    BeginDrawing();
+    ClearBackground(RAYWHITE);
 
-        // Handle Engine input ourselves, the input manager is created later.
-        InputManager::HandleEngineInput();
+    // Handle Engine input ourselves, the input manager is created later.
+    InputManager::HandleEngineInput();
 
-        // Pass the start button to be drawn to screen
-        Renderer::DrawTitleScreen(startButton_.get());
+    // Pass the start button to be drawn to screen
+    Renderer::DrawTitleScreen(startButton_.get());
 
-        // Update the start button
-        startButton_->Update();
+    // Update the start button
+    startButton_->Update();
 
-        EndDrawing();
-    }
+    EndDrawing();
 }
 
 /**
@@ -111,58 +135,26 @@ void Engine::RenderTitleScreen() {
  *
  * Assumes only one level for simplicity.
  */
-void Engine::RenderGameScreen() const {
-    if (!shouldExit_) {
-        TraceLog(LOG_INFO, "Rendering Game Screen...");
+void Engine::RenderGameScreen(GameStateManager* scene) {
+    // Update the game
+    scene->Update();
+    // Draw the frame
+    BeginDrawing();
+    Renderer::Draw(scene, settings.get()); // Draw the scene
+    if (settings->displayDebug)
+        GUI::DrawDebugGUI(scene); // Draw the debug GUI if necessary
+    // Editor mode GUI
+    if (scene->GetMode() == MODE_EDITOR)
+        GUI::DrawEditorGUI();
 
-        // Assume only one level for simplicity
-        auto& level = levels[0];
-        auto gameState = level->GetGameState();
-        gameState->InitCamera();
-
-        // Initialize game input
-        gameState->InitInput(settings.get());
-
-        // Render the level
-        RenderLevelScene(gameState);
-    }
+    EndDrawing();
 }
 
 /**
  * @brief Renders the game over screen.
  */
 void Engine::RenderGameOverScreen() {
-    // Implementation for the Game Over screen
-    if (!shouldExit_) {
-        TraceLog(LOG_INFO, "Rendering Game Over Screen...");
-    }
-}
 
-/**
- * @brief Renders a game level scene.
- *
- * Updates and draws the scene until the level is over or the user exits.
- *
- * @param scene Pointer to the GameStateManager for the current level.
- */
-void Engine::RenderLevelScene(GameStateManager* scene) {
-
-    TraceLog(LOG_INFO, "Rendering Level Scene...");
-    // Render the level until it's over or the window should close
-    while (!WindowShouldClose() && !scene->IsLevelOver() && !shouldExit_) {
-        // Update the game
-        scene->Update();
-        // Draw the frame
-        BeginDrawing();
-        Renderer::Draw(scene, settings.get()); // Draw the scene
-        if (settings->displayDebug)
-            GUI::DrawDebugGUI(scene); // Draw the debug GUI if necessary
-        // Editor mode GUI
-        if (scene->GetMode() == MODE_EDITOR)
-            GUI::DrawEditorGUI();
-
-        EndDrawing();
-    }
 }
 
 void Engine::StopGame() {

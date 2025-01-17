@@ -64,15 +64,7 @@ private:
 
     static std::unique_ptr<EngineSettings> settings; /**< Singleton settings object. */
 
-    bool pressedStart_ = false;
-
     GameScreen currentScreen = TITLE; /**< Tracks the current screen being displayed. */
-
-    /**
-     * @brief Renders the active game level scene.
-     * @param scene Pointer to the `GameStateManager` managing the current level.
-     */
-    static void RenderLevelScene(GameStateManager* scene);
 
     /**
      * @brief Loads all game levels into memory.
@@ -91,7 +83,12 @@ private:
     /**
      * @brief Renders the Game screen.
      */
-    void RenderGameScreen() const;
+    static void RenderGameScreen(GameStateManager* scene) ;
+
+    /**
+    * @brief Main game loop.
+    */
+    void GameLoop(GameStateManager* scene);
 
     /**
      * @brief Renders the Game Over screen.
