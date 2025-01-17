@@ -7,6 +7,28 @@
 #include "../../../../include/Game/Management/GameStateManager.h"
 
 /**
+ * @brief Executes the enter editor command on a gameState pointer to set its mode and transform the state of the renderer
+ *
+ * Calls the SetMode method on the gameState, and resets its camera. Also shows the cursor for editing purposes.
+ */
+void EnterEditorCommand::Execute(GameStateManager* gameState) {
+    gameState->SetMode(MODE_EDITOR);
+    gameState->InitCamera(); // reset the camera
+    ShowCursor();
+}
+
+/**
+ * @brief Executes the enter editor command on a gameState pointer to set its mode and transform the state of the renderer
+ *
+ * Calls the SetMode method on the gameState, and resets its camera. Also shows the cursor for editing purposes.
+ */
+void ExitEditorCommand::Execute(GameStateManager* gameState) {
+    gameState->SetMode(MODE_GAME);
+    gameState->InitCamera(); // reset the camera
+    HideCursor();
+}
+
+/**
  * @brief Executes the place tile command in the level editor.
  *
  * Calls the `PlaceTile` method on the `LevelEditor`, placing a tile at the current location.

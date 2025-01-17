@@ -51,8 +51,7 @@ void InputManager::HandlePlayerInput() const {
 void InputManager::HandleUIInput() {
     auto gameState = GameStateManager::GetInstance();
     if (IsKeyPressed(KEY_E)) {
-        gameState->SetMode(MODE_EDITOR);
-        gameState->InitCamera(); // reset the camera
+        EnterEditorCommand::Execute(gameState);
     }
 }
 
@@ -76,14 +75,11 @@ void InputManager::HandleDebugInput() {
  */
 void InputManager::HandleEditorInput(Camera2D& camera) {
     HandleEditorMovement(camera);
-    auto gameState = GameStateManager::GetInstance();
+    const auto gameState = GameStateManager::GetInstance();
     HandleEditorActions(gameState, camera);
 
     if (IsKeyPressed(KEY_E)) {
-        gameState->SetMode(MODE_GAME);
-        gameState->InitCamera(); // reset the camera
-        // Reload tiles in case of any edits
-       // gameState->SetTileManager();
+        ExitEditorCommand::Execute(gameState);
     }
 
     HandleDebugInput();

@@ -5,7 +5,27 @@
 #ifndef EDITORCOMMANDS_H
 #define EDITORCOMMANDS_H
 
+#include "../../Management/GameStateManager.h"
+
 #include "../../Level/LevelEditor.h"
+
+/**
+ * @class EnterEditorCommand
+ * @brief Provides a static utility method for entering the Level Editor
+ */
+class EnterEditorCommand {
+public:
+    static void Execute(GameStateManager* gameState); // Static method for entering the editor state
+};
+
+/**
+ * @class ExitEditorCommand
+ * @brief Provides a static utility method for entering the Level Editor
+ */
+class ExitEditorCommand {
+public:
+    static void Execute(GameStateManager* gameState); // Static method exiting the editor state
+};
 
 /**
  * @class PlaceTileCommand

@@ -91,6 +91,7 @@ void Engine::GameLoop(GameStateManager* scene) {
 void Engine::CreateStartButton() {
     auto onClick = [&]() {
         TraceLog(LOG_INFO, "Start button clicked.");
+        HideCursor(); // hide the cursor when the start button is clicked
         currentScreen = GAME; // switch to game screen
     };
 
