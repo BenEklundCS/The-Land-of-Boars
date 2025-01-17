@@ -9,8 +9,8 @@
 #include "../../Sprites/TextureManager.h"
 #include <functional>
 
-#define BUTTON_WIDTH (int)GetScreenWidth()/4
-#define BUTTON_HEIGHT (int)GetScreenHeight()/12
+#define BUTTON_WIDTH (float)GetScreenWidth()/4.0f
+#define BUTTON_HEIGHT (float)GetScreenHeight()/12.0f
 
 /**
  * @enum ButtonState

@@ -3,6 +3,7 @@
 //
 
 #include <functional>
+#include <utility>
 #include "../../../include/Game/Entities/UI/Button.h"
 #include "raylib.h"
 
@@ -11,7 +12,8 @@
  *
  * @param position The position of the button on the screen as a Vector2.
  * @param dimensions The width and height of the button as a Vector2.
- * @param callback A function to call when the button is clicked.
+ * @param onClick Callback function that will be called on button click.
+ * @param onHover Callback function that will be called on button hover.
  * @param text The text to display on the button.
  */
 Button::Button(Vector2 position, Vector2 dimensions, std::function<void()> onClick, std::function<void()> onHover, const std::string& text)
@@ -20,8 +22,8 @@ Button::Button(Vector2 position, Vector2 dimensions, std::function<void()> onCli
     this->dimensions_ = dimensions;
     this->text_ = text;
     this->color_ = WHITE;
-    this->onClick_ = onClick;
-    this->onHover_ = onHover;
+    this->onClick_ = std::move(onClick);
+    this->onHover_ = std::move(onHover);
 }
 
 /**
@@ -44,10 +46,8 @@ void Button::ChangeState() {
     // Reset color AFTER draw call so on-hover effects work. E.g. next update call
     color_ = WHITE;
 
-    Vector2 mousePoint = GetMousePosition(); // Get the current mouse position
-
     // Check if the mouse is over the button's rectangle
-    if (CheckCollisionPointRec(mousePoint, GetRect())) {
+    if (const Vector2 mousePoint = GetMousePosition(); CheckCollisionPointRec(mousePoint, GetRect())) {
         // If the left mouse button is pressed, set the button to pressed state
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             state_ = BUTTON_PRESSED;
