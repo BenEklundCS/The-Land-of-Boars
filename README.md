@@ -49,6 +49,8 @@
 
 ## Development Roadmap
 
+### Development slowed during Spring 2025 semester.
+
 ### Upcoming Features:
 1. **Level Editor:**
    - A user-friendly tool to build and customize levels quickly.
