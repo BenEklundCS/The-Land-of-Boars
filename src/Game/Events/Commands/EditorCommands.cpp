@@ -4,7 +4,6 @@
 
 #include "../../../../include/Game/Events/Commands/EditorCommands.h"
 #include "../../../../include/Game/Level/LevelLoader.h"
-#include "../../../../include/Game/Management/GameStateManager.h"
 
 /**
  * @brief Executes the enter editor command on a gameState pointer to set its mode and transform the state of the renderer

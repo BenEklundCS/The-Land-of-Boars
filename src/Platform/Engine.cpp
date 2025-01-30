@@ -67,6 +67,11 @@ void Engine::StartGame() {
     GameLoop(gameState);
 }
 
+/**
+ * @brief The main Game Loop. This function is responsible for running the game during runtime
+ *        it uses the currentScreen enum to decide which scene function should be called for rendering.
+ * @param scene - The current game scene to be rendered in case the currentScreen == GAME
+ */
 void Engine::GameLoop(GameStateManager* scene) const {
     while (!WindowShouldClose() && !scene->IsLevelOver() && !shouldExit_) {
         switch(currentScreen) {
@@ -158,6 +163,9 @@ void Engine::RenderGameOverScreen() {
 
 }
 
+/**
+ * @brief Sets shouldExit_ to true causing the Engine to shut down
+ */
 void Engine::StopGame() {
     shouldExit_ = true;
 }

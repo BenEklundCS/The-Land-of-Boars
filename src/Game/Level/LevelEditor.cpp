@@ -3,9 +3,7 @@
 //
 
 #include "../../../include/Game/Level/LevelEditor.h"
-
 #include "../../../include/Game/Management/GameStateManager.h"
-#include "../../../include/Game/Management/TileManager.h"
 #include "../../../include/Platform/GUI.h"
 
 /**

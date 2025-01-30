@@ -67,8 +67,6 @@ void GameStateManager::UpdateGame() {
     // Update all game objects and handle collisions
     UpdatePlayers(); // update Players
     UpdatePlatforms(); // update Platforms
-    // Handle user input
-
     UpdateMonsters(); // update Monsters
     UpdateOthers();
 }
@@ -281,11 +279,11 @@ void GameStateManager::DropCoins(Vector2 monsterPosition) {
     const int coins = (GetRandomInt(1, 5)); // get 1-5 coins
     for (int i = 0; i < coins; i++) {
         if (const int mid_point = coins/2; i < mid_point) {
-            auto coin1 = std::make_unique<Coin>(monsterPosition.x - i * 10, monsterPosition.y);
+            auto coin1 = std::make_unique<Coin>(monsterPosition.x - static_cast<float>(i) * 10, monsterPosition.y);
             AddObject(std::move(coin1));
         }
         else if (i > mid_point) {
-            auto coin1 = std::make_unique<Coin>(monsterPosition.x + i * 10, monsterPosition.y);
+            auto coin1 = std::make_unique<Coin>(monsterPosition.x + static_cast<float>(i) * 10, monsterPosition.y);
             AddObject(std::move(coin1));
         }
     }

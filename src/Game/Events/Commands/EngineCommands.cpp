@@ -5,7 +5,6 @@
 #include "../../../../include/Game/Events/Commands/EngineCommands.h"
 #include "../../../../include/Platform/Engine.h"
 
-
 /**
  * @brief Executes the command to stop the game.
  *

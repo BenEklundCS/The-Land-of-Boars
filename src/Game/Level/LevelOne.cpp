@@ -10,7 +10,6 @@
 #include "../../../include/Game/Entities/Objects/Tree.h"
 #include "../../../include/Game/Entities/Monsters/Bee.h"
 #include "../../../include/Game/Entities/Monsters/Snail.h"
-#include "../../../include/Game/Entities/Objects/Coin.h"
 
 
 /**
@@ -22,7 +21,6 @@
  * @return GameStateManager* Pointer to the singleton game state manager with Level One's setup.
  */
 GameStateManager* LevelOne::GetGameState() {
-
     Vector2 origin {0, 0};
 
 #pragma region main game objects
