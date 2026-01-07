@@ -49,17 +49,7 @@
 
 ## Development Roadmap
 
-### Development slowed during Spring 2025 semester.
-
-### Upcoming Features:
-1. **Level Editor:**
-   - A user-friendly tool to build and customize levels quickly.
-2. **Advanced Enemy AI:**
-   - Smarter and more dynamic behaviors for enemies.
-3. **Additional Gameplay Mechanics:**
-   - Power-ups, collectibles, and more!
-4. **Game UI:**
-   - Full game UI and start menu.
+Not under active development.
 
 ---
 
@@ -115,14 +105,3 @@ To build and run the game, ensure you have the following installed:
   cd build
   cmake ..
   cmake --build .
-
----
-
-## Contributions
-Contributions are welcome! If you'd like to add new features or fix bugs, feel free to fork the repository and submit a pull request.
-
----
-
-**Stay tuned for updates!** 🚀  
-Want to discuss or collaborate? Feel free to reach out or open an issue on [GitHub](https://github.com/BenEklundCS/The-Land-of-Boars/issues).
-
