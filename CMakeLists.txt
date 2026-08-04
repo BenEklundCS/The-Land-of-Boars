@@ -42,7 +42,10 @@ include(FetchContent)
 FetchContent_Declare(
 imgui
 GIT_REPOSITORY https://github.com/ocornut/imgui.git
-GIT_TAG master
+# Pinned: raylib is pinned to 4.5, so imgui/rlImGui must be pinned to
+# contemporary versions. Floating master/main drifts onto raylib 5.5+ APIs
+# (e.g. IsTextureValid) and breaks any fresh clone.
+GIT_TAG v1.91.5
 GIT_PROGRESS TRUE
 )
 FetchContent_MakeAvailable(imgui)
@@ -51,7 +54,8 @@ FetchContent_MakeAvailable(imgui)
 FetchContent_Declare(
 rlimgui
 GIT_REPOSITORY https://github.com/raylib-extras/rlImGui.git
-GIT_TAG main
+# Pinned to the last rlImGui contemporary with raylib 4.5 / imgui 1.91.x.
+GIT_TAG 583d4fea67e67d431319974f0625f680d3840dfb
 GIT_PROGRESS TRUE
 )
 FetchContent_MakeAvailable(rlimgui)

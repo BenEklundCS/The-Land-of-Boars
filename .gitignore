@@ -1,0 +1,13 @@
+# Build output
+build/
+cmake-build-*/
+out/
+
+# Debug harness artifacts
+tools/frames/
+*.log
+
+# IDE
+.idea/
+.vs/
+*.user

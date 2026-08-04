@@ -6,6 +6,7 @@
 #include "../../../include/Platform/Globals.h"
 #include "../../../include/Game/Management/GameStateManager.h"
 #include <cmath>
+#include <algorithm>
 
 /**
  * @brief Initializes the tile grid based on a 2D vector of integers.
@@ -27,6 +28,9 @@ void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
         tiles_[i].resize(tileMap[i].size());
     }
 
+    int solidCount = 0;
+    float minSolidX = 0, minSolidY = 0, maxSolidX = 0, maxSolidY = 0;
+
     for (int i = 0; i < tileMap.size(); ++i) {
         for (int j = 0; j < tileMap[i].size(); ++j) {
             constexpr int tile_overlap = 6;
@@ -46,8 +50,26 @@ void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
                 default:
                     TraceLog(LOG_FATAL, "Unknown tile type was passed to TileManager::CreateTiles()");
             }
+
+            if (tileMap[i][j] != 0) {
+                const float wx = tileX * WINDOW_SCALE_FACTOR_X;
+                const float wy = tileY * WINDOW_SCALE_FACTOR_Y;
+                if (solidCount == 0) { minSolidX = maxSolidX = wx; minSolidY = maxSolidY = wy; }
+                minSolidX = std::min(minSolidX, wx); maxSolidX = std::max(maxSolidX, wx);
+                minSolidY = std::min(minSolidY, wy); maxSolidY = std::max(maxSolidY, wy);
+                ++solidCount;
+            }
         }
     }
+
+    // Discrete geometry readout - lets us reason about spawn/collision without
+    // replaying the game and eyeballing screenshots.
+    TraceLog(LOG_INFO, "[TILES] grid %dx%d, %d solid tiles", static_cast<int>(tileMap.size()),
+             tileMap.empty() ? 0 : static_cast<int>(tileMap[0].size()), solidCount);
+    TraceLog(LOG_INFO, "[TILES] solid world bounds: x %.1f .. %.1f   y %.1f .. %.1f",
+             minSolidX, maxSolidX, minSolidY, maxSolidY);
+    TraceLog(LOG_INFO, "[TILES] NOTE position_ (%.1f, %.1f) is stored but never applied to tile placement",
+             position_.x, position_.y);
 }
 
 
