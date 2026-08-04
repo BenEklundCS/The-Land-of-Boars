@@ -21,10 +21,15 @@ not rigid; the point is to always know what's done and what's next.
 |---|---|---|
 | 0 | Stabilize the baseline so it builds and runs | ✅ done |
 | 1 | Revert the AI refactor | ✅ done |
-| 2 | Spec the refactor — what do I want and why | ⬜ not started |
+| 2 | **Kill the resolution-scaling scheme** — move it to the camera | ⬜ next |
 | 3 | Characterization tests on the stable seam | ⬜ not started |
-| 4 | Port to the new architecture, keep tests green | ⬜ not started |
-| 5 | Build 3 levels | ⬜ blocked — see Phase 5 |
+| 4 | De-hardcode: name constants, move placement to level data | ⬜ not started |
+| 5 | Build 3 levels | ⬜ blocked on Phase 4 |
+
+**ECS is cancelled.** Decision made after Phase 1: the refactor had no stated
+"why", and every bug this project actually hits is a *data and coordinate-space*
+problem, not an object-model problem. ECS would not have fixed a single one of
+them. The `engine_architecture_refactor` branch stays on disk if it's ever wanted.
 
 ---
 
@@ -68,20 +73,48 @@ problems:
 - [ ] Review `CombatSystem.cpp` / `AttackSystem.cpp` for salvageable design
       before writing attack code from scratch in Phase 4
 
-## Phase 2 — Spec the refactor ⬜
+## Phase 2 — Kill the resolution-scaling scheme ⬜ ← NEXT
 
-The single highest-value phase, and the one the original attempt skipped. The
-existing ECS work has no stated "why" anywhere in the repo or commit messages.
+**This is the root cause of the "hardcoded values everywhere" problem, and fixing
+it makes every existing literal safe without having to touch most of them.**
 
-- [ ] Write down what the refactor is actually *for*. Concretely: what can I
-      build after it that I can't build now?
-- [ ] Answer honestly whether ECS earns its place. A single-player platformer
-      with ~4 monster types is squarely in the range where OOP is fine. If the
-      answer is "no concrete benefit", **staying on `master` is a legitimate
-      outcome of this phase**
-- [ ] Let the goal pick the architecture, not the reverse. Phase 5 (three levels)
-      is the real goal — scope the refactor to exactly what that needs
-- [ ] Decide the scope cut and write it here before touching code
+The engine currently scales *world data* by the window size: `GameObject::Scale()`
+multiplies every entity's position **and** dimensions by `WINDOW_SCALE_FACTOR`,
+and the physics constants are all `(value * WINDOW_SCALE_FACTOR)`. That bakes the
+display resolution into the simulation.
+
+But the game **already has a `Camera2D`** (`GameStateManager::InitCamera`, and all
+rendering goes through `BeginMode2D`) — and its `zoom` is pinned to `1.0f`.
+Resolution belongs there. Scaling in the entity layer instead is the mistake.
+
+What it costs today:
+
+- **Any literal that forgets to scale silently desyncs from the world.** That was
+  Findings #5. It is not a one-off; it is the designed-in failure mode
+- **The world is non-uniformly squashed.** At 1200x700 the factors are `0.4688 x`
+  vs `0.4861 y` — different. Aspect ratio distorts world geometry, so jump arcs
+  and collision shapes change with window shape
+- **The physics constants are incoherent.** `PLAYER_JUMP_HEIGHT` is literally
+  `INVERSE_WINDOW_SCALE_FACTOR_Y`, and `PLAYER_JUMP_POWER = sqrt(2 * GRAVITY *
+  PLAYER_JUMP_HEIGHT)` — so the scale factor cancels out and jump power is
+  accidentally constant while gravity is not. Nobody can reason about that
+- **It makes level data resolution-dependent**, which blocks Phase 5 outright
+
+The fix:
+
+- [ ] Set `camera_.zoom` from the window size; leave world units fixed
+- [ ] Delete `GameObject::Scale()` and its 8 call sites (`Player`, `Tile`, `Boar`,
+      `Bee`, `Snail`, `Tree`, `Platform`, `GameObject`)
+- [ ] Strip `* WINDOW_SCALE_FACTOR` from `PhysicsConstants.h` and `Player.h`;
+      retune the raw values once, at one resolution
+- [ ] Revert the Findings #5 spawn fix — once world units are fixed, the original
+      `SetPosition({1500, 1500})` is correct again and the workaround is noise
+- [ ] Keep `WINDOW_SCALE_FACTOR` **only** for genuine screen-space things (UI
+      font sizes, HUD anchoring in `PlayerUI`/`Renderer`)
+- [ ] Verify at 1200x700, 1920x1080 and 2560x1440 that the player lands on the
+      same tile — `tools/spawn-analysis.ps1` already checks exactly this
+
+Mechanical, ~10 files, and it deletes more code than it adds.
 
 ## Phase 3 — Characterization tests ⬜
 
@@ -110,11 +143,35 @@ Coupling to work around: 37 `GetInstance()` calls and 58 raylib
 texture/draw/`GetFrameTime()` calls inside `src/Game/`. Getting a headless test
 binary to link is real work before the first assertion.
 
-## Phase 4 — Port ⬜
+## Phase 4 — De-hardcode ⬜
 
-- [ ] Port to the reduced spec from Phase 2
-- [ ] Golden run stays green throughout
-- [ ] Verify attack works (regression that motivated the revert — see Findings #3)
+Only worth doing *after* Phase 2, because Phase 2 is what makes a literal mean a
+stable thing. Magic-number counts by file (excluding 0/1/2 and comments):
+
+| File | Literals | Kind |
+|---|---|---|
+| `Game/Level/LevelOne.cpp` | 48 | entity placement — belongs in level data |
+| `Game/Sprites/TextureManager.cpp` | 17 | sprite atlas rects — **fine as literals** |
+| `Game/Entities/Player/Player.cpp` | 11 | tuning — name them |
+| `Game/Entities/UI/PlayerUI.cpp` | 10 | screen-space layout — keep scaled |
+| `Game/Management/GameStateManager.cpp` | 9 | mixed |
+| `Game/Entities/Effects/ParticleCone.cpp` | 8 | tuning |
+
+Three distinct categories, and they want different treatment — do **not** blanket
+`#define` everything:
+
+- **World placement** (`LevelOne.cpp`, 48 of them) → move to level data. This is
+  the same work as Phase 5's spawn format, so do it once
+- **Tuning constants** (speeds, damage, cooldowns, particle counts) → name them,
+  grouped next to the system they belong to. Already partly done well in
+  `PhysicsConstants.h` / `Player.h` — the pattern is fine, the `* SCALE_FACTOR`
+  is what's wrong with it
+- **Atlas / screen-space coords** (`TextureManager`, `PlayerUI`) → leave alone.
+  These are genuinely fixed numbers in texture and screen space
+
+- [ ] Delete `TileManager::position_` or actually honour it (Findings #6)
+- [ ] Replace `"../Levels/map_level_one.txt"` — a hardcoded relative path that
+      only resolves when run from `cmake-build-debug/`
 
 ## Phase 5 — Three levels ⬜
 
@@ -183,6 +240,17 @@ to the same grid cell. This was latent on master and only surfaced once the
 window stopped being exactly 2560x1440 — **the class of bug to expect from any
 hardcoded literal in this codebase**, since `Globals.h` states outright that all
 hardcoded values are tuned for 2560x1440.
+
+**#7 — The engine scales world data instead of the camera, and that is the root
+cause of the hardcoded-value problem.** `GameObject::Scale()` multiplies entity
+position and dimensions by the window factor; physics constants are all
+`(v * WINDOW_SCALE_FACTOR)`. Meanwhile a `Camera2D` already exists with
+`zoom = 1.0f` and every draw goes through `BeginMode2D`. Resolution handling
+belongs in the camera; doing it in the entity layer bakes the display into the
+simulation, makes every world literal resolution-dependent, distorts geometry
+non-uniformly by aspect ratio (`0.4688 x` vs `0.4861 y` at 1200x700), and blocks
+resolution-independent level data. Findings #5 is one symptom of this, not an
+isolated bug. **This is Phase 2.**
 
 **#6 — `TileManager`'s constructor position is dead code.** `LevelOne.cpp` passes
 `Vector2{-2000, 250}`, the ctor stores it in `position_`, and **nothing ever reads
