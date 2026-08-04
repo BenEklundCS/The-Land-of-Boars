@@ -25,8 +25,6 @@ Player::Player() : GameObject(PLAYER) {
     // Construct the primitive GameObject attributes
     position_ = Vector2{300, -300 };
     dimensions_ = Vector2{PLAYER_LENGTH, PLAYER_LENGTH};
-    // Scale the object
-    Scale();
     // Load it here to ensure the TextureManager is queried after the player object is created
     playerData.playerAnimation_ = std::make_unique<Animation>(TextureManager::GetInstance()->GetTexture(PLAYER_IDLE_TEXTURE),
                                                               PLAYER_IDLE_FRAMES, 0.2f, true);

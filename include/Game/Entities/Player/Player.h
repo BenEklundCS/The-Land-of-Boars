@@ -17,9 +17,13 @@
 
 /// **Player Constants**
 /// These constants define the player's movement, physics, and other gameplay attributes.
-#define PLAYER_SPEED_X (200.0f * WINDOW_SCALE_FACTOR_X)
-#define PLAYER_SPEED_Y (200.0f * WINDOW_SCALE_FACTOR_Y)
-#define PLAYER_JUMP_HEIGHT (INVERSE_WINDOW_SCALE_FACTOR_Y)
+#define PLAYER_SPEED_X 200.0f ///< World units per second.
+#define PLAYER_SPEED_Y 200.0f ///< World units per second.
+/// Dimensionless tuning scalar feeding PLAYER_JUMP_POWER - not a height in
+/// world units despite the name. Was INVERSE_WINDOW_SCALE_FACTOR_Y, which
+/// cancelled against the scale factor in GRAVITY and left jump power
+/// accidentally resolution-invariant. 1.0f reproduces that exactly.
+#define PLAYER_JUMP_HEIGHT 1.0f
 #define PLAYER_JUMP_POWER (sqrt(2 * GRAVITY * PLAYER_JUMP_HEIGHT))
 #define PLAYER_MAX_JUMPS 1 // 0 is single jump, 1 would be double-jump. Remember this for power-ups
 #define PLAYER_MAX_HP 7
@@ -54,7 +58,7 @@ struct playerDataStruct {
     int jumps_ = 0; ///< Number of jumps performed (e.g., for double jump logic).
     float jumpTimer_ = 0;
     bool isOnGround_ = false; ///< Indicates if the player is on the ground.
-    float attackRange_ = 500.0f * WINDOW_SCALE_FACTOR_X; ///< Attack range.
+    float attackRange_ = 500.0f; ///< Attack range, in world units.
 };
 
 /// **Player Class**

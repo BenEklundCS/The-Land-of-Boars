@@ -17,8 +17,6 @@ Tile::Tile(const float x, const float y, const TextureName tileTexture, int tile
     // Ensure to instantiate the GameObject!
     dimensions_ = Vector2{TILE_LENGTH, TILE_LENGTH};
     position_ = Vector2{x, y};
-    // Scale the game object
-    Scale();
     // Load the texture
     texture_ = TextureManager::GetInstance()->GetTexture(tileTexture);
     tileType_ = tileType;

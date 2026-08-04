@@ -6,6 +6,7 @@
 
 #include "../../../../include/Game/Management/GameStateManager.h"
 #include "../../../../include/Game/Sprites/TextureManager.h"
+#include "../../../../include/Platform/Globals.h"
 
 #define HEALTH_BAR_WIDTH 50
 #define HEALTH_BAR_HEIGHT 50
@@ -38,9 +39,14 @@ PlayerUI::PlayerUI(float pos_x, float pos_y, int hp, int coins) {
  */
 void PlayerUI::Update() {
     auto camera = GameStateManager::GetInstance()->GetCamera();
-    // Anchor to the top-left corner of the screen relative to the camera
-    position_.x = camera.target.x - camera.offset.x + 5;
-    position_.y = camera.target.y - camera.offset.y + 5;
+    // The HUD is drawn inside BeginMode2D, so it lives in world space and gets
+    // zoomed with everything else. Dividing by zoom keeps it a constant size on
+    // screen and a constant inset from the corner, at any resolution.
+    const Rectangle view = GetCameraWorldView(camera);
+    constexpr float screenInset = 5.0f;
+    position_.x = view.x + screenInset / camera.zoom;
+    position_.y = view.y + screenInset / camera.zoom;
+    dimensions_ = Vector2{HEALTH_BAR_WIDTH / camera.zoom, HEALTH_BAR_HEIGHT / camera.zoom};
     hp_ = GameStateManager::GetInstance()->GetPlayers().at(0)->GetPlayerData()->hp_; // update hp
     coins_ = GameStateManager::GetInstance()->GetPlayers().at(0)->GetPlayerData()->coins_; // update coins
 }
@@ -52,10 +58,14 @@ void PlayerUI::Update() {
  * The globes are spaced evenly with a 5-pixel gap between them.
  */
 void PlayerUI::Draw() {
+    const auto camera = GameStateManager::GetInstance()->GetCamera();
+    // Spacing is a screen-space gap, so convert it to world units like the size.
+    const float globeStride = (HEALTH_BAR_WIDTH + 5) / camera.zoom;
+
     // Use the loaded texture and rectangles for rendering
     for (int i = 0; i < hp_; i++) {
         Rectangle destRect = GetRect();
-        destRect.x += i * (HEALTH_BAR_WIDTH + 5); // Adjust x position for each globe, with a 5-pixel gap
+        destRect.x += i * globeStride; // Adjust x position for each globe, with a 5-pixel gap
         DrawTexturePro(
             gameTexture_.texture,            // Texture
             gameTexture_.rect,               // Source rectangle (entire texture or portion)
@@ -66,8 +76,16 @@ void PlayerUI::Draw() {
         );
     }
 
-    auto camera = GameStateManager::GetInstance()->GetCamera();
-    DrawText(TextFormat("Coins: %d", coins_), camera.target.x - camera.offset.x + GetScreenWidth() - MeasureText(TextFormat("Coins: %d", coins_), 20) - 20, camera.target.y - camera.offset.y + 5, 20, YELLOW);
+    // Coin counter, anchored to the top-right of the viewport at a constant
+    // on-screen size.
+    const Rectangle view = GetCameraWorldView(camera);
+    const char* coinText = TextFormat("Coins: %d", coins_);
+    const int fontSize = static_cast<int>(20.0f / camera.zoom);
+    const float margin = 20.0f / camera.zoom;
+    DrawText(coinText,
+             static_cast<int>(view.x + view.width - MeasureText(coinText, fontSize) - margin),
+             static_cast<int>(view.y + 5.0f / camera.zoom),
+             fontSize, YELLOW);
 }
 
 

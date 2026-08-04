@@ -11,39 +11,28 @@
  * @file PhysicsConstants.h
  * @brief Defines physical constants for the game physics system.
  *
- * These constants determine gravity, friction, and maximum velocity
- * in the game world. All values are dynamically scaled according
- * to the screen resolution, ensuring consistent gameplay experience
- * across different display sizes.
+ * All values are in fixed **world units per second** and are deliberately NOT
+ * scaled by the window size - resolution is handled by the camera's zoom.
+ * Scaling these by the window factor (as an earlier version did) made gravity
+ * and friction depend on the aspect ratio, so the game played differently in a
+ * different-shaped window.
  */
 
 /**
- * @brief The gravitational constant for the game world.
- *
- * This value simulates the effect of gravity on entities
- * in the game and is scaled by the vertical window scaling factor
- * (`WINDOW_SCALE_FACTOR_Y`) to maintain consistent behavior on
- * different screen resolutions.
+ * @brief The gravitational constant for the game world, in world units.
  */
-#define GRAVITY (45.0f * WINDOW_SCALE_FACTOR_Y)
+#define GRAVITY 45.0f
 
 /**
- * @brief The friction constant for decelerating entities.
- *
- * This value simulates frictional forces applied to moving entities
- * and is scaled by the horizontal window scaling factor
- * (`WINDOW_SCALE_FACTOR_X`) to ensure consistency across resolutions.
+ * @brief The friction constant for decelerating entities, in world units.
  */
-#define FRICTION (85.0f * WINDOW_SCALE_FACTOR_X)
+#define FRICTION 85.0f
 
 /**
- * @brief The maximum velocity constant for entities.
+ * @brief The maximum velocity for entities, in world units.
  *
- * This value defines the maximum speed that entities (such as players
- * or monsters) can reach, ensuring balance and preventing excessively
- * high speeds. The value is scaled by the horizontal window scaling
- * factor (`WINDOW_SCALE_FACTOR_X`).
+ * Prevents entities reaching excessive speeds.
  */
-#define MAX_VELOCITY (1000.0f * WINDOW_SCALE_FACTOR_X)
+#define MAX_VELOCITY 1000.0f
 
 #endif //PLATFORMER_PHYSICSCONSTANTS_H

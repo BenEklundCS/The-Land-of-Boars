@@ -21,8 +21,8 @@ not rigid; the point is to always know what's done and what's next.
 |---|---|---|
 | 0 | Stabilize the baseline so it builds and runs | ✅ done |
 | 1 | Revert the AI refactor | ✅ done |
-| 2 | **Kill the resolution-scaling scheme** — move it to the camera | ⬜ next |
-| 3 | Characterization tests on the stable seam | ⬜ not started |
+| 2 | **Kill the resolution-scaling scheme** — move it to the camera | ✅ done |
+| 3 | Characterization tests on the stable seam | ⬜ next |
 | 4 | De-hardcode: name constants, move placement to level data | ⬜ not started |
 | 5 | Build 3 levels | ⬜ blocked on Phase 4 |
 
@@ -100,21 +100,30 @@ What it costs today:
   accidentally constant while gravity is not. Nobody can reason about that
 - **It makes level data resolution-dependent**, which blocks Phase 5 outright
 
-The fix:
+The fix (all done):
 
-- [ ] Set `camera_.zoom` from the window size; leave world units fixed
-- [ ] Delete `GameObject::Scale()` and its 8 call sites (`Player`, `Tile`, `Boar`,
-      `Bee`, `Snail`, `Tree`, `Platform`, `GameObject`)
-- [ ] Strip `* WINDOW_SCALE_FACTOR` from `PhysicsConstants.h` and `Player.h`;
-      retune the raw values once, at one resolution
-- [ ] Revert the Findings #5 spawn fix — once world units are fixed, the original
-      `SetPosition({1500, 1500})` is correct again and the workaround is noise
-- [ ] Keep `WINDOW_SCALE_FACTOR` **only** for genuine screen-space things (UI
-      font sizes, HUD anchoring in `PlayerUI`/`Renderer`)
-- [ ] Verify at 1200x700, 1920x1080 and 2560x1440 that the player lands on the
-      same tile — `tools/spawn-analysis.ps1` already checks exactly this
+- [x] `camera_.zoom = GetWorldCameraZoom()` (height-derived, so uniform — using
+      separate X/Y factors is what distorted geometry). Set in both `InitCamera`
+      and `UpdateCamera` so it survives a resize
+- [x] Deleted `GameObject::Scale()` and all 8 call sites
+- [x] Stripped `* WINDOW_SCALE_FACTOR` from `PhysicsConstants.h`, `Player.h`
+      (incl. `attackRange_`) and `Monster.h`
+- [x] Reverted the Findings #5 spawn workaround — `SetPosition({1500, 1500})` is
+      correct again now that world units are fixed
+- [x] Added `GetCameraWorldView()` and routed the background, FPS counter and
+      HUD through it. These assumed `screen size == world size`, only true at
+      zoom 1. HUD sizes divide by zoom to stay a constant size on screen
+- [x] Kept `WINDOW_SCALE_FACTOR_*` for screen space only (title font sizes)
 
-Mechanical, ~10 files, and it deletes more code than it adds.
+**No retuning was needed.** Every constant reverted to exactly its
+base-resolution value (`GRAVITY 45`, `PLAYER_SPEED_X 200`, …), because the old
+factors were 1.0 at 2560x1440 — the resolution everything was tuned at. So this
+preserves the intended feel rather than changing it.
+
+**Verified:** the `[TILES]` geometry log is byte-identical at 1200x700 and
+1600x900 (`x 0.0 .. 11248.0, y 666.0 .. 4144.0`), with only `camera zoom`
+differing (0.4861 vs 0.6250). Confirmed visually at both sizes, and the static
+analysis agrees with the runtime log.
 
 ## Phase 3 — Characterization tests ⬜
 

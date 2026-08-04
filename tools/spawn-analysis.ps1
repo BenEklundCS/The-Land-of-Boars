@@ -1,25 +1,25 @@
 # Deterministic spawn/geometry analysis.
 #
-# Reproduces the engine's tile placement math exactly, from the same constants
-# the C++ uses, and reports where the player spawn lands relative to the tile
-# grid. No need to run the game.
+# Reproduces the engine's tile placement math from the same constants the C++
+# uses, and reports where the player spawn lands relative to the tile grid.
+# No need to build or run the game.
 #
 #   TextureManager.h : TILE_LENGTH 80
 #   TileManager.cpp  : tileX = col * (TILE_LENGTH - 6)   <- overlap 6
-#                      tileY = row * (TILE_LENGTH - 6)
-#   Tile.cpp:21      : Scale()  -> position *= WINDOW_SCALE_FACTOR
-#   Globals.h        : BASE 2560x1440
-#   LevelOne.cpp:28  : player->SetPosition({1500, 1500})  <- raw, NOT scaled
-#                      (SetPosition is a plain assignment and runs *after* the
-#                       Player ctor already called Scale())
+#   LevelOne.cpp     : player->SetPosition({1500, 1500})
+#
+# World data is resolution-independent: positions and dimensions are in fixed
+# world units and are never scaled by the window. Resolution is handled purely
+# by Camera2D::zoom. So this analysis has no window-size input at all - and that
+# is the point. If a future change reintroduces resolution-dependent world
+# coordinates, this script's assumptions break and the answer stops matching
+# the game's own [LEVEL]/[TILES] log output.
 
 $ErrorActionPreference = "Stop"
 
 $TILE_LENGTH = 80
 $OVERLAP     = 6
-$STEP        = $TILE_LENGTH - $OVERLAP   # 74
-$BASE_W      = 2560
-$BASE_H      = 1440
+$STEP        = $TILE_LENGTH - $OVERLAP   # 74 world units
 $SPAWN       = @{ x = 1500.0; y = 1500.0 }
 
 $levelPath = Join-Path $PSScriptRoot "..\Levels\map_level_one.txt"
@@ -27,82 +27,36 @@ $lines = Get-Content $levelPath
 
 Write-Output "Level: $((Resolve-Path $levelPath).Path)"
 Write-Output "Rows: $($lines.Count)   (row 0 is an empty line -> empty tile row)"
-Write-Output "Player spawn (raw, unscaled): ($($SPAWN.x), $($SPAWN.y))"
+Write-Output "Tile step: $STEP world units (TILE_LENGTH $TILE_LENGTH - overlap $OVERLAP)"
+Write-Output "Player spawn: ($($SPAWN.x), $($SPAWN.y)) world units"
 Write-Output ""
 
-function Analyze([int]$winW, [int]$winH, [bool]$scaleSpawn = $false) {
-    $fx = $winW / $BASE_W
-    $fy = $winH / $BASE_H
-    $stepX = $STEP * $fx
-    $stepY = $STEP * $fy
+$maxCols = ($lines | ForEach-Object { $_.Length } | Measure-Object -Maximum).Maximum
+Write-Output ("Tile grid extent: x 0 .. {0:N0}   y 0 .. {1:N0}" -f ($maxCols*$STEP), ($lines.Count*$STEP))
 
-    # Proposed fix: scale the spawn like every other positioned object.
-    $SPAWN = if ($scaleSpawn) { @{ x = 1500.0*$fx; y = 1500.0*$fy } } else { $SPAWN }
+$col = [math]::Floor($SPAWN.x / $STEP)
+$row = [math]::Floor($SPAWN.y / $STEP)
+Write-Output "Spawn maps to grid cell: col $col, row $row"
 
-    Write-Output "=============================================================="
-    $tag = if ($scaleSpawn) { "  [WITH SCALED SPAWN FIX]" } else { "" }
-    Write-Output " Window ${winW}x${winH}   scale = $([math]::Round($fx,4)) x, $([math]::Round($fy,4)) y$tag"
-    Write-Output ("  spawn used: ({0:N1}, {1:N1})" -f $SPAWN.x, $SPAWN.y)
-    Write-Output "=============================================================="
-    Write-Output ("  tile step in world units: {0:N2} x, {1:N2} y" -f $stepX, $stepY)
+$rowStr  = $lines[$row]
+$cellCh  = if ($col -lt $rowStr.Length) { $rowStr[$col] } else { '0' }
+$cellDesc = switch ("$cellCh") { "0" { "EMPTY" } "1" { "DIRT (solid)" } "2" { "GRASS (solid)" } default { "type $cellCh" } }
+Write-Output "Cell at spawn: '$cellCh' = $cellDesc"
 
-    # Full extent of the tile grid in world space
-    $maxCols = ($lines | ForEach-Object { $_.Length } | Measure-Object -Maximum).Maximum
-    Write-Output ("  tile grid extent: x 0 .. {0:N0}   y 0 .. {1:N0}" -f ($maxCols*$stepX), ($lines.Count*$stepY))
-
-    # Which cell does the spawn point fall in?
-    $col = [math]::Floor($SPAWN.x / $stepX)
-    $row = [math]::Floor($SPAWN.y / $stepY)
-    Write-Output ("  spawn maps to grid cell: col {0}, row {1}" -f $col, $row)
-
-    if ($row -lt 0 -or $row -ge $lines.Count) {
-        Write-Output "  -> spawn row is OUTSIDE the grid vertically"
-        Write-Output ""
-        return
-    }
-
-    $rowStr = $lines[$row]
-    $cellCh = if ($col -ge 0 -and $col -lt $rowStr.Length) { $rowStr[$col] } else { '0' }
-    $cellDesc = switch ("$cellCh") { "0" { "EMPTY" } "1" { "DIRT (solid)" } "2" { "GRASS (solid)" } default { "type $cellCh" } }
-    Write-Output "  cell at spawn: '$cellCh' = $cellDesc"
-
-    # Walk down this column to find the first solid tile beneath the spawn.
-    $floorRow = $null
-    for ($r = [math]::Max($row,0); $r -lt $lines.Count; $r++) {
-        $s = $lines[$r]
-        if ($col -lt $s.Length -and $s[$col] -ne '0') { $floorRow = $r; break }
-    }
-
-    if ($null -eq $floorRow) {
-        Write-Output "  -> NO SOLID TILE anywhere below the spawn in column $col"
-        Write-Output "  -> player falls forever (matches observed velocity growth)"
-    } else {
-        $floorY = $floorRow * $stepY
-        Write-Output ("  first solid tile below spawn: row {0}  (world y = {1:N1})" -f $floorRow, $floorY)
-        if ($floorY -lt $SPAWN.y) {
-            Write-Output ("  -> that surface is ABOVE the spawn ({0:N1} < {1:N1}) - player is BELOW the floor" -f $floorY, $SPAWN.y)
-        } else {
-            Write-Output ("  -> player would land on it after falling {0:N1} units" -f ($floorY - $SPAWN.y))
-        }
-    }
-
-    # Where IS the solid ground in this row band, horizontally?
-    $solidCols = @()
-    if ($row -lt $lines.Count) {
-        $s = $lines[$row]
-        for ($c = 0; $c -lt $s.Length; $c++) { if ($s[$c] -ne '0') { $solidCols += $c } }
-    }
-    if ($solidCols.Count -gt 0) {
-        $minC = ($solidCols | Measure-Object -Minimum).Minimum
-        $maxC = ($solidCols | Measure-Object -Maximum).Maximum
-        Write-Output ("  solid span on spawn row {0}: cols {1}..{2}  (world x {3:N0} .. {4:N0})" -f $row, $minC, $maxC, ($minC*$stepX), ($maxC*$stepX))
-    } else {
-        Write-Output "  spawn row $row has no solid tiles at all"
-    }
-    Write-Output ""
+$floorRow = $null
+for ($r = $row; $r -lt $lines.Count; $r++) {
+    $s = $lines[$r]
+    if ($col -lt $s.Length -and $s[$col] -ne '0') { $floorRow = $r; break }
 }
 
-Analyze 2560 1440     # the base resolution everything was tuned for
-Analyze 1200 700      # the size we are actually running - currently broken
-Analyze 1200 700 $true   # same size, with the spawn scaled like everything else
-Analyze 1920 1080 $true  # and a third resolution, to prove it generalizes
+if ($null -eq $floorRow) {
+    Write-Output "RESULT: no solid tile below spawn in column $col - player would fall forever"
+    exit 1
+}
+
+$floorY = $floorRow * $STEP
+Write-Output ("First solid tile below spawn: row {0} (world y = {1:N1})" -f $floorRow, $floorY)
+Write-Output ("RESULT: player lands after falling {0:N1} world units" -f ($floorY - $SPAWN.y))
+Write-Output ""
+Write-Output "Cross-check against the running game - these must agree:"
+Write-Output '  Select-String -Path $env:TEMP\lob-run.log -Pattern "\[LEVEL\]|\[TILES\]"'

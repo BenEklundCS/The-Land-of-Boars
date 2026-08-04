@@ -13,14 +13,25 @@
 
 /**
  * @file Globals.h
- * @brief Provides global constants and scaling factors for the game.
+ * @brief Screen-space scaling factors and camera helpers.
  *
- * This file contains global variables and macros used for scaling and managing the game's resolution.
- * It assumes the base resolution is 2560x1440p and calculates scaling factors dynamically to
- * support other resolutions.
+ * @note RESOLUTION MODEL
  *
- * @note All hardcoded values in the project are tested and tuned for the base screen size
- * (2560x1440p) and then scaled appropriately.
+ * World data is resolution-independent. Entity positions, dimensions, tile
+ * coordinates and physics constants are expressed in fixed **world units** and
+ * are never multiplied by a scale factor. Resolution is handled entirely by
+ * `Camera2D::zoom` (see `GameStateManager::InitCamera`), which scales the world
+ * at render time.
+ *
+ * This replaced an earlier scheme where `GameObject::Scale()` multiplied every
+ * entity's position and dimensions by the window factor. That baked the display
+ * resolution into the simulation, so any world literal that forgot to scale
+ * silently desynced from the tile grid, and the non-uniform X/Y factors
+ * distorted world geometry with the window's aspect ratio.
+ *
+ * The `WINDOW_SCALE_FACTOR_*` values below are therefore for **screen space
+ * only** - UI font sizes and HUD layout. Do not multiply world coordinates,
+ * dimensions, velocities or physics constants by them.
  */
 
 /**
@@ -54,5 +65,34 @@ inline float INVERSE_WINDOW_SCALE_FACTOR_X;
  * Useful for calculations that need to revert scaling adjustments for specific elements or coordinates.
  */
 inline float INVERSE_WINDOW_SCALE_FACTOR_Y;
+
+/**
+ * @brief The zoom the world camera should use for the current window.
+ *
+ * Derived from height alone so the zoom is uniform - using separate X and Y
+ * factors is what distorted world geometry under the old scheme. A taller
+ * window shows the same vertical slice of the world; a wider window simply
+ * sees further horizontally.
+ */
+inline float GetWorldCameraZoom() {
+    return static_cast<float>(GetScreenHeight()) / BASE_SCREEN_HEIGHT;
+}
+
+/**
+ * @brief The world-space rectangle currently visible through a camera.
+ *
+ * Anything positioning itself relative to the viewport (background, HUD, FPS
+ * counter) must go through this rather than assuming `screen size == world
+ * size`, which is only true at zoom 1.
+ */
+inline Rectangle GetCameraWorldView(const Camera2D &camera) {
+    const float w = static_cast<float>(GetScreenWidth()) / camera.zoom;
+    const float h = static_cast<float>(GetScreenHeight()) / camera.zoom;
+    return Rectangle{
+        camera.target.x - camera.offset.x / camera.zoom,
+        camera.target.y - camera.offset.y / camera.zoom,
+        w, h
+    };
+}
 
 #endif //GLOBALS_H

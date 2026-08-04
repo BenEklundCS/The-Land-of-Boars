@@ -17,8 +17,6 @@ Tree::Tree(const float x, const float y, const TextureName treeTexture) : GameOb
     // Ensure to instantiate the GameObject!
     dimensions_ = Vector2{TREE_WIDTH, TREE_HEIGHT};
     position_ = Vector2{x, y};
-    // Scale the game object
-    Scale();
 }
 
 /**

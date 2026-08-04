@@ -9,14 +9,13 @@
 /**
  * @brief Constructs a GameObject with the specified type.
  *
- * Initializes the position and dimensions to (0, 0) and scales the object
- * based on global scaling factors.
+ * Initializes the position and dimensions to (0, 0). Positions and dimensions
+ * are in fixed world units - resolution is handled by the camera's zoom.
  *
  * @param type The type of the GameObject (e.g., PLAYER, MONSTER, PLATFORM, etc.).
  */
 GameObject::GameObject(const GameObjectType type)
         : position_{0.0f, 0.0f}, dimensions_{0.0f, 0.0f}, type_(type) {
-    Scale();
 }
 
 /**
@@ -160,19 +159,6 @@ void GameObject::ToggleMovingRight() {
  */
 bool GameObject::GetMovingRight() const {
     return movingRight_;
-}
-
-/**
- * @brief Scales the GameObject's dimensions and position based on the global window scale factors.
- */
-void GameObject::Scale() {
-    //TraceLog(LOG_INFO, "Scaling object to %d %d", WINDOW_SCALE_FACTOR_X, WINDOW_SCALE_FACTOR_Y);
-    // Adjust the dimensions of the object based on the window scale factor
-    dimensions_.x *= WINDOW_SCALE_FACTOR_X;
-    dimensions_.y *= WINDOW_SCALE_FACTOR_Y;
-    // Adjust the position of the object based on the window scale factor
-    position_.x *= WINDOW_SCALE_FACTOR_X;
-    position_.y *= WINDOW_SCALE_FACTOR_Y;
 }
 
 /**

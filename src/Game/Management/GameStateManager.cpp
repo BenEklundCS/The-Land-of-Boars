@@ -469,13 +469,18 @@ void GameStateManager::InitCamera() {
     camera_.target = (Vector2){player1->GetPosition().x + 20.0f, player1->GetPosition().y + 20.0f};
     camera_.offset = (Vector2){static_cast<float>(GetScreenWidth()) / 2.0f, static_cast<float>(GetScreenHeight()) / 2.0f};
     camera_.rotation = 0.0f;
-    camera_.zoom = 1.0f;
+    // Resolution is handled here and nowhere else. World data stays in fixed
+    // world units; the camera scales it at render time.
+    camera_.zoom = GetWorldCameraZoom();
 }
 
 // Update the camera using the players current position
 void GameStateManager::UpdateCamera() {
     Player* player1 = players_.at(0).get();
     camera_.target = (Vector2){ player1->GetPosition().x + 20, player1->GetPosition().y + 20 };
+    // Keep zoom and offset live so the view stays correct if the window resizes.
+    camera_.offset = (Vector2){static_cast<float>(GetScreenWidth()) / 2.0f, static_cast<float>(GetScreenHeight()) / 2.0f};
+    camera_.zoom = GetWorldCameraZoom();
 }
 
 /**

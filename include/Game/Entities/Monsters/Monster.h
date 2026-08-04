@@ -9,8 +9,8 @@
 #include "../Player/Player.h"
 
 // **Monster Constants**
-#define PACING_WINDOW (800 * WINDOW_SCALE_FACTOR_X) ///< The horizontal range for the monster's pacing.
-#define MONSTER_SPEED (3 * WINDOW_SCALE_FACTOR_X) ///< The speed at which the monster moves.
+#define PACING_WINDOW 800.0f ///< The horizontal range for the monster's pacing, in world units.
+#define MONSTER_SPEED 3.0f ///< The speed at which the monster moves, in world units.
 
 /// **MonsterState Enumeration**
 /// Defines the various states that a monster can be in during gameplay.

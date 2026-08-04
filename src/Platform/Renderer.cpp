@@ -22,14 +22,10 @@ Renderer::Renderer() = default;
 void Renderer::RenderBackground(const Camera2D &camera) {
     // Get the TextureManager instance and retrieve the BACKGROUND_TEXTURE from it
     auto [texture, rect] = TextureManager::GetInstance()->GetTexture(BACKGROUND_TEXTURE);
-    // Get the background position from the camera
-    const Vector2 backgroundPosition = { camera.target.x - static_cast<float>(GetScreenWidth()) / 2,
-                                   camera.target.y - static_cast<float>(GetScreenHeight()) / 2};
-    // Render the background.texture across the full screen's dimensions
-    DrawTexturePro(texture, rect,
-                   Rectangle{backgroundPosition.x, backgroundPosition.y,
-                             static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight())},
-                   Vector2{0, 0}, 0, PINK);
+    // Cover exactly the world-space area the camera can see. Screen size only
+    // equals world size at zoom 1, so this must go through the camera view.
+    const Rectangle view = GetCameraWorldView(camera);
+    DrawTexturePro(texture, rect, view, Vector2{0, 0}, 0, PINK);
 }
 
 /**
@@ -40,8 +36,13 @@ void Renderer::RenderBackground(const Camera2D &camera) {
  * @param camera The Camera2D object controlling the viewport.
  */
 void Renderer::RenderFPS(const Camera2D &camera) {
-    constexpr int offset = 100;
-    DrawFPS(static_cast<int>(camera.target.x) + GetScreenWidth()/2 - offset, static_cast<int>(camera.target.y) - GetScreenHeight()/2 + offset);
+    // Inset in screen pixels, converted to world units so the counter sits the
+    // same distance from the edge regardless of zoom.
+    constexpr float screenInset = 100.0f;
+    const Rectangle view = GetCameraWorldView(camera);
+    const float inset = screenInset / camera.zoom;
+    DrawFPS(static_cast<int>(view.x + view.width - inset),
+            static_cast<int>(view.y + inset));
 }
 #pragma endregion
 

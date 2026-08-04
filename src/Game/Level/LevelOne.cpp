@@ -26,17 +26,11 @@ GameStateManager* LevelOne::GetGameState() {
 
 #pragma region main game objects
     auto player = std::make_unique<Player>();
-    // Tiles are scaled by the window factor (Tile.cpp -> Scale()), so the spawn
-    // must be scaled too. SetPosition assigns raw world units and runs *after*
-    // the Player ctor's Scale(), so an unscaled literal here desyncs the player
-    // from the tile grid at any resolution other than the 2560x1440 base --
-    // at 1200x700 it lands in empty space with no floor beneath it.
+    // Fixed world units - resolution-independent, no scaling needed.
     constexpr Vector2 spawn{1500, 1500};
-    player->SetPosition({spawn.x * WINDOW_SCALE_FACTOR_X, spawn.y * WINDOW_SCALE_FACTOR_Y});
-    TraceLog(LOG_INFO, "[LEVEL] player spawn: raw(%.1f, %.1f) -> scaled(%.1f, %.1f)  [scale %.4f, %.4f]",
-             spawn.x, spawn.y,
-             spawn.x * WINDOW_SCALE_FACTOR_X, spawn.y * WINDOW_SCALE_FACTOR_Y,
-             WINDOW_SCALE_FACTOR_X, WINDOW_SCALE_FACTOR_Y);
+    player->SetPosition(spawn);
+    TraceLog(LOG_INFO, "[LEVEL] player spawn: (%.1f, %.1f) world units [camera zoom %.4f]",
+             spawn.x, spawn.y, GetWorldCameraZoom());
     // Register observers
     auto gameState = GameStateManager::GetInstance();
     gameState->AddObject(std::move(player));

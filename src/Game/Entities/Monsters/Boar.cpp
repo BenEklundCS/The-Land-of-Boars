@@ -18,8 +18,6 @@
  */
 Boar::Boar(const float posX, const float posY, const float dimX, const float dimY, const MonsterState state)
 : Monster(posX, posY, dimX, dimY, state) {
-    // Scale the boar
-    Scale();
     // Load the boar animation
     boarAnimation_ = std::make_unique<Animation>(TextureManager::GetInstance()->GetTexture(BOAR_RUNNING_TEXTURE_WHITE), BOAR_RUNNING_FRAMES, 0.1f, true);
     this->hp_ = BOAR_MAX_HEALTH;

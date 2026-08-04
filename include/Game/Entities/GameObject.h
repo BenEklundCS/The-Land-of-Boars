@@ -61,11 +61,6 @@ protected:
     GameObjectType type_; ///< The type of the GameObject (e.g., `PLAYER`, `PLATFORM`).
 
     /**
-     * @brief Scales the object based on global scaling factors.
-     */
-    void Scale();
-
-    /**
      * @brief Updates the flashing behavior of the object.
      *
      * This method handles the toggling of the flash state based on

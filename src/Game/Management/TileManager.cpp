@@ -52,8 +52,8 @@ void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
             }
 
             if (tileMap[i][j] != 0) {
-                const float wx = tileX * WINDOW_SCALE_FACTOR_X;
-                const float wy = tileY * WINDOW_SCALE_FACTOR_Y;
+                const float wx = tileX;
+                const float wy = tileY;
                 if (solidCount == 0) { minSolidX = maxSolidX = wx; minSolidY = maxSolidY = wy; }
                 minSolidX = std::min(minSolidX, wx); maxSolidX = std::max(maxSolidX, wx);
                 minSolidY = std::min(minSolidY, wy); maxSolidY = std::max(maxSolidY, wy);
@@ -103,7 +103,7 @@ Vector2 TileManager::GetTileAt(float x, float y) const {
  * @return Float, the width of the tile.
  */
 float TileManager::GetTileWidth() {
-    return (TILE_LENGTH - TILE_OVERLAP) * WINDOW_SCALE_FACTOR_X;
+    return TILE_LENGTH - TILE_OVERLAP;
 }
 
 /**
@@ -112,7 +112,7 @@ float TileManager::GetTileWidth() {
  * @return Float, the height of the tile.
  */
 float TileManager::GetTileHeight() {
-    return (TILE_LENGTH - TILE_OVERLAP) * WINDOW_SCALE_FACTOR_Y;
+    return TILE_LENGTH - TILE_OVERLAP;
 }
 
 /**
