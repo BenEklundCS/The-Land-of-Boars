@@ -75,7 +75,6 @@ private:
     void UpdatePosition(float deltaTime); ///< Updates player position based on velocity.
 
     // **State and Animation**
-    [[nodiscard]] bool CheckPlayerDeath() const; ///< Checks if the player is dead.
     void ResetJumps(); ///< Resets the player's jump counter.
     void AnimatePlayer(); ///< Updates the player's animation.
     bool AlreadyAttacking(); ///< Checks if the player is already attacking.
@@ -86,6 +85,9 @@ private:
     [[nodiscard]] bool ZeroVelocity() const; ///< Checks if the player's velocity is zero.
 
 public:
+    /// Public so the GameStateManager can decide the level was failed.
+    [[nodiscard]] bool CheckPlayerDeath() const; ///< Checks if the player is dead.
+
     // **Attributes**
     GameObjectType type_ = PLAYER; ///< Type identifier for the player object.
 

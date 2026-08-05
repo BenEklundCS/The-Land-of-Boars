@@ -1,4 +1,4 @@
-
+﻿
 cmake_minimum_required(VERSION 3.11)
 project(The_Land_of_Boars)
 
@@ -102,7 +102,6 @@ src/Game/Entities/Objects/Coin.cpp
 )
 
 set(GAME_LEVEL_SOURCES
-src/Game/Level/LevelOne.cpp
 src/Game/Level/Level.cpp
 src/Game/Level/LevelLoader.cpp
 )
@@ -116,7 +115,6 @@ set(GAME_HEADERS
 include/Game/Entities/Monsters/Monster.h
 include/Game/Sprites/Animation.h
 include/Game/Level/Level.h
-include/Game/Level/LevelOne.h
 include/Game/Entities/Monsters/Boar.h
 include/Game/Entities/Monsters/Snail.h
 include/Game/Entities/PhysicsConstants.h
@@ -126,6 +124,7 @@ include/Game/Events/Commands/PlayerCommands.h
 include/Game/Events/Observers/Subject.h
 include/Game/Entities/Objects/Tree.h
 include/Game/Level/LevelLoader.h
+include/Game/Level/LevelDef.h
 include/Platform/Globals.h
         include/Game/Entities/UI/PlayerUI.h
         include/Game/Entities/UI/Button.h

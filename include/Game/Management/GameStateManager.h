@@ -48,6 +48,19 @@ enum Mode {
 };
 
 /**
+ * @enum LevelResult
+ * @brief Why a level ended.
+ *
+ * "Level over" alone is not enough - the Engine advances to the next level on a
+ * win but replays the current one on a death.
+ */
+enum LevelResult {
+    LEVEL_RUNNING,   ///< Still being played.
+    LEVEL_COMPLETED, ///< Player reached the goal.
+    LEVEL_FAILED     ///< Player died.
+};
+
+/**
  * @class GameStateManager
  * @brief Manages the state of the game, including updates to game objects, camera, and other game logic.
  *
@@ -60,9 +73,13 @@ class GameStateManager : public Observer {
 private:
     static std::unique_ptr<GameStateManager> instance; ///< Singleton instance.
     bool levelOver; ///< Flag indicating whether the level is over.
+    /// Why the level ended - the Engine advances on a win but retries on a death.
+    LevelResult levelResult_ = LEVEL_RUNNING;
+    Rectangle goal_{}; ///< World-space region that completes the level when touched. Zero-size = no goal.
 
     // Update methods
     void UpdateGame(); ///< Updates the entire game state.
+    void CheckLevelEndConditions(); ///< Decides whether the level was won or lost this frame.
     void UpdateLevel(); ///< Updates the current level.
     void UpdatePlayers(); ///< Updates all player objects.
     void UpdateMonsters(); ///< Updates all monster objects.
@@ -156,6 +173,35 @@ public:
      * @return True if the level is over, false otherwise.
      */
     [[nodiscard]] bool IsLevelOver() const;
+
+    /**
+     * @brief Destroys the singleton so the next GetInstance() builds a fresh state.
+     *
+     * Required for multi-level play: the manager owns every entity, the tile
+     * manager and the camera, so without this the second level would be built
+     * on top of the first one's objects.
+     */
+    static void Reset();
+
+    /**
+     * @brief Marks the level finished, recording why.
+     */
+    void SetLevelResult(LevelResult result);
+
+    /**
+     * @brief Why the level ended (LEVEL_RUNNING while still in play).
+     */
+    [[nodiscard]] LevelResult GetLevelResult() const { return levelResult_; }
+
+    /**
+     * @brief Sets the world-space region that completes the level when touched.
+     */
+    void SetGoal(Rectangle goal) { goal_ = goal; }
+
+    /**
+     * @brief The level's goal region. Zero width/height means the level has no goal.
+     */
+    [[nodiscard]] Rectangle GetGoal() const { return goal_; }
 
     /**
      * @brief Retrieves aggregated game data for debugging or rendering.

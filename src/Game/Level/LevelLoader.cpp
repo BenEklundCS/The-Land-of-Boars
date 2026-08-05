@@ -3,6 +3,63 @@
 //
 #include "../../../include/Game/Level/LevelLoader.h"
 #include "raylib.h"
+#include <sstream>
+
+/**
+ * @brief Resolves a repo-relative path against the plausible working directories.
+ */
+std::string LevelLoader::ResolvePath(const std::string& relativePath) {
+    const std::string candidates[] = {
+        relativePath,              // launched from the repo root
+        "../" + relativePath,      // launched from build/ or cmake-build-debug/
+        "../../" + relativePath,   // launched from a nested build config dir
+    };
+    for (const auto& candidate : candidates) {
+        if (std::ifstream probe(candidate); probe.good()) {
+            return candidate;
+        }
+    }
+    TraceLog(LOG_WARNING, "Could not resolve asset path: %s", relativePath.c_str());
+    return relativePath;
+}
+
+/**
+ * @brief Parses a level's entity file into spawn records.
+ */
+std::vector<EntitySpawn> LevelLoader::LoadEntities(const std::string& filePath) {
+    std::vector<EntitySpawn> spawns;
+    const std::string resolved = ResolvePath(filePath);
+
+    std::ifstream file(resolved);
+    if (!file.is_open()) {
+        TraceLog(LOG_ERROR, "Unable to open entity file: %s", resolved.c_str());
+        return spawns;
+    }
+
+    std::string line;
+    int lineNumber = 0;
+    while (std::getline(file, line)) {
+        ++lineNumber;
+        // Skip blanks and comments.
+        if (line.empty() || line[0] == '#') continue;
+
+        std::istringstream stream(line);
+        EntitySpawn spawn;
+        if (!(stream >> spawn.type)) continue;
+
+        // Numeric fields are all optional; whichever are present get filled.
+        stream >> spawn.x >> spawn.y >> spawn.w >> spawn.h;
+        stream.clear();
+        stream >> spawn.arg;
+
+        spawns.push_back(spawn);
+    }
+    file.close();
+
+    TraceLog(LOG_INFO, "[LEVEL] parsed %d entity spawns from %s",
+             static_cast<int>(spawns.size()), resolved.c_str());
+    return spawns;
+}
 
 /**
  * @brief Loads a level from a specified file path and returns a 2D tile map.

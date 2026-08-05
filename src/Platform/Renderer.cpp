@@ -65,6 +65,15 @@ void Renderer::Draw(GameStateManager* gameState, const EngineSettings* settings)
     // Render FPS
     RenderFPS(camera);
 
+    // Draw the level goal, if this level defines one. Drawn before entities so
+    // the player is never hidden behind it.
+    if (const Rectangle goal = gameState->GetGoal(); goal.width > 0 && goal.height > 0) {
+        // Pulse so it reads as interactive rather than as scenery.
+        const float pulse = 0.6f + 0.4f * sinf(static_cast<float>(GetTime()) * 3.0f);
+        DrawRectangleRec(goal, Color{255, 215, 0, static_cast<unsigned char>(90 * pulse)});
+        DrawRectangleLinesEx(goal, 4.0f, GOLD);
+    }
+
     // For each object in each std::vector of GameObjects, call Draw on the object
     for (const auto& object : gameState->GetAllObjects()) {
         object->Draw(); // <-- All GameObjects implement a Draw call

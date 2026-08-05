@@ -7,47 +7,50 @@
 
 #include <memory>
 #include "../Entities/Player/Player.h"
+#include "LevelDef.h"
 
 class GameStateManager;
 
 /**
  * @class Level
- * @brief Base class for game levels.
+ * @brief Builds a playable GameStateManager from a LevelDef.
  *
- * The Level class serves as an abstract representation of a game level.
- * It is responsible for defining the logic to load and initialize
- * a `GameStateManager` object, which manages all entities and interactions
- * within the level. Subclasses of `Level` can define specific behavior and content
- * for different levels in the game.
+ * Levels used to be C++ subclasses with hardcoded constructor calls, so adding
+ * one meant writing code. A Level is now just data: a tilemap for geometry and
+ * an entity file for spawns, which is what makes levels authorable (by hand, by
+ * the in-game editor, or generated) without touching the engine.
  */
 class Level {
 public:
     /**
-     * @brief Constructor for the Level class.
-     *
-     * Initializes the level and sets up any required resources.
-     * This base constructor is intended to be called by derived classes.
+     * @brief Constructs a level from its definition. Nothing is loaded yet.
      */
-    Level();
+    explicit Level(LevelDef def);
 
     /**
-     * @brief Retrieves the `GameStateManager` for the level.
+     * @brief Builds the level and returns the populated game state.
      *
-     * This method is intended to be overridden by subclasses.
-     * It returns the `GameStateManager` associated with the specific level,
-     * which contains the game state (e.g., entities, tiles, and objects).
+     * Resets the GameStateManager singleton first, so building a level never
+     * inherits the previous level's entities, tiles or camera.
      *
-     * @return A pointer to the `GameStateManager` for the level.
+     * @return The game state for this level, ready to be played.
      */
-    virtual GameStateManager* GetGameState();
+    [[nodiscard]] GameStateManager* Build() const;
 
     /**
-     * @brief Destructor for the Level class.
-     *
-     * Ensures that any dynamically allocated resources associated with the level
-     * are properly released.
+     * @brief The level's definition (name and file paths).
      */
+    [[nodiscard]] const LevelDef& GetDef() const { return def_; }
+
     ~Level();
+
+private:
+    LevelDef def_;
+
+    /**
+     * @brief Turns one parsed spawn record into a live game object.
+     */
+    static void ApplySpawn(GameStateManager* gameState, const EntitySpawn& spawn);
 };
 
 #endif //PLATFORMER_LEVEL_H

@@ -12,6 +12,10 @@
 #include <cmath>
 #include <stdexcept>
 
+/// How far below the level the player must fall before it counts as a death.
+/// Generous enough that clipping slightly through a floor is survivable.
+constexpr float FALL_DEATH_MARGIN = 600.0f;
+
 // Initialize the static singleton instance
 std::unique_ptr<GameStateManager> GameStateManager::instance = nullptr;
 
@@ -70,6 +74,43 @@ void GameStateManager::UpdateGame() {
     UpdatePlatforms(); // update Platforms
     UpdateMonsters(); // update Monsters
     UpdateOthers();
+    CheckLevelEndConditions();
+}
+
+/**
+ * @brief Decides whether the level has been won or lost this frame.
+ *
+ * Checked once per frame after everything has moved, so the player's position
+ * and health are settled. Only the first result sticks - a player who dies on
+ * the same frame they touch the goal should not both win and lose.
+ */
+void GameStateManager::CheckLevelEndConditions() {
+    if (levelResult_ != LEVEL_RUNNING || players_.empty()) return;
+
+    Player* player = players_.at(0).get(); // GetRect() is non-const
+
+    if (player->CheckPlayerDeath()) {
+        SetLevelResult(LEVEL_FAILED);
+        return;
+    }
+
+    // Fell out of the world. Without this a pit is a softlock rather than a
+    // hazard - the player just falls forever with nothing to collide with.
+    if (tileManager_) {
+        if (const Rectangle bounds = tileManager_->GetWorldBounds();
+            bounds.height > 0.0f && player->GetPosition().y > bounds.y + bounds.height + FALL_DEATH_MARGIN) {
+            TraceLog(LOG_INFO, "[LEVEL] player fell out of the world");
+            SetLevelResult(LEVEL_FAILED);
+            return;
+        }
+    }
+
+    // A zero-size goal means the level does not define one (e.g. a sandbox map).
+    if (goal_.width > 0.0f && goal_.height > 0.0f) {
+        if (const Rectangle playerRect = player->GetRect(); CheckCollisionRecs(playerRect, goal_)) {
+            SetLevelResult(LEVEL_COMPLETED);
+        }
+    }
 }
 
 /**
@@ -570,6 +611,24 @@ bool GameStateManager::IsLevelOver() const {
  */
 void GameStateManager::SetLevelOver() {
     levelOver = true;
+}
+
+/**
+ * @brief Marks the level finished, recording why.
+ */
+void GameStateManager::SetLevelResult(const LevelResult result) {
+    levelResult_ = result;
+    levelOver = (result != LEVEL_RUNNING);
+    TraceLog(LOG_INFO, "[LEVEL] result = %s",
+             result == LEVEL_COMPLETED ? "COMPLETED" : result == LEVEL_FAILED ? "FAILED" : "RUNNING");
+}
+
+/**
+ * @brief Destroys the singleton so the next GetInstance() builds a fresh state.
+ */
+void GameStateManager::Reset() {
+    instance.reset();
+    TraceLog(LOG_INFO, "[LEVEL] game state reset");
 }
 
 /**

@@ -12,6 +12,7 @@
 #include "../Platform/GUI.h"
 #include "../Game/Level/Level.h"
 #include "../Game/Entities/UI/Button.h"
+#include "../Game/Management/GameStateManager.h"
 
 class GameStateManager;
 
@@ -43,7 +44,8 @@ struct EngineSettings {
 enum GameScreen {
     TITLE,    /**< Title screen displayed at the start of the game. */
     GAME,     /**< Main gameplay screen. */
-    GAMEOVER  /**< Game Over screen displayed when the player loses. */
+    GAMEOVER, /**< Game Over screen displayed when the player loses. */
+    VICTORY   /**< Shown after the final level is completed. */
 };
 
 /**
@@ -86,14 +88,17 @@ private:
     static void RenderGameScreen(GameStateManager* scene) ;
 
     /**
-    * @brief Main game loop.
-    */
-    void GameLoop(GameStateManager* scene) const;
+     * @brief Plays a single level to completion, death, or quit.
+     * @return The reason the level ended.
+     */
+    LevelResult RunLevel(const Level* level) const;
 
     /**
-     * @brief Renders the Game Over screen.
+     * @brief Shows a full-screen message until the player presses a key.
+     * @return false if the player quit instead of continuing.
      */
-    static void RenderGameOverScreen();
+    static bool ShowMessageScreen(const char* title, const char* prompt, Color titleColor);
+
 
     static bool shouldExit_; /**< Tracks whether the game should exit. */
 

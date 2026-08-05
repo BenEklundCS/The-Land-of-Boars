@@ -23,8 +23,8 @@ not rigid; the point is to always know what's done and what's next.
 | 1 | Revert the AI refactor | ✅ done |
 | 2 | **Kill the resolution-scaling scheme** — move it to the camera | ✅ done |
 | 3 | Characterization tests on the stable seam | ⬜ next |
-| 4 | De-hardcode: name constants, move placement to level data | ⬜ not started |
-| 5 | Build 3 levels | ⬜ blocked on Phase 4 |
+| 4 | De-hardcode: move placement to level data | ✅ done |
+| 5 | Build 3 levels | ✅ done |
 
 **ECS is cancelled.** Decision made after Phase 1: the refactor had no stated
 "why", and every bug this project actually hits is a *data and coordinate-space*
@@ -153,6 +153,55 @@ to a decimal, and the player visibly moves off-centre while the camera holds.
 
 Not done, deliberately — a **deadzone** (ignore small movements) and
 **look-ahead** (lead the player's motion) are the natural next camera steps.
+
+## Phases 4 + 5 — Data-driven levels, and three of them ✅
+
+Done together, because they were the same task: agentic/hand level authoring
+needs a data format, and building the format *is* the de-hardcoding.
+
+**Level lifecycle**
+- [x] `GameStateManager::Reset()` — the manager owns every entity, the tiles and
+      the camera, so without this level 2 stacks on top of level 1
+- [x] `LevelResult` (`RUNNING`/`COMPLETED`/`FAILED`) — "level over" alone can't
+      distinguish advancing from retrying
+- [x] Engine plays levels in sequence; a win advances, a death **replays the same
+      level**, and finishing the last one shows a victory screen
+- [x] Win condition: a `goal` region per level, drawn as a pulsing gold marker
+- [x] Fall-death (`FALL_DEATH_MARGIN`) — without it a pit is a softlock, not a
+      hazard; the player just falls forever exactly like the original spawn bug
+
+**Data-driven levels**
+- [x] `LevelDef` + `EntitySpawn`; `Level` is now concrete and built from data
+- [x] `LevelOne.cpp/h` **deleted** — levels need no C++ at all now
+- [x] `LevelLoader::LoadEntities` parses `type x y [w h] [arg]`; unknown types are
+      logged and skipped so a typo costs one entity, not the level
+- [x] `LevelLoader::ResolvePath` tries several roots, replacing the hardcoded
+      `"../Levels/.."` that only worked from inside the build directory
+
+**Content** — `tools/gen-levels.ps1` generates maps 2 and 3 *and* reports their
+surface profile, so entity and goal placement is derived from geometry rather
+than guessed.
+
+| Level | Design | Spawn → goal |
+|---|---|---|
+| 1 The Clearing | the original hand-made map | 120 tiles |
+| 2 The Gauntlet | flat run broken by five pits | 142 tiles |
+| 3 The Ascent | staircase, one tile up every nine columns | 142 tiles |
+
+**Measured, not assumed:** jump height is **636.7 world units (8.6 tiles)**. The
+biggest step-up on level 1's route is 6 tiles and level 2's platforms sit 4 tiles
+up, so every route is climbable. Maps are 60 rows deep so their solid bounds
+exceed the camera's 1440-unit viewport — shallower maps trip the
+"centre if smaller than the view" rule and frame the player high with dead dirt
+below.
+
+**Verified:** full chain `Clearing → Gauntlet → Ascent → victory` (driven with
+temporary near-spawn goals, since the harness can't platform through a full
+level), and fall-death → death screen → correct **same-level** retry.
+
+**Not verified:** that each level is completable by a human playing it start to
+finish. The routes are checked against measured jump height, but nobody has
+actually played them end to end.
 
 ## Phase 3 — Characterization tests ⬜
 

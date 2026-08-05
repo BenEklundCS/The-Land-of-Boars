@@ -9,6 +9,7 @@
 #include <vector>
 #include <string>
 #include "../../../include/Game/Entities/Objects/Tile.h"
+#include "LevelDef.h"
 
 /**
  * @class LevelLoader
@@ -43,6 +44,31 @@ public:
     * @param filePath The path to save file.
     */
     static void SaveLevel(const std::vector<std::vector<std::unique_ptr<Tile>>> &tiles, const std::string &filePath);
+
+    /**
+     * @brief Resolves a repo-relative asset path against the likely working directories.
+     *
+     * Paths used to be hardcoded as "../Levels/..", which only resolved when the
+     * game was launched from inside the build directory. This tries the
+     * plausible roots so the game runs from the repo root, the build dir, or a
+     * packaged layout.
+     *
+     * @param relativePath e.g. "Levels/map_level_one.txt".
+     * @return The first candidate that exists, or the input unchanged if none do.
+     */
+    static std::string ResolvePath(const std::string& relativePath);
+
+    /**
+     * @brief Parses a level's entity file into spawn records.
+     *
+     * Format is one entity per line: `type x y [w h] [arg]`. Blank lines and
+     * lines starting with '#' are ignored. Unknown types are logged and skipped
+     * rather than aborting, so a typo costs one entity, not the level.
+     *
+     * @param filePath Path to the entity file (resolved internally).
+     * @return The parsed spawns, empty if the file is missing.
+     */
+    static std::vector<EntitySpawn> LoadEntities(const std::string& filePath);
 };
 
 #endif //PLATFORMER_LEVELLOADER_H

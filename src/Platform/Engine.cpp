@@ -3,7 +3,6 @@
 //
 
 #include "../../include/Platform/Engine.h"
-#include "../../include/Game/Level/LevelOne.h"
 #include "../../include/Game/Management/InputManager.h"
 #include <stdexcept>
 
@@ -20,15 +19,20 @@ bool Engine::shouldExit_ = false;
 /**
  * @brief Load all game levels into the engine.
  *
- * Currently, only LevelOne is implemented. Additional levels can be added in the future.
+ * Levels are pure data - adding one means adding a tilemap, an entity file and
+ * a line here, with no new C++.
  */
 void Engine::LoadLevels() {
     TraceLog(LOG_INFO, "Engine loading levels...");
-    auto levelOne = std::make_unique<LevelOne>();
-    // auto levelTwo =
-    // auto LevelThree =
-    // ...
-    levels.push_back(std::move(levelOne));
+    const LevelDef defs[] = {
+        {"The Clearing",   "Levels/map_level_one.txt",   "Levels/level_one.entities.txt"},
+        {"The Gauntlet",   "Levels/map_level_two.txt",   "Levels/level_two.entities.txt"},
+        {"The Ascent",     "Levels/map_level_three.txt", "Levels/level_three.entities.txt"},
+    };
+    for (const auto& def : defs) {
+        levels.push_back(std::make_unique<Level>(def));
+    }
+    TraceLog(LOG_INFO, "Engine loaded %d levels", static_cast<int>(levels.size()));
 }
 
 /**
@@ -53,41 +57,80 @@ void Engine::StartGame() {
     // Debug mode enabled
     SetTraceLogLevel(LOG_DEBUG);
 
-    // Set up the game for rendering
+    // Title screen first - it runs until the player presses Start.
+    while (!WindowShouldClose() && !shouldExit_ && currentScreen == TITLE) {
+        RenderTitleScreen();
+    }
 
-    // Assume only one level for simplicity
-    const auto& level = levels[0];
-    const auto gameState = level->GetGameState();
-    gameState->InitCamera();
+    // Play each level in turn. A death replays the current level rather than
+    // ending the game, so levels are retryable.
+    while (!WindowShouldClose() && !shouldExit_ && curr < static_cast<int>(levels.size())) {
+        const LevelResult result = RunLevel(levels[curr].get());
 
-    // Initialize game input
-    gameState->InitInput(settings.get());
+        if (result == LEVEL_COMPLETED) {
+            ++curr;
+            if (curr < static_cast<int>(levels.size())) {
+                if (!ShowMessageScreen("Level complete!", "Press SPACE for the next level", GREEN)) return;
+            }
+        }
+        else if (result == LEVEL_FAILED) {
+            if (!ShowMessageScreen("You died", "Press SPACE to try again", RED)) return;
+        }
+        else {
+            return; // player quit mid-level
+        }
+    }
 
-    // Start the game loop
-    GameLoop(gameState);
+    if (!WindowShouldClose() && !shouldExit_) {
+        ShowMessageScreen("You win!", "Thanks for playing - press SPACE to exit", GOLD);
+    }
 }
 
 /**
- * @brief The main Game Loop. This function is responsible for running the game during runtime
- *        it uses the currentScreen enum to decide which scene function should be called for rendering.
- * @param scene - The current game scene to be rendered in case the currentScreen == GAME
+ * @brief Plays a single level to completion, death, or quit.
  */
-void Engine::GameLoop(GameStateManager* scene) const {
-    while (!WindowShouldClose() && !scene->IsLevelOver() && !shouldExit_) {
-        switch(currentScreen) {
-            case TITLE:
-                RenderTitleScreen();
-                break;
-            case GAME:
-                RenderGameScreen(scene);
-                break;
-            case GAMEOVER:
-                RenderGameOverScreen();
-                break;
-            default:
-                return;
-        }
+LevelResult Engine::RunLevel(const Level* level) const {
+    GameStateManager* scene = level->Build();
+    scene->InitCamera();
+    scene->InitInput(settings.get());
+    HideCursor();
+
+    while (!WindowShouldClose() && !shouldExit_ && !scene->IsLevelOver()) {
+        RenderGameScreen(scene);
     }
+
+    ShowCursor();
+    return scene->GetLevelResult();
+}
+
+/**
+ * @brief Shows a full-screen message until the player continues or quits.
+ */
+bool Engine::ShowMessageScreen(const char* title, const char* prompt, const Color titleColor) {
+    ShowCursor();
+    // Wait for the key to be released first, otherwise the SPACE that ended the
+    // previous screen instantly dismisses this one too.
+    while (!WindowShouldClose() && IsKeyDown(KEY_SPACE)) {
+        BeginDrawing();
+        EndDrawing();
+    }
+
+    while (!WindowShouldClose()) {
+        if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER)) return true;
+        if (IsKeyPressed(KEY_ESCAPE)) return false;
+
+        BeginDrawing();
+        ClearBackground(Color{40, 30, 50, 255});
+
+        const int titleSize = static_cast<int>(70 * WINDOW_SCALE_FACTOR_Y);
+        const int promptSize = static_cast<int>(30 * WINDOW_SCALE_FACTOR_Y);
+        DrawText(title, (GetScreenWidth() - MeasureText(title, titleSize)) / 2,
+                 GetScreenHeight() / 2 - titleSize, titleSize, titleColor);
+        DrawText(prompt, (GetScreenWidth() - MeasureText(prompt, promptSize)) / 2,
+                 GetScreenHeight() / 2 + promptSize, promptSize, RAYWHITE);
+        EndDrawing();
+    }
+    return false;
 }
 
 /**
@@ -154,13 +197,6 @@ void Engine::RenderGameScreen(GameStateManager* scene) {
         GUI::DrawEditorGUI();
 
     EndDrawing();
-}
-
-/**
- * @brief Renders the game over screen.
- */
-void Engine::RenderGameOverScreen() {
-
 }
 
 /**

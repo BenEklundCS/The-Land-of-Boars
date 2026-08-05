@@ -1,0 +1,27 @@
+# Level 1 - The Clearing
+# Format: type x y [w h] [arg]
+# World units. Tile grid step is 74, ground surface is at y=1776 (row 24).
+# These spawns reproduce the original hardcoded LevelOne exactly.
+
+player 1500 1500
+
+# Monsters: x y pacingW pacingH
+# Kept clear of the player spawn at x=1500 - the original hardcoded level put a
+# snail and a boar directly on top of it, costing a free hit on every restart.
+boar  4500 200  300 300
+boar  2800 500  100 100
+bee   5000 0    300 300
+snail 3600 1400 100 100
+
+# Scenery
+tree 4500 820
+
+# A few coins along the way
+coin 2400 1700
+coin 2800 1700
+coin 3200 1700
+
+# Far end of the map, on the surface at col 140 (row 17, y=1258).
+# The biggest step up on the route is 6 tiles (444 units); measured jump height
+# is ~637 units (8.6 tiles), so the whole run is climbable.
+goal 10360 878 150 380
