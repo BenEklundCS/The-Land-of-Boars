@@ -290,6 +290,28 @@ non-uniformly by aspect ratio (`0.4688 x` vs `0.4861 y` at 1200x700), and blocks
 resolution-independent level data. Findings #5 is one symptom of this, not an
 isolated bug. **This is Phase 2.**
 
+**#8 — Physics is applied per-frame, not per-second.** `ApplyGravity()` is
+`velocity_.y += GRAVITY`, `ApplyFriction()` subtracts `FRICTION`, and the
+movement impulses are `velocity_.x -= PLAYER_SPEED_X` — all **per frame with no
+`deltaTime`** — while position integration *does* use `deltaTime`
+(`position_ += velocity_ * deltaTime`). Consistent at a locked 60 FPS, but it
+means acceleration, gravity and friction all scale with framerate: the game
+plays differently on a 144 Hz monitor or during a frame spike. Fix alongside the
+Phase 3 golden-run harness, which needs a fixed timestep anyway.
+
+Also `ApplyFriction` hardcodes `minVelocity = 50` in world units, unscaled — one
+more literal of the Phase 4 class. It is *correct* now (it matches base
+resolution), but it was silently wrong under the old scaling scheme.
+
+**#9 — The old scaling squashed the world by aspect ratio, and removing it
+changed horizontal speed by 3.7%.** The old scheme scaled X by `0.46875` and Y by
+`0.4861` at 1200x700; the camera zoom is uniform and height-derived. So
+horizontal motion is now ~3.7% faster on screen than the old build. That is the
+distortion being *removed*, not a regression — but it is a real, perceptible
+difference from what the pre-rewrite build felt like. Verified separately that
+every physics constant scales by exactly the world ratio, so run speed
+(13.5 tiles/s) and jump impulse (25.6 tiles/s) are otherwise unchanged.
+
 **#6 — `TileManager`'s constructor position is dead code.** `LevelOne.cpp` passes
 `Vector2{-2000, 250}`, the ctor stores it in `position_`, and **nothing ever reads
 it**. `CreateTiles` places tiles from world origin. Confirmed at runtime. Harmless
