@@ -32,8 +32,18 @@ class TileManager {
 private:
     std::vector<std::vector<std::unique_ptr<Tile>>> tiles_; ///< 2D array of tile objects.
     Vector2 position_{}; ///< Position of the TileManager (used for offset or placement).
+    Rectangle worldBounds_{}; ///< World-space rect covering the solid tiles, computed in CreateTiles.
 
 public:
+    /**
+     * @brief The world-space rectangle covering the level's solid tiles.
+     *
+     * Covers only tiles that actually exist, not the empty padding columns in
+     * the level file - so the camera can be clamped to the playable area rather
+     * than to the raw grid dimensions. Valid only after CreateTiles has run.
+     */
+    [[nodiscard]] Rectangle GetWorldBounds() const { return worldBounds_; }
+
     /**
      * @brief Constructor for the `TileManager`.
      * @param position The starting position of the TileManager (used as an origin for the tile grid).

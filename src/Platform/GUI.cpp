@@ -83,6 +83,23 @@ void GUI::DrawDebugGUI(const GameStateManager *gameState) {
     ImGui::Text("isOnGround: %s", (player->GetPlayerData()->isOnGround_) ? "True" : "False");
     ImGui::Text("timeSinceHit: %1.2f", player->GetPlayerData()->timeSinceHit_);
     ImGui::Text("");
+    // Camera - target vs. the clamp range makes it obvious whether the level
+    // bounds are engaging or the camera is still free-following the player.
+    const Camera2D cam = gameState->GetCamera();
+    const Rectangle bounds = gameState->GetTileManager().GetWorldBounds();
+    const float halfViewW = static_cast<float>(GetScreenWidth()) / cam.zoom / 2.0f;
+    const float halfViewH = static_cast<float>(GetScreenHeight()) / cam.zoom / 2.0f;
+    ImGui::Text("Camera:");
+    ImGui::Text("Target: %1.1fx, %1.1fy  (zoom %1.4f)", cam.target.x, cam.target.y, cam.zoom);
+    ImGui::Text("Level bounds: x %1.0f..%1.0f  y %1.0f..%1.0f",
+                bounds.x, bounds.x + bounds.width, bounds.y, bounds.y + bounds.height);
+    ImGui::Text("Clamp range: x %1.0f..%1.0f  y %1.0f..%1.0f",
+                bounds.x + halfViewW, bounds.x + bounds.width - halfViewW,
+                bounds.y + halfViewH, bounds.y + bounds.height - halfViewH);
+    ImGui::Text("Clamped: %s%s",
+                (cam.target.x <= bounds.x + halfViewW + 1 || cam.target.x >= bounds.x + bounds.width - halfViewW - 1) ? "X " : "- ",
+                (cam.target.y <= bounds.y + halfViewH + 1 || cam.target.y >= bounds.y + bounds.height - halfViewH - 1) ? "Y" : "-");
+    ImGui::Text("");
     // Number of objects
     ImGui::Text("Object counts:");
     ImGui::Text("Player count: %zu", numPlayers);

@@ -12,7 +12,8 @@
 param(
     [string]$Script  = "wait:4000,shot:boot",
     [string]$OutDir  = "$PSScriptRoot\frames",
-    [int]$BootWaitMs = 4000
+    [int]$BootWaitMs = 4000,
+    [string]$LogPath = ""   # capture the game's TraceLog output to a file
 )
 
 $ErrorActionPreference = "Stop"
@@ -28,6 +29,7 @@ public class W {
     [DllImport("user32.dll")] public static extern void keybd_event(byte vk, byte scan, uint flags, UIntPtr extra);
     [DllImport("user32.dll")] public static extern bool SetCursorPos(int x, int y);
     [DllImport("user32.dll")] public static extern bool SetProcessDPIAware();
+    [DllImport("user32.dll")] public static extern uint MapVirtualKey(uint uCode, uint uMapType);
     [DllImport("user32.dll")] public static extern bool MoveWindow(IntPtr h, int x, int y, int w, int ht, bool repaint);
     [DllImport("user32.dll")] public static extern bool SetWindowPos(IntPtr h, IntPtr after, int x, int y, int cx, int cy, uint flags);
     [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
@@ -47,6 +49,25 @@ $VK = @{
     "ESC" = 0x1B; "ENTER" = 0x0D; "F1" = 0x70; "TAB" = 0x09
 }
 $KEYUP = 0x0002
+$EXTENDED = 0x0001
+# Arrow keys, navigation keys and right-hand modifiers are "extended" keys.
+# Without KEYEVENTF_EXTENDEDKEY their scancodes resolve to the numpad
+# equivalents, so the game never sees KEY_LEFT/KEY_RIGHT at all and any
+# movement test silently does nothing.
+$EXTENDED_KEYS = @("LEFT", "UP", "RIGHT", "DOWN", "INS", "DEL", "HOME", "END", "PGUP", "PGDN")
+
+function Send-Key([string]$name, [bool]$up) {
+    $code = $VK[$name.ToUpper()]
+    $flags = 0
+    if ($EXTENDED_KEYS -contains $name.ToUpper()) { $flags = $flags -bor $EXTENDED }
+    if ($up) { $flags = $flags -bor $KEYUP }
+    # A real scancode is REQUIRED. raylib sits on GLFW, which resolves keys from
+    # the scancode in the window message, not the virtual-key code. Passing
+    # bScan=0 makes GLFW report GLFW_KEY_UNKNOWN and the game sees nothing at
+    # all - input appears to be sent successfully while doing nothing.
+    $scan = [W]::MapVirtualKey([uint32]$code, 0)  # MAPVK_VK_TO_VSC
+    [W]::keybd_event($code, [byte]$scan, $flags, [UIntPtr]::Zero)
+}
 
 # Must run before any window/cursor coordinate work, otherwise Windows
 # virtualizes our coords and clicks land in the wrong place on scaled displays.
@@ -58,7 +79,12 @@ if (-not (Test-Path $exe)) { throw "Executable not found: $exe" }
 if (-not (Test-Path $OutDir)) { New-Item -ItemType Directory -Path $OutDir | Out-Null }
 
 # Run from cmake-build-debug so the game's relative "../Levels/..." paths resolve.
-$proc = Start-Process -FilePath $exe -WorkingDirectory "$repo\cmake-build-debug" -PassThru
+$startArgs = @{ FilePath = $exe; WorkingDirectory = "$repo\cmake-build-debug"; PassThru = $true }
+if ($LogPath) {
+    $startArgs.RedirectStandardOutput = $LogPath
+    $startArgs.RedirectStandardError  = "$LogPath.err"
+}
+$proc = Start-Process @startArgs
 Write-Output "launched pid=$($proc.Id)"
 Start-Sleep -Milliseconds $BootWaitMs
 
@@ -138,18 +164,18 @@ foreach ($step in $Script.Split(",")) {
             Write-Output "  click at window($($parts[1]),$($parts[2])) screen($sx,$sy)"
         }
         "tap" {
-            $code = $VK[$parts[1].ToUpper()]
-            [W]::keybd_event($code, 0, 0, [UIntPtr]::Zero)
+            Send-Key $parts[1] $false
             Start-Sleep -Milliseconds 60
-            [W]::keybd_event($code, 0, $KEYUP, [UIntPtr]::Zero)
+            Send-Key $parts[1] $true
             Write-Output "  tap $($parts[1])"
         }
         "key" {
-            $code = $VK[$parts[1].ToUpper()]
             $hold = [int]$parts[2]
-            [W]::keybd_event($code, 0, 0, [UIntPtr]::Zero)
+            $fg = [W]::GetForegroundWindow()
+            Write-Output ("  [focus check] game hwnd={0} foreground={1} match={2}" -f $h, $fg, ($fg -eq $h))
+            Send-Key $parts[1] $false
             Start-Sleep -Milliseconds $hold
-            [W]::keybd_event($code, 0, $KEYUP, [UIntPtr]::Zero)
+            Send-Key $parts[1] $true
             Write-Output "  held $($parts[1]) for ${hold}ms"
         }
     }

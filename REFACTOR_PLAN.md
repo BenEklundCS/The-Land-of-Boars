@@ -125,6 +125,35 @@ preserves the intended feel rather than changing it.
 differing (0.4861 vs 0.6250). Confirmed visually at both sizes, and the static
 analysis agrees with the runtime log.
 
+## Phase 2.5 — Camera smoothing + level bounds ✅
+
+Small feel pass, done on top of the new camera-centric architecture (and a good
+validation that the architecture was right — both features are ~40 lines because
+the camera is now the single place resolution and framing live).
+
+Before: `camera_.target = player position + 20`, hard-snapped every frame, free
+to pan past the level edge into empty space.
+
+- [x] **Frame-rate independent smoothing.** `t = 1 - e^(-lambda*dt)`, not
+      `lerp(a, b, 0.1)` — a fixed fraction follows faster at high framerates and
+      lags at low ones. `CAMERA_FOLLOW_LAMBDA = 6.0`
+- [x] **Level bounds clamping.** `TileManager::GetWorldBounds()` exposes the
+      solid-tile extent (reusing the min/max already computed for the geometry
+      log), and the camera clamps to it. If the level is smaller than the
+      viewport on an axis it centres instead — otherwise the opposing clamps
+      fight and the camera jitters
+- [x] Clamp applied *after* smoothing, so the camera stops dead at the edge
+      rather than easing into a region it may not show
+- [x] `InitCamera` snaps rather than smoothing, to avoid a swoop on the first frames
+- [x] Camera readout added to the ImGui debug panel and a periodic `[CAM]` log
+
+**Verified:** holding left, `player x 1500 → 1116`, `camera target 1520 → 1234.3`,
+`clampedX=YES`. Predicted clamp is `bounds.x + halfView = 0 + 1234.5` — matches
+to a decimal, and the player visibly moves off-centre while the camera holds.
+
+Not done, deliberately — a **deadzone** (ignore small movements) and
+**look-ahead** (lead the player's motion) are the natural next camera steps.
+
 ## Phase 3 — Characterization tests ⬜
 
 Note the trap this phase has to avoid: `master`'s behavior lives in
@@ -315,7 +344,18 @@ persists across retries until that file is deleted.
 .\capture.ps1 -Script "wait:1500,click:598:505,wait:2000,key:RIGHT:1200,shot:run,tap:A,shot:attack"
 ```
 
-Two non-obvious things it has to do, both learned the hard way:
+**Keyboard input needs a real scancode.** `keybd_event` with `bScan = 0` looks
+like it works — no error, focus is correct, the call returns — and the game
+receives *nothing*. raylib sits on GLFW, which resolves keys from the scancode in
+the window message rather than the virtual-key code, so scancode 0 becomes
+`GLFW_KEY_UNKNOWN`. The harness now calls `MapVirtualKey(vk, MAPVK_VK_TO_VSC)`.
+Arrow keys additionally need `KEYEVENTF_EXTENDEDKEY`.
+
+This silently invalidated every movement test until it was caught by logging the
+player position instead of trusting the screenshots — worth remembering that
+"input was sent" and "input arrived" are different claims.
+
+Three non-obvious things it has to do, all learned the hard way:
 
 - **Move the window to (0,0)** so window-relative coords equal screen coords
 - **Force the window topmost and steal focus** via `AttachThreadInput`.

@@ -9,6 +9,7 @@
 #include "../../../include/Game/Entities/Objects/Coin.h"
 #include "../../../include/Utilities/Random.h"
 #include <algorithm>
+#include <cmath>
 #include <stdexcept>
 
 // Initialize the static singleton instance
@@ -460,27 +461,99 @@ std::vector<GameObject*> GameStateManager::GetAllObjects() {
 
 #pragma region game state methods
 
+/// Camera follow tuning.
+/// Exponential smoothing rate. Higher is snappier; this is a rate, not a
+/// per-frame fraction, so the feel is identical at any framerate.
+constexpr float CAMERA_FOLLOW_LAMBDA = 6.0f;
+/// Nudge the framing slightly past the player's top-left origin.
+constexpr float CAMERA_TARGET_OFFSET = 20.0f;
+
+/**
+ * @brief The camera target that perfectly frames the player, before smoothing.
+ */
+static Vector2 DesiredCameraTarget(const Player* player) {
+    return Vector2{player->GetPosition().x + CAMERA_TARGET_OFFSET,
+                   player->GetPosition().y + CAMERA_TARGET_OFFSET};
+}
+
+/**
+ * @brief Keeps the camera from showing past the edges of the level.
+ *
+ * If the level is smaller than the viewport on an axis, the camera centres on
+ * it instead of clamping - otherwise the two opposing clamps fight and the
+ * camera jitters.
+ */
+static Vector2 ClampTargetToBounds(Vector2 target, const Rectangle bounds, const float zoom) {
+    if (bounds.width <= 0.0f || bounds.height <= 0.0f) return target; // no level loaded yet
+
+    const float halfViewW = static_cast<float>(GetScreenWidth()) / zoom / 2.0f;
+    const float halfViewH = static_cast<float>(GetScreenHeight()) / zoom / 2.0f;
+
+    if (bounds.width <= halfViewW * 2.0f) {
+        target.x = bounds.x + bounds.width / 2.0f;
+    } else {
+        target.x = std::clamp(target.x, bounds.x + halfViewW, bounds.x + bounds.width - halfViewW);
+    }
+
+    if (bounds.height <= halfViewH * 2.0f) {
+        target.y = bounds.y + bounds.height / 2.0f;
+    } else {
+        target.y = std::clamp(target.y, bounds.y + halfViewH, bounds.y + bounds.height - halfViewH);
+    }
+    return target;
+}
+
 // Init the camera to its base target, offset, rotation, and zoom.
 // Currently, supports only one player.
 // Call this function just before attempting to render the GameState
 // DO NOT CALL UNLESS players_ HAS AT LEAST ONE PLAYER
 void GameStateManager::InitCamera() {
     const Player* player1 = players_.at(0).get();
-    camera_.target = (Vector2){player1->GetPosition().x + 20.0f, player1->GetPosition().y + 20.0f};
     camera_.offset = (Vector2){static_cast<float>(GetScreenWidth()) / 2.0f, static_cast<float>(GetScreenHeight()) / 2.0f};
     camera_.rotation = 0.0f;
     // Resolution is handled here and nowhere else. World data stays in fixed
     // world units; the camera scales it at render time.
     camera_.zoom = GetWorldCameraZoom();
+    // Snap on init - smoothing toward the player from an arbitrary start would
+    // show a swoop across the level on the first frames.
+    camera_.target = ClampTargetToBounds(DesiredCameraTarget(player1),
+                                         tileManager_ ? tileManager_->GetWorldBounds() : Rectangle{},
+                                         camera_.zoom);
 }
 
 // Update the camera using the players current position
 void GameStateManager::UpdateCamera() {
-    Player* player1 = players_.at(0).get();
-    camera_.target = (Vector2){ player1->GetPosition().x + 20, player1->GetPosition().y + 20 };
+    const Player* player1 = players_.at(0).get();
     // Keep zoom and offset live so the view stays correct if the window resizes.
     camera_.offset = (Vector2){static_cast<float>(GetScreenWidth()) / 2.0f, static_cast<float>(GetScreenHeight()) / 2.0f};
     camera_.zoom = GetWorldCameraZoom();
+
+    const Vector2 desired = DesiredCameraTarget(player1);
+
+    // Frame-rate independent exponential smoothing. A plain lerp(a, b, 0.1)
+    // would make the camera follow faster at high framerates and lag at low
+    // ones; 1 - e^(-lambda*dt) keeps the response identical at any dt.
+    const float dt = GetFrameTime();
+    const float t = 1.0f - std::exp(-CAMERA_FOLLOW_LAMBDA * dt);
+    camera_.target.x += (desired.x - camera_.target.x) * t;
+    camera_.target.y += (desired.y - camera_.target.y) * t;
+
+    // Clamp after smoothing so the camera stops dead at the level edge rather
+    // than easing into a region it is not allowed to show.
+    const Rectangle bounds = tileManager_ ? tileManager_->GetWorldBounds() : Rectangle{};
+    const Vector2 beforeClamp = camera_.target;
+    camera_.target = ClampTargetToBounds(camera_.target, bounds, camera_.zoom);
+
+    // Periodic readout so camera behaviour can be verified from a log rather
+    // than by reading an on-screen overlay (which steals keyboard focus).
+    static int camLogTick = 0;
+    if (++camLogTick % 60 == 0) {
+        TraceLog(LOG_INFO, "[CAM] player(%.1f, %.1f) target(%.1f, %.1f) clampedX=%s clampedY=%s",
+                 player1->GetPosition().x, player1->GetPosition().y,
+                 camera_.target.x, camera_.target.y,
+                 (std::abs(beforeClamp.x - camera_.target.x) > 0.01f) ? "YES" : "no",
+                 (std::abs(beforeClamp.y - camera_.target.y) > 0.01f) ? "YES" : "no");
+    }
 }
 
 /**

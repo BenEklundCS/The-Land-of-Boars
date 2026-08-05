@@ -62,6 +62,16 @@ void TileManager::CreateTiles(const std::vector<std::vector<int>> tileMap) {
         }
     }
 
+    // Store the playable extent for camera clamping. Tile positions are the
+    // top-left corner, so extend by one tile to cover the far edge.
+    if (solidCount > 0) {
+        worldBounds_ = Rectangle{
+            minSolidX, minSolidY,
+            (maxSolidX - minSolidX) + TILE_LENGTH,
+            (maxSolidY - minSolidY) + TILE_LENGTH
+        };
+    }
+
     // Discrete geometry readout - lets us reason about spawn/collision without
     // replaying the game and eyeballing screenshots.
     TraceLog(LOG_INFO, "[TILES] grid %dx%d, %d solid tiles", static_cast<int>(tileMap.size()),
